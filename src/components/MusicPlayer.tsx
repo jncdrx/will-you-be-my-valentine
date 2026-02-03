@@ -6,9 +6,9 @@ export function MusicPlayer() {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    // Song: "Romantic Acoustic" (Royalty Free)
-    // A reliable direct link to a romantic instrumental
-    const songUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3";
+    // Song: "Nothing" by Bruno Major
+    // Note: Please ensure 'nothing.mp3' is placed in the 'public/music' folder
+    const songUrl = `${import.meta.env.BASE_URL}music/nothing.mp3`;
 
     useEffect(() => {
         audioRef.current = new Audio(songUrl);
