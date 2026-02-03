@@ -6,9 +6,9 @@ export function MusicPlayer() {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    // Song: "Can't Help Falling In Love" (Cover or similar romantic instrumental)
-    // Using a royalty-free placeholder for now that feels romantic
-    const songUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+    // Song: "Romantic Acoustic" (Royalty Free)
+    // A reliable direct link to a romantic instrumental
+    const songUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3";
 
     useEffect(() => {
         audioRef.current = new Audio(songUrl);
