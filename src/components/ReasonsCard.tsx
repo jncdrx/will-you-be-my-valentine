@@ -24,7 +24,7 @@ export function ReasonsCard() {
 
     return (
         <div className="my-8 w-full max-w-md px-4">
-            <div className="relative overflow-hidden rounded-2xl bg-white/40 p-8 shadow-xl backdrop-blur-md border border-white/50">
+            <div className="relative overflow-hidden rounded-2xl bg-white/40 p-6 md:p-8 shadow-xl backdrop-blur-md border border-white/50">
                 <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-rose-200/50 blur-xl"></div>
                 <div className="absolute bottom-0 left-0 -mb-4 -ml-4 h-24 w-24 rounded-full bg-purple-200/50 blur-xl"></div>
 

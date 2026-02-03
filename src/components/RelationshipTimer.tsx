@@ -30,13 +30,13 @@ export function RelationshipTimer() {
     }, []);
 
     return (
-        <div className="my-8 text-center">
+        <div className="my-8 text-center px-4">
             <h3 className="mb-4 text-xl font-bold text-rose-600 font-display">Falling in love for...</h3>
-            <div className="flex justify-center gap-4 text-rose-800">
+            <div className="flex justify-center gap-2 md:gap-4 text-rose-800 flex-wrap">
                 <TimeUnit value={time.days} label="Days" />
                 <TimeUnit value={time.hours} label="Hours" />
-                <TimeUnit value={time.minutes} label="Minutes" />
-                <TimeUnit value={time.seconds} label="Seconds" />
+                <TimeUnit value={time.minutes} label="Mins" />
+                <TimeUnit value={time.seconds} label="Secs" />
             </div>
         </div>
     );
@@ -49,7 +49,7 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
                 key={value}
                 initial={{ y: -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="text-3xl font-bold bg-white/50 backdrop-blur-sm rounded-lg p-3 min-w-[70px] shadow-sm"
+                className="text-2xl md:text-3xl font-bold bg-white/50 backdrop-blur-sm rounded-lg p-2 md:p-3 min-w-[60px] md:min-w-[70px] shadow-sm"
             >
                 {value}
             </motion.div>

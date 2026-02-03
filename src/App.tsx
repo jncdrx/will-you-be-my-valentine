@@ -7,36 +7,59 @@ import { ImageCarousel } from "./components/ImageCarousel";
 import { ReasonsCard } from "./components/ReasonsCard";
 import { RelationshipTimer } from "./components/RelationshipTimer";
 import { Envelope } from "./components/Envelope";
+import { MouseTrail } from "./components/MouseTrail";
+import { FloatingHearts } from "./components/FloatingHearts";
 
-interface HeartTrail {
-  id: number;
-  x: number;
-  y: number;
-}
+import { HeartBurst } from "./components/HeartBurst";
 
 export default function Page() {
   const [, setNoCount] = useState(0);
   const [step, setStep] = useState<"ask" | "celebrate" | "letter">("ask");
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [trail, setTrail] = useState<HeartTrail[]>([]);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 }); // Kept for 'No' button logic only
   const [noBtnPos, setNoBtnPos] = useState({ x: 0, y: 0 });
   const noBtnRef = useRef<HTMLButtonElement>(null);
 
-  // Handle Mouse Move for Parallax + Trail
+  // Handle Mouse & Touch Move for 'No' button logic + Parallax
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+    const handleMove = (e: MouseEvent | TouchEvent) => {
+      let clientX, clientY;
 
-      // Add heart to trail
-      const newHeart = { id: Date.now(), x: e.clientX, y: e.clientY };
-      setTrail((prev) => [...prev.slice(-15), newHeart]); // Keep last 15 hearts
+      if ('touches' in e) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = (e as MouseEvent).clientX;
+        clientY = (e as MouseEvent).clientY;
+      }
+
+      setMousePos({ x: clientX, y: clientY });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("touchmove", handleMove);
+    // Also track touchstart to update position immediately
+    window.addEventListener("touchstart", handleMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("touchmove", handleMove);
+      window.removeEventListener("touchstart", handleMove);
+    };
   }, []);
 
-  // Smart No Button Logic
+  // Smart No Button Logic (Works for Mouse Distance + Touch Attempt)
+  const moveNoButton = () => {
+    // Reduce movement range on smaller screens to keep button visible
+    const xRange = Math.min(window.innerWidth - 100, 400);
+    const yRange = Math.min(window.innerHeight - 100, 400);
+
+    const newX = (Math.random() - 0.5) * xRange;
+    const newY = (Math.random() - 0.5) * yRange;
+
+    setNoBtnPos({ x: newX, y: newY });
+    setNoCount(prev => prev + 1);
+  };
+
   useEffect(() => {
     if (step === "ask" && noBtnRef.current) {
       const btnRect = noBtnRef.current.getBoundingClientRect();
@@ -49,12 +72,9 @@ export default function Page() {
         Math.pow(mousePos.x - btnCenter.x, 2) + Math.pow(mousePos.y - btnCenter.y, 2)
       );
 
-      if (distance < 100) { // If mouse is within 100px
-        // Move button to random position
-        const newX = (Math.random() - 0.5) * 400; // -200 to 200
-        const newY = (Math.random() - 0.5) * 400; // -200 to 200
-        setNoBtnPos({ x: newX, y: newY });
-        setNoCount(prev => prev + 1);
+      // Mouse proximity check
+      if (distance < 100) {
+        moveNoButton();
       }
     }
   }, [mousePos, step]);
@@ -79,53 +99,16 @@ export default function Page() {
     }, 500);
   };
 
+
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden bg-gradient-to-br from-pink-100 via-red-100 to-purple-200 text-center selection:bg-rose-200 font-sans pb-12">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden text-center selection:bg-rose-200 font-sans pb-12">
+      {/* Vignette Overlay */}
+      <div className="pointer-events-none absolute inset-0 z-0 bg-radial-gradient from-transparent to-pink-200/20 mix-blend-multiply"></div>
 
       <MusicPlayer />
-
-      {/* Mouse Trail */}
-      {trail.map((t) => (
-        <motion.div
-          key={t.id}
-          initial={{ opacity: 1, scale: 1 }}
-          animate={{ opacity: 0, scale: 0, y: -20 }}
-          transition={{ duration: 0.8 }}
-          className="pointer-events-none fixed text-rose-500 z-50 text-xl"
-          style={{ left: t.x, top: t.y }}
-        >
-          ❤️
-        </motion.div>
-      ))}
-
-      {/* Interactive Background Floating Hearts */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: "110vh", x: Math.random() * 100 + "vw" }}
-            animate={{
-              opacity: [0, 0.8, 0],
-              y: "-10vh",
-              x: Math.random() * 100 + "vw",
-              rotate: [0, 180, 360],
-            }}
-            transition={{
-              duration: Math.random() * 15 + 10,
-              repeat: Infinity,
-              delay: Math.random() * 10,
-              ease: "linear",
-            }}
-            style={{
-              translateX: (mousePos.x * 0.02 * (i % 2 === 0 ? 1 : -1)),
-              translateY: (mousePos.y * 0.02 * (i % 2 === 0 ? 1 : -1)),
-            }}
-            className="absolute text-5xl text-rose-300/30 blur-[2px]"
-          >
-            ❤
-          </motion.div>
-        ))}
-      </div>
+      <MouseTrail />
+      <FloatingHearts />
+      <HeartBurst />
 
       <AnimatePresence mode="wait">
         {step === "ask" && (
@@ -188,7 +171,7 @@ export default function Page() {
             <RelationshipTimer />
 
             <h1 className="my-8 text-5xl font-extrabold text-rose-600 md:text-7xl font-display">
-              WOOOOOO!!! <br /> Happy Monthsarry!
+              WOOOOOO!!! <br /> Happy Monthsary!
             </h1>
 
             <ReasonsCard />
@@ -212,26 +195,9 @@ export default function Page() {
 }
 
 function LetterView({ onBack }: { onBack: () => void }) {
-  // Same letter view code, keeping it for the opened state
   const text = `Happy Monthsary, my love! \n\nEvery moment with you has been a blessing. From the laughter to the quiet moments, you’ve made my life so much brighter. I wanted to create this little digital corner just for you—to ask you to be my Valentine and to celebrate us.\n\nAngelica Amistad Ogana, you are the most beautiful person, inside and out. Thank you for being you, and for being mine.\nI love you more than words, code, or confetti can say.\n\nAlways yours,\nYour Baby`;
 
-  const [displayedText, setDisplayedText] = useState("");
-  const [isTyping, setIsTyping] = useState(true);
-
-  useEffect(() => {
-    let i = 0;
-    const timer = setInterval(() => {
-      if (i < text.length) {
-        setDisplayedText((prev) => prev + text.charAt(i));
-        i++;
-      } else {
-        setIsTyping(false);
-        clearInterval(timer);
-      }
-    }, 50);
-
-    return () => clearInterval(timer);
-  }, []);
+  const [displayedText] = useState(text);
 
   return (
     <motion.div
@@ -239,31 +205,34 @@ function LetterView({ onBack }: { onBack: () => void }) {
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.5 }}
-      className="z-20 m-4 max-w-2xl w-full rounded-2xl bg-[#fffcf5] p-8 shadow-2xl backdrop-blur-sm border-2 border-rose-200 relative overflow-hidden"
+      className="z-20 m-2 md:m-4 max-w-2xl w-full rounded-2xl bg-[#fffcf5] p-6 md:p-8 shadow-2xl backdrop-blur-sm border-2 border-rose-200 relative overflow-hidden"
     >
       {/* Paper texture overlay */}
       <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
 
-      <h2 className="mb-6 text-4xl font-bold text-rose-600 font-display relative z-10">My Dearest Angelica,</h2>
-      <div className="space-y-4 text-left text-lg text-gray-800 leading-relaxed font-medium min-h-[300px] whitespace-pre-wrap font-serif relative z-10">
+      <h2 className="mb-4 md:mb-6 text-2xl md:text-4xl font-bold text-rose-600 font-display relative z-10">My Dearest Angelica,</h2>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2, delay: 0.5 }}
+        className="space-y-4 text-left text-base md:text-lg text-gray-800 leading-relaxed font-medium min-h-[300px] whitespace-pre-wrap font-serif relative z-10"
+      >
         {displayedText}
-        {isTyping && <span className="animate-pulse text-rose-500">|</span>}
-      </div>
+      </motion.div>
 
-      {!isTyping && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex justify-end mt-8 relative z-10"
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 3 }}
+        className="flex justify-end mt-8 relative z-10"
+      >
+        <button
+          onClick={onBack}
+          className="rounded-full bg-rose-500 px-6 py-2 font-bold text-white hover:bg-rose-600 transition-colors shadow-md text-sm md:text-base"
         >
-          <button
-            onClick={onBack}
-            className="rounded-full bg-rose-500 px-6 py-2 font-bold text-white hover:bg-rose-600 transition-colors shadow-md"
-          >
-            Close Letter
-          </button>
-        </motion.div>
-      )}
+          Close Letter
+        </button>
+      </motion.div>
     </motion.div>
   );
 }

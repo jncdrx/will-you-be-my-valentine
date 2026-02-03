@@ -17,8 +17,8 @@ export function Envelope({ onOpen, onClose }: { onOpen?: () => void; onClose?: (
     };
 
     return (
-        <div className="envelope-wrapper flex flex-col items-center justify-center py-12" onClick={handleOpen}>
-            <div className={`relative w-64 h-48 bg-rose-300 cursor-pointer shadow-xl transition-transform duration-500 hover:scale-105 envelope ${isOpen ? 'open' : ''}`}>
+        <div className="envelope-wrapper flex flex-col items-center justify-center py-12 w-full px-4" onClick={handleOpen}>
+            <div className={`relative w-[min(90vw,16rem)] h-[min(67.5vw,12rem)] bg-rose-300 cursor-pointer shadow-xl transition-transform duration-500 hover:scale-105 active:scale-95 envelope ${isOpen ? 'open' : ''}`}>
 
                 {/* Envelope Flap */}
                 <div className="absolute top-0 left-0 w-full h-0 border-l-[128px] border-l-transparent border-r-[128px] border-r-transparent border-t-[80px] border-t-rose-400 origin-top flap z-30"></div>
