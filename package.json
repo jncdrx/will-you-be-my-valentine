@@ -9,8 +9,11 @@
     "build": "tsc && vite build",
     "deploy": "vite build && gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "vite --open",
+    "clean": "rimraf node_modules/.vite dist"
   },
+  "packageManager": "pnpm@9.15.0",
   "dependencies": {
     "canvas-confetti": "^1.9.4",
     "framer-motion": "^12.30.0",

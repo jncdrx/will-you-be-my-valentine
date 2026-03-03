@@ -1,87 +1,73 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { MusicPlayer } from "./components/MusicPlayer";
 import { ImageCarousel } from "./components/ImageCarousel";
 import { ReasonsCard } from "./components/ReasonsCard";
 import { RelationshipTimer } from "./components/RelationshipTimer";
-import { Envelope } from "./components/Envelope";
 import { MouseTrail } from "./components/MouseTrail";
 import { FloatingHearts } from "./components/FloatingHearts";
 
 import { HeartBurst } from "./components/HeartBurst";
+import { Itinerary } from "./components/Itinerary";
+import { InvitationMessage } from "./components/InvitationMessage";
+import { BirthdayLetter } from "./components/BirthdayLetter";
+
+type JourneyStep = "opening" | "letter" | "monthsary";
+
+const journeySteps: { key: JourneyStep; label: string }[] = [
+  { key: "opening", label: "Open" },
+  { key: "letter", label: "Letter" },
+  { key: "monthsary", label: "2nd Monthsary" },
+];
+
+const MONTHSARY_DATE = "2026-03-04";
+const BIRTHDAY_DATE = "2026-03-07";
+
+const toLocalDate = (value: string) => {
+  const [year, month, day] = value.split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const startOfDay = (value: Date) => new Date(value.getFullYear(), value.getMonth(), value.getDate());
+
+const formatDate = (value: Date, withWeekday = false) =>
+  new Intl.DateTimeFormat("en-US", {
+    weekday: withWeekday ? "long" : undefined,
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(value);
+
+const getRelativeLabel = (targetDate: Date) => {
+  const today = startOfDay(new Date());
+  const target = startOfDay(targetDate);
+  const diffDays = Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Tomorrow";
+  if (diffDays > 1 && diffDays <= 7) {
+    return `This ${new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(targetDate)}`;
+  }
+  if (diffDays > 7) return "Upcoming";
+  if (diffDays === -1) return "Yesterday";
+  return "Celebrated";
+};
 
 export default function Page() {
-  const [, setNoCount] = useState(0);
-  const [step, setStep] = useState<"ask" | "celebrate" | "letter">("ask");
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 }); // Kept for 'No' button logic only
-  const [noBtnPos, setNoBtnPos] = useState({ x: 0, y: 0 });
-  const noBtnRef = useRef<HTMLButtonElement>(null);
+  const [step, setStep] = useState<JourneyStep>("opening");
+  const [birthdayLetterTrigger, setBirthdayLetterTrigger] = useState(0);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const currentStepIndex = journeySteps.findIndex((item) => item.key === step);
+  const monthsaryDate = toLocalDate(MONTHSARY_DATE);
+  const birthdayDate = toLocalDate(BIRTHDAY_DATE);
+  const monthsaryDateText = formatDate(monthsaryDate);
+  const birthdayDateText = formatDate(birthdayDate, true);
+  const monthsaryRelative = getRelativeLabel(monthsaryDate);
+  const birthdayRelative = getRelativeLabel(birthdayDate);
 
-  // Handle Mouse & Touch Move for 'No' button logic + Parallax
-  useEffect(() => {
-    const handleMove = (e: MouseEvent | TouchEvent) => {
-      let clientX, clientY;
-
-      if ('touches' in e) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      } else {
-        clientX = (e as MouseEvent).clientX;
-        clientY = (e as MouseEvent).clientY;
-      }
-
-      setMousePos({ x: clientX, y: clientY });
-    };
-
-    window.addEventListener("mousemove", handleMove);
-    window.addEventListener("touchmove", handleMove);
-    // Also track touchstart to update position immediately
-    window.addEventListener("touchstart", handleMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMove);
-      window.removeEventListener("touchmove", handleMove);
-      window.removeEventListener("touchstart", handleMove);
-    };
-  }, []);
-
-  // Smart No Button Logic (Works for Mouse Distance + Touch Attempt)
-  const moveNoButton = () => {
-    // Reduce movement range on smaller screens to keep button visible
-    const xRange = Math.min(window.innerWidth - 100, 400);
-    const yRange = Math.min(window.innerHeight - 100, 400);
-
-    const newX = (Math.random() - 0.5) * xRange;
-    const newY = (Math.random() - 0.5) * yRange;
-
-    setNoBtnPos({ x: newX, y: newY });
-    setNoCount(prev => prev + 1);
-  };
-
-  useEffect(() => {
-    if (step === "ask" && noBtnRef.current) {
-      const btnRect = noBtnRef.current.getBoundingClientRect();
-      const btnCenter = {
-        x: btnRect.left + btnRect.width / 2,
-        y: btnRect.top + btnRect.height / 2
-      };
-
-      const distance = Math.sqrt(
-        Math.pow(mousePos.x - btnCenter.x, 2) + Math.pow(mousePos.y - btnCenter.y, 2)
-      );
-
-      // Mouse proximity check
-      if (distance < 100) {
-        moveNoButton();
-      }
-    }
-  }, [mousePos, step]);
-
-
-  const handleYesClick = () => {
-    setStep("celebrate");
+  const celebrate = () => {
     confetti({
       particleCount: 150,
       spread: 60,
@@ -99,6 +85,47 @@ export default function Page() {
     }, 500);
   };
 
+  const openMemories = () => {
+    setStep("letter");
+    celebrate();
+  };
+
+  const openMonthsary = () => {
+    setStep("monthsary");
+    celebrate();
+  };
+
+  const scrollToBirthdayLetter = () => {
+    const target = document.getElementById("birthday-letter");
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const jumpToBirthdayLetter = () => {
+    setBirthdayLetterTrigger((prev) => prev + 1);
+
+    if (step !== "monthsary") {
+      setStep("monthsary");
+      setTimeout(scrollToBirthdayLetter, 350);
+      return;
+    }
+
+    scrollToBirthdayLetter();
+  };
+
+  const scrollToSection = (id: string) => {
+    const target = document.getElementById(id);
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden text-center selection:bg-rose-200 font-sans pb-12">
@@ -110,10 +137,50 @@ export default function Page() {
       <FloatingHearts />
       <HeartBurst />
 
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="z-20 mt-4 w-full max-w-md px-4"
+      >
+        <div className="rounded-2xl bg-white/70 px-4 py-3 shadow-lg backdrop-blur-md border border-white/60">
+          <p className="text-xs font-semibold uppercase tracking-wider text-rose-500">
+            Our Journey • Step {currentStepIndex + 1} of {journeySteps.length}
+          </p>
+          <div className="mt-2 flex justify-center">
+            <button
+              onClick={jumpToBirthdayLetter}
+              className="rounded-full bg-fuchsia-100 px-3 py-1 text-[11px] font-semibold text-fuchsia-600 border border-fuchsia-200 hover:bg-fuchsia-200 transition-colors"
+            >
+              🎂 Birthday: {birthdayRelative} ({birthdayDateText})
+            </button>
+          </div>
+          <div className="mt-2 flex items-center gap-2">
+            {journeySteps.map((item, index) => {
+              const isDone = index <= currentStepIndex;
+
+              return (
+                <div key={item.key} className="flex flex-1 items-center gap-2">
+                  <div className="flex w-full flex-col items-center gap-1">
+                    <div
+                      className={`h-2 w-full rounded-full transition-colors ${
+                        isDone ? "bg-rose-500" : "bg-rose-200"
+                      }`}
+                    />
+                    <span className={`text-[10px] font-medium ${isDone ? "text-rose-600" : "text-gray-400"}`}>
+                      {item.label}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
+
       <AnimatePresence mode="wait">
-        {step === "ask" && (
+        {step === "opening" && (
           <motion.div
-            key="ask"
+            key="opening"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8, rotate: -10 }}
@@ -128,36 +195,38 @@ export default function Page() {
               transition={{ repeat: Infinity, repeatType: "mirror", duration: 1.5 }}
             />
             <h1 className="my-8 text-4xl font-bold text-rose-600 drop-shadow-sm md:text-7xl font-display">
-              Will you be my Valentine, <br />
-              <span className="text-purple-600 block mt-4 text-3xl md:text-6xl">Angelica Amistad Ogana?</span>
+              Open Our Memories 💌 <br />
+              <span className="text-purple-600 block mt-4 text-2xl md:text-5xl">Our Valentine Story + 2nd Monthsary</span>
             </h1>
-            <div className="flex flex-wrap items-center justify-center gap-4 w-full relative h-20">
+            <p className="mb-8 text-lg text-rose-700 max-w-md">
+              Valentine's may be done, but our love story keeps getting sweeter every month. Ready to open our memories?
+            </p>
+            <p className="mb-6 text-sm text-rose-500 max-w-md font-semibold">
+              {monthsaryRelative}: {monthsaryDateText} • 2nd Monthsary milestone 💕
+            </p>
+            <p className="mb-6 text-sm text-fuchsia-500 max-w-md font-semibold">
+              Birthday celebration: {birthdayRelative} ({birthdayDateText}) 🎂
+            </p>
+            <div className="flex items-center justify-center w-full">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 className="rounded-full bg-rose-500 px-8 py-4 font-bold text-white shadow-lg transition-colors hover:bg-rose-600 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-rose-300 z-20"
-                onClick={handleYesClick}
+                onClick={openMemories}
               >
-                Yes
-              </motion.button>
-
-              <motion.button
-                ref={noBtnRef}
-                animate={{ x: noBtnPos.x, y: noBtnPos.y }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="rounded-full bg-gray-400 px-8 py-4 font-bold text-white shadow-lg transition-colors hover:bg-gray-500 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-gray-300 absolute"
-              >
-                No
+                Open Our Memories ✨
               </motion.button>
             </div>
           </motion.div>
         )}
 
-        {step === "celebrate" && (
+        {step === "letter" && (
+          <LetterView onBack={() => setStep("opening")} onNext={openMonthsary} monthsaryDate={monthsaryDateText} monthsaryRelative={monthsaryRelative} />
+        )}
+
+        {step === "monthsary" && (
           <motion.div
-            key="celebrate"
+            key="monthsary"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
@@ -171,31 +240,103 @@ export default function Page() {
             <RelationshipTimer />
 
             <h1 className="my-8 text-5xl font-extrabold text-rose-600 md:text-7xl font-display">
-              WOOOOOO!!! <br /> Happy Monthsary!
+              Happy 2nd Monthsary! 💕
             </h1>
 
-            <ReasonsCard />
-            <ImageCarousel />
-
-            <p className="mb-4 text-2xl font-semibold text-gray-700">
-              I love you so much baby! ;))
+            <p className="mb-4 text-xl md:text-2xl font-semibold text-gray-700 max-w-2xl">
+              This page is for us — our little memory lane and our new chapter together.
+            </p>
+            <p className="mb-5 text-sm text-rose-500 font-semibold">
+              2nd Monthsary: {monthsaryRelative} ({monthsaryDateText}) 💞 • Birthday: {birthdayRelative} ({birthdayDateText}) 🎂
             </p>
 
-            {/* Envelope Trigger */}
-            <Envelope onOpen={() => setStep("letter")} />
+            <div className="mb-5 flex w-full max-w-3xl flex-wrap items-center justify-center gap-2 rounded-2xl border border-rose-100 bg-white/60 p-3 shadow-sm backdrop-blur-sm">
+              <button
+                onClick={() => scrollToSection("reasons-section")}
+                className="rounded-full border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-100"
+              >
+                💗 Reasons
+              </button>
+              <button
+                onClick={() => scrollToSection("memories-section")}
+                className="rounded-full border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-100"
+              >
+                📸 Memories
+              </button>
+              <button
+                onClick={() => scrollToSection("itinerary-section")}
+                className="rounded-full border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-100"
+              >
+                🗓️ Itinerary
+              </button>
+              <button
+                onClick={() => scrollToSection("invitation-section")}
+                className="rounded-full border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-100"
+              >
+                💌 Invitation
+              </button>
+              <button
+                onClick={jumpToBirthdayLetter}
+                className="rounded-full border border-fuchsia-200 bg-fuchsia-50 px-3 py-1.5 text-xs font-semibold text-fuchsia-600 hover:bg-fuchsia-100"
+              >
+                🎂 Birthday Letter
+              </button>
+            </div>
+
+            <div id="reasons-section" className="flex w-full justify-center">
+              <ReasonsCard />
+            </div>
+            <div id="memories-section" className="flex w-full justify-center">
+              <ImageCarousel />
+            </div>
+            <div id="itinerary-section" className="flex w-full justify-center">
+              <Itinerary />
+            </div>
+            <div id="invitation-section" className="flex w-full justify-center">
+              <InvitationMessage
+                birthdayDate={birthdayDateText}
+                birthdayRelative={birthdayRelative}
+                monthsaryDate={monthsaryDateText}
+                monthsaryRelative={monthsaryRelative}
+              />
+            </div>
+            <BirthdayLetter
+              birthdayDate={birthdayDateText}
+              birthdayRelative={birthdayRelative}
+              openTrigger={birthdayLetterTrigger}
+            />
+
+            <p className="mb-4 text-2xl font-semibold text-gray-700">
+              I love you so much, baby! 💗
+            </p>
+
+            <button
+              onClick={() => setStep("letter")}
+              className="rounded-full bg-purple-500 px-6 py-3 font-bold text-white hover:bg-purple-600 transition-colors shadow-md text-sm md:text-base"
+            >
+              Read Our Letter Again 💌
+            </button>
           </motion.div>
         )}
-
-        {step === "letter" && (
-          <LetterView onBack={() => setStep("celebrate")} />
-        )}
       </AnimatePresence>
+
+      {showBackToTop && step === "monthsary" && (
+        <motion.button
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 12 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-20 left-4 z-40 rounded-full border border-rose-200 bg-white/85 px-4 py-2 text-sm font-semibold text-rose-600 shadow-lg backdrop-blur-md hover:bg-white"
+        >
+          ↑ Top
+        </motion.button>
+      )}
     </div>
   );
 }
 
-function LetterView({ onBack }: { onBack: () => void }) {
-  const text = `Happy Monthsary, my love! \n\nEvery moment with you has been a blessing. From the laughter to the quiet moments, you’ve made my life so much brighter. I wanted to create this little digital corner just for you—to ask you to be my Valentine and to celebrate us.\n\nAngelica Amistad Ogana, you are the most beautiful person, inside and out. Thank you for being you, and for being mine.\nI love you more than words, code, or confetti can say.\n\nAlways yours,\nYour Baby`;
+function LetterView({ onBack, onNext, monthsaryDate, monthsaryRelative }: { onBack: () => void; onNext: () => void; monthsaryDate: string; monthsaryRelative: string }) {
+  const text = `My love, happy Valentine's and happy monthsary.\n\nEven after Valentine's Day, my heart still chooses you every single day. Thank you for every smile, every laugh, and every quiet moment we share.\n\nFor our 2nd monthsary ${monthsaryRelative.toLowerCase()}, ${monthsaryDate}, I made this little space to keep our memories and remind you how deeply loved you are.\n\nAngelica Amistad Ogana, you are my favorite person and my safe place. I love you more than words, code, or confetti can say.\n\nAlways yours,\nYour Baby 💕`;
 
   const [displayedText] = useState(text);
 
@@ -224,13 +365,19 @@ function LetterView({ onBack }: { onBack: () => void }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3 }}
-        className="flex justify-end mt-8 relative z-10"
+        className="flex items-center justify-between mt-8 relative z-10 gap-3"
       >
         <button
           onClick={onBack}
+          className="rounded-full bg-gray-500 px-6 py-2 font-bold text-white hover:bg-gray-600 transition-colors shadow-md text-sm md:text-base"
+        >
+          Back
+        </button>
+        <button
+          onClick={onNext}
           className="rounded-full bg-rose-500 px-6 py-2 font-bold text-white hover:bg-rose-600 transition-colors shadow-md text-sm md:text-base"
         >
-          Close Letter
+          Go to Our 2nd Monthsary ✨
         </button>
       </motion.div>
     </motion.div>
