@@ -76,20 +76,20 @@ const thirdMemories: MemoryItem[] = [
 
 const fourthMemories: MemoryItem[] = [
     {
-        src: withBase("images/fourth_memories/couple_sleeping.png"),
-        caption: "Leaning on you is my absolute favorite comfort 💖"
+        src: withBase("images/fourth_memories/couple_selfie.jpg"),
+        caption: "Pressed close, warm smiles, and pure happiness together 🥰💞"
     },
     {
-        src: withBase("images/fourth_memories/bunny.png"),
-        caption: "Another cute bunny to join our sweet adventure 🐰✨"
+        src: withBase("images/fourth_memories/japanese_food.jpg"),
+        caption: "Delicious Japanese food dates with you 🍱😋"
     },
     {
-        src: withBase("images/fourth_memories/city_view.png"),
-        caption: "Looking at the beautiful city lights, but my eyes are only on you 🌃✨"
+        src: withBase("images/fourth_memories/oishidon_sign.jpg"),
+        caption: "Oishidon Japanese Restaurant, another lovely memory captured 🍣✨"
     },
     {
-        src: withBase("images/fourth_memories/sunset_walk.png"),
-        caption: "Walking hand in hand into our bright, sweet future 🌅💞"
+        src: withBase("images/fourth_memories/arternative_shop.jpg"),
+        caption: "Exploring art supply stores and creative dates together 🎨✏️"
     }
 ];
 
