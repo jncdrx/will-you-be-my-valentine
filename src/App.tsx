@@ -26,7 +26,7 @@ const journeySteps: { key: JourneyStep; label: string }[] = [
 const MONTHSARY_2_DATE = "2026-03-04";
 const MONTHSARY_3_DATE = "2026-04-04";
 const MONTHSARY_4_DATE = "2026-05-04";
-const MONTHSARY_5_DATE = "2026-06-04";
+const MONTHSARY_6_DATE = "2026-07-04";
 const BIRTHDAY_DATE = "2026-03-07";
 
 const toLocalDate = (value: string) => {
@@ -63,25 +63,25 @@ export default function Page() {
   const [step, setStep] = useState<JourneyStep>("monthsary");
   const [birthdayLetterTrigger, setBirthdayLetterTrigger] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [activeMonthsary, setActiveMonthsary] = useState<2 | 3 | 4 | 5>(5);
+  const [activeMonthsary, setActiveMonthsary] = useState<2 | 3 | 4 | 6>(6);
   const currentStepIndex = journeySteps.findIndex((item) => item.key === step);
   
   const monthsary2Date = toLocalDate(MONTHSARY_2_DATE);
   const monthsary3Date = toLocalDate(MONTHSARY_3_DATE);
   const monthsary4Date = toLocalDate(MONTHSARY_4_DATE);
-  const monthsary5Date = toLocalDate(MONTHSARY_5_DATE);
+  const monthsary6Date = toLocalDate(MONTHSARY_6_DATE);
   const birthdayDate = toLocalDate(BIRTHDAY_DATE);
   
   const monthsary2DateText = formatDate(monthsary2Date);
   const monthsary3DateText = formatDate(monthsary3Date);
   const monthsary4DateText = formatDate(monthsary4Date);
-  const monthsary5DateText = formatDate(monthsary5Date);
+  const monthsary6DateText = formatDate(monthsary6Date);
   const birthdayDateText = formatDate(birthdayDate, true);
   
   const monthsary2Relative = getRelativeLabel(monthsary2Date);
   const monthsary3Relative = getRelativeLabel(monthsary3Date);
   const monthsary4Relative = getRelativeLabel(monthsary4Date);
-  const monthsary5Relative = getRelativeLabel(monthsary5Date);
+  const monthsary6Relative = getRelativeLabel(monthsary6Date);
   const birthdayRelative = getRelativeLabel(birthdayDate);
 
   const celebrate = () => {
@@ -259,11 +259,11 @@ export default function Page() {
 
             {/* Monthsary Milestone Timeline Selector */}
             <div className="mb-6 mt-4 flex items-center justify-center gap-1.5 bg-white/60 p-2 rounded-2xl border border-rose-100 shadow-md max-w-xl w-full backdrop-blur-sm">
-              {[2, 3, 4, 5].map((m) => (
+              {[2, 3, 4, 6].map((m) => (
                 <button
                   key={m}
                   onClick={() => {
-                    setActiveMonthsary(m as 2 | 3 | 4 | 5);
+                    setActiveMonthsary(m as 2 | 3 | 4 | 6);
                     celebrate();
                   }}
                   className={`flex-1 py-2 text-[10px] md:text-xs font-bold rounded-xl transition-all duration-300 ${
@@ -272,7 +272,7 @@ export default function Page() {
                       : "text-rose-600 hover:bg-rose-100/50"
                   }`}
                 >
-                  {m === 2 ? "2nd" : m === 3 ? "3rd" : m === 4 ? "4th" : m === 5 ? "5th" : ""} Monthsary
+                  {m === 2 ? "2nd" : m === 3 ? "3rd" : m === 4 ? "4th" : m === 6 ? "6th" : ""} Monthsary
                 </button>
               ))}
             </div>
@@ -465,17 +465,17 @@ export default function Page() {
               </>
             )}
 
-            {activeMonthsary === 5 && (
+            {activeMonthsary === 6 && (
               <>
                 <h1 className="my-8 text-5xl font-extrabold text-rose-600 md:text-7xl font-display">
-                  Happy 5th Monthsary! 💕
+                  Happy 6th Monthsary! 💕
                 </h1>
 
                 <p className="mb-4 text-xl md:text-2xl font-semibold text-gray-700 max-w-2xl">
-                  Five months of love, laughter, and building our beautiful future together.
+                  Six months of love, laughter, and building our beautiful future together.
                 </p>
                 <p className="mb-5 text-sm text-rose-500 font-semibold">
-                  5th Monthsary: {monthsary5Relative} ({monthsary5DateText}) 💞
+                  6th Monthsary: {monthsary6Relative} ({monthsary6DateText}) 💞
                 </p>
 
                 <div className="mb-5 flex w-full max-w-3xl flex-wrap items-center justify-center gap-2 rounded-2xl border border-rose-100 bg-white/60 p-3 shadow-sm backdrop-blur-sm">
@@ -492,7 +492,7 @@ export default function Page() {
                     📸 Memories Promise
                   </button>
                   <button
-                    onClick={() => scrollToSection("letter-section-5")}
+                    onClick={() => scrollToSection("letter-section-6")}
                     className="rounded-full border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-100"
                   >
                     💌 Monthsary Note
@@ -541,15 +541,15 @@ export default function Page() {
                   </div>
                 </div>
 
-                <div id="letter-section-5" className="my-6 w-full max-w-2xl px-4 text-center">
+                <div id="letter-section-6" className="my-6 w-full max-w-2xl px-4 text-center">
                   <div className="rounded-2xl bg-[#fffcf5] p-6 md:p-8 shadow-2xl border-2 border-rose-200 relative overflow-hidden">
                     <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none" />
-                    <h3 className="text-xl font-bold font-display text-rose-600 mb-4">💌 Our 5th Monthsary Note</h3>
+                    <h3 className="text-xl font-bold font-display text-rose-600 mb-4">💌 Our 6th Monthsary Note</h3>
                     <div className="rounded-xl bg-white/70 p-5 border border-rose-100 shadow-inner">
                       <p className="text-sm md:text-base text-gray-700 leading-relaxed font-serif text-center whitespace-pre-line">
-                        {`Happy 5th Monthsary, my darling Angelica! 💖
+                        {`Happy 6th Monthsary, my darling Angelica! 💖
 
-                        Five months of loving you, and my heart still beats for you just as strongly as the very first day. Thank you for your endless patience, your beautiful smiles, and the pure joy you bring to my life.
+                        Six months of loving you, and my heart still beats for you just as strongly as the very first day. Thank you for your endless patience, your beautiful smiles, and the pure joy you bring to my life.
 
                         Distance or busy days cannot lessen how much you mean to me. I cannot wait until we meet again to create new, sweet memories and capture them all. You are my safe place, always. I love you so much! 🌸💞`}
                       </p>
