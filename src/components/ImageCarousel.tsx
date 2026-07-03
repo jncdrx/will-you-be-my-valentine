@@ -55,6 +55,44 @@ const secondMemories: MemoryItem[] = [
     }
 ];
 
+const thirdMemories: MemoryItem[] = [
+    {
+        src: withBase("images/third_memories/couple_watercolor.png"),
+        caption: "Our love story in color, sweet and beautiful 🎨💖"
+    },
+    {
+        src: withBase("images/third_memories/starlit_walk.png"),
+        caption: "Under the stars, holding the one who lights up my world 🌌💞"
+    },
+    {
+        src: withBase("images/third_memories/cherry_blossom.png"),
+        caption: "Caught in a shower of pink blossoms and pure happiness 🌸✨"
+    },
+    {
+        src: withBase("images/third_memories/milkshake_share.png"),
+        caption: "Sharing sweet sips and even sweeter moments together 🥤💕"
+    }
+];
+
+const fourthMemories: MemoryItem[] = [
+    {
+        src: withBase("images/fourth_memories/couple_sleeping.png"),
+        caption: "Leaning on you is my absolute favorite comfort 💖"
+    },
+    {
+        src: withBase("images/fourth_memories/bunny.png"),
+        caption: "Another cute bunny to join our sweet adventure 🐰✨"
+    },
+    {
+        src: withBase("images/fourth_memories/city_view.png"),
+        caption: "Looking at the beautiful city lights, but my eyes are only on you 🌃✨"
+    },
+    {
+        src: withBase("images/fourth_memories/sunset_walk.png"),
+        caption: "Walking hand in hand into our bright, sweet future 🌅💞"
+    }
+];
+
 function SwipeSection({
     chapter,
     memories,
@@ -64,6 +102,35 @@ function SwipeSection({
 }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [activeMemory, setActiveMemory] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const startX = useRef(0);
+    const scrollLeft = useRef(0);
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        const container = containerRef.current;
+        if (!container) return;
+        setIsDragging(true);
+        startX.current = e.pageX - container.offsetLeft;
+        scrollLeft.current = container.scrollLeft;
+    };
+
+    const handleMouseLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const container = containerRef.current;
+        if (!container) return;
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX.current) * 1.1; // scroll speed multiplier
+        container.scrollLeft = scrollLeft.current - walk;
+    };
 
     const scrollToIndex = (index: number) => {
         const container = containerRef.current;
@@ -112,12 +179,16 @@ function SwipeSection({
     };
 
     return (
-        <div className="mb-8 w-full">
+        <div className="mb-8 w-full select-none">
             <div
                 ref={containerRef}
                 onScroll={handleScroll}
-                className="flex gap-4 overflow-x-auto pb-8 px-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-rose-300 scrollbar-track-transparent"
-                style={{ scrollBehavior: "smooth" }}
+                onMouseDown={handleMouseDown}
+                onMouseLeave={handleMouseLeave}
+                onMouseUp={handleMouseUp}
+                onMouseMove={handleMouseMove}
+                className={`flex gap-4 overflow-x-auto pb-8 px-4 scrollbar-thin scrollbar-thumb-rose-300 scrollbar-track-transparent ${isDragging ? "" : "snap-x snap-mandatory"}`}
+                style={{ cursor: isDragging ? "grabbing" : "grab" }}
             >
                 {memories.map((memory, index) => (
                     <motion.div
@@ -128,8 +199,8 @@ function SwipeSection({
                         viewport={{ once: false, amount: 0.55 }}
                         transition={{ duration: 0.5 }}
                     >
-                        <div className="h-64 w-[170px] md:w-48 overflow-hidden rounded-xl shadow-lg border-4 border-white/50 rotate-1 odd:-rotate-1 hover:rotate-0 transition-transform duration-300">
-                            <img src={memory.src} alt={`${chapter} memory ${index + 1}`} className="h-full w-full object-cover" />
+                        <div className="h-64 w-[170px] md:w-48 overflow-hidden rounded-xl shadow-lg border-4 border-white/50 rotate-1 odd:-rotate-1 hover:rotate-0 transition-transform duration-300 pointer-events-none">
+                            <img src={memory.src} alt={`${chapter} memory ${index + 1}`} className="h-full w-full object-cover" draggable="false" />
                         </div>
                         <motion.p
                             initial={{ opacity: 0, y: 8, filter: "blur(2px)" }}
@@ -181,20 +252,42 @@ function SwipeSection({
     );
 }
 
-export function ImageCarousel() {
+export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number }) {
     return (
         <div className="my-8 w-full max-w-3xl mx-auto">
             <h3 className="mb-4 text-center text-3xl text-rose-600 font-bold font-display">Our Memories</h3>
 
-            <div className="mb-2 text-center">
-                <p className="text-xs uppercase tracking-[0.2em] text-rose-400 font-semibold">Chapter 1</p>
-            </div>
-            <SwipeSection chapter="Chapter 1" memories={firstMemories} />
+            {activeChapter === 2 && (
+                <>
+                    <div className="mb-2 text-center">
+                        <p className="text-xs uppercase tracking-[0.2em] text-rose-400 font-semibold">Chapter 1: Our Beginning</p>
+                    </div>
+                    <SwipeSection chapter="Chapter 1" memories={firstMemories} />
 
-            <div className="mb-2 text-center">
-                <p className="text-xs uppercase tracking-[0.2em] text-rose-400 font-semibold">Chapter 2</p>
-            </div>
-            <SwipeSection chapter="Chapter 2" memories={secondMemories} />
+                    <div className="mb-2 text-center mt-6">
+                        <p className="text-xs uppercase tracking-[0.2em] text-rose-400 font-semibold">Chapter 2: 2nd Monthsary</p>
+                    </div>
+                    <SwipeSection chapter="Chapter 2" memories={secondMemories} />
+                </>
+            )}
+
+            {activeChapter === 3 && (
+                <>
+                    <div className="mb-2 text-center">
+                        <p className="text-xs uppercase tracking-[0.2em] text-rose-400 font-semibold">Chapter 3: 3rd Monthsary</p>
+                    </div>
+                    <SwipeSection chapter="Chapter 3" memories={thirdMemories} />
+                </>
+            )}
+
+            {activeChapter === 4 && (
+                <>
+                    <div className="mb-2 text-center">
+                        <p className="text-xs uppercase tracking-[0.2em] text-rose-400 font-semibold">Chapter 4: 4th Monthsary</p>
+                    </div>
+                    <SwipeSection chapter="Chapter 4" memories={fourthMemories} />
+                </>
+            )}
             <p className="text-center text-sm text-gray-500 italic mt-2 animate-pulse">Swipe to see more...</p>
         </div>
     );
