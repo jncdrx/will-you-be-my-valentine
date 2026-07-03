@@ -93,6 +93,25 @@ const fourthMemories: MemoryItem[] = [
     }
 ];
 
+const fifthMemories: MemoryItem[] = [
+    {
+        src: withBase("images/fifth_memories/mountain.jpg"),
+        caption: "Beautiful mountains and skies, but nothing is as beautiful as us ⛰️☁️"
+    },
+    {
+        src: withBase("images/fifth_memories/coffee_time.jpg"),
+        caption: "Candid coffee dates and your cute smiles ☕🥰"
+    },
+    {
+        src: withBase("images/fifth_memories/mirror_selfie.jpg"),
+        caption: "Rooted in love, rooted in legacy — forever with you mirror selfie 🤳💞"
+    },
+    {
+        src: withBase("images/fifth_memories/cafe_sign.jpg"),
+        caption: "Café 10/23, finding cute new spots to love with you ☕✨"
+    }
+];
+
 function SwipeSection({
     chapter,
     memories,
@@ -286,6 +305,15 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
                         <p className="text-xs uppercase tracking-[0.2em] text-rose-400 font-semibold">Chapter 4: 4th Monthsary</p>
                     </div>
                     <SwipeSection chapter="Chapter 4" memories={fourthMemories} />
+                </>
+            )}
+
+            {activeChapter === 5 && (
+                <>
+                    <div className="mb-2 text-center">
+                        <p className="text-xs uppercase tracking-[0.2em] text-rose-400 font-semibold">Chapter 5: 5th Monthsary</p>
+                    </div>
+                    <SwipeSection chapter="Chapter 5" memories={fifthMemories} />
                 </>
             )}
             <p className="text-center text-sm text-gray-500 italic mt-2 animate-pulse">Swipe to see more...</p>
