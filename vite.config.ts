@@ -3,7 +3,8 @@ import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/will-you-be-my-valentine",
+  // Use root '/' for Vercel / custom domain deployment, or VITE_BASE_PATH env if specified
+  base: process.env.VITE_BASE_PATH || "/",
   plugins: [
     react({
       // Use SWC-style fast refresh for faster HMR
