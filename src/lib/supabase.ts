@@ -1,8 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Environment variables loaded via Vite from .env / .env.local (or GitHub Secrets)
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
+// Environment variables loaded via Vite from .env / Vercel (with project fallbacks)
+const supabaseUrl =
+  import.meta.env.VITE_SUPABASE_URL || "https://wikmowwwixnpluqokyay.supabase.co";
+const supabaseAnonKey =
+  import.meta.env.VITE_SUPABASE_ANON_KEY || "sb_publishable_iRbH1ETQvQkyQWDwMkqlnQ_c8ALhm31";
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
