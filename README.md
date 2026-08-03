@@ -1,69 +1,88 @@
-# Valentine Page Creator
+# Happy 7th Monthsary Surprise Website for Angel 💕
 
-A lightweight web application to create personalized Valentine-themed pages using pre-designed templates. The platform allows users to customize text, images, and layouts and deploy a shareable page within minutes.
+A romantic, interactive step-by-step surprise website built for **Angel** to celebrate our **7th Monthsary**.
 
-Live Demo: https://yashasvi-shukla-me.github.io/will-you-be-my-valentine/
-
----
-
-## Overview
-
-Valentine Page Creator is a simple, user-friendly frontend project focused on rapid customization and clean UI design. It enables users to generate visually appealing Valentine pages without writing any code.
-
-The project emphasizes ease of use, responsive design, and fast deployment.
+Features a step-by-step journey (Welcome Screen with duration counter & secret heart tap Easter egg, envelope Love Letter with image download, Polaroid Memory Carousel with 7-month timeline, Angel's Reaction Form with image uploads & playful typing prompts, and a private Supabase-authenticated Admin view).
 
 ---
 
-## Features
+## 🌟 Key Features
 
-- Fully client-side web application
-- Multiple pre-designed Valentine templates
-- Custom text and image support
-- Responsive layout for mobile and desktop
-- Simple and fast deployment using GitHub Pages
-- No backend or authentication required
-
----
-
-## Tech Stack
-
-- HTML
-- CSS
-- JavaScript
-- PNPM for dependency management
-- GitHub Pages for deployment
+1. **Step-by-Step Romantic Experience**:
+   - **Welcome Screen**: "Happy 7th Monthsary, Angel" greeting, live relationship counter, countdown timer, romantic music player, and secret Easter egg note (tap heart 7 times).
+   - **Love Letter Section**: Interactive envelope reveal, typewriter effect, customizable placeholders, and 1-tap "Save Letter as Image".
+   - **Memories & Photo Gallery**: Interactive photo carousel, 7-month milestone timeline, and Lightbox modal view.
+   - **Angel's Reaction Section**: Name input, reply textarea with playful prompt rotator ("Are you done yet?", "Do you love me?", etc.), multi-image reaction upload (JPG, PNG, WEBP, max 5MB), and secure Supabase submission.
+   - **Submission Confirmation**: Celebratory confetti, saved reply summary card, and token-authorized edit mode.
+   - **Private Admin Dashboard**: Protected view (`#admin`) with Supabase Auth to read, manage, and inspect Angel's submitted replies and photos.
 
 ---
 
-## Getting Started
+## 🛠️ Technology Stack
 
-### Prerequisites
-- Node.js
-- PNPM
+- **Frontend**: React 18, Vite 5, TypeScript 5, Tailwind CSS 3, Framer Motion 12, Lucide Icons, Canvas Confetti, HTML2Canvas.
+- **Backend & Storage**: Supabase PostgreSQL (`monthsary_responses` table) and Supabase Storage (`monthsary-reactions` bucket).
+- **Deployment**: Static deployment via GitHub Pages (`gh-pages`).
 
-### Installation
+---
+
+## 🗄️ Supabase Backend Setup
+
+### 1. Database Schema Execution
+Navigate to your **Supabase SQL Editor** and run the contents of [`supabase/schema.sql`](file:///e:/Workspace/monthsarry/supabase/schema.sql):
+
+```sql
+-- Creates monthsary_responses table, RLS policies, and monthsary-reactions storage bucket
+```
+
+### 2. Environment Variables Setup
+Copy `.env.example` to `.env.local`:
 
 ```bash
-npm install -g pnpm
+cp .env.example .env.local
+```
+
+Add your Supabase Project URL and Anon Key:
+
+```env
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+---
+
+## 🚀 Local Development & Build Verification
+
+```bash
+# Install dependencies
 pnpm install
+
+# Run dev server
+pnpm dev
+
+# Lint code
+pnpm lint
+
+# Build for production
+pnpm build
 ```
 
-### Run Locally
+---
+
+## 🌐 Deploy to GitHub Pages
+
+Deploy directly using `gh-pages`:
+
 ```bash
-pnpm run dev
+pnpm deploy
 ```
 
-### Deployment
-```bash
-pnpm run deploy
-```
+The app will be published to: `https://username.github.io/repository-name/`
 
-The application can be deployed easily using GitHub Pages.
+---
 
-### Preview
-<img width="1311" height="688" alt="Screenshot 2026-02-03 at 1 05 42 PM" src="https://github.com/user-attachments/assets/644ae687-ebb0-4394-8ee0-85d29fd08b5b" />
+## 🔒 Security Assurance
 
-YASHASVI SHUKLA (Yashasvi Shukla)
-
-### Notes
-This project was built as a creative frontend application focusing on UI, customization, and client-side deployment workflows.
+- **No Service-Role Keys**: The frontend exclusively uses the public anonymous Supabase key.
+- **Row Level Security (RLS)**: Public visitors can only insert a response and read their own response matching their secure `response_token`.
+- **Admin Isolation**: Admin dashboard operations require Supabase Auth user credentials.

@@ -1,0 +1,81 @@
+-- 7th Monthsary Surprise Website - Supabase Database Schema & Storage Setup
+
+-- 1. Create Table for Monthsary Responses
+CREATE TABLE IF NOT EXISTS public.monthsary_responses (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    message TEXT NOT NULL,
+    image_urls JSONB DEFAULT '[]'::jsonb,
+    response_token TEXT NOT NULL UNIQUE,
+    status TEXT DEFAULT 'new',
+    user_agent TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Index for fast token lookups
+CREATE INDEX IF NOT EXISTS idx_monthsary_responses_token ON public.monthsary_responses(response_token);
+
+-- Automatically update updated_at timestamp
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.updated_at = now();
+   RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_monthsary_responses_modtime
+BEFORE UPDATE ON public.monthsary_responses
+FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- 2. Row Level Security (RLS) Configuration
+ALTER TABLE public.monthsary_responses ENABLE ROW LEVEL SECURITY;
+
+-- Anonymous visitors can insert their response
+CREATE POLICY "Allow public visitor insert response" 
+ON public.monthsary_responses 
+FOR INSERT 
+TO anon, authenticated
+WITH CHECK (true);
+
+-- Anonymous visitors can read their own response via token lookup
+CREATE POLICY "Allow visitor read response by token" 
+ON public.monthsary_responses 
+FOR SELECT 
+TO anon
+USING (response_token IS NOT NULL);
+
+-- Authenticated Admin can perform all operations (SELECT, UPDATE, DELETE)
+CREATE POLICY "Allow admin full access to responses" 
+ON public.monthsary_responses 
+FOR ALL 
+TO authenticated 
+USING (true)
+WITH CHECK (true);
+
+-- 3. Storage Bucket Setup for Reaction Photos
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('monthsary-reactions', 'monthsary-reactions', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Storage Policy: Allow public to upload reaction images
+CREATE POLICY "Allow public upload reaction images" 
+ON storage.objects 
+FOR INSERT 
+TO anon, authenticated
+WITH CHECK (bucket_id = 'monthsary-reactions');
+
+-- Storage Policy: Allow public to read reaction images
+CREATE POLICY "Allow public read reaction images" 
+ON storage.objects 
+FOR SELECT 
+TO anon, authenticated
+USING (bucket_id = 'monthsary-reactions');
+
+-- Storage Policy: Allow authenticated admin to delete reaction images
+CREATE POLICY "Allow admin delete reaction images" 
+ON storage.objects 
+FOR DELETE 
+TO authenticated
+USING (bucket_id = 'monthsary-reactions');

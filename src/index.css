@@ -1,11 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --color-primary: #be185d;
+  --color-primary-hover: #9d174d;
+  --color-secondary: #ec4899;
+  --color-accent: #dc2626;
+  --color-background: #fdf2f8;
+  --color-foreground: #831843;
+  --color-border: #f7e3eb;
+  --color-muted: #fbf1f5;
+
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -19,29 +28,83 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  /* Soft breathing background */
-  background: linear-gradient(135deg, #fff1f2, #ffe4e6, #fae8ff);
+  /* Evolved romantic breathing background */
+  background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fae8ff 100%);
   background-size: 200% 200%;
-  animation: gradientBG 15s ease infinite;
-
-  color: #831843;
-  /* pink-900 */
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>❤️</text></svg>") 16 0, auto;
-  /* Fallback */
+  animation: gradientBG 16s ease-in-out infinite;
+  color: var(--color-foreground);
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='%23ec4899'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") 12 12, auto;
 }
 
 @keyframes gradientBG {
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
+}
+
+/* Custom Typography Utility Classes */
+.font-display {
+  font-family: 'Great Vibes', cursive;
+}
+
+.font-serif {
+  font-family: 'Cormorant Infant', Georgia, serif;
+}
+
+.font-sans {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Custom Glassmorphism & Soft UI utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(225, 29, 72, 0.08);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(225, 29, 72, 0.15);
+  border-color: rgba(244, 114, 182, 0.5);
+}
+
+/* Focus styles for keyboard accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid #be185d;
+  outline-offset: 2px;
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(253, 242, 248, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(244, 114, 182, 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(225, 29, 72, 0.6);
 }
 
 /* Envelope Styles */
@@ -65,7 +128,6 @@ body {
 
 .letter-content {
   transition: transform 0.5s ease-in-out 0.5s;
-  /* Delay for flap to open */
 }
 
 .envelope.open .letter-content {
@@ -73,12 +135,11 @@ body {
   z-index: 20;
 }
 
-h1,
-h2,
-h3 {
-  font-family: 'Dancing Script', cursive;
-}
-
-button {
-  transition: all 0.2s ease-in-out;
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
