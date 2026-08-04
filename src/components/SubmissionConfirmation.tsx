@@ -160,7 +160,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
       </h2>
 
       <p className="text-xs sm:text-sm text-rose-900/80 font-medium max-w-md mb-5">
-        Your reply has been saved to our database, my love! Here's what happens next... ✨
+        Your reply has been saved, my love! Here's what happens next... ✨
       </p>
 
       {/* Navigation Tabs */}
@@ -216,7 +216,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
                   <div>
                     <h4 className="text-sm font-bold text-gray-800">Your Baby Receives & Reads Your Reply 💌</h4>
                     <p className="text-xs text-gray-600 mt-0.5 leading-relaxed">
-                      Your message and photos are safely saved in our Supabase database. Your baby is reading every single word right now with a warm smile!
+                      Your message and photos are safely received, my love! Your baby is reading every single word right now with a warm smile!
                     </p>
                   </div>
                 </div>
