@@ -29,13 +29,14 @@ export const generateResponseToken = (): string => {
   return "token_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
 };
 
-// Check if Supabase URL and Anon Key are actually configured with a valid JWT key
+// Check if Supabase URL and Anon Key are actually configured
+// Accepts both legacy JWT anon keys (eyJ...) and new publishable keys (sb_publishable_...)
 export const isSupabaseConfigured = (): boolean => {
   return Boolean(
     supabaseUrl &&
     !supabaseUrl.includes("your-supabase-project") &&
     supabaseAnonKey &&
-    supabaseAnonKey.startsWith("eyJ")
+    (supabaseAnonKey.startsWith("eyJ") || supabaseAnonKey.startsWith("sb_publishable_"))
   );
 };
 
