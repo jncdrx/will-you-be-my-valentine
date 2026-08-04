@@ -297,6 +297,37 @@ export async function verifySitePassword(inputPassword: string): Promise<boolean
   }
 }
 
+// Verify Allowed Email against Supabase 'site_settings' table or env variable
+export async function verifyAllowedEmail(inputEmail: string): Promise<boolean> {
+  const envEmail = import.meta.env.VITE_ALLOWED_EMAIL || "";
+  const formatted = inputEmail.trim().toLowerCase();
+
+  if (envEmail && formatted === envEmail.toLowerCase()) {
+    return true;
+  }
+
+  if (!isSupabaseConfigured()) {
+    return true;
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from("site_settings")
+      .select("value")
+      .eq("key", "allowed_email")
+      .maybeSingle();
+
+    if (!error && data?.value) {
+      return formatted === data.value.trim().toLowerCase();
+    }
+
+    return true;
+  } catch (err) {
+    console.error("Email verification exception:", err);
+    return true;
+  }
+}
+
 export interface AngelUserData {
   user_id?: string;
   email?: string;
@@ -313,8 +344,6 @@ export interface AngelUserData {
 
 // Load Angel's authenticated state from Supabase table 'angel_user_data'
 export async function loadAngelUserData(): Promise<AngelUserData | null> {
-  const email = "angelicogn@gmail.com";
-  
   const loadLocal = (): AngelUserData | null => {
     try {
       const saved = localStorage.getItem("angel_user_data");
@@ -331,12 +360,13 @@ export async function loadAngelUserData(): Promise<AngelUserData | null> {
   try {
     const { data: sessionData } = await supabase.auth.getSession();
     const userId = sessionData.session?.user?.id;
+    const sessionEmail = sessionData.session?.user?.email;
 
     let query = supabase.from("angel_user_data").select("*");
     if (userId) {
       query = query.eq("user_id", userId);
-    } else {
-      query = query.eq("email", email);
+    } else if (sessionEmail) {
+      query = query.eq("email", sessionEmail);
     }
 
     const { data, error } = await query.maybeSingle();
@@ -356,8 +386,6 @@ export async function loadAngelUserData(): Promise<AngelUserData | null> {
 
 // Save or Update Angel's authenticated state in Supabase table 'angel_user_data'
 export async function saveAngelUserData(update: Partial<AngelUserData>): Promise<boolean> {
-  const email = "angelicogn@gmail.com";
-
   const saveLocal = () => {
     try {
       const existing = localStorage.getItem("angel_user_data");
@@ -378,17 +406,18 @@ export async function saveAngelUserData(update: Partial<AngelUserData>): Promise
   try {
     const { data: sessionData } = await supabase.auth.getSession();
     const userId = sessionData.session?.user?.id;
+    const userEmail = sessionData.session?.user?.email;
 
     const payload = {
       ...update,
-      email,
+      ...(userEmail ? { email: userEmail } : {}),
       ...(userId ? { user_id: userId } : {}),
       updated_at: new Date().toISOString(),
     };
 
     const { error } = await supabase
       .from("angel_user_data")
-      .upsert(payload, { onConflict: userId ? "user_id" : "email" });
+      .upsert(payload, { onConflict: userId ? "user_id" : "id" });
 
     if (error) {
       console.error("Save Angel user data DB error:", error);

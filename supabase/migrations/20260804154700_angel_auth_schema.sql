@@ -1,8 +1,8 @@
--- Migration: Create angel_user_data table with RLS policies for angelicogn@gmail.com
+-- Migration: Create angel_user_data table with RLS policies
 
 CREATE TABLE IF NOT EXISTS public.angel_user_data (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email TEXT NOT NULL DEFAULT 'angelicogn@gmail.com',
+    email TEXT NOT NULL,
     name TEXT DEFAULT 'my dearest baby angel',
     message TEXT,
     image_urls JSONB DEFAULT '[]'::jsonb,
@@ -25,8 +25,8 @@ CREATE POLICY "Angel access own data"
 ON public.angel_user_data
 FOR ALL
 TO authenticated
-USING (auth.uid() = user_id OR email = 'angelicogn@gmail.com')
-WITH CHECK (auth.uid() = user_id OR email = 'angelicogn@gmail.com');
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
 
 -- Allow anon fallback if needed
 CREATE POLICY "Allow anon access fallback"

@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Heart, KeyRound, Sparkles, Mail, ShieldCheck, AlertCircle, ArrowRight, RefreshCw, CheckCircle2 } from "lucide-react";
 import { monthsaryConfig } from "../config/monthsaryConfig";
-import { supabase, verifySitePassword, isSupabaseConfigured } from "../lib/supabase";
+import { supabase, verifySitePassword, isSupabaseConfigured, verifyAllowedEmail } from "../lib/supabase";
 
 interface AngelAuthGateProps {
   onUnlocked: () => void;
 }
 
 type AuthStep = "email" | "otp" | "password";
-
-const ALLOWED_EMAIL = "angelicogn@gmail.com";
 
 export function AngelAuthGate({ onUnlocked }: AngelAuthGateProps) {
   const [authStep, setAuthStep] = useState<AuthStep>("email");
@@ -48,25 +46,27 @@ export function AngelAuthGate({ onUnlocked }: AngelAuthGateProps) {
       return;
     }
 
-    if (formattedEmail !== ALLOWED_EMAIL) {
-      setErrorMsg(`Access restricted: This website is designed exclusively for Angel (${ALLOWED_EMAIL}) 💕`);
+    setIsLoading(true);
+
+    const isAllowed = await verifyAllowedEmail(formattedEmail);
+    if (!isAllowed) {
+      setIsLoading(false);
+      setErrorMsg(`Access restricted: This private website is created exclusively for Angel 💕`);
       handleShake();
       return;
     }
-
-    setIsLoading(true);
 
     if (!isSupabaseConfigured()) {
       // Offline fallback: skip to OTP step
       setIsLoading(false);
       setAuthStep("otp");
-      setSuccessMsg(`Verification code sent to ${ALLOWED_EMAIL}!`);
+      setSuccessMsg(`Verification code sent to your email!`);
       return;
     }
 
     try {
       const { error } = await supabase.auth.signInWithOtp({
-        email: ALLOWED_EMAIL,
+        email: formattedEmail,
         options: {
           shouldCreateUser: true,
         },
@@ -78,7 +78,7 @@ export function AngelAuthGate({ onUnlocked }: AngelAuthGateProps) {
         handleShake();
       } else {
         setAuthStep("otp");
-        setSuccessMsg(`A 6-digit verification code was sent to ${ALLOWED_EMAIL}! Please check your inbox 📩`);
+        setSuccessMsg(`A 6-digit verification code was sent to your email! Please check your inbox 📩`);
       }
     } catch (err) {
       console.error("OTP send exception:", err);
@@ -113,7 +113,7 @@ export function AngelAuthGate({ onUnlocked }: AngelAuthGateProps) {
 
     try {
       const { data, error } = await supabase.auth.verifyOtp({
-        email: ALLOWED_EMAIL,
+        email: emailInput.trim().toLowerCase(),
         token: otpInput.trim(),
         type: "email",
       });
@@ -155,7 +155,7 @@ export function AngelAuthGate({ onUnlocked }: AngelAuthGateProps) {
 
       if (isValid) {
         sessionStorage.setItem("monthsary_authenticated", "true");
-        sessionStorage.setItem("monthsary_angel_email", ALLOWED_EMAIL);
+        sessionStorage.setItem("monthsary_angel_email", emailInput.trim().toLowerCase());
         onUnlocked();
       } else {
         setErrorMsg("Incorrect private password! Please try again ❤️");
@@ -204,7 +204,7 @@ export function AngelAuthGate({ onUnlocked }: AngelAuthGateProps) {
 
         <p className="text-xs sm:text-sm text-gray-600 mt-1.5 mb-5 leading-relaxed">
           {authStep === "email" && "Please enter your Gmail address to receive your private verification code 💕"}
-          {authStep === "otp" && `Enter the 6-digit verification code sent to ${ALLOWED_EMAIL} 📩`}
+          {authStep === "otp" && "Enter the 6-digit verification code sent to your email 📩"}
           {authStep === "password" && "Enter your private access password to unlock your surprise website 💕"}
         </p>
 
@@ -243,7 +243,7 @@ export function AngelAuthGate({ onUnlocked }: AngelAuthGateProps) {
                   setEmailInput(e.target.value);
                   setErrorMsg(null);
                 }}
-                placeholder="angelicogn@gmail.com"
+                placeholder="Enter your email address..."
                 className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-rose-200 bg-rose-50/50 text-sm text-gray-800 font-semibold focus:border-rose-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-300/50 transition-all text-center placeholder:font-normal"
                 autoFocus
                 required
