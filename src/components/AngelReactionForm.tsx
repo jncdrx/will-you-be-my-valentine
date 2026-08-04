@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { z } from "zod";
+import { toast } from "sonner";
 import { Upload, X, Send, Sparkles, AlertCircle, MessageSquare, Camera, Clock, Heart, Hourglass, Smile, Sun, HeartHandshake, BookOpen, ArrowLeft } from "lucide-react";
 import { monthsaryConfig } from "../config/monthsaryConfig";
 import { saveMonthsaryResponse, MonthsaryResponse, saveAngelUserData } from "../lib/supabase";
@@ -137,17 +139,24 @@ export function AngelReactionForm({ onSubmitted, onBackToMemories, existingToken
     });
   };
 
+const reactionFormSchema = z.object({
+  name: z.string().min(1, "Please enter your name, my love."),
+  message: z.string().min(1, "Please write a short reply or note for me.").max(1000, "Message cannot exceed 1000 characters."),
+});
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     triggerHaptic();
 
-    if (!name.trim()) {
-      setErrorMessage("Please enter your name, my love.");
-      return;
-    }
+    const validation = reactionFormSchema.safeParse({
+      name: name.trim(),
+      message: message.trim(),
+    });
 
-    if (!message.trim()) {
-      setErrorMessage("Please write a short reply or note for me.");
+    if (!validation.success) {
+      const firstError = validation.error.issues[0].message;
+      setErrorMessage(firstError);
+      toast.error(firstError);
       return;
     }
 
@@ -164,6 +173,7 @@ export function AngelReactionForm({ onSubmitted, onBackToMemories, existingToken
 
       if (error || !data) {
         setErrorMessage("Could not save response. Please try again.");
+        toast.error("Could not save response. Please try again.");
         setIsSubmitting(false);
         return;
       }
@@ -175,10 +185,12 @@ export function AngelReactionForm({ onSubmitted, onBackToMemories, existingToken
         image_urls: data.image_urls || [],
         current_step: "confirmation",
       });
+      toast.success("Reply sent with love! 💕");
       onSubmitted(data, token);
     } catch (err) {
       console.error("Submission error:", err);
       setErrorMessage("Network error. Please try again.");
+      toast.error("Network error. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

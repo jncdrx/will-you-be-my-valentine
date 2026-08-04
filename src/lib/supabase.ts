@@ -15,6 +15,9 @@ export interface MonthsaryResponse {
   message: string;
   image_urls: string[];
   response_token: string;
+  ticket_claimed?: boolean;
+  ticket_claimed_at?: string;
+  kissing_photo_url?: string;
   status?: string;
   user_agent?: string;
   created_at?: string;
@@ -196,6 +199,15 @@ export async function getResponseByToken(token: string): Promise<MonthsaryRespon
 
 // Fetch all responses for authenticated Admin
 export async function getAdminResponses(): Promise<MonthsaryResponse[]> {
+  const getDeletedIds = (): Set<string> => {
+    try {
+      const deletedStr = localStorage.getItem("monthsary_deleted_responses") || "[]";
+      return new Set<string>(JSON.parse(deletedStr));
+    } catch {
+      return new Set<string>();
+    }
+  };
+
   const getLocalResponses = (): MonthsaryResponse[] => {
     const allMockStr = localStorage.getItem("monthsary_all_responses") || "[]";
     try {
@@ -205,8 +217,15 @@ export async function getAdminResponses(): Promise<MonthsaryResponse[]> {
     }
   };
 
+  const deletedSet = getDeletedIds();
+  const isDeleted = (r: MonthsaryResponse) =>
+    Boolean(
+      (r.id && deletedSet.has(r.id)) ||
+        (r.response_token && deletedSet.has(r.response_token))
+    );
+
   if (!isSupabaseConfigured()) {
-    return getLocalResponses();
+    return getLocalResponses().filter((r) => !isDeleted(r));
   }
 
   try {
@@ -217,16 +236,22 @@ export async function getAdminResponses(): Promise<MonthsaryResponse[]> {
 
     if (error) {
       console.error("Admin fetch error:", error);
-      return getLocalResponses();
+      return getLocalResponses().filter((r) => !isDeleted(r));
     }
 
     const dbResponses = data || [];
     const local = getLocalResponses();
     const combinedMap = new Map<string, MonthsaryResponse>();
-    dbResponses.forEach((r) => combinedMap.set(r.id || r.response_token, r));
+
+    dbResponses.forEach((r) => {
+      if (!isDeleted(r)) {
+        combinedMap.set(r.id || r.response_token, r);
+      }
+    });
+
     local.forEach((r) => {
       const key = r.id || r.response_token;
-      if (!combinedMap.has(key)) {
+      if (!isDeleted(r) && !combinedMap.has(key)) {
         combinedMap.set(key, r);
       }
     });
@@ -234,31 +259,60 @@ export async function getAdminResponses(): Promise<MonthsaryResponse[]> {
     return Array.from(combinedMap.values());
   } catch (err) {
     console.error("Admin fetch exception:", err);
-    return getLocalResponses();
+    return getLocalResponses().filter((r) => !isDeleted(r));
   }
 }
 
 // Delete response (Admin only)
-export async function deleteAdminResponse(id: string): Promise<boolean> {
-  const allMockStr = localStorage.getItem("monthsary_all_responses") || "[]";
+export async function deleteAdminResponse(targetId: string): Promise<boolean> {
+  if (!targetId) return false;
+
+  // 1. Save to deleted list so future fetches ignore it
   try {
-    let allMock: MonthsaryResponse[] = JSON.parse(allMockStr);
-    allMock = allMock.filter((item) => item.id !== id && item.response_token !== id);
-    localStorage.setItem("monthsary_all_responses", JSON.stringify(allMock));
+    const deletedStr = localStorage.getItem("monthsary_deleted_responses") || "[]";
+    const deletedList: string[] = JSON.parse(deletedStr);
+    if (!deletedList.includes(targetId)) {
+      deletedList.push(targetId);
+      localStorage.setItem("monthsary_deleted_responses", JSON.stringify(deletedList));
+    }
   } catch (err) {
-    console.error("Error clearing local response:", err);
+    console.error("Error updating deleted responses tracking:", err);
   }
 
-  if (!isSupabaseConfigured()) {
-    return true;
-  }
-
+  // 2. Clear local storage records
   try {
-    const { error } = await supabase.from("monthsary_responses").delete().eq("id", id);
-    return !error;
-  } catch {
-    return true;
+    const allMockStr = localStorage.getItem("monthsary_all_responses") || "[]";
+    let allMock: MonthsaryResponse[] = JSON.parse(allMockStr);
+    allMock = allMock.filter(
+      (item) => item.id !== targetId && item.response_token !== targetId
+    );
+    localStorage.setItem("monthsary_all_responses", JSON.stringify(allMock));
+    localStorage.removeItem(`monthsary_resp_${targetId}`);
+  } catch (err) {
+    console.error("Error clearing local response storage:", err);
   }
+
+  // 3. Delete from Supabase DB if configured
+  if (isSupabaseConfigured()) {
+    try {
+      const { error: errId } = await supabase
+        .from("monthsary_responses")
+        .delete()
+        .eq("id", targetId);
+
+      if (errId) {
+        console.warn("Supabase delete by id failed, trying response_token:", errId);
+        await supabase
+          .from("monthsary_responses")
+          .delete()
+          .eq("response_token", targetId);
+      }
+    } catch (err) {
+      console.error("Supabase delete exception:", err);
+    }
+  }
+
+  return true;
 }
 
 // Verify Site Access Password against Supabase 'site_settings' table
@@ -336,8 +390,9 @@ export interface AngelUserData {
   image_urls?: string[];
   kissing_photo_url?: string;
   ticket_claimed?: boolean;
+  ticket_claimed_at?: string;
   current_step?: string;
-  answers?: Record<string, any>;
+  answers?: Record<string, unknown>;
   created_at?: string;
   updated_at?: string;
 }
@@ -430,6 +485,219 @@ export async function saveAngelUserData(update: Partial<AngelUserData>): Promise
     return false;
   }
 }
+
+/**
+ * Helper to resolve the unique ID for the current logged-in user or session.
+ */
+export function getLoggedInUserId(responseData?: MonthsaryResponse): string {
+  if (typeof window === "undefined") return "guest";
+
+  // 1. Session email from auth gate
+  const authEmail = sessionStorage.getItem("monthsary_angel_email");
+  if (authEmail) {
+    return authEmail.trim().toLowerCase();
+  }
+
+  // 2. ID / token from passed responseData
+  if (responseData?.id) return responseData.id;
+  if (responseData?.response_token) return responseData.response_token;
+
+  // 3. Saved local token
+  const token = localStorage.getItem("monthsary_angel_token");
+  if (token) return token;
+
+  // 4. Fallback persistent client ID per device/browser
+  let clientId = localStorage.getItem("monthsary_client_id");
+  if (!clientId) {
+    clientId = "user_" + Math.random().toString(36).substring(2, 10) + "_" + Date.now();
+    localStorage.setItem("monthsary_client_id", clientId);
+  }
+  return clientId;
+}
+
+/**
+ * Check if the voucher ticket has already been claimed by a specific user ID.
+ */
+export async function checkUserTicketClaimStatus(userId?: string): Promise<boolean> {
+  const targetId = userId || getLoggedInUserId();
+
+  // Check local user-specific claim record
+  const localClaimed = localStorage.getItem(`monthsary_ticket_claimed_${targetId}`);
+  if (localClaimed === "true") return true;
+
+  const userData = await loadAngelUserData();
+  if (userData?.ticket_claimed) {
+    localStorage.setItem(`monthsary_ticket_claimed_${targetId}`, "true");
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Update ticket claim status and/or kissing photo URL for a SPECIFIC response by token or ID.
+ */
+export async function updateResponseTicketAndPhoto(
+  responseToken: string,
+  update: {
+    ticket_claimed?: boolean;
+    ticket_claimed_at?: string;
+    kissing_photo_url?: string;
+  }
+): Promise<boolean> {
+  if (!responseToken) return false;
+
+  // 1. Update local storage 'monthsary_all_responses' for this specific response ONLY
+  try {
+    const allStr = localStorage.getItem("monthsary_all_responses") || "[]";
+    const responses: MonthsaryResponse[] = JSON.parse(allStr);
+    const updated = responses.map((r) => {
+      if (r.response_token === responseToken || r.id === responseToken) {
+        return {
+          ...r,
+          ...update,
+          updated_at: new Date().toISOString(),
+        };
+      }
+      return r;
+    });
+    localStorage.setItem("monthsary_all_responses", JSON.stringify(updated));
+  } catch (err) {
+    console.error("Error updating local response ticket:", err);
+  }
+
+  // 2. Update specific single response in local storage 'monthsary_resp_${token}'
+  try {
+    const singleStr = localStorage.getItem(`monthsary_resp_${responseToken}`);
+    if (singleStr) {
+      const single: MonthsaryResponse = JSON.parse(singleStr);
+      const updatedSingle = { ...single, ...update, updated_at: new Date().toISOString() };
+      localStorage.setItem(`monthsary_resp_${responseToken}`, JSON.stringify(updatedSingle));
+    }
+  } catch (err) {
+    console.error("Error updating single local response:", err);
+  }
+
+  // 3. Update Supabase table 'monthsary_responses' for this specific response ONLY
+  if (isSupabaseConfigured()) {
+    try {
+      await supabase
+        .from("monthsary_responses")
+        .update({
+          ...update,
+          updated_at: new Date().toISOString(),
+        })
+        .or(`response_token.eq.${responseToken},id.eq.${responseToken}`);
+    } catch (err) {
+      console.error("Supabase response ticket update exception:", err);
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Claim the voucher ticket ONCE for the specific user ID / response.
+ * Returns true if successfully claimed or already claimed, false if error.
+ */
+export async function claimTicketForUser(userId?: string): Promise<boolean> {
+  const targetId = userId || getLoggedInUserId();
+
+  // Double check if already claimed
+  const alreadyClaimed = await checkUserTicketClaimStatus(targetId);
+  if (alreadyClaimed) {
+    return true;
+  }
+
+  const nowIso = new Date().toISOString();
+  localStorage.setItem(`monthsary_ticket_claimed_${targetId}`, "true");
+  localStorage.setItem(`monthsary_ticket_claimed_at_${targetId}`, nowIso);
+  localStorage.setItem("monthsary_angel_ticket_claimed", "true");
+  localStorage.setItem("monthsary_angel_ticket_claimed_at", nowIso);
+
+  const kissingPhoto = localStorage.getItem("monthsary_angel_kissing_photo") || "";
+
+  // Update specific response ticket and photo ONLY
+  await updateResponseTicketAndPhoto(targetId, {
+    ticket_claimed: true,
+    ticket_claimed_at: nowIso,
+    ...(kissingPhoto ? { kissing_photo_url: kissingPhoto } : {}),
+  });
+
+  // Save to Supabase DB tied to user_id
+  await saveAngelUserData({
+    ticket_claimed: true,
+    ticket_claimed_at: nowIso,
+    user_id: targetId,
+    ...(kissingPhoto ? { kissing_photo_url: kissingPhoto } : {}),
+  });
+
+  return true;
+}
+
+export interface Song {
+  id: string;
+  title: string;
+  artist: string;
+  youtube_url?: string | null;
+  thumbnail_url?: string | null;
+  mp3_url: string;
+  duration: number;
+  is_custom_upload?: boolean;
+  created_at: string;
+}
+
+export async function fetchSongs(): Promise<Song[]> {
+  if (!isSupabaseConfigured()) {
+    const local = localStorage.getItem("monthsary_local_songs");
+    return local ? JSON.parse(local) : [];
+  }
+  const { data, error } = await supabase
+    .from("songs")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) {
+    console.error("Error fetching songs from Supabase:", error);
+    const local = localStorage.getItem("monthsary_local_songs");
+    return local ? JSON.parse(local) : [];
+  }
+  return data || [];
+}
+
+export async function saveSelectedSongId(songId: string, userId?: string): Promise<void> {
+  localStorage.setItem("monthsary_selected_song_id", songId);
+  const targetId = userId || getLoggedInUserId();
+  if (isSupabaseConfigured() && targetId) {
+    try {
+      await supabase
+        .from("angel_user_data")
+        .update({ selected_song_id: songId, updated_at: new Date().toISOString() })
+        .eq("user_id", targetId);
+    } catch (err) {
+      console.error("Error persisting selected_song_id to Supabase:", err);
+    }
+  }
+}
+
+export async function deleteSong(songId: string): Promise<void> {
+  if (isSupabaseConfigured()) {
+    try {
+      await supabase.from("songs").delete().eq("id", songId);
+    } catch (err) {
+      console.error("Error deleting song from Supabase:", err);
+    }
+  }
+  const local = localStorage.getItem("monthsary_local_songs");
+  if (local) {
+    const songs: Song[] = JSON.parse(local);
+    localStorage.setItem(
+      "monthsary_local_songs",
+      JSON.stringify(songs.filter((s) => s.id !== songId))
+    );
+  }
+}
+
+
 
 
 

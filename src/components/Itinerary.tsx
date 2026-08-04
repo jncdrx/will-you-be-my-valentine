@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { MapPin, Clock, Heart, ChevronDown, ChevronUp, Cake, Camera, Bed, UtensilsCrossed } from "lucide-react";
 
 interface ItineraryStop {
@@ -121,111 +122,13 @@ export function Itinerary() {
 
           <div className="space-y-4">
             {stops.map((stop, index) => (
-              <motion.div
+              <ItineraryCard
                 key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.2, duration: 0.5 }}
-                className="relative"
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-4 top-6 w-4 h-4 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 border-2 border-white shadow-md hidden md:block z-10" />
-
-                <div
-                  className="md:ml-14 cursor-pointer"
-                  onClick={() => toggleExpand(index)}
-                >
-                  {/* Stop Card */}
-                  <div className={`rounded-2xl bg-gradient-to-r ${stop.color} p-[2px] shadow-lg hover:shadow-xl transition-shadow duration-300`}>
-                    <div className="rounded-2xl bg-white/95 p-4 md:p-5">
-                      {/* Header row */}
-                      <div className="flex flex-col items-center text-center gap-2">
-                        <div className={`flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br ${stop.color} text-white shadow-md`}>
-                          {stop.icon}
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-bold text-gray-800">
-                            {stop.title}
-                          </h3>
-                          <div className="flex items-center justify-center gap-1 text-xs text-gray-500">
-                            <Clock size={12} />
-                            <span>{stop.time}</span>
-                          </div>
-                        </div>
-                        <motion.div
-                          animate={{ rotate: expandedIndex === index ? 180 : 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          {expandedIndex === index ? (
-                            <ChevronUp size={20} className="text-gray-400" />
-                          ) : (
-                            <ChevronDown size={20} className="text-gray-400" />
-                          )}
-                        </motion.div>
-                      </div>
-
-                      {/* Location preview */}
-                      <div className="mt-2 flex items-center justify-center gap-1 text-xs text-rose-400 text-center">
-                        <MapPin size={12} />
-                        <span>{stop.place}</span>
-                      </div>
-
-                      {/* Expanded content */}
-                      <AnimatePresence>
-                        {expandedIndex === index && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="overflow-hidden"
-                          >
-                            <div className="mt-4 pt-4 border-t border-gray-100">
-                              {/* Location */}
-                              <div className="mb-3 flex flex-col items-center text-center gap-1">
-                                <MapPin size={16} className="text-rose-400" />
-                                <div>
-                                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Location</p>
-                                  <p className="text-sm text-gray-700">{stop.location}</p>
-                                  <p className="text-sm text-rose-500 font-medium">{stop.place}</p>
-                                </div>
-                              </div>
-
-                              {/* What to do */}
-                              <div className="mb-4 text-center">
-                                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">✨ What to Do</p>
-                                <ul className="space-y-1.5">
-                                  {stop.whatToDo.map((item, i) => (
-                                    <motion.li
-                                      key={i}
-                                      initial={{ opacity: 0, x: -10 }}
-                                      animate={{ opacity: 1, x: 0 }}
-                                      transition={{ delay: i * 0.1 }}
-                                      className="text-sm text-gray-700"
-                                    >
-                                      {item}
-                                    </motion.li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              {/* Romantic note */}
-                              <div className="rounded-xl bg-gradient-to-r from-rose-50 to-pink-50 p-3 border border-rose-100">
-                                <div className="flex flex-col items-center text-center gap-2">
-                                  <Heart size={14} className="text-rose-400" fill="#fb7185" />
-                                  <p className="text-sm text-rose-600 italic leading-relaxed font-serif">
-                                    {stop.romanticNote}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                stop={stop}
+                index={index}
+                isExpanded={expandedIndex === index}
+                onToggle={() => toggleExpand(index)}
+              />
             ))}
           </div>
         </div>
@@ -243,5 +146,127 @@ export function Itinerary() {
         </motion.div>
       </motion.div>
     </div>
+  );
+}
+
+function ItineraryCard({
+  stop,
+  index,
+  isExpanded,
+  onToggle,
+}: {
+  stop: ItineraryStop;
+  index: number;
+  isExpanded: boolean;
+  onToggle: () => void;
+}) {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: -20 }}
+      animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+      transition={{ delay: index * 0.15, duration: 0.5 }}
+      className="relative"
+    >
+      {/* Timeline dot */}
+      <div className="absolute left-4 top-6 w-4 h-4 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 border-2 border-white shadow-md hidden md:block z-10" />
+
+      <div
+        className="md:ml-14 cursor-pointer"
+        onClick={onToggle}
+      >
+        {/* Stop Card */}
+        <div className={`rounded-2xl bg-gradient-to-r ${stop.color} p-[2px] shadow-lg hover:shadow-xl transition-shadow duration-300`}>
+          <div className="rounded-2xl bg-white/95 p-4 md:p-5">
+            {/* Header row */}
+            <div className="flex flex-col items-center text-center gap-2">
+              <div className={`flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br ${stop.color} text-white shadow-md`}>
+                {stop.icon}
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-800">
+                  {stop.title}
+                </h3>
+                <div className="flex items-center justify-center gap-1 text-xs text-gray-500">
+                  <Clock size={12} />
+                  <span>{stop.time}</span>
+                </div>
+              </div>
+              <motion.div
+                animate={{ rotate: isExpanded ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isExpanded ? (
+                  <ChevronUp size={20} className="text-gray-400" />
+                ) : (
+                  <ChevronDown size={20} className="text-gray-400" />
+                )}
+              </motion.div>
+            </div>
+
+            {/* Location preview */}
+            <div className="mt-2 flex items-center justify-center gap-1 text-xs text-rose-400 text-center">
+              <MapPin size={12} />
+              <span>{stop.place}</span>
+            </div>
+
+            {/* Expanded content */}
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-4 pt-4 border-t border-gray-100">
+                    {/* Location */}
+                    <div className="mb-3 flex flex-col items-center text-center gap-1">
+                      <MapPin size={16} className="text-rose-400" />
+                      <div>
+                        <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Location</p>
+                        <p className="text-sm text-gray-700">{stop.location}</p>
+                        <p className="text-sm text-rose-500 font-medium">{stop.place}</p>
+                      </div>
+                    </div>
+
+                    {/* What to do */}
+                    <div className="mb-4 text-center">
+                      <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">✨ What to Do</p>
+                      <ul className="space-y-1.5">
+                        {stop.whatToDo.map((item, i) => (
+                          <motion.li
+                            key={i}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="text-sm text-gray-700"
+                          >
+                            {item}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Romantic note */}
+                    <div className="rounded-xl bg-gradient-to-r from-rose-50 to-pink-50 p-3 border border-rose-100">
+                      <div className="flex flex-col items-center text-center gap-2">
+                        <Heart size={14} className="text-rose-400" fill="#fb7185" />
+                        <p className="text-sm text-rose-600 italic leading-relaxed font-serif">
+                          {stop.romanticNote}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }

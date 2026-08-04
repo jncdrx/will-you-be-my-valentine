@@ -1,7 +1,8 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Maximize2, Heart, Sparkles } from "lucide-react";
 import confetti from "canvas-confetti";
+import useEmblaCarousel from "embla-carousel-react";
 
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string) => `${baseUrl.replace(/\/?$/, "/")}${path.replace(/^\//, "")}`;
@@ -173,96 +174,26 @@ function SwipeSection({
     likes: Record<string, number>;
     onToggleLike: (id: string, e: React.MouseEvent) => void;
 }) {
-    const containerRef = useRef<HTMLDivElement>(null);
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "center" });
     const [activeMemory, setActiveMemory] = useState(0);
-    const [isDragging, setIsDragging] = useState(false);
-    const startX = useRef(0);
-    const scrollLeft = useRef(0);
 
-    const handleMouseDown = (e: React.MouseEvent) => {
-        const container = containerRef.current;
-        if (!container) return;
-        setIsDragging(true);
-        startX.current = e.pageX - container.offsetLeft;
-        scrollLeft.current = container.scrollLeft;
-    };
+    useEffect(() => {
+        if (!emblaApi) return;
+        const onSelect = () => setActiveMemory(emblaApi.selectedScrollSnap());
+        emblaApi.on("select", onSelect);
+        return () => {
+            emblaApi.off("select", onSelect);
+        };
+    }, [emblaApi]);
 
-    const handleMouseLeave = () => {
-        setIsDragging(false);
-    };
-
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const container = containerRef.current;
-        if (!container) return;
-        const x = e.pageX - container.offsetLeft;
-        const walk = (x - startX.current) * 1.1;
-        container.scrollLeft = scrollLeft.current - walk;
-    };
-
-    const scrollToIndex = (index: number) => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        const nextIndex = Math.max(0, Math.min(index, memories.length - 1));
-        const target = container.children[nextIndex] as HTMLElement | undefined;
-
-        if (!target) return;
-
-        const left = target.offsetLeft - (container.clientWidth - target.clientWidth) / 2;
-        container.scrollTo({ left, behavior: "smooth" });
-        setActiveMemory(nextIndex);
-    };
-
-    const goPrevious = () => {
-        scrollToIndex(activeMemory - 1);
-    };
-
-    const goNext = () => {
-        scrollToIndex(activeMemory + 1);
-    };
-
-    const handleScroll = () => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        const containerRect = container.getBoundingClientRect();
-        const containerCenter = containerRect.left + containerRect.width / 2;
-
-        let closestIndex = 0;
-        let closestDistance = Number.POSITIVE_INFINITY;
-
-        Array.from(container.children).forEach((child, index) => {
-            const childRect = child.getBoundingClientRect();
-            const childCenter = childRect.left + childRect.width / 2;
-            const distance = Math.abs(containerCenter - childCenter);
-
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestIndex = index;
-            }
-        });
-
-        setActiveMemory(closestIndex);
-    };
+    const goPrevious = () => emblaApi?.scrollPrev();
+    const goNext = () => emblaApi?.scrollNext();
+    const scrollToIndex = (index: number) => emblaApi?.scrollTo(index);
 
     return (
         <div className="mb-8 w-full select-none">
-            <div
-                ref={containerRef}
-                onScroll={handleScroll}
-                onMouseDown={handleMouseDown}
-                onMouseLeave={handleMouseLeave}
-                onMouseUp={handleMouseUp}
-                onMouseMove={handleMouseMove}
-                className={`flex gap-5 overflow-x-auto pb-6 pt-3 px-6 scrollbar-thin scrollbar-thumb-rose-300 scrollbar-track-transparent ${isDragging ? "" : "snap-x snap-mandatory"}`}
-                style={{ cursor: isDragging ? "grabbing" : "grab" }}
-            >
+            <div ref={emblaRef} className="overflow-hidden px-4">
+                <div className="flex gap-5 py-3">
                 {memories.map((memory, index) => {
                     const isActive = index === activeMemory;
                     const count = likes[memory.id] || 0;
@@ -275,9 +206,7 @@ function SwipeSection({
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: false, amount: 0.5 }}
                             transition={{ duration: 0.4 }}
-                            onClick={() => {
-                                if (!isDragging) onSelectMemory(index);
-                            }}
+                            onClick={() => onSelectMemory(index)}
                         >
                             {/* Tape sticker simulation */}
                             <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-20 w-12 h-4 bg-rose-200/70 border border-white/60 shadow-sm rotate-[-3deg] rounded-sm pointer-events-none" />
@@ -324,6 +253,7 @@ function SwipeSection({
                         </motion.div>
                     );
                 })}
+                </div>
             </div>
 
             <div className="flex items-center justify-between px-6 max-w-sm mx-auto mt-2">

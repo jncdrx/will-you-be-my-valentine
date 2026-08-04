@@ -9,12 +9,21 @@ import { WelcomeScreen } from "./components/WelcomeScreen";
 import { LoveLetterSection } from "./components/LoveLetterSection";
 import { MemoriesSection } from "./components/MemoriesSection";
 import { AngelReactionForm } from "./components/AngelReactionForm";
-import { SubmissionConfirmation } from "./components/SubmissionConfirmation";
 import { AdminView } from "./components/AdminView";
 import { AngelAuthGate } from "./components/AngelAuthGate";
+import { SubmissionConfirmation } from "./components/SubmissionConfirmation";
 import { PastMonthsaryNavbar } from "./components/PastMonthsaryNavbar";
 import { PastMonthsaryModal } from "./components/PastMonthsaryModal";
-import { getResponseByToken, MonthsaryResponse, loadAngelUserData, saveAngelUserData } from "./lib/supabase";
+import { MusicSelectorModal } from "./components/MusicSelectorModal";
+import {
+  getResponseByToken,
+  MonthsaryResponse,
+  loadAngelUserData,
+  saveAngelUserData,
+  Song,
+  fetchSongs,
+  saveSelectedSongId,
+} from "./lib/supabase";
 import { ArrowUp } from "lucide-react";
 
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
@@ -34,6 +43,23 @@ export default function Page() {
   // Response state for Angel
   const [savedResponseToken, setSavedResponseToken] = useState<string | null>(null);
   const [submittedResponseData, setSubmittedResponseData] = useState<MonthsaryResponse | null>(null);
+
+  // Music Selection state
+  const [songsList, setSongsList] = useState<Song[]>([]);
+  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  const [isMusicModalOpen, setIsMusicModalOpen] = useState(false);
+
+  // Fetch available songs and restore selected song
+  useEffect(() => {
+    fetchSongs().then((songs) => {
+      setSongsList(songs);
+      const savedSongId = localStorage.getItem("monthsary_selected_song_id");
+      if (savedSongId && songs.length > 0) {
+        const found = songs.find((s) => s.id === savedSongId);
+        if (found) setSelectedSong(found);
+      }
+    });
+  }, []);
 
   // Restore Angel's saved state automatically when unlocked
   useEffect(() => {
@@ -143,7 +169,21 @@ export default function Page() {
         <AngelAuthGate onUnlocked={() => setIsUnlocked(true)} />
       )}
 
-      <MusicPlayer />
+      <MusicPlayer
+        currentSong={selectedSong}
+        onOpenSelector={() => setIsMusicModalOpen(true)}
+      />
+      <MusicSelectorModal
+        isOpen={isMusicModalOpen}
+        onClose={() => setIsMusicModalOpen(false)}
+        songs={songsList}
+        selectedSongId={selectedSong?.id || null}
+        onSelectSong={(song) => {
+          setSelectedSong(song);
+          saveSelectedSongId(song.id);
+          setIsMusicModalOpen(false);
+        }}
+      />
       <MouseTrail />
       <FloatingHearts />
       <HeartBurst />
@@ -153,7 +193,7 @@ export default function Page() {
         <PastMonthsaryNavbar
           currentStep={step}
           onStepChange={handleStepChange}
-          onSelectPastMonth={(index) => setSelectedPastMonthIndex(index)}
+          onSelectPastMonth={(index: number) => setSelectedPastMonthIndex(index)}
           savedResponseToken={savedResponseToken}
         />
       )}
@@ -169,7 +209,11 @@ export default function Page() {
       {/* View Switcher */}
       <AnimatePresence mode="wait">
         {isAdminMode ? (
-          <AdminView key="admin" onExit={handleExitAdmin} />
+          <AdminView
+            key="admin"
+            onExit={handleExitAdmin}
+            onSongsChange={(updated) => setSongsList(updated)}
+          />
         ) : (
           <>
             {step === "welcome" && (

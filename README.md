@@ -1,88 +1,60 @@
-# Happy 7th Monthsary Surprise Website for Angel 💕
+# Monthsary Surprise Website for Angel
 
-A romantic, interactive step-by-step surprise website built for **Angel** to celebrate our **7th Monthsary**.
+Welcome to the repository for the romantic, interactive website I built for my girlfriend, Angel. My name is John Cedrix, and I designed and developed this application to celebrate our relationship milestones, shared memories, love letters, and special moments together.
 
-Features a step-by-step journey (Welcome Screen with duration counter & secret heart tap Easter egg, envelope Love Letter with image download, Polaroid Memory Carousel with 7-month timeline, Angel's Reaction Form with image uploads & playful typing prompts, and a private Supabase-authenticated Admin view).
-
----
-
-## 🌟 Key Features
-
-1. **Step-by-Step Romantic Experience**:
-   - **Welcome Screen**: "Happy 7th Monthsary, Angel" greeting, live relationship counter, countdown timer, romantic music player, and secret Easter egg note (tap heart 7 times).
-   - **Love Letter Section**: Interactive envelope reveal, typewriter effect, customizable placeholders, and 1-tap "Save Letter as Image".
-   - **Memories & Photo Gallery**: Interactive photo carousel, 7-month milestone timeline, and Lightbox modal view.
-   - **Angel's Reaction Section**: Name input, reply textarea with playful prompt rotator ("Are you done yet?", "Do you love me?", etc.), multi-image reaction upload (JPG, PNG, WEBP, max 5MB), and secure Supabase submission.
-   - **Submission Confirmation**: Celebratory confetti, saved reply summary card, and token-authorized edit mode.
-   - **Private Admin Dashboard**: Protected view (`#admin`) with Supabase Auth to read, manage, and inspect Angel's submitted replies and photos.
+Live Website: https://jncdrx.github.io/will-you-be-my-valentine/
 
 ---
 
-## 🛠️ Technology Stack
+## About My Project
 
-- **Frontend**: React 18, Vite 5, TypeScript 5, Tailwind CSS 3, Framer Motion 12, Lucide Icons, Canvas Confetti, HTML2Canvas.
-- **Backend & Storage**: Supabase PostgreSQL (`monthsary_responses` table) and Supabase Storage (`monthsary-reactions` bucket).
-- **Deployment**: Static deployment via GitHub Pages (`gh-pages`).
+I created this application as a personalized digital experience and memory vault for Angel and me. Rather than building a basic static greeting page, I wanted to give her an immersive, step-by-step romantic journey that combines real-time relationship tracking, interactive love letters, Polaroid-style photo galleries, a milestone timeline, a response form for her, and a private administration portal for myself.
 
----
-
-## 🗄️ Supabase Backend Setup
-
-### 1. Database Schema Execution
-Navigate to your **Supabase SQL Editor** and run the contents of [`supabase/schema.sql`](file:///e:/Workspace/monthsarry/supabase/schema.sql):
-
-```sql
--- Creates monthsary_responses table, RLS policies, and monthsary-reactions storage bucket
-```
-
-### 2. Environment Variables Setup
-Copy `.env.example` to `.env.local`:
-
-```bash
-cp .env.example .env.local
-```
-
-Add your Supabase Project URL and Anon Key:
-
-```env
-VITE_SUPABASE_URL=https://your-project-id.supabase.co
-VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-```
+This website serves both as a live celebration space for our monthsary milestones and as an ongoing digital keepsake where our past letters, photo memories, date itineraries, and love notes are preserved forever.
 
 ---
 
-## 🚀 Local Development & Build Verification
+## Overview of Features and Experience
 
-```bash
-# Install dependencies
-pnpm install
+### 1. Private Authentication Gate
+I built a private authentication gate tailored specifically for Angel to open the site. She authenticates with her credentials before unlocking the surprise journey. I set up server-side verification against Supabase site configurations, complete with smooth visual error feedback if wrong credentials are entered.
 
-# Run dev server
-pnpm dev
+### 2. Welcome Screen and Live Relationship Counter
+Upon entering, Angel sees a personalized greeting alongside a live relationship timer I programmed. The counter dynamically calculates the exact number of days, hours, minutes, and seconds we have spent together from our anniversary start date. I also included a secret note hidden behind a heart icon on this screen.
 
-# Lint code
-pnpm lint
+### 3. Interactive Love Letter Envelope
+I designed a love letter section featuring a wax-sealed envelope that opens with realistic animations when clicked. Inside, my personal letter renders line by line with a typewriter effect. I also built a 1-tap canvas exporter so Angel can save the formatted letter directly to her device as a high-resolution image.
 
-# Build for production
-pnpm build
-```
+### 4. Memory Gallery and Milestone Timeline
+The memory section showcases an interactive Polaroid photo carousel I curated with custom captions and lightbox modal image viewing. Accompanying the photo gallery is a chronological milestone timeline I created to document key dates, celebrations, and adventures we have shared throughout our relationship.
 
----
+### 5. Angel's Interactive Reaction Form
+To make the experience interactive and reciprocal, I built a dedicated reaction section where Angel can write her thoughts, feelings, and replies to me. As she types, a playful prompt system I designed displays sweet live messages. She can also attach photos, which are uploaded directly to cloud storage.
 
-## 🌐 Deploy to GitHub Pages
+### 6. Submission Confirmation and Reply Management
+When Angel submits her reply, the page triggers a confetti display and presents a summary card of her response. I programmed a secure response token system so she can return and edit or update her reply whenever she wishes.
 
-Deploy directly using `gh-pages`:
+### 7. Private Admin Dashboard
+I created a protected administration portal for myself accessible via a hidden hash route (`#admin`). Protected by Supabase Auth, this dashboard allows me to read Angel's submitted replies, inspect timestamped records, and download any photos she attaches in real time.
 
-```bash
-pnpm deploy
-```
-
-The app will be published to: `https://username.github.io/repository-name/`
+### 8. Past Monthsary Archive and Background Music Player
+I added a top navigation bar enabling Angel to explore archives from our past monthsaries, including previous letters, lists of reasons why I love her, date itineraries, and photo collections. I also implemented a persistent background audio player so she can listen to romantic tracks with a custom song selection menu.
 
 ---
 
-## 🔒 Security Assurance
+## Technical Stack and Infrastructure
 
-- **No Service-Role Keys**: The frontend exclusively uses the public anonymous Supabase key.
-- **Row Level Security (RLS)**: Public visitors can only insert a response and read their own response matching their secure `response_token`.
-- **Admin Isolation**: Admin dashboard operations require Supabase Auth user credentials.
+- Frontend Framework: React 18 with TypeScript 5 and Vite 5
+- Styling and Motion: Tailwind CSS 3 and Framer Motion 12
+- Icons and UI Components: Lucide React Icons
+- Interactive Utilities: Canvas Confetti, HTML2Canvas, Typewriter Effect
+- Audio System: Howler.js and Use-Sound
+- Backend and Database: Supabase PostgreSQL with Row Level Security (RLS)
+- File Storage: Supabase Storage Bucket
+- Hosting and Deployment: GitHub Pages via gh-pages static deployment
+
+---
+
+## Project Ownership
+
+This repository and application are custom built exclusively by me, John Cedrix, for my girlfriend Angel.

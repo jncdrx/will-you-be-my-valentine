@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
+import { intervalToDuration, differenceInDays } from "date-fns";
 
 const START_DATE = new Date("2026-01-04");
 
@@ -13,17 +14,21 @@ export function RelationshipTimer() {
     });
 
     useEffect(() => {
-        const timer = setInterval(() => {
+        const updateTimer = () => {
             const now = new Date();
-            const difference = now.getTime() - START_DATE.getTime();
+            const daysTotal = Math.max(0, differenceInDays(now, START_DATE));
+            const duration = intervalToDuration({ start: START_DATE, end: now });
 
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((difference / 1000 / 60) % 60);
-            const seconds = Math.floor((difference / 1000) % 60);
+            setTime({
+                days: daysTotal,
+                hours: duration.hours ?? 0,
+                minutes: duration.minutes ?? 0,
+                seconds: duration.seconds ?? 0,
+            });
+        };
 
-            setTime({ days, hours, minutes, seconds });
-        }, 1000);
+        updateTimer();
+        const timer = setInterval(updateTimer, 1000);
 
         return () => clearInterval(timer);
     }, []);
