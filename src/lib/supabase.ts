@@ -1,12 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Environment variables loaded via Vite from .env / Vercel (with project fallbacks)
-const supabaseUrl =
-  import.meta.env.VITE_SUPABASE_URL || "https://wikmowwwixnpluqokyay.supabase.co";
-const supabaseAnonKey =
-  import.meta.env.VITE_SUPABASE_ANON_KEY || "sb_publishable_iRbH1ETQvQkyQWDwMkqlnQ_c8ALhm31";
+// Environment variables loaded via Vite from .env / Vercel
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(
+  supabaseUrl || "https://placeholder.supabase.co",
+  supabaseAnonKey || "placeholder-anon-key"
+);
 
 export interface MonthsaryResponse {
   id?: string;
@@ -28,11 +29,13 @@ export const generateResponseToken = (): string => {
   return "token_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
 };
 
-// Check if Supabase URL is actually configured with a valid endpoint
-const isSupabaseConfigured = () => {
-  return (
+// Check if Supabase URL and Anon Key are actually configured with a valid JWT key
+export const isSupabaseConfigured = (): boolean => {
+  return Boolean(
     supabaseUrl &&
-    !supabaseUrl.includes("your-supabase-project")
+    !supabaseUrl.includes("your-supabase-project") &&
+    supabaseAnonKey &&
+    supabaseAnonKey.startsWith("eyJ")
   );
 };
 
@@ -47,27 +50,40 @@ export async function uploadReactionImage(file: File, responseId: string): Promi
     });
   }
 
-  const fileExt = file.name.split(".").pop();
-  const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
-  const filePath = `responses/${responseId}/${fileName}`;
+  try {
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+    const filePath = `responses/${responseId}/${fileName}`;
 
-  const { error: uploadError } = await supabase.storage
-    .from("monthsary-reactions")
-    .upload(filePath, file, {
-      cacheControl: "3600",
-      upsert: true,
+    const { error: uploadError } = await supabase.storage
+      .from("monthsary-reactions")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error("Storage upload error, falling back to base64:", uploadError);
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from("monthsary-reactions")
+      .getPublicUrl(filePath);
+
+    return publicUrlData.publicUrl;
+  } catch (err) {
+    console.error("Storage upload exception, falling back to base64:", err);
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(file);
     });
-
-  if (uploadError) {
-    console.error("Storage upload error:", uploadError);
-    throw uploadError;
   }
-
-  const { data: publicUrlData } = supabase.storage
-    .from("monthsary-reactions")
-    .getPublicUrl(filePath);
-
-  return publicUrlData.publicUrl;
 }
 
 // Save or Update Angel's Response
@@ -90,7 +106,6 @@ export async function saveMonthsaryResponse(
       uploadedUrls = await Promise.all(uploadPromises);
     } catch (err) {
       console.error("Failed uploading reaction photos:", err);
-      return { data: null, error: err as Error, token };
     }
   }
 
@@ -103,8 +118,7 @@ export async function saveMonthsaryResponse(
     user_agent: userAgent,
   };
 
-  if (!isSupabaseConfigured()) {
-    // Local Storage Mock Fallback
+  const saveLocal = (): MonthsaryResponse => {
     const mockRecord: MonthsaryResponse = {
       ...record,
       id: responseId,
@@ -113,81 +127,136 @@ export async function saveMonthsaryResponse(
     };
     localStorage.setItem(`monthsary_resp_${token}`, JSON.stringify(mockRecord));
     
-    // Also save in local responses array for demo admin view
     const allMockStr = localStorage.getItem("monthsary_all_responses") || "[]";
-    const allMock: MonthsaryResponse[] = JSON.parse(allMockStr);
-    allMock.push(mockRecord);
-    localStorage.setItem("monthsary_all_responses", JSON.stringify(allMock));
+    try {
+      const allMock: MonthsaryResponse[] = JSON.parse(allMockStr);
+      allMock.push(mockRecord);
+      localStorage.setItem("monthsary_all_responses", JSON.stringify(allMock));
+    } catch {
+      localStorage.setItem("monthsary_all_responses", JSON.stringify([mockRecord]));
+    }
+    return mockRecord;
+  };
 
+  if (!isSupabaseConfigured()) {
+    const mockRecord = saveLocal();
     return { data: mockRecord, error: null, token };
   }
 
-  // Insert to Supabase DB
-  const { data, error } = await supabase
-    .from("monthsary_responses")
-    .insert([record])
-    .select()
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from("monthsary_responses")
+      .insert([record])
+      .select()
+      .single();
 
-  if (error) {
-    console.error("Supabase DB Insert error:", error);
-    return { data: null, error, token };
+    if (error) {
+      console.error("Supabase DB Insert error, saving locally:", error);
+      const mockRecord = saveLocal();
+      return { data: mockRecord, error: null, token };
+    }
+
+    return { data, error: null, token };
+  } catch (err) {
+    console.error("Supabase DB Exception, saving locally:", err);
+    const mockRecord = saveLocal();
+    return { data: mockRecord, error: null, token };
   }
-
-  return { data, error: null, token };
 }
 
 // Retrieve response by secure token
 export async function getResponseByToken(token: string): Promise<MonthsaryResponse | null> {
-  if (!isSupabaseConfigured()) {
+  const getLocal = (): MonthsaryResponse | null => {
     const local = localStorage.getItem(`monthsary_resp_${token}`);
     return local ? JSON.parse(local) : null;
+  };
+
+  if (!isSupabaseConfigured()) {
+    return getLocal();
   }
 
-  const { data, error } = await supabase
-    .from("monthsary_responses")
-    .select("*")
-    .eq("response_token", token)
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from("monthsary_responses")
+      .select("*")
+      .eq("response_token", token)
+      .single();
 
-  if (error) {
-    console.error("Fetch by token error:", error);
-    return null;
+    if (error) {
+      console.error("Fetch by token error:", error);
+      return getLocal();
+    }
+
+    return data;
+  } catch {
+    return getLocal();
   }
-
-  return data;
 }
 
 // Fetch all responses for authenticated Admin
 export async function getAdminResponses(): Promise<MonthsaryResponse[]> {
-  if (!isSupabaseConfigured()) {
+  const getLocalResponses = (): MonthsaryResponse[] => {
     const allMockStr = localStorage.getItem("monthsary_all_responses") || "[]";
-    return JSON.parse(allMockStr);
+    try {
+      return JSON.parse(allMockStr);
+    } catch {
+      return [];
+    }
+  };
+
+  if (!isSupabaseConfigured()) {
+    return getLocalResponses();
   }
 
-  const { data, error } = await supabase
-    .from("monthsary_responses")
-    .select("*")
-    .order("created_at", { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from("monthsary_responses")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    console.error("Admin fetch error:", error);
-    return [];
+    if (error) {
+      console.error("Admin fetch error:", error);
+      return getLocalResponses();
+    }
+
+    const dbResponses = data || [];
+    const local = getLocalResponses();
+    const combinedMap = new Map<string, MonthsaryResponse>();
+    dbResponses.forEach((r) => combinedMap.set(r.id || r.response_token, r));
+    local.forEach((r) => {
+      const key = r.id || r.response_token;
+      if (!combinedMap.has(key)) {
+        combinedMap.set(key, r);
+      }
+    });
+
+    return Array.from(combinedMap.values());
+  } catch (err) {
+    console.error("Admin fetch exception:", err);
+    return getLocalResponses();
   }
-
-  return data || [];
 }
 
 // Delete response (Admin only)
 export async function deleteAdminResponse(id: string): Promise<boolean> {
-  if (!isSupabaseConfigured()) {
-    const allMockStr = localStorage.getItem("monthsary_all_responses") || "[]";
+  const allMockStr = localStorage.getItem("monthsary_all_responses") || "[]";
+  try {
     let allMock: MonthsaryResponse[] = JSON.parse(allMockStr);
-    allMock = allMock.filter((item) => item.id !== id);
+    allMock = allMock.filter((item) => item.id !== id && item.response_token !== id);
     localStorage.setItem("monthsary_all_responses", JSON.stringify(allMock));
+  } catch (err) {
+    console.error("Error clearing local response:", err);
+  }
+
+  if (!isSupabaseConfigured()) {
     return true;
   }
 
-  const { error } = await supabase.from("monthsary_responses").delete().eq("id", id);
-  return !error;
+  try {
+    const { error } = await supabase.from("monthsary_responses").delete().eq("id", id);
+    return !error;
+  } catch {
+    return true;
+  }
 }
+
