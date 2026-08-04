@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Edit3, CheckCircle, Heart, Download, Ticket, Sparkles, MessageCircle, Calendar, Gift, Camera, Upload, X } from "lucide-react";
+import { Edit3, CheckCircle, Heart, Download, Ticket, Sparkles, Gift, Camera, Upload, X } from "lucide-react";
 import confetti from "canvas-confetti";
 import html2canvas from "html2canvas";
 import { MonthsaryResponse } from "../lib/supabase";
@@ -128,14 +128,6 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
     }
   };
 
-  const handleSendNotification = () => {
-    triggerHaptic();
-    const text = encodeURIComponent(
-      `Hi baby! 💕 I just submitted my 7th Monthsary reply on our website and claimed my Nail Care ticket! Go check it out! 🥰✨`
-    );
-    window.open(`https://wa.me/?text=${text}`, "_blank");
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -200,67 +192,6 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
             exit={{ opacity: 0, y: -10 }}
             className="w-full flex flex-col gap-5 text-left"
           >
-            {/* Step Roadmap */}
-            <div className="bg-white/90 backdrop-blur-md p-5 sm:p-6 rounded-3xl border border-rose-200 shadow-xl">
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-rose-600 bg-rose-100/80 px-3 py-1 rounded-full border border-rose-200 inline-flex items-center gap-1.5 mb-4">
-                <Calendar size={13} className="text-rose-500" />
-                <span>What Happens Next Roadmap</span>
-              </span>
-
-              <div className="space-y-4">
-                {/* Roadmap Item 1 */}
-                <div className="flex gap-3 items-start">
-                  <div className="w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md">
-                    1
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-gray-800">Your Baby Receives & Reads Your Reply 💌</h4>
-                    <p className="text-xs text-gray-600 mt-0.5 leading-relaxed">
-                      Your message and photos are safely received, my love! Your baby is reading every single word right now with a warm smile!
-                    </p>
-                  </div>
-                </div>
-
-                {/* Roadmap Item 2 */}
-                <div className="flex gap-3 items-start">
-                  <div className="w-8 h-8 rounded-full bg-pink-500 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md">
-                    2
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-gray-800">Claim Your Sponsored Nail Care & Nail Art Session 💅🎟️</h4>
-                    <p className="text-xs text-gray-600 mt-0.5 leading-relaxed">
-                      You've unlocked an exclusive 100% sponsored Nail Care & Nail Art Session pass below! Claim it for your next pamper day.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Roadmap Item 3 */}
-                <div className="flex gap-3 items-start">
-                  <div className="w-8 h-8 rounded-full bg-rose-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md">
-                    3
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-gray-800">Send Me a Kissing Selfie / Photo 💋📸</h4>
-                    <p className="text-xs text-gray-600 mt-0.5 leading-relaxed">
-                      Upload a photo of yourself kissing or a cute sweet selfie below so I can keep your sweetest kiss close to my heart!
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick WhatsApp Share Button */}
-              <div className="mt-5 pt-4 border-t border-rose-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <span className="text-xs font-semibold text-rose-800">Want to notify your baby right now?</span>
-                <button
-                  onClick={handleSendNotification}
-                  className="w-full sm:w-auto px-4 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold shadow-md transition-all flex items-center justify-center gap-1.5"
-                >
-                  <MessageCircle size={15} />
-                  <span>Notify Baby on WhatsApp 💬</span>
-                </button>
-              </div>
-            </div>
-
             {/* STEP 2: Claimable Sponsored Nail Care Session Ticket */}
             <div
               ref={ticketRef}
