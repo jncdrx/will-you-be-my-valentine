@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, ChevronLeft, ChevronRight, Sprout, Cake, Sparkles, Utensils, Coffee, Heart, Crown } from "lucide-react";
-import { monthsaryConfig, TimelineEvent } from "../config/monthsaryConfig";
+import { X, Calendar, ChevronLeft, ChevronRight, Sprout, Cake, Sparkles, Utensils, Coffee, Heart, Crown, BookOpen, Camera } from "lucide-react";
+import { monthsaryConfig, MonthDetail } from "../config/monthsaryConfig";
 import { Itinerary } from "./Itinerary";
 
 interface PastMonthsaryModalProps {
@@ -35,11 +35,8 @@ export function PastMonthsaryModal({ initialMonthIndex, onClose }: PastMonthsary
   const [currentIndex, setCurrentIndex] = useState(initialMonthIndex);
   const [showFullImage, setShowFullImage] = useState<string | null>(null);
 
-  const currentEvent: TimelineEvent = monthsaryConfig.timelineEvents[currentIndex];
-  const totalMonths = monthsaryConfig.timelineEvents.length;
-
-  // Find memory photo matching this month/chapter
-  const currentMemory = monthsaryConfig.memories[currentIndex] || monthsaryConfig.memories[0];
+  const monthDetail: MonthDetail = monthsaryConfig.monthDetails[currentIndex] || monthsaryConfig.monthDetails[0];
+  const totalMonths = monthsaryConfig.monthDetails.length;
 
   const triggerHaptic = () => {
     if (typeof navigator !== "undefined" && navigator.vibrate) {
@@ -69,19 +66,19 @@ export function PastMonthsaryModal({ initialMonthIndex, onClose }: PastMonthsary
         {/* Top Header Bar */}
         <div className="flex items-center justify-between border-b border-rose-100 pb-3 mb-4 shrink-0">
           <div className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${currentEvent.color} text-white flex items-center justify-center shadow-md`}>
-              {renderTimelineIcon(currentEvent.iconName, 16)}
+            <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${monthDetail.color} text-white flex items-center justify-center shadow-md`}>
+              {renderTimelineIcon(monthDetail.iconName, 16)}
             </div>
             <div>
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
                 Chapter {currentIndex + 1} of {totalMonths}
               </span>
               <h3 className="text-sm font-bold text-gray-800 flex items-center gap-1.5 mt-0.5">
-                <span>{currentEvent.month}</span>
+                <span>{monthDetail.month}</span>
                 <span className="text-gray-300">•</span>
                 <span className="text-xs text-rose-500 font-medium flex items-center gap-1">
                   <Calendar size={12} />
-                  {currentEvent.date}
+                  {monthDetail.date}
                 </span>
               </h3>
             </div>
@@ -98,49 +95,74 @@ export function PastMonthsaryModal({ initialMonthIndex, onClose }: PastMonthsary
 
         {/* Modal Scrollable Body */}
         <div className="overflow-y-auto pr-1 space-y-5 flex-1">
-          {/* Main Title & Description Card */}
-          <div className={`p-5 rounded-2xl bg-gradient-to-r ${currentEvent.color} text-white shadow-lg relative overflow-hidden`}>
+          {/* Main Banner Card */}
+          <div className={`p-5 rounded-2xl bg-gradient-to-r ${monthDetail.color} text-white shadow-lg relative overflow-hidden`}>
             <div className="relative z-10">
               <span className="text-xs font-extrabold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full text-white backdrop-blur-sm inline-block mb-2">
-                {currentEvent.month} Special Memory
+                {monthDetail.month} Memory Highlight
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold font-display">
-                {currentEvent.title}
+                {monthDetail.title}
               </h2>
-              <p className="text-xs sm:text-sm text-white/90 mt-2 font-medium leading-relaxed max-w-xl">
-                {currentEvent.description}
+              <p className="text-xs sm:text-sm text-white/90 mt-1 font-medium leading-relaxed">
+                {monthDetail.date} • {monthDetail.month} Celebration
               </p>
             </div>
           </div>
 
-          {/* Memory Photo Card */}
-          {currentMemory && (
-            <div className="bg-rose-50/50 p-4 rounded-2xl border border-rose-100">
-              <div className="flex justify-between items-center mb-2.5">
-                <span className="text-xs font-bold text-rose-700 uppercase tracking-wider flex items-center gap-1">
-                  <Heart size={14} className="fill-rose-500 text-rose-500" />
-                  <span>Memory Photo • {currentMemory.chapterName}</span>
-                </span>
-                <span className="text-[10px] text-gray-400 font-medium">Tap to enlarge</span>
-              </div>
-
-              <div
-                onClick={() => setShowFullImage(currentMemory.src)}
-                className="relative aspect-video rounded-xl overflow-hidden border border-rose-200 shadow-md cursor-pointer group"
-              >
-                <img
-                  src={currentMemory.src}
-                  alt={currentMemory.caption}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
-                  <p className="text-xs sm:text-sm font-semibold text-white italic font-serif">
-                    "{currentMemory.caption}"
-                  </p>
-                </div>
-              </div>
+          {/* Dedicated Love Letter Card for this Month */}
+          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-rose-200 shadow-md relative overflow-hidden">
+            <div className="flex items-center gap-1.5 mb-3 text-rose-600 font-bold text-xs uppercase tracking-wider">
+              <BookOpen size={15} />
+              <span>Personal Love Letter • {monthDetail.month}</span>
             </div>
-          )}
+
+            <h3 className="text-lg font-extrabold text-rose-700 font-display mb-2">
+              {monthDetail.letterTitle}
+            </h3>
+
+            <div className="space-y-2 text-xs sm:text-sm text-gray-700 leading-relaxed font-serif italic bg-rose-50/50 p-4 rounded-xl border border-rose-100">
+              {monthDetail.letterBody.map((paragraph, pIdx) => (
+                <p key={pIdx}>"{paragraph}"</p>
+              ))}
+            </div>
+
+            <p className="mt-3 text-right text-xs font-bold text-rose-600 italic">
+              — Always & Forever, Your Baby 💕
+            </p>
+          </div>
+
+          {/* ALL Photo Gallery for this Month */}
+          <div className="bg-rose-50/40 p-4 rounded-2xl border border-rose-100">
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-xs font-bold text-rose-700 uppercase tracking-wider flex items-center gap-1.5">
+                <Camera size={15} className="text-rose-500" />
+                <span>All Memory Photos ({monthDetail.photos.length})</span>
+              </span>
+              <span className="text-[10px] text-gray-400 font-medium">Tap photo to enlarge</span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-3">
+              {monthDetail.photos.map((photo, pIdx) => (
+                <div
+                  key={pIdx}
+                  onClick={() => setShowFullImage(photo.src)}
+                  className="relative aspect-video rounded-xl overflow-hidden border border-rose-200 shadow-md cursor-pointer group"
+                >
+                  <img
+                    src={photo.src}
+                    alt={photo.caption}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-2.5">
+                    <p className="text-[11px] font-semibold text-white italic font-serif leading-tight line-clamp-2">
+                      "{photo.caption}"
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Special Itinerary Embed for 2nd Month */}
           {currentIndex === 1 && (
@@ -148,7 +170,7 @@ export function PastMonthsaryModal({ initialMonthIndex, onClose }: PastMonthsary
               <div className="bg-amber-50/60 p-4 rounded-2xl border border-amber-200 text-left mb-3">
                 <span className="text-xs font-extrabold uppercase tracking-wider text-amber-800 flex items-center gap-1.5">
                   <Cake size={15} className="text-amber-600" />
-                  <span>2nd Month Special Birthday + Monthsary Itinerary</span>
+                  <span>2nd Month Birthday + Monthsary Date Itinerary</span>
                 </span>
                 <p className="text-xs text-amber-900/80 mt-1">
                   Below is our memorable date schedule from SM Megamall & Ortigas!
@@ -171,7 +193,7 @@ export function PastMonthsaryModal({ initialMonthIndex, onClose }: PastMonthsary
 
           {/* Month Indicator Dots */}
           <div className="flex items-center gap-1.5">
-            {monthsaryConfig.timelineEvents.map((_, idx) => (
+            {monthsaryConfig.monthDetails.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
