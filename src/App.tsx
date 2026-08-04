@@ -11,10 +11,10 @@ import { MemoriesSection } from "./components/MemoriesSection";
 import { AngelReactionForm } from "./components/AngelReactionForm";
 import { SubmissionConfirmation } from "./components/SubmissionConfirmation";
 import { AdminView } from "./components/AdminView";
-import { PasswordGate } from "./components/PasswordGate";
+import { AngelAuthGate } from "./components/AngelAuthGate";
 import { PastMonthsaryNavbar } from "./components/PastMonthsaryNavbar";
 import { PastMonthsaryModal } from "./components/PastMonthsaryModal";
-import { getResponseByToken, MonthsaryResponse } from "./lib/supabase";
+import { getResponseByToken, MonthsaryResponse, loadAngelUserData, saveAngelUserData } from "./lib/supabase";
 import { ArrowUp } from "lucide-react";
 
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
@@ -26,7 +26,7 @@ export default function Page() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [selectedPastMonthIndex, setSelectedPastMonthIndex] = useState<number | null>(null);
 
-  // Site Access Password state (stored in sessionStorage once unlocked)
+  // Private Access Authentication state
   const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
     return sessionStorage.getItem("monthsary_authenticated") === "true";
   });
@@ -34,6 +34,29 @@ export default function Page() {
   // Response state for Angel
   const [savedResponseToken, setSavedResponseToken] = useState<string | null>(null);
   const [submittedResponseData, setSubmittedResponseData] = useState<MonthsaryResponse | null>(null);
+
+  // Restore Angel's saved state automatically when unlocked
+  useEffect(() => {
+    if (isUnlocked) {
+      loadAngelUserData().then((data) => {
+        if (data) {
+          if (data.current_step) {
+            setStep(data.current_step as ExperienceStep);
+          }
+          if (data.message) {
+            setSubmittedResponseData({
+              name: data.name || "my dearest baby angel",
+              message: data.message,
+              image_urls: data.image_urls || [],
+              response_token: "angel_auth_token",
+              created_at: data.created_at || new Date().toISOString(),
+            });
+            setSavedResponseToken("angel_auth_token");
+          }
+        }
+      });
+    }
+  }, [isUnlocked]);
 
   // Detect /admin route path, #admin hash, or ?admin=true search query on URL
   useEffect(() => {
@@ -61,7 +84,7 @@ export default function Page() {
     };
   }, []);
 
-  // Check if Angel has already submitted a response stored in localStorage
+  // Check if Angel has already submitted a response stored locally
   useEffect(() => {
     const token = localStorage.getItem("monthsary_angel_token");
     if (token) {
@@ -73,6 +96,11 @@ export default function Page() {
       });
     }
   }, []);
+
+  const handleStepChange = (newStep: ExperienceStep) => {
+    setStep(newStep);
+    saveAngelUserData({ current_step: newStep });
+  };
 
   // Handle scroll for back-to-top button
   useEffect(() => {
@@ -110,9 +138,9 @@ export default function Page() {
       {/* Soft Vignette Overlay */}
       <div className="pointer-events-none fixed inset-0 z-0 bg-radial-gradient from-transparent via-rose-100/10 to-pink-200/20 mix-blend-multiply"></div>
 
-      {/* Require Password Gate if not unlocked */}
+      {/* Require Angel Authentication Gate if not unlocked */}
       {!isUnlocked && (
-        <PasswordGate onUnlocked={() => setIsUnlocked(true)} />
+        <AngelAuthGate onUnlocked={() => setIsUnlocked(true)} />
       )}
 
       <MusicPlayer />
@@ -124,7 +152,7 @@ export default function Page() {
       {!isAdminMode && (
         <PastMonthsaryNavbar
           currentStep={step}
-          onStepChange={setStep}
+          onStepChange={handleStepChange}
           onSelectPastMonth={(index) => setSelectedPastMonthIndex(index)}
           savedResponseToken={savedResponseToken}
         />

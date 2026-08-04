@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Edit3, CheckCircle, Heart, Download, Ticket, Sparkles, Gift, Camera, Upload, X } from "lucide-react";
 import confetti from "canvas-confetti";
 import html2canvas from "html2canvas";
-import { MonthsaryResponse } from "../lib/supabase";
+import { MonthsaryResponse, saveAngelUserData } from "../lib/supabase";
 import { monthsaryConfig } from "../config/monthsaryConfig";
 
 interface SubmissionConfirmationProps {
@@ -47,6 +47,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
   const handleClaimTicket = () => {
     triggerHaptic();
     setTicketClaimed(true);
+    saveAngelUserData({ ticket_claimed: true });
     confetti({
       particleCount: 120,
       spread: 80,
@@ -70,6 +71,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
       const resultStr = reader.result as string;
       setKissingPhoto(resultStr);
       localStorage.setItem("monthsary_angel_kissing_photo", resultStr);
+      saveAngelUserData({ kissing_photo_url: resultStr });
       confetti({
         particleCount: 80,
         spread: 60,
@@ -84,6 +86,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
     triggerHaptic();
     setKissingPhoto(null);
     localStorage.removeItem("monthsary_angel_kissing_photo");
+    saveAngelUserData({ kissing_photo_url: "" });
   };
 
   const handleDownloadCard = async () => {

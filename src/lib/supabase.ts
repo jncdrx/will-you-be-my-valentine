@@ -297,4 +297,110 @@ export async function verifySitePassword(inputPassword: string): Promise<boolean
   }
 }
 
+export interface AngelUserData {
+  user_id?: string;
+  email?: string;
+  name?: string;
+  message?: string;
+  image_urls?: string[];
+  kissing_photo_url?: string;
+  ticket_claimed?: boolean;
+  current_step?: string;
+  answers?: Record<string, any>;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// Load Angel's authenticated state from Supabase table 'angel_user_data'
+export async function loadAngelUserData(): Promise<AngelUserData | null> {
+  const email = "angelicogn@gmail.com";
+  
+  const loadLocal = (): AngelUserData | null => {
+    try {
+      const saved = localStorage.getItem("angel_user_data");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  if (!isSupabaseConfigured()) {
+    return loadLocal();
+  }
+
+  try {
+    const { data: sessionData } = await supabase.auth.getSession();
+    const userId = sessionData.session?.user?.id;
+
+    let query = supabase.from("angel_user_data").select("*");
+    if (userId) {
+      query = query.eq("user_id", userId);
+    } else {
+      query = query.eq("email", email);
+    }
+
+    const { data, error } = await query.maybeSingle();
+
+    if (error || !data) {
+      return loadLocal();
+    }
+
+    // Sync to local storage as fallback
+    localStorage.setItem("angel_user_data", JSON.stringify(data));
+    return data;
+  } catch (err) {
+    console.error("Load Angel user data exception:", err);
+    return loadLocal();
+  }
+}
+
+// Save or Update Angel's authenticated state in Supabase table 'angel_user_data'
+export async function saveAngelUserData(update: Partial<AngelUserData>): Promise<boolean> {
+  const email = "angelicogn@gmail.com";
+
+  const saveLocal = () => {
+    try {
+      const existing = localStorage.getItem("angel_user_data");
+      const current = existing ? JSON.parse(existing) : {};
+      const merged = { ...current, ...update, updated_at: new Date().toISOString() };
+      localStorage.setItem("angel_user_data", JSON.stringify(merged));
+    } catch (e) {
+      console.error("Save local angel user data error:", e);
+    }
+  };
+
+  saveLocal();
+
+  if (!isSupabaseConfigured()) {
+    return true;
+  }
+
+  try {
+    const { data: sessionData } = await supabase.auth.getSession();
+    const userId = sessionData.session?.user?.id;
+
+    const payload = {
+      ...update,
+      email,
+      ...(userId ? { user_id: userId } : {}),
+      updated_at: new Date().toISOString(),
+    };
+
+    const { error } = await supabase
+      .from("angel_user_data")
+      .upsert(payload, { onConflict: userId ? "user_id" : "email" });
+
+    if (error) {
+      console.error("Save Angel user data DB error:", error);
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    console.error("Save Angel user data exception:", err);
+    return false;
+  }
+}
+
+
 

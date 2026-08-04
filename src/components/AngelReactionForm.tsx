@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, X, Send, Sparkles, AlertCircle, MessageSquare, Camera, Clock, Heart, Hourglass, Smile, Sun, HeartHandshake, BookOpen, ArrowLeft } from "lucide-react";
 import { monthsaryConfig } from "../config/monthsaryConfig";
-import { saveMonthsaryResponse, MonthsaryResponse } from "../lib/supabase";
+import { saveMonthsaryResponse, MonthsaryResponse, saveAngelUserData } from "../lib/supabase";
 
 interface AngelReactionFormProps {
   onSubmitted: (data: MonthsaryResponse, token: string) => void;
@@ -169,6 +169,12 @@ export function AngelReactionForm({ onSubmitted, onBackToMemories, existingToken
       }
 
       localStorage.setItem("monthsary_angel_token", token);
+      saveAngelUserData({
+        name: name.trim(),
+        message: message.trim(),
+        image_urls: data.image_urls || [],
+        current_step: "confirmation",
+      });
       onSubmitted(data, token);
     } catch (err) {
       console.error("Submission error:", err);
