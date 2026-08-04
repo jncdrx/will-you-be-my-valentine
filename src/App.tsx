@@ -11,6 +11,7 @@ import { MemoriesSection } from "./components/MemoriesSection";
 import { AngelReactionForm } from "./components/AngelReactionForm";
 import { SubmissionConfirmation } from "./components/SubmissionConfirmation";
 import { AdminView } from "./components/AdminView";
+import { PasswordGate } from "./components/PasswordGate";
 import { monthsaryConfig } from "./config/monthsaryConfig";
 import { getResponseByToken, MonthsaryResponse } from "./lib/supabase";
 import { Heart, ArrowUp } from "lucide-react";
@@ -29,6 +30,11 @@ export default function Page() {
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+
+  // Site Access Password state (stored in sessionStorage once unlocked)
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
+    return sessionStorage.getItem("monthsary_authenticated") === "true";
+  });
 
   // Response state for Angel
   const [savedResponseToken, setSavedResponseToken] = useState<string | null>(null);
@@ -110,6 +116,11 @@ export default function Page() {
     <div className="relative flex min-h-screen w-full flex-col items-center justify-start overflow-x-hidden text-center font-sans pb-16 pt-4">
       {/* Soft Vignette Overlay */}
       <div className="pointer-events-none fixed inset-0 z-0 bg-radial-gradient from-transparent via-rose-100/10 to-pink-200/20 mix-blend-multiply"></div>
+
+      {/* Require Password Gate if not unlocked */}
+      {!isUnlocked && (
+        <PasswordGate onUnlocked={() => setIsUnlocked(true)} />
+      )}
 
       <MusicPlayer />
       <MouseTrail />

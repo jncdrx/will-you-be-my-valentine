@@ -79,3 +79,49 @@ ON storage.objects
 FOR DELETE 
 TO authenticated
 USING (bucket_id = 'monthsary-reactions');
+
+-- 4. Create Table for Site Settings (Password Protection)
+CREATE TABLE IF NOT EXISTS public.site_settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS
+ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access to site_settings
+CREATE POLICY "Allow public read site_settings"
+ON public.site_settings
+FOR SELECT
+TO anon, authenticated
+USING (true);
+
+-- Allow authenticated admin write access to site_settings
+CREATE POLICY "Allow admin write site_settings"
+ON public.site_settings
+FOR ALL
+TO authenticated
+USING (true)
+WITH CHECK (true);
+
+-- Seed initial password '1426'
+INSERT INTO public.site_settings (key, value)
+VALUES ('access_password', '1426')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+
+-- Optional RPC helper function for site password verification
+CREATE OR REPLACE FUNCTION verify_site_password(input_password TEXT)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+    RETURN EXISTS (
+        SELECT 1 FROM public.site_settings
+        WHERE key = 'access_password' AND value = input_password
+    );
+END;
+$$;
+

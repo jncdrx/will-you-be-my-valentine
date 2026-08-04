@@ -261,3 +261,40 @@ export async function deleteAdminResponse(id: string): Promise<boolean> {
   }
 }
 
+// Verify Site Access Password against Supabase 'site_settings' table
+export async function verifySitePassword(inputPassword: string): Promise<boolean> {
+  if (!isSupabaseConfigured()) {
+    return true;
+  }
+
+  try {
+    // Attempt 1: Call RPC function if created
+    const { data: rpcData, error: rpcError } = await supabase.rpc("verify_site_password", {
+      input_password: inputPassword,
+    });
+
+    if (!rpcError && typeof rpcData === "boolean") {
+      return rpcData;
+    }
+
+    // Attempt 2: Direct query to site_settings table
+    const { data, error } = await supabase
+      .from("site_settings")
+      .select("key")
+      .eq("key", "access_password")
+      .eq("value", inputPassword)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Password verification DB error:", error);
+      return false;
+    }
+
+    return Boolean(data);
+  } catch (err) {
+    console.error("Password verification exception:", err);
+    return false;
+  }
+}
+
+
