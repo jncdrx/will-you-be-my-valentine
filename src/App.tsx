@@ -12,24 +12,19 @@ import { AngelReactionForm } from "./components/AngelReactionForm";
 import { SubmissionConfirmation } from "./components/SubmissionConfirmation";
 import { AdminView } from "./components/AdminView";
 import { PasswordGate } from "./components/PasswordGate";
-import { monthsaryConfig } from "./config/monthsaryConfig";
+import { PastMonthsaryNavbar } from "./components/PastMonthsaryNavbar";
+import { PastMonthsaryModal } from "./components/PastMonthsaryModal";
 import { getResponseByToken, MonthsaryResponse } from "./lib/supabase";
-import { Heart, ArrowUp } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
-
-const experienceSteps: { key: ExperienceStep; label: string }[] = [
-  { key: "welcome", label: "Welcome" },
-  { key: "letter", label: "Letter 💌" },
-  { key: "memories", label: "Memories 📸" },
-  { key: "reaction", label: "Reply 💕" },
-];
 
 export default function Page() {
   const [step, setStep] = useState<ExperienceStep>("welcome");
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [selectedPastMonthIndex, setSelectedPastMonthIndex] = useState<number | null>(null);
 
   // Site Access Password state (stored in sessionStorage once unlocked)
   const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
@@ -88,8 +83,6 @@ export default function Page() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const currentStepIndex = experienceSteps.findIndex((item) => item.key === step);
-
   const handleSubmitted = (data: MonthsaryResponse, token: string) => {
     setSubmittedResponseData(data);
     setSavedResponseToken(token);
@@ -127,61 +120,22 @@ export default function Page() {
       <FloatingHearts />
       <HeartBurst />
 
-      {/* Main Experience Header Stepper (Hidden in Admin Mode) */}
+      {/* Main Experience Past Monthsaries Navbar (Hidden in Admin Mode) */}
       {!isAdminMode && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="sticky top-3 z-40 w-full max-w-lg px-4"
-        >
-          <div className="rounded-3xl bg-white/85 px-5 py-3 shadow-xl backdrop-blur-md border border-white/80 transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-rose-600 flex items-center gap-1">
-                <Heart size={12} className="fill-rose-500 text-rose-500" />
-                {monthsaryConfig.girlfriendName}'s 7th Monthsary Surprise
-              </span>
+        <PastMonthsaryNavbar
+          currentStep={step}
+          onStepChange={setStep}
+          onSelectPastMonth={(index) => setSelectedPastMonthIndex(index)}
+          savedResponseToken={savedResponseToken}
+        />
+      )}
 
-              {savedResponseToken && (
-                <button
-                  onClick={() => setStep("confirmation")}
-                  className="rounded-full bg-rose-100 px-3 py-1 text-[11px] font-extrabold text-rose-700 border border-rose-200 hover:bg-rose-200 transition-colors shadow-sm"
-                >
-                  View My Saved Reply 💕
-                </button>
-              )}
-            </div>
-
-            <div className="mt-2.5 flex items-center gap-2">
-              {experienceSteps.map((item, index) => {
-                const isDone = index <= currentStepIndex;
-                const isCurrent = index === currentStepIndex;
-
-                return (
-                  <button
-                    key={item.key}
-                    onClick={() => setStep(item.key)}
-                    className="flex-1 focus:outline-none"
-                  >
-                    <div className="flex flex-col items-center gap-1">
-                      <div
-                        className={`h-2 w-full rounded-full transition-all duration-500 ${
-                          isCurrent
-                            ? "bg-rose-500 ring-2 ring-rose-300 shadow-sm"
-                            : isDone
-                            ? "bg-rose-400"
-                            : "bg-rose-200/70"
-                        }`}
-                      />
-                      <span className={`text-[10px] font-bold tracking-wide transition-colors ${isDone ? "text-rose-700" : "text-gray-400"}`}>
-                        {item.label}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </motion.div>
+      {/* Past Monthsary Detail Viewer Modal */}
+      {selectedPastMonthIndex !== null && (
+        <PastMonthsaryModal
+          initialMonthIndex={selectedPastMonthIndex}
+          onClose={() => setSelectedPastMonthIndex(null)}
+        />
       )}
 
       {/* View Switcher */}
