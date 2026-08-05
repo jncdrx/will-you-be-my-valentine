@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Heart, KeyRound, Sparkles, Mail, AlertCircle, RefreshCw } from "lucide-react";
 import { monthsaryConfig } from "../config/monthsaryConfig";
-import { verifySitePassword, verifyAllowedEmail } from "../lib/supabase";
+import { signInRecipient, LoginError } from "../lib/auth";
 
 interface AngelAuthGateProps {
   onUnlocked: () => void;
@@ -49,33 +49,19 @@ export function AngelAuthGate({ onUnlocked }: AngelAuthGateProps) {
     setIsLoading(true);
 
     try {
-      // 1. Verify Allowed Email against Supabase site_settings / env
-      const isAllowedEmail = await verifyAllowedEmail(formattedEmail);
-
-      if (!isAllowedEmail) {
-        setErrorMsg("Access restricted: This private website is created exclusively for Angel 💕");
-        handleShake();
-        setIsLoading(false);
-        return;
-      }
-
-      // 2. Verify Private Password against Supabase site_settings / RPC (1426)
-      const isValidPassword = await verifySitePassword(password);
-
-      if (!isValidPassword) {
-        setErrorMsg("Incorrect private password! Please try again ❤️");
-        handleShake();
-        setIsLoading(false);
-        return;
-      }
-
-      // Both email & password verified successfully!
+      // Secure login (edge function) with allowed-recipient email gate.
+      await signInRecipient(formattedEmail, password);
       sessionStorage.setItem("monthsary_authenticated", "true");
       sessionStorage.setItem("monthsary_angel_email", formattedEmail);
       onUnlocked();
     } catch (err) {
       console.error("Login verification exception:", err);
-      setErrorMsg("Verification error. Please try again.");
+      if (err instanceof LoginError) {
+        // Lockout message is generic (does not reveal whether the email exists).
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg(err instanceof Error ? err.message : "Verification error. Please try again.");
+      }
       handleShake();
     } finally {
       setIsLoading(false);

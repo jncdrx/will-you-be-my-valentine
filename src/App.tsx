@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MusicPlayer } from "./components/MusicPlayer";
 import { MouseTrail } from "./components/MouseTrail";
@@ -9,12 +10,16 @@ import { WelcomeScreen } from "./components/WelcomeScreen";
 import { LoveLetterSection } from "./components/LoveLetterSection";
 import { MemoriesSection } from "./components/MemoriesSection";
 import { AngelReactionForm } from "./components/AngelReactionForm";
-import { AdminView } from "./components/AdminView";
 import { AngelAuthGate } from "./components/AngelAuthGate";
 import { SubmissionConfirmation } from "./components/SubmissionConfirmation";
 import { PastMonthsaryNavbar } from "./components/PastMonthsaryNavbar";
 import { PastMonthsaryModal } from "./components/PastMonthsaryModal";
 import { MusicSelectorModal } from "./components/MusicSelectorModal";
+import { VouchersSection, VouchersSectionHandle } from "./components/user/VouchersSection";
+import { AdminRoutes } from "./components/admin/AdminRoutes";
+import { AdminLoginPage } from "./components/admin/AdminLoginPage";
+import { AdminDashboard } from "./components/admin/AdminDashboard";
+import { AdminSecurityLogs } from "./components/admin/AdminSecurityLogs";
 import {
   getResponseByToken,
   MonthsaryResponse,
@@ -24,21 +29,38 @@ import {
   fetchSongs,
   saveSelectedSongId,
 } from "./lib/supabase";
+import { supabase, isSupabaseConfigured } from "./lib/supabase";
+import { Voucher, effectiveStatus } from "./lib/vouchers";
 import { ArrowUp } from "lucide-react";
+import { toast } from "sonner";
 
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
 
-export default function Page() {
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<UserSite />} />
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route path="/admin" element={<AdminRoutes />}>
+        <Route index element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="security-logs" element={<AdminSecurityLogs />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
+function UserSite() {
   const [step, setStep] = useState<ExperienceStep>("welcome");
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
-  const [isAdminMode, setIsAdminMode] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [selectedPastMonthIndex, setSelectedPastMonthIndex] = useState<number | null>(null);
+  const [unclaimedVoucherCount, setUnclaimedVoucherCount] = useState(0);
+  const vouchersSectionRef = useRef<VouchersSectionHandle>(null);
 
-  // Private Access Authentication state
-  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
-    return sessionStorage.getItem("monthsary_authenticated") === "true";
-  });
+  // Private Access Authentication state (now backed by Supabase Auth)
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
 
   // Response state for Angel
   const [savedResponseToken, setSavedResponseToken] = useState<string | null>(null);
@@ -48,6 +70,20 @@ export default function Page() {
   const [songsList, setSongsList] = useState<Song[]>([]);
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
   const [isMusicModalOpen, setIsMusicModalOpen] = useState(false);
+
+  // Restore Supabase Auth session on load
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      if (isSupabaseConfigured()) {
+        const { data } = await supabase.auth.getSession();
+        if (active && data?.session) setIsUnlocked(true);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Fetch available songs and restore selected song
   useEffect(() => {
@@ -84,32 +120,6 @@ export default function Page() {
     }
   }, [isUnlocked]);
 
-  // Detect /admin route path, #admin hash, or ?admin=true search query on URL
-  useEffect(() => {
-    const checkAdminRoute = () => {
-      const pathname = window.location.pathname.toLowerCase();
-      const hash = window.location.hash.toLowerCase();
-      const search = window.location.search.toLowerCase();
-
-      const isUrlAdmin =
-        pathname.endsWith("/admin") ||
-        pathname.endsWith("/admin/") ||
-        pathname.includes("/admin") ||
-        hash === "#admin" ||
-        search.includes("admin=true");
-
-      setIsAdminMode(isUrlAdmin);
-    };
-
-    checkAdminRoute();
-    window.addEventListener("hashchange", checkAdminRoute);
-    window.addEventListener("popstate", checkAdminRoute);
-    return () => {
-      window.removeEventListener("hashchange", checkAdminRoute);
-      window.removeEventListener("popstate", checkAdminRoute);
-    };
-  }, []);
-
   // Check if Angel has already submitted a response stored locally
   useEffect(() => {
     const token = localStorage.getItem("monthsary_angel_token");
@@ -137,6 +147,15 @@ export default function Page() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Supabase Auth state changes (e.g. sign out elsewhere)
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return;
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsUnlocked(Boolean(session));
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
   const handleSubmitted = (data: MonthsaryResponse, token: string) => {
     setSubmittedResponseData(data);
     setSavedResponseToken(token);
@@ -149,15 +168,18 @@ export default function Page() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleExitAdmin = () => {
-    setIsAdminMode(false);
-    if (window.location.hash === "#admin") {
-      window.location.hash = "";
-    } else {
-      const baseUrl = import.meta.env.BASE_URL || "/";
-      window.history.pushState({}, "", baseUrl);
-    }
-  };
+  // Stable callbacks for the vouchers section (avoid re-subscribing Realtime on every render)
+  const handleVouchersChange = useCallback((list: Voucher[]) => {
+    setUnclaimedVoucherCount(list.filter((v) => effectiveStatus(v) === "available").length);
+  }, []);
+
+  const handleNewVoucher = useCallback((v: Voucher) => {
+    toast.success(`New voucher! 🎁 "${v.title}"`);
+    window.setTimeout(() => {
+      vouchersSectionRef.current?.scrollTo();
+      vouchersSectionRef.current?.pulse();
+    }, 60);
+  }, []);
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-start overflow-x-hidden text-center font-sans pb-16 pt-4">
@@ -166,7 +188,12 @@ export default function Page() {
 
       {/* Require Angel Authentication Gate if not unlocked */}
       {!isUnlocked && (
-        <AngelAuthGate onUnlocked={() => setIsUnlocked(true)} />
+        <AngelAuthGate
+          onUnlocked={() => {
+            setIsUnlocked(true);
+            toast.success("Welcome back, my love 💕");
+          }}
+        />
       )}
 
       <MusicPlayer
@@ -188,13 +215,15 @@ export default function Page() {
       <FloatingHearts />
       <HeartBurst />
 
-      {/* Main Experience Past Monthsaries Navbar (Hidden in Admin Mode) */}
-      {!isAdminMode && (
+      {/* Main Experience Past Monthsaries Navbar (only when unlocked) */}
+      {isUnlocked && (
         <PastMonthsaryNavbar
           currentStep={step}
           onStepChange={handleStepChange}
           onSelectPastMonth={(index: number) => setSelectedPastMonthIndex(index)}
           savedResponseToken={savedResponseToken}
+          onOpenVouchers={() => vouchersSectionRef.current?.scrollTo()}
+          unclaimedVoucherCount={unclaimedVoucherCount}
         />
       )}
 
@@ -207,57 +236,52 @@ export default function Page() {
       )}
 
       {/* View Switcher */}
-      <AnimatePresence mode="wait">
-        {isAdminMode ? (
-          <AdminView
-            key="admin"
-            onExit={handleExitAdmin}
-            onSongsChange={(updated) => setSongsList(updated)}
-          />
-        ) : (
-          <>
-            {step === "welcome" && (
-              <WelcomeScreen
-                key="welcome"
-                onOpenLetter={() => setStep("letter")}
-                isPlayingMusic={isPlayingMusic}
-                onToggleMusic={() => setIsPlayingMusic(!isPlayingMusic)}
-              />
-            )}
+      {isUnlocked && (
+        <AnimatePresence mode="wait">
+          {step === "welcome" && (
+            <WelcomeScreen
+              key="welcome"
+              onOpenLetter={() => setStep("letter")}
+              isPlayingMusic={isPlayingMusic}
+              onToggleMusic={() => setIsPlayingMusic(!isPlayingMusic)}
+            />
+          )}
 
-            {step === "letter" && (
-              <LoveLetterSection
-                key="letter"
-                onContinue={() => setStep("memories")}
-              />
-            )}
+          {step === "letter" && (
+            <LoveLetterSection key="letter" onContinue={() => setStep("memories")} />
+          )}
 
-            {step === "memories" && (
-              <MemoriesSection
-                key="memories"
-                onGoToReaction={() => setStep("reaction")}
-              />
-            )}
+          {step === "memories" && (
+            <MemoriesSection key="memories" onGoToReaction={() => setStep("reaction")} />
+          )}
 
-            {step === "reaction" && (
-              <AngelReactionForm
-                key="reaction"
-                onSubmitted={handleSubmitted}
-                onBackToMemories={() => setStep("memories")}
-                existingToken={savedResponseToken || undefined}
-              />
-            )}
+          {step === "reaction" && (
+            <AngelReactionForm
+              key="reaction"
+              onSubmitted={handleSubmitted}
+              onBackToMemories={() => setStep("memories")}
+              existingToken={savedResponseToken || undefined}
+            />
+          )}
 
-            {step === "confirmation" && submittedResponseData && (
-              <SubmissionConfirmation
-                key="confirmation"
-                responseData={submittedResponseData}
-                onEdit={handleEditReply}
-              />
-            )}
-          </>
-        )}
-      </AnimatePresence>
+          {step === "confirmation" && submittedResponseData && (
+            <SubmissionConfirmation
+              key="confirmation"
+              responseData={submittedResponseData}
+              onEdit={handleEditReply}
+            />
+          )}
+        </AnimatePresence>
+      )}
+
+      {/* Permanent Vouchers section (always visible when unlocked; live via Realtime) */}
+      {isUnlocked && (
+        <VouchersSection
+          ref={vouchersSectionRef}
+          onVouchersChange={handleVouchersChange}
+          onNewVoucher={handleNewVoucher}
+        />
+      )}
 
       {/* Floating Back to Top Button */}
       {showBackToTop && (

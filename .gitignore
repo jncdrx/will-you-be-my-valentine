@@ -26,3 +26,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Supabase CLI local artifacts (contains local link info / connection strings)
+supabase/.temp

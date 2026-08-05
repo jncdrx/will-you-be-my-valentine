@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Calendar, ChevronDown, BookOpen, CheckCircle2, Sparkles, Sprout, Cake, Utensils, Coffee, Crown } from "lucide-react";
+import { Heart, Calendar, ChevronDown, BookOpen, CheckCircle2, Sparkles, Sprout, Cake, Utensils, Coffee, Crown, Gift } from "lucide-react";
 import { monthsaryConfig } from "../config/monthsaryConfig";
 
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
@@ -10,6 +10,8 @@ interface PastMonthsaryNavbarProps {
   onStepChange: (step: ExperienceStep) => void;
   onSelectPastMonth: (index: number) => void;
   savedResponseToken: string | null;
+  onOpenVouchers: () => void;
+  unclaimedVoucherCount: number;
 }
 
 const experienceSteps: { key: ExperienceStep; label: string; icon: string }[] = [
@@ -37,6 +39,8 @@ export function PastMonthsaryNavbar({
   onStepChange,
   onSelectPastMonth,
   savedResponseToken,
+  onOpenVouchers,
+  unclaimedVoucherCount,
 }: PastMonthsaryNavbarProps) {
   const [isPastDropdownOpen, setIsPastDropdownOpen] = useState(false);
 
@@ -195,6 +199,25 @@ export function PastMonthsaryNavbar({
               <span className="xs:hidden">Reply 💕</span>
             </button>
           )}
+
+          {/* My Vouchers */}
+          <button
+            onClick={() => {
+              triggerHaptic();
+              onOpenVouchers();
+            }}
+            className="relative flex items-center gap-1 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 px-3 py-1.5 text-[11px] font-extrabold text-white shadow-sm hover:shadow-md transition-all min-h-[36px] focus:outline-none focus:ring-2 focus:ring-rose-400"
+            aria-label="Jump to my vouchers"
+          >
+            <Gift size={13} className="fill-white" />
+            <span className="hidden xs:inline">My Vouchers</span>
+            <span className="xs:hidden">🎁</span>
+            {unclaimedVoucherCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-white text-rose-600 text-[10px] font-extrabold border border-rose-300 shadow-sm animate-bounce">
+                {unclaimedVoucherCount}
+              </span>
+            )}
+          </button>
         </div>
 
         {/* ROW 2: Experience Steps Progress Bar */}
