@@ -635,6 +635,169 @@ export async function claimTicketForUser(userId?: string): Promise<boolean> {
   return true;
 }
 
+export const SUPPORTED_MUSIC_FILE_EXTENSIONS = [".mp3", ".wav", ".m4a"] as const;
+export const SUPPORTED_MUSIC_MIME_TYPES = new Set([
+  "audio/mpeg",
+  "audio/mp3",
+  "audio/wav",
+  "audio/x-wav",
+  "audio/mp4",
+  "audio/x-m4a",
+  "audio/aac",
+]);
+export const MAX_MUSIC_FILE_SIZE_BYTES = 15 * 1024 * 1024;
+
+export function validateMusicFile(file: File): string | null {
+  const lowerName = file.name.toLowerCase();
+  const hasAllowedExtension = SUPPORTED_MUSIC_FILE_EXTENSIONS.some((extension) =>
+    lowerName.endsWith(extension)
+  );
+
+  if (!hasAllowedExtension && !SUPPORTED_MUSIC_MIME_TYPES.has(file.type)) {
+    return "Only MP3, WAV, or M4A files are supported.";
+  }
+
+  if (file.size > MAX_MUSIC_FILE_SIZE_BYTES) {
+    return "File is too large. The maximum upload size is 15MB.";
+  }
+
+  return null;
+}
+
+export async function getAudioDurationFromFile(file: File): Promise<number> {
+  if (typeof window === "undefined") return 0;
+
+  return new Promise((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(file);
+    const audio = document.createElement("audio");
+    audio.preload = "metadata";
+    audio.src = objectUrl;
+
+    const cleanup = () => {
+      URL.revokeObjectURL(objectUrl);
+      audio.removeAttribute("src");
+      audio.load();
+    };
+
+    audio.onloadedmetadata = () => {
+      const duration = Number.isFinite(audio.duration) ? Math.max(0, Math.round(audio.duration)) : 0;
+      cleanup();
+      resolve(duration);
+    };
+
+    audio.onerror = () => {
+      cleanup();
+      reject(new Error("Could not read audio metadata from the selected file."));
+    };
+
+    audio.load();
+  });
+}
+
+export async function hashMusicFile(file: File): Promise<string> {
+  const buffer = await file.arrayBuffer();
+  const digest = await crypto.subtle.digest("SHA-256", buffer);
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+export async function uploadMusicFile(
+  file: File,
+  payload: { title?: string; artist?: string; existingId?: string },
+  onProgress?: (percent: number) => void
+): Promise<Song> {
+  if (!isSupabaseConfigured()) {
+    throw new Error("Supabase is not configured.");
+  }
+
+  const validationError = validateMusicFile(file);
+  if (validationError) {
+    throw new Error(validationError);
+  }
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const accessToken = session?.access_token;
+  if (!accessToken) {
+    throw new Error("You must be signed in as an admin to upload music.");
+  }
+
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    if (payload.title) formData.append("title", payload.title);
+    if (payload.artist) formData.append("artist", payload.artist);
+    if (payload.existingId) formData.append("existingId", payload.existingId);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/music/upload");
+    xhr.responseType = "json";
+    xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+
+    xhr.upload.onprogress = (event) => {
+      if (!event.lengthComputable) return;
+      const percent = Math.max(0, Math.min(100, Math.round((event.loaded / event.total) * 100)));
+      onProgress?.(percent);
+    };
+
+    xhr.onload = () => {
+      const body = (xhr.response ?? {}) as Partial<{ song: Song; error: string }>;
+      if (xhr.status >= 200 && xhr.status < 300 && body.song) {
+        onProgress?.(100);
+        resolve(body.song);
+        return;
+      }
+
+      reject(new Error(body.error || `Upload failed with status ${xhr.status}.`));
+    };
+
+    xhr.onerror = () => reject(new Error("Network error while uploading music."));
+    xhr.send(formData);
+  });
+}
+
+export async function updateSong(
+  songId: string,
+  patch: { title?: string; artist?: string }
+): Promise<Song> {
+  if (!isSupabaseConfigured()) {
+    throw new Error("Supabase is not configured.");
+  }
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const accessToken = session?.access_token;
+  if (!accessToken) {
+    throw new Error("You must be signed in as an admin to edit music.");
+  }
+
+  const response = await fetch(`/api/music/${songId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(patch),
+  });
+
+  const result = (await response.json().catch(() => ({}))) as Partial<{ song: Song; error: string }>;
+  if (!response.ok || !result.song) {
+    throw new Error(result.error || "Failed to update song.");
+  }
+
+  return result.song;
+}
+
+export function notifySongsChanged(): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event("monthsary:songs-changed"));
+}
+
 export interface Song {
   id: string;
   title: string;
@@ -644,6 +807,14 @@ export interface Song {
   mp3_url: string;
   duration: number;
   is_custom_upload?: boolean;
+  file_name?: string | null;
+  file_size_bytes?: number | null;
+  audio_duration_seconds?: number | null;
+  cloud_file_url?: string | null;
+  upload_date?: string | null;
+  storage_path?: string | null;
+  file_hash?: string | null;
+  mime_type?: string | null;
   created_at: string;
 }
 
@@ -680,20 +851,37 @@ export async function saveSelectedSongId(songId: string, userId?: string): Promi
 }
 
 export async function deleteSong(songId: string): Promise<void> {
-  if (isSupabaseConfigured()) {
-    try {
-      await supabase.from("songs").delete().eq("id", songId);
-    } catch (err) {
-      console.error("Error deleting song from Supabase:", err);
+  if (!isSupabaseConfigured()) {
+    const local = localStorage.getItem("monthsary_local_songs");
+    if (local) {
+      const songs: Song[] = JSON.parse(local);
+      localStorage.setItem(
+        "monthsary_local_songs",
+        JSON.stringify(songs.filter((s) => s.id !== songId))
+      );
     }
+    return;
   }
-  const local = localStorage.getItem("monthsary_local_songs");
-  if (local) {
-    const songs: Song[] = JSON.parse(local);
-    localStorage.setItem(
-      "monthsary_local_songs",
-      JSON.stringify(songs.filter((s) => s.id !== songId))
-    );
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const accessToken = session?.access_token;
+  if (!accessToken) {
+    throw new Error("You must be signed in as an admin to delete music.");
+  }
+
+  const response = await fetch(`/api/music/${songId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const result = (await response.json().catch(() => ({}))) as Partial<{ error: string }>;
+  if (!response.ok) {
+    throw new Error(result.error || "Failed to delete song.");
   }
 }
 

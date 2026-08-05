@@ -87,14 +87,39 @@ function UserSite() {
 
   // Fetch available songs and restore selected song
   useEffect(() => {
-    fetchSongs().then((songs) => {
+    let active = true;
+
+    const syncSongs = async () => {
+      const songs = await fetchSongs();
+      if (!active) return;
+
       setSongsList(songs);
       const savedSongId = localStorage.getItem("monthsary_selected_song_id");
       if (savedSongId && songs.length > 0) {
         const found = songs.find((s) => s.id === savedSongId);
-        if (found) setSelectedSong(found);
+        if (found) {
+          setSelectedSong(found);
+          return;
+        }
       }
-    });
+
+      setSelectedSong((current) => {
+        if (!current) return current;
+        return songs.find((song) => song.id === current.id) || null;
+      });
+    };
+
+    syncSongs();
+
+    const handleSongsChanged = () => {
+      syncSongs();
+    };
+
+    window.addEventListener("monthsary:songs-changed", handleSongsChanged);
+    return () => {
+      active = false;
+      window.removeEventListener("monthsary:songs-changed", handleSongsChanged);
+    };
   }, []);
 
   // Restore Angel's saved state automatically when unlocked
