@@ -97,6 +97,7 @@ const STATUS_DISPLAY: Record<VoucherStatus, { label: string; cls: string }> = {
   draft: { label: "DRAFT", cls: "text-slate-300" },
   available: { label: "UNCLAIMED", cls: "text-amber-300" },
   claimed: { label: "CLAIMED & RESERVED", cls: "text-emerald-300" },
+  redeemed: { label: "REDEEMED & FULFILLED", cls: "text-purple-300" },
   expired: { label: "EXPIRED", cls: "text-amber-300" },
   cancelled: { label: "CANCELLED", cls: "text-red-300" },
 };
@@ -270,6 +271,11 @@ export function VoucherCard({ voucher, onClaim }: VoucherCardProps) {
               hour: "2-digit",
               minute: "2-digit",
             })}
+          </div>
+        ) : status === "redeemed" ? (
+          <div className="w-full flex items-center justify-center gap-2 rounded-2xl bg-purple-50 border border-purple-200 py-3.5 text-sm font-bold text-purple-700">
+            <CheckCircle2 size={18} />
+            Redeemed & Fulfilled 💕
           </div>
         ) : claimable ? (
           <button

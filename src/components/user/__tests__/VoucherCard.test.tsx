@@ -25,7 +25,7 @@ describe("VoucherCard", () => {
     render(<VoucherCard voucher={base} onClaim={vi.fn()} />);
     expect(screen.getByText("Premium Nail Care Session")).toBeInTheDocument();
     expect(screen.getByText("A treat for you")).toBeInTheDocument();
-    expect(screen.getByText("Available")).toBeInTheDocument();
+    expect(screen.getByText("UNCLAIMED")).toBeInTheDocument();
   });
 
   it("shows the Claim Voucher button when available and calls onClaim", () => {
@@ -42,6 +42,14 @@ describe("VoucherCard", () => {
     render(<VoucherCard voucher={claimed} onClaim={vi.fn()} />);
     expect(screen.queryByRole("button", { name: /claim voucher/i })).not.toBeInTheDocument();
     expect(screen.getByText(/Claimed on/i)).toBeInTheDocument();
+  });
+
+  it("shows redeemed & fulfilled badge when voucher is redeemed", () => {
+    const redeemed: Voucher = { ...base, status: "redeemed" };
+    render(<VoucherCard voucher={redeemed} onClaim={vi.fn()} />);
+    expect(screen.getByText("REDEEMED & FULFILLED")).toBeInTheDocument();
+    expect(screen.getByText("Redeemed & Fulfilled 💕")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /claim voucher/i })).not.toBeInTheDocument();
   });
 
   it("shows expired messaging when expiry is in the past", () => {

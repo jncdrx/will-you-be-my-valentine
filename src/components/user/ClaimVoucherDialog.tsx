@@ -30,6 +30,7 @@ export function ClaimVoucherDialog({ voucher, onClose, onClaimed }: ClaimVoucher
       toast.success("Voucher claimed! Enjoy, my love 💕");
       onClaimed(voucher.id);
     } catch (err) {
+      setDone(false);
       toast.error(err instanceof Error ? err.message : "Could not claim this voucher.");
     } finally {
       setLoading(false);

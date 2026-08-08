@@ -6,6 +6,7 @@ import {
   listMyVouchers,
   subscribeVouchers,
   effectiveStatus,
+  recordVoucherView,
 } from "../../lib/vouchers";
 import { VoucherCard } from "./VoucherCard";
 import { ClaimVoucherDialog } from "./ClaimVoucherDialog";
@@ -41,6 +42,14 @@ export const VouchersSection = forwardRef<VouchersSectionHandle, VouchersSection
       }
       setVouchers(list);
       list.forEach((v) => knownIds.current.add(v.id));
+
+      // Record view activity for available vouchers to persist view activity to Supabase server
+      list
+        .filter((v) => effectiveStatus(v) === "available")
+        .forEach((v) => {
+          recordVoucherView(v.id).catch(() => {});
+        });
+
       onVouchersChange?.(list);
       if (loadedOnce.current && fresh.length > 0) {
         onNewVoucher?.(fresh[0]);
