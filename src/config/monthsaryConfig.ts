@@ -1,5 +1,8 @@
-const baseUrl = import.meta.env.BASE_URL || "/";
-const withBase = (path: string) => `${baseUrl.replace(/\/?$/, "/")}${path.replace(/^\//, "")}`;
+const SUPABASE_STORAGE_URL = "https://wikmowwwixnpluqokyay.supabase.co/storage/v1/object/public/memories";
+const withBase = (path: string) => {
+  const cleanPath = path.replace(/^images\//, "").replace(/^\//, "");
+  return `${SUPABASE_STORAGE_URL}/${cleanPath}`;
+};
 
 export interface MemoryPhoto {
   src: string;
