@@ -18,21 +18,22 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
 AS $$
+#variable_conflict use_column
 DECLARE
     v_updated INTEGER;
     v_claimed_at TIMESTAMPTZ;
     v_voucher_id UUID;
     v_status TEXT;
 BEGIN
-    UPDATE public.vouchers
+    UPDATE public.vouchers v
        SET status = 'claimed',
            claimed_at = now(),
            updated_at = now()
-     WHERE id = p_voucher_id
-       AND recipient_id = auth.uid()
-       AND status = 'available'
-       AND (expires_at IS NULL OR expires_at > now())
-    RETURNING public.vouchers.id, public.vouchers.status, public.vouchers.claimed_at
+     WHERE v.id = p_voucher_id
+       AND v.recipient_id = auth.uid()
+       AND v.status = 'available'
+       AND (v.expires_at IS NULL OR v.expires_at > now())
+    RETURNING v.id, v.status, v.claimed_at
       INTO v_voucher_id, v_status, v_claimed_at;
 
     GET DIAGNOSTICS v_updated = ROW_COUNT;
@@ -45,35 +46,35 @@ BEGIN
     INSERT INTO public.voucher_activity (voucher_id, user_id, action, metadata)
     VALUES (v_voucher_id, auth.uid(), 'claimed', jsonb_build_object('claimed_at', v_claimed_at));
 
-    id := v_voucher_id;
-    status := v_status;
-    claimed_at := v_claimed_at;
-
-    RETURN NEXT;
+    RETURN QUERY SELECT v_voucher_id, v_status, v_claimed_at;
 END;
 $$;
 
 -- 4. Admin redeem_voucher RPC
+DROP FUNCTION IF EXISTS public.redeem_voucher(UUID);
 CREATE OR REPLACE FUNCTION public.redeem_voucher(p_voucher_id UUID)
 RETURNS TABLE(id UUID, status TEXT)
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
 AS $$
+#variable_conflict use_column
 DECLARE
     v_updated INTEGER;
+    v_voucher_id UUID;
+    v_status TEXT;
 BEGIN
     IF NOT public.is_admin() THEN
         RAISE EXCEPTION 'insufficient_privilege: admin access required';
     END IF;
 
-    UPDATE public.vouchers
+    UPDATE public.vouchers v
        SET status = 'redeemed',
            updated_at = now()
-     WHERE id = p_voucher_id
-       AND status = 'claimed'
-    RETURNING public.vouchers.id, public.vouchers.status
-      INTO id, status;
+     WHERE v.id = p_voucher_id
+       AND v.status = 'claimed'
+    RETURNING v.id, v.status
+      INTO v_voucher_id, v_status;
 
     GET DIAGNOSTICS v_updated = ROW_COUNT;
 
@@ -84,32 +85,34 @@ BEGIN
     INSERT INTO public.voucher_activity (voucher_id, user_id, action, metadata)
     VALUES (p_voucher_id, auth.uid(), 'redeemed', jsonb_build_object('redeemed_at', now()));
 
-    RETURN NEXT;
+    RETURN QUERY SELECT v_voucher_id, v_status;
 END;
 $$;
 
 -- 5. Record voucher view RPC
+DROP FUNCTION IF EXISTS public.record_voucher_view(UUID);
 CREATE OR REPLACE FUNCTION public.record_voucher_view(p_voucher_id UUID)
 RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
 AS $$
+#variable_conflict use_column
 BEGIN
     IF auth.uid() IS NULL THEN
         RETURN FALSE;
     END IF;
 
     IF EXISTS (
-        SELECT 1 FROM public.vouchers
-        WHERE id = p_voucher_id AND (recipient_id = auth.uid() OR public.is_admin())
+        SELECT 1 FROM public.vouchers v
+        WHERE v.id = p_voucher_id AND (v.recipient_id = auth.uid() OR public.is_admin())
     ) THEN
         IF NOT EXISTS (
-            SELECT 1 FROM public.voucher_activity
-            WHERE voucher_id = p_voucher_id
-              AND user_id = auth.uid()
-              AND action = 'viewed'
-              AND created_at > now() - interval '1 hour'
+            SELECT 1 FROM public.voucher_activity a
+            WHERE a.voucher_id = p_voucher_id
+              AND a.user_id = auth.uid()
+              AND a.action = 'viewed'
+              AND a.created_at > now() - interval '1 hour'
         ) THEN
             INSERT INTO public.voucher_activity (voucher_id, user_id, action, metadata)
             VALUES (p_voucher_id, auth.uid(), 'viewed', jsonb_build_object('viewed_at', now()));
