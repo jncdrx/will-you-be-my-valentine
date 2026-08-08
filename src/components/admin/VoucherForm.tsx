@@ -43,7 +43,8 @@ export function VoucherForm({ onClose, onSaved, editing }: VoucherFormProps) {
     if (!recipientId) {
       listProfiles().then((profiles) => {
         if (profiles.length > 0 && !recipientId) {
-          setRecipientId(profiles[0].id);
+          const recipientProfile = profiles.find((p) => p.role !== "admin") || profiles[0];
+          setRecipientId(recipientProfile.id);
         }
       });
     }

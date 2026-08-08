@@ -21,7 +21,8 @@ export function RecipientSelector({ value, onChange, error }: RecipientSelectorP
         if (active) {
           setProfiles(p);
           if (!value && p.length > 0) {
-            onChange(p[0].id);
+            const recipientProfile = p.find((profile) => profile.role !== "admin") || p[0];
+            onChange(recipientProfile.id);
           }
         }
       })
@@ -58,6 +59,11 @@ export function RecipientSelector({ value, onChange, error }: RecipientSelectorP
               {selected.display_name && (
                 <span className="text-slate-500"> · {selected.email}</span>
               )}
+              {selected.role === "admin" && (
+                <span className="ml-2 rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/30">
+                  Admin
+                </span>
+              )}
             </span>
           ) : (
             <span className="text-slate-500">Select a recipient…</span>
@@ -90,10 +96,15 @@ export function RecipientSelector({ value, onChange, error }: RecipientSelectorP
                   }}
                   className="flex w-full items-center justify-between gap-2 px-3.5 py-2.5 text-left text-sm text-slate-200 hover:bg-slate-800"
                 >
-                  <span className="min-w-0 truncate">
+                  <span className="min-w-0 truncate flex items-center gap-1.5">
                     <span className="font-semibold">{p.display_name || p.email}</span>
                     {p.display_name && (
                       <span className="text-slate-500"> · {p.email}</span>
+                    )}
+                    {p.role === "admin" && (
+                      <span className="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/30">
+                        Admin
+                      </span>
                     )}
                   </span>
                   {p.id === value && <Check size={15} className="text-indigo-400 shrink-0" />}

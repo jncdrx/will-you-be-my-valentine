@@ -18,12 +18,15 @@ CREATE INDEX IF NOT EXISTS idx_monthsary_responses_token ON public.monthsary_res
 
 -- Automatically update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SET search_path = public, pg_temp
+AS $$
 BEGIN
    NEW.updated_at = now();
    RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$;
 
 CREATE TRIGGER update_monthsary_responses_modtime
 BEFORE UPDATE ON public.monthsary_responses
@@ -37,7 +40,7 @@ CREATE POLICY "Allow public visitor insert response"
 ON public.monthsary_responses 
 FOR INSERT 
 TO anon, authenticated
-WITH CHECK (true);
+WITH CHECK (length(trim(name)) > 0 AND length(trim(message)) > 0 AND response_token IS NOT NULL);
 
 -- Anonymous visitors can read their own response via token lookup
 CREATE POLICY "Allow visitor read response by token" 
@@ -51,8 +54,8 @@ CREATE POLICY "Allow admin full access to responses"
 ON public.monthsary_responses 
 FOR ALL 
 TO authenticated 
-USING (true)
-WITH CHECK (true);
+USING (public.is_admin())
+WITH CHECK (public.is_admin());
 
 -- 3. Storage Bucket Setup for Reaction Photos
 INSERT INTO storage.buckets (id, name, public) 
@@ -66,12 +69,12 @@ FOR INSERT
 TO anon, authenticated
 WITH CHECK (bucket_id = 'monthsary-reactions');
 
--- Storage Policy: Allow public to read reaction images
-CREATE POLICY "Allow public read reaction images" 
+-- Storage Policy: Allow authenticated admin to list reaction images
+CREATE POLICY "Allow admin read reaction images" 
 ON storage.objects 
 FOR SELECT 
-TO anon, authenticated
-USING (bucket_id = 'monthsary-reactions');
+TO authenticated
+USING (bucket_id = 'monthsary-reactions' AND public.is_admin());
 
 -- Storage Policy: Allow authenticated admin to delete reaction images
 CREATE POLICY "Allow admin delete reaction images" 
@@ -99,23 +102,36 @@ TO anon, authenticated
 USING (true);
 
 -- Allow authenticated admin write access to site_settings
-CREATE POLICY "Allow admin write site_settings"
+CREATE POLICY "Allow admin insert site_settings"
 ON public.site_settings
-FOR ALL
+FOR INSERT
+TO authenticated
+WITH CHECK (true);
+
+CREATE POLICY "Allow admin update site_settings"
+ON public.site_settings
+FOR UPDATE
 TO authenticated
 USING (true)
 WITH CHECK (true);
+
+CREATE POLICY "Allow admin delete site_settings"
+ON public.site_settings
+FOR DELETE
+TO authenticated
+USING (true);
 
 -- Seed initial password '1426'
 INSERT INTO public.site_settings (key, value)
 VALUES ('access_password', '1426')
 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
--- Optional RPC helper function for site password verification
+-- RPC helper function for site password verification
 CREATE OR REPLACE FUNCTION verify_site_password(input_password TEXT)
 RETURNS BOOLEAN
 LANGUAGE plpgsql
-SECURITY DEFINER
+SECURITY INVOKER
+SET search_path = public, pg_temp
 AS $$
 BEGIN
     RETURN EXISTS (
@@ -124,4 +140,3 @@ BEGIN
     );
 END;
 $$;
-

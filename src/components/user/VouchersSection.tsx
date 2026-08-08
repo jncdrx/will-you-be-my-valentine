@@ -10,6 +10,7 @@ import {
 } from "../../lib/vouchers";
 import { VoucherCard } from "./VoucherCard";
 import { ClaimVoucherDialog } from "./ClaimVoucherDialog";
+import { getCurrentUser } from "../../lib/auth";
 
 export interface VouchersSectionHandle {
   scrollTo: () => void;
@@ -31,7 +32,11 @@ export const VouchersSection = forwardRef<VouchersSectionHandle, VouchersSection
     const loadedOnce = useRef(false);
     const sectionTopRef = useRef<HTMLDivElement | null>(null);
 
+    const [isAuthUser, setIsAuthUser] = useState(true);
+
     const reload = useCallback(async () => {
+      const user = await getCurrentUser();
+      setIsAuthUser(Boolean(user));
       const list = await listMyVouchers();
       // Detect brand-new vouchers (ids not seen before), but only after the initial load.
       const fresh: Voucher[] = [];
@@ -134,6 +139,20 @@ export const VouchersSection = forwardRef<VouchersSectionHandle, VouchersSection
             <div className="flex flex-col items-center gap-2 text-rose-500 py-10">
               <Loader2 size={28} className="animate-spin" />
               <p className="text-sm font-semibold">Loading your vouchers…</p>
+            </div>
+          ) : !isAuthUser ? (
+            <div className="text-center py-10">
+              <Heart size={40} className="text-rose-300 mx-auto mb-3" />
+              <p className="text-base font-bold text-rose-700">Please Log In to View Your Vouchers</p>
+              <p className="text-xs text-rose-400 mt-1 mb-4">
+                Your session is not active. Please log in with your email and password.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-5 py-2.5 rounded-2xl bg-rose-500 text-white text-xs font-bold shadow-md hover:bg-rose-600 transition-all active:scale-95"
+              >
+                Log In Now
+              </button>
             </div>
           ) : vouchers.length === 0 ? (
             <div className="text-center py-10">

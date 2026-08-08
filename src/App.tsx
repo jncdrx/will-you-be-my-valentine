@@ -92,7 +92,9 @@ function UserSite() {
     (async () => {
       if (isSupabaseConfigured()) {
         const { data } = await supabase.auth.getSession();
-        if (active && data?.session) setIsUnlocked(true);
+        if (active) {
+          setIsUnlocked(Boolean(data?.session));
+        }
       }
     })();
     return () => {

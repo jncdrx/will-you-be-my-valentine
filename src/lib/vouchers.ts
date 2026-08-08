@@ -44,6 +44,7 @@ export interface RecipientProfile {
   id: string;
   email: string;
   display_name: string | null;
+  role?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -115,7 +116,7 @@ export async function listProfiles(): Promise<RecipientProfile[]> {
   if (!isSupabaseConfigured()) return [];
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, email, display_name")
+    .select("id, email, display_name, role")
     .order("email", { ascending: true });
   if (error) {
     console.error("listProfiles error:", error);
