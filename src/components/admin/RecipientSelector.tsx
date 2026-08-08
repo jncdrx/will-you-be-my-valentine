@@ -31,6 +31,7 @@ export function RecipientSelector({ value, onChange, error }: RecipientSelectorP
     return () => {
       active = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selected = profiles.find((p) => p.id === value);

@@ -1,38 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
   Voucher,
-  VoucherStatus,
-  effectiveStatus,
   isClaimable,
-  voucherSchema,
   createVoucher,
-  updateVoucher,
-  cancelVoucher,
   deleteVoucher,
-  resendVoucher,
   listMyVouchers,
   listAllVouchers,
   claimVoucher,
   redeemVoucher,
   recordVoucherView,
-  listProfiles,
   listActivity,
 } from "../lib/vouchers";
 import {
   signInRecipient,
   signInAdmin,
   signOutAll,
-  getCurrentUser,
-  getCurrentProfile,
   isAdmin,
   getAllowedEmail,
-  LoginError,
 } from "../lib/auth";
 import {
   fetchSongs,
-  loadAngelUserData,
-  saveAngelUserData,
-  getResponseByToken,
   saveSelectedSongId,
 } from "../lib/supabase";
 
@@ -91,7 +79,7 @@ vi.mock("../lib/supabase", async (importOriginal) => {
       functions: {
         invoke: vi.fn(async (fnName, options) => {
           if (fnName === "secure-login") {
-            const { email, password, role } = options.body;
+            const { email, password } = options.body;
             if (email === "angelicogn@gmail.com" && password === "correct_pass") {
               currentSessionUser = mockUserAngel;
               return { data: { success: true, session: { access_token: "tok", refresh_token: "ref", user: mockUserAngel } }, error: null };
@@ -107,7 +95,7 @@ vi.mock("../lib/supabase", async (importOriginal) => {
       },
       from: vi.fn((table: string) => {
         return {
-          select: vi.fn((cols?: string) => {
+          select: vi.fn(() => {
             const chain: any = {
               eq: vi.fn((col: string, val: any) => {
                 chain._eqCol = col;

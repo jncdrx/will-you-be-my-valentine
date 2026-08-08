@@ -242,6 +242,9 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
       updated_at: new Date().toISOString(),
       claimed_at: ticketClaimed ? new Date().toISOString() : null,
       expires_at: null,
+      created_by: null,
+      image_url: null,
+      sent_at: null,
     };
 
     setPresentingVoucher(pamperVoucher);

@@ -60,7 +60,9 @@ function getInitialStep(): ExperienceStep {
       const parsed = JSON.parse(saved);
       if (parsed.current_step) return parsed.current_step as ExperienceStep;
     }
-  } catch {}
+  } catch {
+    /* ignore localStorage errors */
+  }
   return "welcome";
 }
 

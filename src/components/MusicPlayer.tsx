@@ -58,6 +58,7 @@ export function MusicPlayer({ currentSong, onOpenSelector }: MusicPlayerProps) {
       document.removeEventListener("keydown", handleInteraction);
       sound.unload();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeUrl]);
 
   // Handle volume changes
