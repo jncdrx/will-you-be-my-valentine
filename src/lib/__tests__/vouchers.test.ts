@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { voucherSchema, effectiveStatus, isClaimable, Voucher } from "../vouchers";
+import { voucherSchema, effectiveStatus, isClaimable, Voucher, formatEndOfDayIso } from "../vouchers";
 
 describe("voucherSchema", () => {
   const valid = {
@@ -87,8 +87,31 @@ describe("effectiveStatus / isClaimable", () => {
     expect(isClaimable(v)).toBe(false);
   });
 
+  it("redeemed is not claimable and returns redeemed status", () => {
+    const v: Voucher = { ...base, status: "redeemed" };
+    expect(effectiveStatus(v)).toBe("redeemed");
+    expect(isClaimable(v)).toBe(false);
+  });
+
   it("cancelled is not claimable", () => {
     const v: Voucher = { ...base, status: "cancelled" };
     expect(isClaimable(v)).toBe(false);
   });
 });
+
+describe("formatEndOfDayIso", () => {
+  it("returns null for empty/null inputs", () => {
+    expect(formatEndOfDayIso(null)).toBeNull();
+    expect(formatEndOfDayIso(undefined)).toBeNull();
+    expect(formatEndOfDayIso("")).toBeNull();
+  });
+
+  it("formats YYYY-MM-DD date to 23:59:59.999Z ISO string", () => {
+    expect(formatEndOfDayIso("2026-08-08")).toBe("2026-08-08T23:59:59.999Z");
+  });
+
+  it("keeps ISO strings with T intact", () => {
+    const iso = "2026-08-08T12:00:00.000Z";
+    expect(formatEndOfDayIso(iso)).toBe(iso);
+  });
+});

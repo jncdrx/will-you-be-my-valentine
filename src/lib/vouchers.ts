@@ -2,7 +2,7 @@ import { z } from "zod";
 import { supabase, isSupabaseConfigured } from "./supabase";
 
 export type VoucherType = "nail" | "journal_leather" | "food" | "gift" | "custom";
-export type VoucherStatus = "draft" | "available" | "claimed" | "expired" | "cancelled";
+export type VoucherStatus = "draft" | "available" | "claimed" | "redeemed" | "expired" | "cancelled";
 
 export const VOUCHER_TYPE_LABELS: Record<VoucherType, string> = {
   nail: "Nail Voucher",
@@ -75,6 +75,12 @@ export function isClaimable(v: Voucher): boolean {
   return effectiveStatus(v) === "available";
 }
 
+export function formatEndOfDayIso(dateStr: string | null | undefined): string | null {
+  if (!dateStr) return null;
+  if (dateStr.includes("T")) return dateStr;
+  return new Date(`${dateStr}T23:59:59.999Z`).toISOString();
+}
+
 // ---------------------------------------------------------------------------
 // Image upload to the 'vouchers' storage bucket (admin only via RLS policy)
 // ---------------------------------------------------------------------------
@@ -123,9 +129,14 @@ export async function listProfiles(): Promise<RecipientProfile[]> {
 // ---------------------------------------------------------------------------
 export async function listMyVouchers(): Promise<Voucher[]> {
   if (!isSupabaseConfigured()) return [];
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return [];
   const { data, error } = await supabase
     .from("vouchers")
     .select("*")
+    .eq("recipient_id", user.id)
     .neq("status", "draft")
     .order("created_at", { ascending: false });
   if (error) {
@@ -193,7 +204,7 @@ export async function createVoucher(payload: CreateVoucherPayload): Promise<Vouc
     voucher_type: payload.voucher_type,
     image_url: payload.image_url ?? null,
     instructions: payload.instructions?.trim() || null,
-    expires_at: payload.expires_at ?? null,
+    expires_at: formatEndOfDayIso(payload.expires_at),
     status: payload.send ? "available" : "draft",
     sent_at: payload.send ? now : null,
   };
@@ -227,7 +238,7 @@ export async function updateVoucher(
   if (patch.image_url !== undefined) update.image_url = patch.image_url ?? null;
   if (patch.instructions !== undefined) update.instructions = patch.instructions.trim() || null;
   if (patch.recipient_id !== undefined) update.recipient_id = patch.recipient_id;
-  if (patch.expires_at !== undefined) update.expires_at = patch.expires_at ?? null;
+  if (patch.expires_at !== undefined) update.expires_at = formatEndOfDayIso(patch.expires_at);
 
   // Sending a previously-draft voucher
   if (patch.send) {
@@ -338,13 +349,37 @@ export async function claimVoucher(
   if (!isSupabaseConfigured()) throw new Error("Supabase is not configured.");
   const { data, error } = await supabase.rpc("claim_voucher", { p_voucher_id: voucherId });
   if (error) {
-    throw new Error("This voucher can no longer be claimed.");
+    console.error("claimVoucher error:", error);
+    throw new Error(error.message || "This voucher can no longer be claimed.");
   }
   if (!data || (Array.isArray(data) && data.length === 0)) {
     throw new Error("This voucher can no longer be claimed.");
   }
   const row = Array.isArray(data) ? data[0] : data;
   return { id: row.id, claimed_at: row.claimed_at };
+}
+
+export async function redeemVoucher(
+  voucherId: string
+): Promise<{ id: string; status: VoucherStatus }> {
+  if (!isSupabaseConfigured()) throw new Error("Supabase is not configured.");
+  const { data, error } = await supabase.rpc("redeem_voucher", { p_voucher_id: voucherId });
+  if (error) {
+    console.error("redeemVoucher error:", error);
+    throw new Error(error.message || "Failed to redeem voucher.");
+  }
+  const row = Array.isArray(data) ? data[0] : data;
+  return { id: row.id, status: row.status };
+}
+
+export async function recordVoucherView(voucherId: string): Promise<boolean> {
+  if (!isSupabaseConfigured()) return false;
+  const { data, error } = await supabase.rpc("record_voucher_view", { p_voucher_id: voucherId });
+  if (error) {
+    console.error("recordVoucherView error:", error);
+    return false;
+  }
+  return Boolean(data);
 }
 
 export async function markExpiredVouchers(): Promise<number> {
