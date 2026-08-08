@@ -30,8 +30,9 @@ import {
   saveSelectedSongId,
 } from "./lib/supabase";
 import { supabase, isSupabaseConfigured } from "./lib/supabase";
+import { signOutAll } from "./lib/auth";
 import { Voucher, effectiveStatus } from "./lib/vouchers";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, LogOut } from "lucide-react";
 import { toast } from "sonner";
 
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
@@ -51,8 +52,20 @@ export default function App() {
   );
 }
 
+function getInitialStep(): ExperienceStep {
+  if (typeof window === "undefined") return "welcome";
+  try {
+    const saved = localStorage.getItem("angel_user_data");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.current_step) return parsed.current_step as ExperienceStep;
+    }
+  } catch {}
+  return "welcome";
+}
+
 function UserSite() {
-  const [step, setStep] = useState<ExperienceStep>("welcome");
+  const [step, setStep] = useState<ExperienceStep>(getInitialStep);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [selectedPastMonthIndex, setSelectedPastMonthIndex] = useState<number | null>(null);
@@ -163,6 +176,13 @@ function UserSite() {
     saveAngelUserData({ current_step: newStep });
   };
 
+  const handleLogout = async () => {
+    await signOutAll();
+    setIsUnlocked(false);
+    setStep("welcome");
+    toast.info("Logged out successfully");
+  };
+
   // Handle scroll for back-to-top button
   useEffect(() => {
     const handleScroll = () => {
@@ -185,11 +205,13 @@ function UserSite() {
     setSubmittedResponseData(data);
     setSavedResponseToken(token);
     setStep("confirmation");
+    saveAngelUserData({ current_step: "confirmation" });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleEditReply = () => {
     setStep("reaction");
+    saveAngelUserData({ current_step: "reaction" });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -199,7 +221,7 @@ function UserSite() {
   }, []);
 
   const handleNewVoucher = useCallback((v: Voucher) => {
-    toast.success(`New voucher! 🎁 "${v.title}"`);
+    toast.success(`New voucher! "${v.title}"`);
     window.setTimeout(() => {
       vouchersSectionRef.current?.scrollTo();
       vouchersSectionRef.current?.pulse();
@@ -216,7 +238,7 @@ function UserSite() {
         <AngelAuthGate
           onUnlocked={() => {
             setIsUnlocked(true);
-            toast.success("Welcome back, my love 💕");
+            toast.success("Welcome back, my love");
           }}
         />
       )}
@@ -299,13 +321,29 @@ function UserSite() {
         </AnimatePresence>
       )}
 
-      {/* Permanent Vouchers section (always visible when unlocked; live via Realtime) */}
-      {isUnlocked && (
+      {/* Permanent Vouchers section (always visible when unlocked and not on confirmation step to avoid duplicate rendering; live via Realtime) */}
+      {isUnlocked && step !== "confirmation" && (
         <VouchersSection
           ref={vouchersSectionRef}
           onVouchersChange={handleVouchersChange}
           onNewVoucher={handleNewVoucher}
         />
+      )}
+
+      {/* Fixed Floating Lower-Left Logout Button (UI/UX Pro Max) */}
+      {isUnlocked && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.9, x: -10 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleLogout}
+          aria-label="Log out of session"
+          className="fixed bottom-4 left-4 z-40 flex items-center gap-1.5 rounded-full border border-rose-200/90 bg-white/90 px-4 py-2.5 text-xs font-extrabold text-rose-700 shadow-xl backdrop-blur-xl hover:bg-rose-50 hover:border-rose-300 transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95 group"
+        >
+          <LogOut size={15} className="text-rose-500 group-hover:text-rose-600 transition-colors shrink-0" />
+          <span>Logout</span>
+        </motion.button>
       )}
 
       {/* Floating Back to Top Button */}
@@ -315,7 +353,7 @@ function UserSite() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 12 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-20 left-4 z-40 flex items-center gap-1 rounded-full border border-rose-200 bg-white/90 px-4 py-2 text-xs font-bold text-rose-700 shadow-xl backdrop-blur-md hover:bg-white min-h-[40px]"
+          className="fixed bottom-20 left-4 z-40 flex items-center gap-1 rounded-full border border-rose-200 bg-white/90 px-4 py-2 text-xs font-bold text-rose-700 shadow-xl backdrop-blur-md hover:bg-white min-h-[40px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95"
           aria-label="Back to top"
         >
           <ArrowUp size={14} /> Top

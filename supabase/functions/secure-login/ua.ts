@@ -36,7 +36,7 @@ export function parseUserAgent(raw: string | null | undefined): ParsedUA {
     os = m ? `iOS ${m[1]}` : "iOS";
   } else if (/ipad/.test(lower)) os = "iPadOS";
   else if (/mac os x/i.test(ua)) {
-    const m = ua.match(/mac os x (\d+)[_\.](\d+)/i);
+    const m = ua.match(/mac os x (\d+)[_.](\d+)/i);
     os = m ? `macOS ${m[1]}.${m[2]}` : "macOS";
   } else if (/android (\d+)/.test(lower)) {
     const m = ua.match(/android (\d+)/i);

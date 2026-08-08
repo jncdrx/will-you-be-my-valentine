@@ -4,7 +4,7 @@ import { voucherSchema, effectiveStatus, isClaimable, Voucher, formatEndOfDayIso
 describe("voucherSchema", () => {
   const valid = {
     title: "Premium Nail Care Session",
-    description: "A treat for you 💕",
+    description: "A treat for you",
     voucher_type: "nail" as const,
     instructions: "Show this at the salon.",
     recipient_id: "00000000-0000-0000-0000-000000000000",

@@ -29,7 +29,7 @@ export function ImagePreviewModal({
           await navigator.share({
             files: [file],
             title: filename.replace(/_/g, " ").replace(".png", ""),
-            text: "Saved with love! 💕",
+            text: "Saved with love!",
           });
           return;
         }
@@ -71,7 +71,7 @@ export function ImagePreviewModal({
           <div className="w-full flex items-center justify-between border-b border-rose-100 pb-3 mb-4">
             <span className="text-xs font-extrabold uppercase tracking-wider text-rose-600 flex items-center gap-1.5 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
               <Heart size={14} className="fill-rose-500 text-rose-500" />
-              <span>Your Image is Ready! 📸</span>
+              <span>Your Image is Ready!</span>
             </span>
             <button
               onClick={onClose}
@@ -86,7 +86,7 @@ export function ImagePreviewModal({
           <div className="w-full bg-gradient-to-r from-pink-50 via-rose-50 to-pink-50 p-3 rounded-2xl border border-rose-200 mb-4 text-left flex items-start gap-2.5 shadow-sm">
             <Smartphone size={20} className="text-rose-500 shrink-0 mt-0.5" />
             <p className="text-xs text-rose-900/90 leading-relaxed font-medium">
-              <strong className="font-bold text-rose-700">Mobile & iOS Tip:</strong> Tap and hold the image below to save directly to your <strong>Photos / Gallery</strong> or share with your baby! 📲
+              <strong className="font-bold text-rose-700">Mobile & iOS Tip:</strong> Tap and hold the image below to save directly to your <strong>Photos / Gallery</strong> or share with your baby!
             </p>
           </div>
 
@@ -116,7 +116,7 @@ export function ImagePreviewModal({
               className="flex-1 min-w-[140px] px-4 py-3 rounded-full bg-white text-rose-700 border border-rose-300 text-xs sm:text-sm font-bold shadow-md hover:bg-rose-50 transition-all flex items-center justify-center gap-2 min-h-[44px]"
             >
               {copied ? <CheckCircle2 size={16} className="text-emerald-600" /> : <Download size={16} />}
-              <span>{copied ? "Downloaded! ✨" : "Download File"}</span>
+              <span>{copied ? "Downloaded!" : "Download File"}</span>
             </button>
 
             <button

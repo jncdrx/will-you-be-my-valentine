@@ -113,7 +113,8 @@ export const VouchersSection = forwardRef<VouchersSectionHandle, VouchersSection
           <button
             onClick={reload}
             title="Refresh"
-            className="p-2.5 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 min-h-[40px] min-w-[40px] flex items-center justify-center"
+            aria-label="Refresh my vouchers list"
+            className="p-2.5 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
           >
             <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
           </button>
@@ -140,7 +141,7 @@ export const VouchersSection = forwardRef<VouchersSectionHandle, VouchersSection
               <p className="text-base font-bold text-rose-700">No vouchers yet</p>
               <p className="text-xs text-rose-400 mt-1 flex items-center justify-center gap-1">
                 <Sparkles size={12} className="text-rose-400" />
-                Your baby hasn't sent any vouchers yet. Check back soon! 💕
+                Your baby hasn't sent any vouchers yet. Check back soon!
               </p>
             </div>
           ) : (

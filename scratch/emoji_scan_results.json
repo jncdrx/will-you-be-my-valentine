@@ -1,0 +1,37 @@
+[
+  {
+    "file": "src\\components\\FloatingHearts.tsx",
+    "line": 31,
+    "content": "value: [\"❤\", \"💖\", \"💕\", \"✨\"],",
+    "matches": [
+      "❤",
+      "💖",
+      "💕",
+      "✨"
+    ]
+  },
+  {
+    "file": "src\\components\\PastMonthsaryModal.tsx",
+    "line": 131,
+    "content": "— Always & Forever, Your Baby 💕",
+    "matches": [
+      "💕"
+    ]
+  },
+  {
+    "file": "src\\components\\user\\VoucherCard.tsx",
+    "line": 278,
+    "content": "Redeemed & Fulfilled 💕",
+    "matches": [
+      "💕"
+    ]
+  },
+  {
+    "file": "src\\components\\user\\__tests__\\VoucherCard.test.tsx",
+    "line": 51,
+    "content": "expect(screen.getByText(\"Redeemed & Fulfilled 💕\")).toBeInTheDocument();",
+    "matches": [
+      "💕"
+    ]
+  }
+]

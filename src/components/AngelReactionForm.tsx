@@ -139,10 +139,10 @@ export function AngelReactionForm({ onSubmitted, onBackToMemories, existingToken
     });
   };
 
-const reactionFormSchema = z.object({
-  name: z.string().min(1, "Please enter your name, my love."),
-  message: z.string().min(1, "Please write a short reply or note for me.").max(1000, "Message cannot exceed 1000 characters."),
-});
+  const reactionFormSchema = z.object({
+    name: z.string().min(1, "Please enter your name, my love."),
+    message: z.string().min(1, "Please write a short reply or note for me.").max(1000, "Message cannot exceed 1000 characters."),
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,7 +185,7 @@ const reactionFormSchema = z.object({
         image_urls: data.image_urls || [],
         current_step: "confirmation",
       });
-      toast.success("Reply sent with love! 💕");
+      toast.success("Reply sent with love!");
       onSubmitted(data, token);
     } catch (err) {
       console.error("Submission error:", err);
@@ -236,6 +236,7 @@ const reactionFormSchema = z.object({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="my dearest baby angel"
+            aria-label="Your Name"
             className="w-full rounded-2xl border border-rose-200 bg-rose-50/50 px-4 py-3 text-sm text-gray-800 font-semibold focus:border-rose-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-300/50 transition-all capitalize min-h-[48px]"
             required
           />
@@ -255,6 +256,7 @@ const reactionFormSchema = z.object({
             value={message}
             onChange={handleMessageChange}
             placeholder="Tell me how you feel, my love, my dearest baby angel..."
+            aria-label="Your Message or Reaction"
             className="w-full rounded-2xl border border-rose-200 bg-rose-50/50 p-4 text-sm sm:text-base text-gray-800 font-sans focus:border-rose-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-300/50 transition-all resize-none"
             required
           />
@@ -319,10 +321,10 @@ const reactionFormSchema = z.object({
                   <button
                     type="button"
                     onClick={() => handleRemoveFile(i)}
-                    className="absolute top-1 right-1 rounded-full bg-black/60 p-1.5 text-white hover:bg-red-500 transition-colors min-w-[28px] min-h-[28px] flex items-center justify-center"
-                    aria-label="Remove image"
+                    className="absolute top-1 right-1 rounded-full bg-black/70 p-1.5 text-white hover:bg-red-500 transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center active:scale-95"
+                    aria-label={`Remove photo ${i + 1}`}
                   >
-                    <X size={12} />
+                    <X size={14} />
                   </button>
                 </div>
               ))}
@@ -333,7 +335,7 @@ const reactionFormSchema = z.object({
         {/* Error Alert */}
         {errorMessage && (
           <div className="mb-5 flex items-center gap-2 rounded-2xl bg-red-50 p-3.5 text-xs font-bold text-red-600 border border-red-200 shadow-sm">
-            <AlertCircle size={16} />
+            <AlertCircle size={16} className="shrink-0" />
             <span>{errorMessage}</span>
           </div>
         )}
@@ -342,8 +344,12 @@ const reactionFormSchema = z.object({
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={onBackToMemories}
-            className="flex items-center justify-center gap-1.5 rounded-full bg-rose-50 px-5 py-3.5 text-xs sm:text-sm font-bold text-rose-700 border border-rose-200 shadow-sm hover:bg-rose-100 transition-all min-h-[52px]"
+            onClick={() => {
+              triggerHaptic();
+              onBackToMemories();
+            }}
+            aria-label="Back to memories"
+            className="flex items-center justify-center gap-1.5 rounded-full bg-rose-50 px-5 py-3.5 text-xs sm:text-sm font-bold text-rose-700 border border-rose-200 shadow-sm hover:bg-rose-100 transition-all min-h-[52px] active:scale-95"
           >
             <ArrowLeft size={16} />
             <span>Memories</span>
@@ -354,16 +360,17 @@ const reactionFormSchema = z.object({
             whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={isSubmitting}
-            className="flex-1 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 py-4 font-bold text-white shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-2 text-base disabled:opacity-50 min-h-[52px]"
+            aria-label="Submit my reply"
+            className="flex-1 rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 py-4 font-bold text-white shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-2 text-base disabled:opacity-50 min-h-[52px] active:scale-95"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
-                <Sparkles size={18} className="animate-spin" />
+                <Sparkles size={18} className="animate-spin shrink-0" />
                 <span>Sending your reply...</span>
               </span>
             ) : (
               <>
-                <Send size={18} />
+                <Send size={18} className="shrink-0" />
                 <span>Submit My Reply</span>
               </>
             )}

@@ -10,7 +10,7 @@ const reasons = [
     "Your kindness and pure heart",
     "How you look at me with those pretty eyes",
     "Being the best thing that ever happened to me",
-    "Just being YOU, Angelica ❤️"
+    "Just being YOU, Angelica"
 ];
 
 export function ReasonsCard() {

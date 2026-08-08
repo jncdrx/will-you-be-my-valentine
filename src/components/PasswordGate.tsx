@@ -46,7 +46,7 @@ export function PasswordGate({ onUnlocked }: PasswordGateProps) {
         sessionStorage.setItem("monthsary_authenticated", "true");
         onUnlocked();
       } else {
-        setErrorMsg("Incorrect password, my love! Please try again ❤️");
+        setErrorMsg("Incorrect password, my love! Please try again");
         handleShake();
       }
     } catch (err) {
@@ -89,7 +89,7 @@ export function PasswordGate({ onUnlocked }: PasswordGateProps) {
         </h1>
 
         <p className="text-xs sm:text-sm text-gray-600 mt-2 mb-6 leading-relaxed">
-          Please enter our secret password to unlock your 7th Monthsary surprise website 💕
+          Please enter our secret password to unlock your 7th Monthsary surprise website
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">

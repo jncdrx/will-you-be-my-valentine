@@ -38,7 +38,7 @@ export function MusicPlayer({ currentSong, onOpenSelector }: MusicPlayerProps) {
 
     soundRef.current = sound;
 
-    // Strict Autoplay rule: do NOT autoplay until user interacts
+    // Autoplay rule: start on first pointer/key interaction
     const handleInteraction = () => {
       if (soundRef.current && !soundRef.current.playing()) {
         soundRef.current.play();
@@ -91,13 +91,14 @@ export function MusicPlayer({ currentSong, onOpenSelector }: MusicPlayerProps) {
   return (
     <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2">
       {/* Expanding Control Bar */}
-      <motion.div className="flex items-center gap-2 rounded-full bg-white/95 px-3 py-2 text-xs font-semibold text-rose-600 shadow-2xl backdrop-blur-md border border-rose-200 opacity-95 hover:opacity-100 transition-all duration-300">
+      <motion.div className="flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1.5 text-xs font-semibold text-rose-600 shadow-2xl backdrop-blur-md border border-rose-200 opacity-95 hover:opacity-100 transition-all duration-300">
         
         {/* Open Music Library Selector Modal */}
         {onOpenSelector && (
           <button
             onClick={onOpenSelector}
-            className="p-1.5 rounded-full hover:bg-rose-100 text-rose-600 transition flex items-center gap-1 font-bold text-[11px]"
+            aria-label="Choose Music Track"
+            className="min-w-[44px] min-h-[44px] rounded-full hover:bg-rose-100 text-rose-600 transition flex items-center justify-center gap-1 font-bold text-[11px] active:scale-95"
             title="Choose Music Track"
           >
             <ListMusic size={16} />
@@ -106,7 +107,7 @@ export function MusicPlayer({ currentSong, onOpenSelector }: MusicPlayerProps) {
         )}
 
         {/* Current Song Title & Visualizer */}
-        <div className="flex items-center gap-2 px-2 border-x border-rose-100 max-w-[180px] sm:max-w-[240px] truncate">
+        <div className="flex items-center gap-2 px-2 border-x border-rose-100 max-w-[170px] sm:max-w-[240px] truncate">
           <Music2 size={13} className={isPlaying ? "animate-spin text-rose-500 shrink-0" : "text-gray-400 shrink-0"} />
           <span className="font-sans truncate text-[11px] sm:text-xs font-medium text-gray-800" title={activeTitle}>
             {activeTitle}
@@ -137,10 +138,11 @@ export function MusicPlayer({ currentSong, onOpenSelector }: MusicPlayerProps) {
         {/* Restart Button */}
         <button
           onClick={handleRestart}
-          className="p-1.5 rounded-full hover:bg-rose-100 text-gray-600 hover:text-rose-600 transition"
+          aria-label="Restart song"
+          className="min-w-[44px] min-h-[44px] rounded-full hover:bg-rose-100 text-gray-600 hover:text-rose-600 transition flex items-center justify-center active:scale-95"
           title="Restart song"
         >
-          <RotateCcw size={14} />
+          <RotateCcw size={15} />
         </button>
 
         {/* Volume Controls Toggle */}
@@ -148,10 +150,11 @@ export function MusicPlayer({ currentSong, onOpenSelector }: MusicPlayerProps) {
           <button
             onClick={toggleMute}
             onMouseEnter={() => setShowVolumeControls(true)}
-            className="p-1.5 rounded-full hover:bg-rose-100 text-gray-600 hover:text-rose-600 transition"
+            aria-label={isMuted ? "Unmute sound" : "Mute sound"}
+            className="min-w-[44px] min-h-[44px] rounded-full hover:bg-rose-100 text-gray-600 hover:text-rose-600 transition flex items-center justify-center active:scale-95"
             title={isMuted ? "Unmute" : "Mute"}
           >
-            {isMuted || volume === 0 ? <VolumeX size={14} className="text-red-500" /> : <Volume2 size={14} />}
+            {isMuted || volume === 0 ? <VolumeX size={15} className="text-red-500" /> : <Volume2 size={15} />}
           </button>
 
           {/* Volume Slider Tooltip */}
@@ -162,7 +165,7 @@ export function MusicPlayer({ currentSong, onOpenSelector }: MusicPlayerProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 5 }}
                 onMouseLeave={() => setShowVolumeControls(false)}
-                className="absolute bottom-10 right-0 bg-white p-2.5 rounded-2xl shadow-xl border border-rose-200 flex items-center gap-2 z-50 min-w-[120px]"
+                className="absolute bottom-12 right-0 bg-white p-2.5 rounded-2xl shadow-xl border border-rose-200 flex items-center gap-2 z-50 min-w-[130px]"
               >
                 <input
                   type="range"
@@ -174,9 +177,10 @@ export function MusicPlayer({ currentSong, onOpenSelector }: MusicPlayerProps) {
                     setIsMuted(false);
                     setVolume(parseFloat(e.target.value));
                   }}
+                  aria-label="Volume slider"
                   className="w-20 accent-rose-500 cursor-pointer h-1 bg-rose-100 rounded-lg"
                 />
-                <span className="text-[10px] font-mono text-gray-600 min-w-[24px]">
+                <span className="text-[10px] font-mono text-gray-600 min-w-[28px]">
                   {Math.round((isMuted ? 0 : volume) * 100)}%
                 </span>
               </motion.div>
@@ -187,11 +191,11 @@ export function MusicPlayer({ currentSong, onOpenSelector }: MusicPlayerProps) {
 
       {/* Main Play / Pause Disc Button */}
       <motion.button
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.92 }}
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.94 }}
         onClick={togglePlay}
         aria-label={isPlaying ? "Pause music" : "Play music"}
-        className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 p-3 text-white shadow-2xl backdrop-blur-md transition-all hover:shadow-rose-300 min-h-[48px] min-w-[48px] justify-center shrink-0"
+        className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 p-3 text-white shadow-2xl backdrop-blur-md transition-all hover:shadow-rose-300 min-h-[48px] min-w-[48px] justify-center shrink-0 active:scale-95"
       >
         <motion.div
           animate={{ rotate: isPlaying ? 360 : 0 }}

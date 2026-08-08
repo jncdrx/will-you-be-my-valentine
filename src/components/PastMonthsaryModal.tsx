@@ -128,7 +128,7 @@ export function PastMonthsaryModal({ initialMonthIndex, onClose }: PastMonthsary
             </div>
 
             <p className="mt-3 text-right text-xs font-bold text-rose-600 italic">
-              — Always & Forever, Your Baby 💕
+              — Always & Forever, Your Baby
             </p>
           </div>
 

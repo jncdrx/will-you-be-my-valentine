@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
 
 interface HeartTrail {
     id: number;
@@ -46,7 +47,7 @@ export function MouseTrail() {
                     className="pointer-events-none fixed text-rose-500 z-50 text-xl"
                     style={{ left: t.x, top: t.y }}
                 >
-                    ❤️
+                    <Heart size={14} fill="#f43f5e" className="text-rose-500" />
                 </motion.div>
             ))}
         </>

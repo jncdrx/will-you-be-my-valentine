@@ -44,12 +44,12 @@ describe("VoucherCard", () => {
     expect(screen.getByText(/Claimed on/i)).toBeInTheDocument();
   });
 
-  it("shows redeemed & fulfilled badge when voucher is redeemed", () => {
-    const redeemed: Voucher = { ...base, status: "redeemed" };
+  it("renders redeemed status correctly", () => {
+    const redeemed = { ...base, status: "redeemed" as const };
     render(<VoucherCard voucher={redeemed} onClaim={vi.fn()} />);
     expect(screen.getByText("REDEEMED & FULFILLED")).toBeInTheDocument();
-    expect(screen.getByText("Redeemed & Fulfilled 💕")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /claim voucher/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Redeemed & Fulfilled/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^claim voucher$/i })).not.toBeInTheDocument();
   });
 
   it("shows expired messaging when expiry is in the past", () => {

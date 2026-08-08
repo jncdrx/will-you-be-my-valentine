@@ -80,7 +80,7 @@ export function LoveLetterSection({ onContinue }: LoveLetterSectionProps) {
       >
         <div className="w-full text-center mb-4">
           <span className="text-xs font-extrabold uppercase tracking-widest text-rose-600 bg-rose-100/80 px-4 py-1.5 rounded-full border border-rose-200 inline-flex items-center gap-1.5 shadow-sm">
-            <Mail size={14} className="text-rose-500" />
+            <Mail size={14} className="text-rose-500 shrink-0" />
             <span>Step 2: My Personal Love Letter</span>
           </span>
         </div>
@@ -136,44 +136,47 @@ export function LoveLetterSection({ onContinue }: LoveLetterSectionProps) {
           </div>
         </div>
 
-        {/* Bottom Action Controls - 44px+ Touch Targets */}
+        {/* Bottom Action Controls */}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3 w-full">
           <button
             onClick={handleCopyText}
-            className="flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-3 text-xs sm:text-sm font-bold text-rose-700 border border-rose-200 shadow-md hover:bg-rose-50 transition-all min-h-[44px] active:scale-95"
+            aria-label="Copy letter text"
+            className="flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-3 text-xs sm:text-sm font-bold text-rose-700 border border-rose-200 shadow-md hover:bg-rose-50 transition-all min-h-[48px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
           >
-            {isCopied ? <Check size={16} className="text-emerald-600" /> : <Copy size={16} />}
+            {isCopied ? <Check size={16} className="text-emerald-600 shrink-0" /> : <Copy size={16} className="shrink-0" />}
             <span>{isCopied ? "Copied Letter!" : "Copy Letter"}</span>
           </button>
 
           <button
             onClick={handleSaveLetterImage}
             disabled={isDownloading}
-            className="flex items-center gap-2 rounded-full bg-white/90 px-5 py-3 text-xs sm:text-sm font-bold text-rose-700 border border-rose-200 shadow-md hover:bg-rose-50 transition-all disabled:opacity-50 min-h-[44px] active:scale-95"
+            aria-label="Save letter as image"
+            className="flex items-center gap-2 rounded-full bg-white/90 px-5 py-3 text-xs sm:text-sm font-bold text-rose-700 border border-rose-200 shadow-md hover:bg-rose-50 transition-all disabled:opacity-50 min-h-[48px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
           >
             {isDownloading ? (
               <>
-                <Sparkles size={16} className="animate-spin text-rose-500" />
+                <Sparkles size={16} className="animate-spin text-rose-500 shrink-0" />
                 <span>Preparing Image...</span>
               </>
             ) : (
               <>
-                <Share2 size={16} />
-                <span>Save Letter as Image 📸</span>
+                <Share2 size={16} className="shrink-0" />
+                <span>Save Letter as Image</span>
               </>
             )}
           </button>
 
           <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             onClick={() => {
               triggerHaptic();
               onContinue();
             }}
-            className="flex items-center gap-2 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 px-7 py-3 text-sm sm:text-base font-bold text-white shadow-xl hover:shadow-2xl transition-all min-h-[44px]"
+            aria-label="Continue to memories"
+            className="flex items-center gap-2 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 px-7 py-3 text-sm sm:text-base font-bold text-white shadow-xl hover:shadow-2xl transition-all min-h-[52px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
           >
-            <Sparkles size={18} />
+            <Sparkles size={18} className="shrink-0" />
             <span>Continue, my love</span>
           </motion.button>
         </div>

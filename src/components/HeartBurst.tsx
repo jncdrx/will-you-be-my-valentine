@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Heart } from "lucide-react";
 
 interface Burst {
     id: number;
@@ -77,7 +78,7 @@ function BurstParticles({ x, y }: { x: number; y: number }) {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="absolute text-rose-500 text-lg"
                 >
-                    ❤️
+                    <Heart size={18} fill="#f43f5e" className="text-rose-500" />
                 </motion.div>
             ))}
         </>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Sparkles, Clock, ChevronRight, ChevronLeft, X, Maximize2, Camera, Sprout, Cake, Utensils, Coffee, Crown, MessageCircle } from "lucide-react";
 import { monthsaryConfig, MemoryItem, TimelineEvent } from "../config/monthsaryConfig";
@@ -11,21 +11,21 @@ interface MemoriesSectionProps {
 function renderTimelineIcon(iconName: TimelineEvent["iconName"]) {
   switch (iconName) {
     case "Sprout":
-      return <Sprout size={16} className="text-emerald-600" />;
+      return <Sprout size={16} className="text-emerald-600 shrink-0" />;
     case "Cake":
-      return <Cake size={16} className="text-pink-500" />;
+      return <Cake size={16} className="text-pink-500 shrink-0" />;
     case "Sparkles":
-      return <Sparkles size={16} className="text-amber-500" />;
+      return <Sparkles size={16} className="text-amber-500 shrink-0" />;
     case "Utensils":
-      return <Utensils size={16} className="text-rose-500" />;
+      return <Utensils size={16} className="text-rose-500 shrink-0" />;
     case "Coffee":
-      return <Coffee size={16} className="text-amber-700" />;
+      return <Coffee size={16} className="text-amber-700 shrink-0" />;
     case "Heart":
-      return <Heart size={16} className="text-rose-500 fill-rose-500" />;
+      return <Heart size={16} className="text-rose-500 fill-rose-500 shrink-0" />;
     case "Crown":
-      return <Crown size={16} className="text-amber-500 fill-amber-400" />;
+      return <Crown size={16} className="text-amber-500 fill-amber-400 shrink-0" />;
     default:
-      return <Sparkles size={16} className="text-rose-500" />;
+      return <Sparkles size={16} className="text-rose-500 shrink-0" />;
   }
 }
 
@@ -34,6 +34,18 @@ export function MemoriesSection({ onGoToReaction }: MemoriesSectionProps) {
   const [lightboxPhoto, setLightboxPhoto] = useState<MemoryItem | null>(null);
 
   const memories = monthsaryConfig.memories;
+
+  // Lock background scroll when lightbox is open
+  useEffect(() => {
+    if (lightboxPhoto) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [lightboxPhoto]);
 
   const nextPhoto = () => {
     setActivePhotoIndex((prev) => (prev + 1) % memories.length);
@@ -54,12 +66,12 @@ export function MemoriesSection({ onGoToReaction }: MemoriesSectionProps) {
       {/* Header Banner */}
       <div className="text-center mb-6">
         <span className="text-xs font-extrabold uppercase tracking-widest text-rose-600 bg-rose-100/80 px-4 py-1.5 rounded-full border border-rose-200 inline-flex items-center gap-1.5 shadow-sm mb-2">
-          <Camera size={14} className="text-rose-500" />
+          <Camera size={14} className="text-rose-500 shrink-0" />
           <span>Step 3: Our Memories & Timeline</span>
         </span>
         <h2 className="text-3xl sm:text-5xl font-bold text-rose-600 font-display flex items-center justify-center gap-2">
           <span>Our Journey Over 7 Months</span>
-          <Heart size={28} className="fill-rose-500 text-rose-500" />
+          <Heart size={28} className="fill-rose-500 text-rose-500 shrink-0 animate-pulse" />
         </h2>
       </div>
 
@@ -110,7 +122,8 @@ export function MemoriesSection({ onGoToReaction }: MemoriesSectionProps) {
             <button
               key={item.id}
               onClick={() => setActivePhotoIndex(idx)}
-              className={`relative w-12 h-12 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 ${
+              aria-label={`View photo ${idx + 1}`}
+              className={`relative w-12 h-12 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400 ${
                 idx === activePhotoIndex
                   ? "border-rose-500 scale-110 shadow-md ring-2 ring-rose-300"
                   : "border-transparent opacity-60 hover:opacity-100"
@@ -125,14 +138,16 @@ export function MemoriesSection({ onGoToReaction }: MemoriesSectionProps) {
         <div className="flex items-center justify-between w-full px-1">
           <button
             onClick={prevPhoto}
-            className="flex items-center gap-1.5 rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700 shadow-sm hover:bg-rose-100 transition-colors min-h-[40px]"
+            aria-label="Previous photo"
+            className="flex items-center gap-1.5 rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700 shadow-sm hover:bg-rose-100 transition-colors min-h-[44px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
           >
             <ChevronLeft size={16} /> Prev Photo
           </button>
 
           <button
             onClick={nextPhoto}
-            className="flex items-center gap-1.5 rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700 shadow-sm hover:bg-rose-100 transition-colors min-h-[40px]"
+            aria-label="Next photo"
+            className="flex items-center gap-1.5 rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700 shadow-sm hover:bg-rose-100 transition-colors min-h-[44px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
           >
             Next Photo <ChevronRight size={16} />
           </button>
@@ -142,7 +157,7 @@ export function MemoriesSection({ onGoToReaction }: MemoriesSectionProps) {
       {/* 7th Monthsary Milestone Timeline */}
       <div className="w-full max-w-2xl bg-white/70 backdrop-blur-md p-6 rounded-3xl border border-white/90 shadow-xl mb-8">
         <h3 className="text-xl sm:text-2xl font-bold text-rose-600 font-display text-center mb-6 flex items-center justify-center gap-2">
-          <Clock size={20} className="text-rose-500" />
+          <Clock size={20} className="text-rose-500 shrink-0" />
           <span>7 Months Milestone Timeline</span>
         </h3>
 
@@ -181,12 +196,13 @@ export function MemoriesSection({ onGoToReaction }: MemoriesSectionProps) {
 
       {/* Share Reaction CTA */}
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.96 }}
         onClick={onGoToReaction}
-        className="rounded-full bg-gradient-to-r from-purple-500 via-rose-500 to-pink-600 px-8 py-4 text-base sm:text-lg font-bold text-white shadow-xl hover:shadow-2xl transition-all flex items-center gap-2.5 min-h-[52px]"
+        aria-label="Write your reaction"
+        className="rounded-full bg-gradient-to-r from-purple-500 via-rose-500 to-pink-600 px-8 py-4 text-base sm:text-lg font-bold text-white shadow-xl hover:shadow-2xl transition-all flex items-center gap-2.5 min-h-[52px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
       >
-        <MessageCircle size={20} />
+        <MessageCircle size={20} className="shrink-0" />
         <span>Write Your Reaction, My Sweet Baby Angel</span>
       </motion.button>
 
@@ -200,13 +216,18 @@ export function MemoriesSection({ onGoToReaction }: MemoriesSectionProps) {
             onClick={() => setLightboxPhoto(null)}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4"
           >
-            <div
+            <motion.div
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.94, opacity: 0 }}
+              transition={{ duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
               className="relative max-w-2xl w-full bg-white rounded-3xl p-4 sm:p-6 shadow-2xl flex flex-col items-center border border-rose-100"
             >
               <button
                 onClick={() => setLightboxPhoto(null)}
-                className="absolute top-4 right-4 rounded-full bg-rose-100 p-2 text-rose-600 hover:bg-rose-200 transition-colors"
+                aria-label="Close photo preview"
+                className="absolute top-4 right-4 rounded-full bg-rose-100 p-2 text-rose-600 hover:bg-rose-200 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
               >
                 <X size={20} />
               </button>
@@ -220,7 +241,7 @@ export function MemoriesSection({ onGoToReaction }: MemoriesSectionProps) {
               <p className="text-center font-serif text-lg text-rose-900 font-semibold italic">
                 "{lightboxPhoto.caption}"
               </p>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

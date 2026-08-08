@@ -17,15 +17,16 @@ export function BirthdayLetter({ birthdayDate, birthdayRelative, openTrigger = 0
     }
   }, [openTrigger]);
 
-  const text = `Happy Birthday, my love! 🎂\n\n${birthdayRelative} (${birthdayDate}) is all about you. Thank you for being my sunshine, my comfort, and my favorite person.\n\nI hope your day feels as beautiful as your heart. I want to celebrate every smile, every laugh, and every little thing that makes you, you.\n\nYou are loved beyond words, and I will always choose you.\n\nHappy Birthday and happy 2nd monthsary, baby.\n\nAlways yours,\nYour Baby 💕`;
+  const text = `Happy Birthday, my love!\n\n${birthdayRelative} (${birthdayDate}) is all about you. Thank you for being my sunshine, my comfort, and my favorite person.\n\nI hope your day feels as beautiful as your heart. I want to celebrate every smile, every laugh, and every little thing that makes you, you.\n\nYou are loved beyond words, and I will always choose you.\n\nHappy Birthday and happy 2nd monthsary, baby.\n\nAlways yours,\nYour Baby`;
 
   return (
     <div id="birthday-letter" className="my-6 w-full max-w-2xl px-4 scroll-mt-6">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="w-full rounded-2xl bg-gradient-to-r from-fuchsia-500 to-rose-500 px-6 py-4 font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
+        className="w-full rounded-2xl bg-gradient-to-r from-fuchsia-500 to-rose-500 px-6 py-4 font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
       >
-        {isOpen ? "Hide Birthday Letter" : "🎂 Read Birthday Letter"}
+        <Cake size={18} />
+        <span>{isOpen ? "Hide Birthday Letter" : "Read Birthday Letter"}</span>
       </button>
 
       <AnimatePresence>

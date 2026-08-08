@@ -18,25 +18,25 @@ const firstMemories: MemoryItem[] = [
     {
         id: "m1-1",
         src: withBase("images/first_memories/us1.jpg"),
-        caption: "Our beginning, forever special 💖",
+        caption: "Our beginning, forever special",
         chapterName: "Chapter 1: Our Beginning",
     },
     {
         id: "m1-2",
         src: withBase("images/first_memories/us2.jpg"),
-        caption: "The smiles that started it all ✨",
+        caption: "The smiles that started it all",
         chapterName: "Chapter 1: Our Beginning",
     },
     {
         id: "m1-3",
         src: withBase("images/first_memories/us3.jpg"),
-        caption: "First memories, same favorite person 🥰",
+        caption: "First memories, same favorite person",
         chapterName: "Chapter 1: Our Beginning",
     },
     {
         id: "m1-4",
         src: withBase("images/first_memories/us4.jpg"),
-        caption: "Every first with you is magic 💌",
+        caption: "Every first with you is magic",
         chapterName: "Chapter 1: Our Beginning",
     }
 ];
@@ -45,37 +45,37 @@ const secondMemories: MemoryItem[] = [
     {
         id: "m2-1",
         src: withBase("images/seond_memories/367dff07-ffbb-411d-8f91-b03a57cc49a0.jpg"),
-        caption: "A moment I'll always keep close 💗",
+        caption: "A moment I'll always keep close",
         chapterName: "Chapter 2: 2nd Monthsary",
     },
     {
         id: "m2-2",
         src: withBase("images/seond_memories/36fd68b4-846b-484b-a83c-0f4b5845b726.jpg"),
-        caption: "Tofi, our fourth rabbit — so cute and special to us 🐰✨",
+        caption: "Tofi, our fourth rabbit — so cute and special to us",
         chapterName: "Chapter 2: 2nd Monthsary",
     },
     {
         id: "m2-3",
         src: withBase("images/seond_memories/4a5d4778-b71c-456e-88fb-94283270d9a6.jpg"),
-        caption: "One smile from you, complete day 🥰",
+        caption: "One smile from you, complete day",
         chapterName: "Chapter 2: 2nd Monthsary",
     },
     {
         id: "m2-4",
         src: withBase("images/seond_memories/5bf162c1-388a-41cb-9afe-2f39a19ca1c8.jpg"),
-        caption: "Favorite person, favorite memory 📸",
+        caption: "Favorite person, favorite memory",
         chapterName: "Chapter 2: 2nd Monthsary",
     },
     {
         id: "m2-5",
         src: withBase("images/seond_memories/b3b7a383-87e9-4692-aa0e-b2f189ab8e66.jpg"),
-        caption: "Still my happiest place — you 💞",
+        caption: "Still my happiest place — you",
         chapterName: "Chapter 2: 2nd Monthsary",
     },
     {
         id: "m2-6",
         src: withBase("images/seond_memories/dc10f935-4701-4f8f-9f8f-07d9b9a4b1d9.jpg"),
-        caption: "More memories, more love, always 💌",
+        caption: "More memories, more love, always",
         chapterName: "Chapter 2: 2nd Monthsary",
     }
 ];
@@ -84,25 +84,25 @@ const thirdMemories: MemoryItem[] = [
     {
         id: "m3-1",
         src: withBase("images/third_memories/couple_watercolor.png"),
-        caption: "Our love story in color, sweet and beautiful 🎨💖",
+        caption: "Our love story in color, sweet and beautiful",
         chapterName: "Chapter 3: 3rd Monthsary",
     },
     {
         id: "m3-2",
         src: withBase("images/third_memories/starlit_walk.png"),
-        caption: "Under the stars, holding the one who lights up my world 🌌💞",
+        caption: "Under the stars, holding the one who lights up my world",
         chapterName: "Chapter 3: 3rd Monthsary",
     },
     {
         id: "m3-3",
         src: withBase("images/third_memories/cherry_blossom.png"),
-        caption: "Caught in a shower of pink blossoms and pure happiness 🌸✨",
+        caption: "Caught in a shower of pink blossoms and pure happiness",
         chapterName: "Chapter 3: 3rd Monthsary",
     },
     {
         id: "m3-4",
         src: withBase("images/third_memories/milkshake_share.png"),
-        caption: "Sharing sweet sips and even sweeter moments together 🥤💕",
+        caption: "Sharing sweet sips and even sweeter moments together",
         chapterName: "Chapter 3: 3rd Monthsary",
     }
 ];
@@ -111,25 +111,25 @@ const fourthMemories: MemoryItem[] = [
     {
         id: "m4-1",
         src: withBase("images/fourth_memories/couple_selfie.jpg"),
-        caption: "Pressed close, warm smiles, and pure happiness together 🥰💞",
+        caption: "Pressed close, warm smiles, and pure happiness together",
         chapterName: "Chapter 4: 4th Monthsary",
     },
     {
         id: "m4-2",
         src: withBase("images/fourth_memories/japanese_food.jpg"),
-        caption: "Delicious Japanese food dates with you 🍱😋",
+        caption: "Delicious Japanese food dates with you",
         chapterName: "Chapter 4: 4th Monthsary",
     },
     {
         id: "m4-3",
         src: withBase("images/fourth_memories/oishidon_sign.jpg"),
-        caption: "Oishidon Japanese Restaurant, another lovely memory captured 🍣✨",
+        caption: "Oishidon Japanese Restaurant, another lovely memory captured",
         chapterName: "Chapter 4: 4th Monthsary",
     },
     {
         id: "m4-4",
         src: withBase("images/fourth_memories/arternative_shop.jpg"),
-        caption: "Exploring art supply stores and creative dates together 🎨✏️",
+        caption: "Exploring art supply stores and creative dates together",
         chapterName: "Chapter 4: 4th Monthsary",
     }
 ];
@@ -138,25 +138,25 @@ const fifthMemories: MemoryItem[] = [
     {
         id: "m5-1",
         src: withBase("images/fifth_memories/mountain.jpg"),
-        caption: "Beautiful mountains and skies, but nothing is as beautiful as us ⛰️☁️",
+        caption: "Beautiful mountains and skies, but nothing is as beautiful as us",
         chapterName: "Chapter 5: 5th Monthsary",
     },
     {
         id: "m5-2",
         src: withBase("images/fifth_memories/coffee_time.jpg"),
-        caption: "Candid coffee dates and your cute smiles ☕🥰",
+        caption: "Candid coffee dates and your cute smiles",
         chapterName: "Chapter 5: 5th Monthsary",
     },
     {
         id: "m5-3",
         src: withBase("images/fifth_memories/mirror_selfie.jpg"),
-        caption: "Rooted in love, rooted in legacy — forever with you mirror selfie 🤳💞",
+        caption: "Rooted in love, rooted in legacy — forever with you mirror selfie",
         chapterName: "Chapter 5: 5th Monthsary",
     },
     {
         id: "m5-4",
         src: withBase("images/fifth_memories/cafe_sign.jpg"),
-        caption: "Café 10/23, finding cute new spots to love with you ☕✨",
+        caption: "Café 10/23, finding cute new spots to love with you",
         chapterName: "Chapter 5: 5th Monthsary",
     }
 ];
@@ -242,10 +242,10 @@ function SwipeSection({
 
                                     <button
                                         onClick={(e) => onToggleLike(memory.id, e)}
-                                        className="flex items-center gap-1 text-[10px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 px-2 py-1 rounded-full transition-colors border border-rose-200 min-h-[28px]"
+                                        className="flex items-center gap-1 text-[10px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 px-2.5 py-1.5 rounded-full transition-colors border border-rose-200 min-h-[44px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
                                         aria-label="Send love"
                                     >
-                                        <Heart size={12} className={count > 0 ? "fill-rose-500 text-rose-500" : ""} />
+                                        <Heart size={13} className={count > 0 ? "fill-rose-500 text-rose-500" : ""} />
                                         <span>{count}</span>
                                     </button>
                                 </div>
@@ -260,7 +260,8 @@ function SwipeSection({
                 <button
                     onClick={goPrevious}
                     disabled={activeMemory === 0}
-                    className="flex items-center gap-1 rounded-full border border-rose-200 bg-white/90 px-3.5 py-1.5 text-xs font-bold text-rose-700 shadow-sm hover:bg-rose-50 transition-colors disabled:cursor-not-allowed disabled:opacity-40 min-h-[38px]"
+                    aria-label="Previous memory"
+                    className="flex items-center gap-1 rounded-full border border-rose-200 bg-white/90 px-3.5 py-1.5 text-xs font-bold text-rose-700 shadow-sm hover:bg-rose-50 transition-colors disabled:cursor-not-allowed disabled:opacity-40 min-h-[44px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
                 >
                     <ChevronLeft size={16} /> Prev
                 </button>
@@ -274,8 +275,8 @@ function SwipeSection({
                             <button
                                 key={index}
                                 onClick={() => scrollToIndex(index)}
-                                className={`h-1.5 rounded-full transition-all duration-300 ${
-                                    index === activeMemory ? "w-6 bg-rose-500" : "w-1.5 bg-rose-200 hover:bg-rose-300"
+                                className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-rose-400 ${
+                                    index === activeMemory ? "w-6 bg-rose-500" : "w-2 bg-rose-200 hover:bg-rose-300"
                                 }`}
                                 aria-label={`Go to memory ${index + 1}`}
                             />
@@ -286,7 +287,8 @@ function SwipeSection({
                 <button
                     onClick={goNext}
                     disabled={activeMemory === memories.length - 1}
-                    className="flex items-center gap-1 rounded-full border border-rose-200 bg-white/90 px-3.5 py-1.5 text-xs font-bold text-rose-700 shadow-sm hover:bg-rose-50 transition-colors disabled:cursor-not-allowed disabled:opacity-40 min-h-[38px]"
+                    aria-label="Next memory"
+                    className="flex items-center gap-1 rounded-full border border-rose-200 bg-white/90 px-3.5 py-1.5 text-xs font-bold text-rose-700 shadow-sm hover:bg-rose-50 transition-colors disabled:cursor-not-allowed disabled:opacity-40 min-h-[44px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
                 >
                     Next <ChevronRight size={16} />
                 </button>
@@ -303,6 +305,18 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
     useEffect(() => {
         setSelectedChapterTab(activeChapter);
     }, [activeChapter]);
+
+    // Lock background scroll when Lightbox is active
+    useEffect(() => {
+        if (lightboxItem) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [lightboxItem]);
 
     const handleToggleLike = (id: string, e: React.MouseEvent) => {
         e.stopPropagation();
@@ -374,12 +388,12 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
         <div className="my-8 w-full max-w-3xl mx-auto px-2">
             <div className="text-center mb-6">
                 <h3 className="text-3xl md:text-4xl text-rose-600 font-bold font-display flex items-center justify-center gap-2">
-                    <Sparkles size={24} className="text-rose-400" />
+                    <Sparkles size={24} className="text-rose-400 shrink-0" />
                     <span>Our Photo Memories</span>
-                    <Sparkles size={24} className="text-rose-400" />
+                    <Sparkles size={24} className="text-rose-400 shrink-0" />
                 </h3>
                 <p className="text-xs text-rose-500 font-semibold mt-1">
-                    Select a chapter below or swipe through our memory frames 💕
+                    Select a chapter below or swipe through our memory frames
                 </p>
             </div>
 
@@ -389,7 +403,8 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
                     <button
                         key={ch}
                         onClick={() => setSelectedChapterTab(ch)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 min-h-[36px] ${
+                        aria-label={`Switch to Chapter ${ch}`}
+                        className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-300 min-h-[44px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400 ${
                             selectedChapterTab === ch
                                 ? "bg-rose-500 text-white shadow-sm scale-105"
                                 : "text-rose-700 hover:bg-rose-100/60"
@@ -416,8 +431,9 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
                 onToggleLike={handleToggleLike}
             />
 
-            <p className="text-center text-xs text-rose-500 font-medium italic mt-1 animate-pulse">
-                ✨ Click any polaroid frame to enter full Lightbox mode with thumbnail strip
+            <p className="text-center text-xs text-rose-500 font-medium italic mt-1 animate-pulse flex items-center justify-center gap-1">
+                <Sparkles size={12} className="inline text-rose-400 shrink-0" />
+                <span>Click any polaroid frame to enter full Lightbox mode with thumbnail strip</span>
             </p>
 
             {/* Lightbox Modal with Interactive Thumbnail Strip */}
@@ -431,16 +447,17 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
                         className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4"
                     >
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
+                            initial={{ scale: 0.94, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
+                            exit={{ scale: 0.94, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="relative max-w-3xl w-full bg-white rounded-3xl p-4 md:p-6 shadow-2xl overflow-hidden flex flex-col items-center border border-rose-100 max-h-[90vh]"
+                            className="relative max-w-3xl w-full bg-white rounded-3xl p-4 md:p-6 shadow-2xl overflow-hidden flex flex-col items-center border border-rose-100 max-h-[92vh]"
                         >
                             {/* Close button */}
                             <button
                                 onClick={closeLightbox}
-                                className="absolute top-4 right-4 z-20 rounded-full bg-rose-100 p-2 text-rose-600 hover:bg-rose-200 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center shadow-sm"
+                                className="absolute top-4 right-4 z-20 rounded-full bg-rose-100 p-2 text-rose-600 hover:bg-rose-200 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center shadow-sm active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
                                 aria-label="Close modal"
                             >
                                 <X size={20} />
@@ -466,7 +483,7 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
                                             index: (lightboxItem.index - 1 + lightboxItem.memories.length) % lightboxItem.memories.length,
                                         })
                                     }
-                                    className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-md p-2.5 text-rose-600 shadow-lg hover:bg-white transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-md p-2.5 text-rose-600 shadow-lg hover:bg-white transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
                                     aria-label="Previous photo"
                                 >
                                     <ChevronLeft size={22} />
@@ -478,7 +495,7 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
                                             index: (lightboxItem.index + 1) % lightboxItem.memories.length,
                                         })
                                     }
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-md p-2.5 text-rose-600 shadow-lg hover:bg-white transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 backdrop-blur-md p-2.5 text-rose-600 shadow-lg hover:bg-white transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
                                     aria-label="Next photo"
                                 >
                                     <ChevronRight size={22} />
@@ -494,7 +511,8 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
                                 <div className="flex items-center gap-3">
                                     <button
                                         onClick={(e) => handleToggleLike(lightboxItem.memories[lightboxItem.index].id, e)}
-                                        className="flex items-center gap-1.5 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3.5 py-1.5 text-xs font-bold text-rose-600 transition-colors shadow-sm min-h-[36px]"
+                                        className="flex items-center gap-1.5 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3.5 py-1.5 text-xs font-bold text-rose-600 transition-colors shadow-sm min-h-[44px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
+                                        aria-label="Send love"
                                     >
                                         <Heart
                                             size={14}
@@ -519,7 +537,8 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
                                     <button
                                         key={thumb.id}
                                         onClick={() => setLightboxItem({ ...lightboxItem, index: idx })}
-                                        className={`relative h-12 w-12 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all ${
+                                        aria-label={`View thumbnail ${idx + 1}`}
+                                        className={`relative h-12 w-12 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400 ${
                                             idx === lightboxItem.index
                                                 ? "border-rose-500 scale-110 shadow-md ring-2 ring-rose-200"
                                                 : "border-transparent opacity-60 hover:opacity-100"
@@ -536,5 +555,3 @@ export function ImageCarousel({ activeChapter = 2 }: { activeChapter?: number })
         </div>
     );
 }
-
-

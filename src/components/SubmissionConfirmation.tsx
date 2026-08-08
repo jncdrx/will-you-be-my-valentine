@@ -15,6 +15,7 @@ import {
   Award,
   Star,
   AlertCircle,
+  Smartphone,
 } from "lucide-react";
 import { monthsaryConfig } from "../config/monthsaryConfig";
 import {
@@ -25,8 +26,11 @@ import {
   claimTicketForUser,
   updateResponseTicketAndPhoto,
 } from "../lib/supabase";
+import { Voucher, listMyVouchers } from "../lib/vouchers";
 import { captureElementImage } from "../lib/imageSaver";
 import { ImagePreviewModal } from "./ImagePreviewModal";
+import { PresentVoucherModal } from "./user/PresentVoucherModal";
+import { VoucherCard } from "./user/VoucherCard";
 
 interface SubmissionConfirmationProps {
   responseData: MonthsaryResponse;
@@ -34,7 +38,7 @@ interface SubmissionConfirmationProps {
 }
 
 export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfirmationProps) {
-  const [activeTab, setActiveTab] = useState<"next" | "reply">("next");
+  const [activeTab, setActiveTab] = useState<"vouchers" | "reply">("vouchers");
 
   const currentUserId = getLoggedInUserId(responseData);
 
@@ -45,6 +49,22 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
   const [kissingPhoto, setKissingPhoto] = useState<string | null>(() => {
     return localStorage.getItem("monthsary_angel_kissing_photo") || null;
   });
+
+  const [userVouchers, setUserVouchers] = useState<Voucher[]>([]);
+  const [presentingVoucher, setPresentingVoucher] = useState<Voucher | null>(null);
+
+  // Load user vouchers from database
+  useEffect(() => {
+    let isMounted = true;
+    listMyVouchers().then((vouchers) => {
+      if (isMounted) {
+        setUserVouchers(vouchers);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Verify ticket claim status asynchronously for the logged-in user ID
   useEffect(() => {
@@ -101,7 +121,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
 
     if (!kissingPhoto) {
       toast.error("Please upload your sweet kissing selfie/photo first!");
-      scrollToStep3WithWarning("You need to do thisss before claiming the ticket! Please upload your sweet kissing selfie / photo below first 💋📸");
+      scrollToStep3WithWarning("You need to do thisss before claiming the ticket! Please upload your sweet kissing selfie / photo below first");
       return;
     }
 
@@ -109,7 +129,11 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
     setTicketClaimed(true);
     const targetToken = responseData.response_token || responseData.id || currentUserId;
     await claimTicketForUser(targetToken);
-    toast.success("Nail Care Pamper Voucher Claimed & Reserved! ✨");
+    toast.success("Nail Care Pamper Voucher Claimed & Reserved!");
+
+    // Refresh database vouchers list
+    const updated = await listMyVouchers();
+    setUserVouchers(updated);
   };
 
   const handleKissingPhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +151,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
       const targetToken = responseData.response_token || responseData.id || currentUserId;
       await updateResponseTicketAndPhoto(targetToken, { kissing_photo_url: base64String });
       await saveAngelUserData({ kissing_photo_url: base64String });
-      toast.success("Photo uploaded successfully! 💕");
+      toast.success("Photo uploaded successfully!");
     };
     reader.readAsDataURL(file);
   };
@@ -147,7 +171,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
     triggerHaptic();
 
     if (!kissingPhoto) {
-      scrollToStep3WithWarning("You need to do thisss before claiming or saving your ticket image! Please upload your sweet kissing selfie / photo below first 💋📸");
+      scrollToStep3WithWarning("You need to do thisss before claiming or saving your ticket image! Please upload your sweet kissing selfie / photo below first");
       return;
     }
 
@@ -203,6 +227,26 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
     }
   };
 
+  const handlePresentPamperPass = () => {
+    const pamperVoucher: Voucher = userVouchers.find((v) =>
+      v.title.toLowerCase().includes("nail")
+    ) || {
+      id: "804-2026-val",
+      title: "1x Premium Nail Care & Nail Art Session",
+      description: "Luxury nail care & nail art pamper treatment — 100% fully sponsored by your baby!",
+      voucher_type: "custom",
+      instructions: "Present this ticket to your boyfriend to redeem your sponsored nail salon session",
+      recipient_id: currentUserId,
+      status: ticketClaimed ? "claimed" : "available",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      claimed_at: ticketClaimed ? new Date().toISOString() : null,
+      expires_at: null,
+    };
+
+    setPresentingVoucher(pamperVoucher);
+  };
+
   return (
     <>
       <motion.div
@@ -228,24 +272,24 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
         </h2>
 
         <p className="text-xs sm:text-sm text-rose-900/80 font-medium max-w-md mb-5 leading-relaxed">
-          Your reply has been saved, my love! Here's what happens next... ✨
+          Your reply has been saved, my love! Here are your vouchers and rewards...
         </p>
 
-        {/* Navigation Tabs - Minimum 44px touch targets */}
+        {/* Clean 2-Tab Navigation: My Vouchers & My Reply */}
         <div className="flex items-center gap-2 bg-white/80 backdrop-blur-md p-1.5 rounded-full border border-rose-200 shadow-md mb-6 w-full max-w-md">
           <button
             onClick={() => {
               triggerHaptic();
-              setActiveTab("next");
+              setActiveTab("vouchers");
             }}
             className={`flex-1 py-3 px-3 rounded-full text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-h-[44px] ${
-              activeTab === "next"
+              activeTab === "vouchers"
                 ? "bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-md"
                 : "text-rose-700 hover:bg-rose-100/50"
             }`}
           >
-            <Sparkles size={16} />
-            <span>What Happens Next?</span>
+            <Gift size={16} />
+            <span>My Vouchers</span>
           </button>
 
           <button
@@ -260,22 +304,22 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
             }`}
           >
             <Heart size={16} />
-            <span>My Submitted Reply</span>
+            <span>My Reply</span>
           </button>
         </div>
 
         <AnimatePresence mode="wait">
-          {/* TAB 1: WHAT HAPPENS NEXT */}
-          {activeTab === "next" && (
+          {/* TAB 1: MY VOUCHERS (INCLUDES NAIL PAMPER PASS TICKET + ALL ASSIGNED DATABASE VOUCHERS) */}
+          {activeTab === "vouchers" && (
             <motion.div
-              key="tab-next"
+              key="tab-vouchers"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.3 }}
-              className="w-full flex flex-col gap-5 text-left"
+              className="w-full flex flex-col gap-6 text-left"
             >
-              {/* Sponsored Nail Care Session Ticket Card Container */}
+              {/* 1. Official Nail Care Pamper Pass Ticket */}
               <div className="flex flex-col gap-3 w-full">
                 {/* Exportable Ticket Element */}
                 <div
@@ -307,30 +351,29 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
                     {/* Ticket Title & Description */}
                     <div className="mb-4 text-left font-sans">
                       <h3 className="text-xl sm:text-2xl md:text-3xl font-normal font-display text-amber-200 leading-snug tracking-wide mb-2">
-                        1x Premium Nail Care & Nail Art Session
+                        1x Premium Nail Care &amp; Nail Art Session
                       </h3>
                       <p className="text-xs sm:text-sm text-rose-100/90 leading-relaxed font-sans font-medium">
                         This voucher entitles{" "}
                         <strong className="text-amber-300 font-bold capitalize">
                           {monthsaryConfig.girlfriendName}
                         </strong>{" "}
-                        to one luxury nail care & nail art pamper treatment —{" "}
+                        to one luxury nail care &amp; nail art pamper treatment —{" "}
                         <strong className="text-pink-300 font-bold">
                           100% FULLY SPONSORED BY YOUR BABY!
                         </strong>
                       </p>
                     </div>
 
-                    {/* Voucher Details & Redemption Divider with Integrated Side Cutouts */}
+                    {/* Voucher Details & Redemption Divider */}
                     <div className="relative my-4 flex items-center justify-center font-sans">
-                      {/* Symmetrical Left & Right Ticket Cutout Notches (Glued to tear line vertical center) */}
                       <div className="absolute -left-5 sm:-left-7 inset-y-0 my-auto h-6 w-4 sm:w-5 rounded-r-full bg-[#fdf2f8] border-r border-y border-rose-300/30 shadow-inner z-10" />
                       <div className="absolute -right-5 sm:-right-7 inset-y-0 my-auto h-6 w-4 sm:w-5 rounded-l-full bg-[#fdf2f8] border-l border-y border-rose-300/30 shadow-inner z-10" />
 
                       <div className="w-full flex items-center justify-center gap-2 sm:gap-3">
                         <div className="flex-1 border-t border-dashed border-rose-400/30" />
                         <span className="text-[10px] sm:text-xs font-bold text-amber-200/90 tracking-widest uppercase px-3 py-1 bg-rose-950/90 rounded-full border border-amber-300/20 shrink-0 font-sans shadow-sm text-center">
-                          Voucher Details & Redemption
+                          Voucher Details &amp; Redemption
                         </span>
                         <div className="flex-1 border-t border-dashed border-rose-400/30" />
                       </div>
@@ -392,14 +435,14 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
 
                       <div className="inline-flex items-center gap-1.5 bg-amber-400/15 border border-amber-300/35 px-3 py-1.5 rounded-full text-amber-200 text-[10px] sm:text-xs font-bold shadow-sm shrink-0">
                         <Star size={13} className="fill-amber-300 text-amber-300 shrink-0" />
-                        <span>100% FREE & PAID BY BABY</span>
+                        <span>100% FREE &amp; PAID BY BABY</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Ticket Interactive Action Buttons (Outside Exportable Container) */}
-                <div className="flex flex-wrap items-center justify-center gap-3 w-full mt-1">
+                {/* Ticket Action Buttons */}
+                <div className="flex flex-col gap-2.5 w-full mt-1">
                   {!ticketClaimed ? (
                     <button
                       onClick={handleClaimTicket}
@@ -409,23 +452,34 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
                       <span>{kissingPhoto ? "Claim Nail Ticket" : "You need to do thisss first to claim ticket!"}</span>
                     </button>
                   ) : (
-                    <button
-                      onClick={handleSaveTicketImage}
-                      disabled={isCapturingTicket}
-                      className="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white text-sm font-extrabold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 min-h-[48px] disabled:opacity-50 active:scale-95"
-                    >
-                      {isCapturingTicket ? (
-                        <>
-                          <Sparkles size={18} className="animate-spin" />
-                          <span>Generating High-Res Ticket...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Share2 size={18} />
-                          <span>Save Ticket Image</span>
-                        </>
-                      )}
-                    </button>
+                    <div className="flex flex-col gap-2.5 w-full">
+                      {/* Present to Baby Button */}
+                      <button
+                        onClick={handlePresentPamperPass}
+                        className="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 text-white text-sm font-extrabold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 min-h-[48px] active:scale-95 ring-2 ring-amber-300/40"
+                      >
+                        <Smartphone size={18} />
+                        <span>Present to Baby (Use Voucher)</span>
+                      </button>
+
+                      <button
+                        onClick={handleSaveTicketImage}
+                        disabled={isCapturingTicket}
+                        className="w-full py-3 px-6 rounded-full bg-white/95 hover:bg-rose-50 text-rose-700 border border-rose-200 text-xs sm:text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2 min-h-[44px] disabled:opacity-50 active:scale-95"
+                      >
+                        {isCapturingTicket ? (
+                          <>
+                            <Sparkles size={16} className="animate-spin" />
+                            <span>Generating High-Res Ticket...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Share2 size={16} />
+                            <span>Save Ticket Image</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -442,7 +496,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-xs font-extrabold uppercase tracking-wider text-rose-600 flex items-center gap-1.5">
                     <Camera size={16} className="text-rose-500" />
-                    <span>SEND ME A KISSING PHOTO 💋</span>
+                    <span>SEND ME A KISSING PHOTO</span>
                   </span>
                   <span className="text-[10px] text-rose-600 font-bold bg-rose-100/80 px-2 py-0.5 rounded-full">
                     Required to Claim
@@ -450,10 +504,9 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
                 </div>
 
                 <p className="text-xs text-gray-600 mb-3 leading-relaxed font-medium">
-                  Upload a photo of yourself kissing (or a sweet selfie) — <strong className="text-rose-600 font-bold">You need to do thisss before claiming your ticket! 💋</strong>
+                  Upload a photo of yourself kissing (or a sweet selfie) — <strong className="text-rose-600 font-bold">You need to do thisss before claiming your ticket!</strong>
                 </p>
 
-                {/* Photo Upload Requirement Error Alert Banner */}
                 {photoError && (
                   <motion.div
                     initial={{ opacity: 0, y: -6 }}
@@ -486,7 +539,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 text-white flex items-center justify-between">
                       <span className="text-xs font-semibold flex items-center gap-1">
                         <Heart size={14} className="fill-rose-400 text-rose-400" />
-                        <span>Your Sweet Kiss 💋</span>
+                        <span>Your Sweet Kiss</span>
                       </span>
                       <button
                         onClick={handleRemoveKissingPhoto}
@@ -498,6 +551,32 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
                   </div>
                 )}
               </div>
+
+              {/* 2. Additional Assigned Database Vouchers */}
+              {userVouchers.filter((v) => !v.title.toLowerCase().includes("nail")).length > 0 && (
+                <div className="flex flex-col gap-4 w-full mt-4 pt-4 border-t border-rose-200">
+                  <h4 className="text-sm font-extrabold text-rose-800 flex items-center gap-2">
+                    <Gift size={16} className="text-rose-500" />
+                    <span>Additional Special Vouchers ({userVouchers.filter((v) => !v.title.toLowerCase().includes("nail")).length})</span>
+                  </h4>
+
+                  {userVouchers
+                    .filter((v) => !v.title.toLowerCase().includes("nail"))
+                    .map((v) => (
+                      <VoucherCard
+                        key={v.id}
+                        voucher={v}
+                        onClaim={() => {}}
+                        onPresent={(target) => setPresentingVoucher(target)}
+                        onStatusChange={(updated) => {
+                          setUserVouchers((prev) =>
+                            prev.map((item) => (item.id === updated.id ? updated : item))
+                          );
+                        }}
+                      />
+                    ))}
+                </div>
+              )}
             </motion.div>
           )}
 
@@ -576,7 +655,7 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
                   ) : (
                     <>
                       <Download size={16} />
-                      <span>Save Reply Card 📸</span>
+                      <span>Save Reply Card</span>
                     </>
                   )}
                 </button>
@@ -604,6 +683,22 @@ export function SubmissionConfirmation({ responseData, onEdit }: SubmissionConfi
         imageUrl={modalState.imageUrl}
         filename={modalState.filename}
         blob={modalState.blob}
+      />
+
+      {/* Interactive Present Voucher Modal */}
+      <PresentVoucherModal
+        voucher={presentingVoucher}
+        isOpen={!!presentingVoucher}
+        onClose={() => setPresentingVoucher(null)}
+        onRedeemed={(updated) => {
+          setPresentingVoucher(updated);
+          if (updated.title.toLowerCase().includes("nail")) {
+            setTicketClaimed(true);
+          }
+          setUserVouchers((prev) =>
+            prev.map((item) => (item.id === updated.id ? updated : item))
+          );
+        }}
       />
     </>
   );

@@ -54,7 +54,7 @@ export async function captureElementImage(
           await navigator.share({
             files: [file],
             title: filename.replace(/_/g, " ").replace(".png", ""),
-            text: "Saved with love! 💕",
+            text: "Saved with love!",
           });
           shared = true;
         }

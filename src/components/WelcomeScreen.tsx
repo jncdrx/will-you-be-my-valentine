@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Sparkles, Volume2, VolumeX, Lock, Mail } from "lucide-react";
+import { Heart, Volume2, VolumeX, Lock, Mail, X } from "lucide-react";
 import confetti from "canvas-confetti";
 import { monthsaryConfig } from "../config/monthsaryConfig";
 
@@ -19,6 +19,18 @@ export function WelcomeScreen({ onOpenLetter, isPlayingMusic, onToggleMusic }: W
     minutes: 0,
     seconds: 0,
   });
+
+  // Lock background scroll when secret modal is open
+  useEffect(() => {
+    if (showSecretModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showSecretModal]);
 
   // Calculate elapsed duration
   useEffect(() => {
@@ -75,10 +87,10 @@ export function WelcomeScreen({ onOpenLetter, isPlayingMusic, onToggleMusic }: W
       <div className="w-full flex justify-end mb-2 px-2">
         <button
           onClick={onToggleMusic}
-          className="flex items-center gap-1.5 rounded-full bg-white/80 px-3.5 py-1.5 text-xs font-bold text-rose-700 shadow-md backdrop-blur-md border border-rose-200 hover:bg-white transition-all min-h-[36px]"
+          className="flex items-center gap-1.5 rounded-full bg-white/80 px-3.5 py-1.5 text-xs font-bold text-rose-700 shadow-md backdrop-blur-md border border-rose-200 hover:bg-white transition-all min-h-[44px] min-w-[44px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
           aria-label={isPlayingMusic ? "Mute music" : "Play music"}
         >
-          {isPlayingMusic ? <Volume2 size={14} className="animate-pulse text-rose-500" /> : <VolumeX size={14} />}
+          {isPlayingMusic ? <Volume2 size={14} className="animate-pulse text-rose-500 shrink-0" /> : <VolumeX size={14} className="shrink-0" />}
           <span>{isPlayingMusic ? "Music Playing" : "Play Music"}</span>
         </button>
       </div>
@@ -98,7 +110,7 @@ export function WelcomeScreen({ onOpenLetter, isPlayingMusic, onToggleMusic }: W
 
         {/* Floating Heart Tap Counter badge */}
         <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-3.5 py-1 rounded-full border border-rose-200 shadow-md flex items-center gap-1.5">
-          <Heart size={14} className="fill-rose-500 text-rose-500 animate-bounce" />
+          <Heart size={14} className="fill-rose-500 text-rose-500 animate-bounce shrink-0" />
           <span className="text-[11px] font-extrabold text-rose-700">
             {heartTapCount > 0 ? `${heartTapCount} / 7 Taps` : "Tap heart for a secret"}
           </span>
@@ -117,11 +129,9 @@ export function WelcomeScreen({ onOpenLetter, isPlayingMusic, onToggleMusic }: W
       {/* Relationship Duration Counter */}
       <div className="my-6 w-full bg-white/75 backdrop-blur-md p-4 rounded-3xl border border-white/90 shadow-xl">
         <div className="flex items-center justify-center gap-1.5 mb-2">
-          <Sparkles size={16} className="text-amber-400" />
           <span className="text-xs font-extrabold uppercase tracking-wider text-rose-600 font-sans">
             In Love For 7 Months & Counting
           </span>
-          <Sparkles size={16} className="text-amber-400" />
         </div>
 
         <div className="grid grid-cols-4 gap-2 text-rose-950 font-bold">
@@ -146,12 +156,13 @@ export function WelcomeScreen({ onOpenLetter, isPlayingMusic, onToggleMusic }: W
 
       {/* Open Letter CTA Button */}
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.96 }}
         onClick={onOpenLetter}
-        className="rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 px-8 py-4 text-lg font-bold text-white shadow-xl hover:shadow-2xl transition-all flex items-center gap-2.5 min-h-[52px]"
+        aria-label="Open my letter"
+        className="rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 px-8 py-4 text-lg font-bold text-white shadow-xl hover:shadow-2xl transition-all flex items-center gap-2.5 min-h-[52px] active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
       >
-        <Mail size={18} />
+        <Mail size={18} className="shrink-0" />
         <span>Open My Letter</span>
       </motion.button>
 
@@ -172,22 +183,23 @@ export function WelcomeScreen({ onOpenLetter, isPlayingMusic, onToggleMusic }: W
               onClick={(e) => e.stopPropagation()}
               className="bg-white rounded-3xl p-6 max-w-md w-full text-center shadow-2xl border-2 border-rose-300 relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 p-3">
+              <div className="absolute top-3 right-3">
                 <button
                   onClick={() => setShowSecretModal(false)}
-                  className="rounded-full bg-rose-100 p-1.5 text-rose-600 font-bold hover:bg-rose-200"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-rose-100 p-1.5 text-rose-600 font-bold hover:bg-rose-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400 transition-all"
+                  aria-label="Close modal"
                 >
-                  ✕
+                  <X size={18} />
                 </button>
               </div>
 
-              <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center mx-auto mb-3 text-rose-500">
-                <Lock size={22} />
+              <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center mx-auto mb-3 text-rose-500 shadow-sm">
+                <Lock size={22} className="shrink-0" />
               </div>
 
               <h3 className="text-2xl font-bold font-display text-rose-600 mb-2 flex items-center justify-center gap-1.5">
                 <span>Secret Note Unlocked</span>
-                <Heart size={18} className="fill-rose-500 text-rose-500" />
+                <Heart size={18} className="fill-rose-500 text-rose-500 shrink-0" />
               </h3>
 
               <p className="text-sm sm:text-base text-gray-700 font-serif leading-relaxed whitespace-pre-line mb-6 bg-rose-50/70 p-4 rounded-2xl border border-rose-200">
@@ -196,7 +208,7 @@ export function WelcomeScreen({ onOpenLetter, isPlayingMusic, onToggleMusic }: W
 
               <button
                 onClick={() => setShowSecretModal(false)}
-                className="rounded-full bg-rose-500 text-white font-bold px-6 py-2.5 shadow-md hover:bg-rose-600 transition-colors"
+                className="w-full min-h-[48px] rounded-full bg-rose-500 text-white font-bold px-6 py-2.5 shadow-md hover:bg-rose-600 transition-colors active:scale-95 focus:outline-none focus:ring-2 focus:ring-rose-400"
               >
                 Close Secret Note
               </button>

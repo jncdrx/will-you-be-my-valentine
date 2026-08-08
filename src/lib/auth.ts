@@ -182,7 +182,7 @@ export async function signInRecipient(
   if (allowedEmail && formatted !== allowedEmail) {
     // Not the intended recipient — sign out and reject.
     await supabase.auth.signOut();
-    throw new LoginError("Access restricted: This private website is created exclusively for Angel 💕");
+    throw new LoginError("Access restricted: This private website is created exclusively for Angel");
   }
   return { allowed: true, user };
 }
