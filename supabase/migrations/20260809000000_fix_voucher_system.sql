@@ -11,6 +11,7 @@ ALTER TABLE public.voucher_activity ADD CONSTRAINT voucher_activity_action_check
   CHECK (action IN ('created','sent','edited','claimed','redeemed','cancelled','expired','resend','viewed'));
 
 -- 3. Atomic claim_voucher RPC
+DROP FUNCTION IF EXISTS public.claim_voucher(UUID);
 CREATE OR REPLACE FUNCTION public.claim_voucher(p_voucher_id UUID)
 RETURNS TABLE(id UUID, status TEXT, claimed_at TIMESTAMPTZ)
 LANGUAGE plpgsql
