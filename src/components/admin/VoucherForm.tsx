@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Image as ImageIcon, X, Save, Send, Loader2, Sparkles } from "lucide-react";
@@ -9,6 +9,7 @@ import {
   uploadVoucherImage,
   createVoucher,
   updateVoucher,
+  listProfiles,
   Voucher,
 } from "../../lib/vouchers";
 import { RecipientSelector } from "./RecipientSelector";
@@ -38,6 +39,16 @@ export function VoucherForm({ onClose, onSaved, editing }: VoucherFormProps) {
   const [saving, setSaving] = useState<"draft" | "send" | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  useEffect(() => {
+    if (!recipientId) {
+      listProfiles().then((profiles) => {
+        if (profiles.length > 0 && !recipientId) {
+          setRecipientId(profiles[0].id);
+        }
+      });
+    }
+  }, [recipientId]);
+
   const handleImage = async (file: File) => {
     setUploading(true);
     try {
@@ -51,6 +62,13 @@ export function VoucherForm({ onClose, onSaved, editing }: VoucherFormProps) {
   };
 
   const validate = () => {
+    if (!nonExpiring && !expiresAt) {
+      setErrors((prev) => ({
+        ...prev,
+        expires_at: "Please select an expiration date or mark as non-expiring.",
+      }));
+      return null;
+    }
     const parsed = voucherSchema.safeParse({
       title,
       description,

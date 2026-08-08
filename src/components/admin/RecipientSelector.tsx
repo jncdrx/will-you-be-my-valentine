@@ -18,7 +18,12 @@ export function RecipientSelector({ value, onChange, error }: RecipientSelectorP
     setLoading(true);
     listProfiles()
       .then((p) => {
-        if (active) setProfiles(p);
+        if (active) {
+          setProfiles(p);
+          if (!value && p.length > 0) {
+            onChange(p[0].id);
+          }
+        }
       })
       .finally(() => {
         if (active) setLoading(false);

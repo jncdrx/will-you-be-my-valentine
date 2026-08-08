@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Ticket, CheckCircle2, Clock, XCircle, Loader2 } from "lucide-react";
+import { Ticket, CheckCircle2, Clock, XCircle, Loader2, CheckCheck } from "lucide-react";
 import { Voucher, effectiveStatus } from "../../lib/vouchers";
 
 interface Props {
@@ -11,20 +11,23 @@ export function AdminVoucherSummary({ vouchers, loading }: Props) {
   const stats = useMemo(() => {
     let available = 0,
       claimed = 0,
+      redeemed = 0,
       expired = 0;
     for (const v of vouchers) {
       const s = effectiveStatus(v);
       if (s === "available") available++;
       else if (s === "claimed") claimed++;
+      else if (s === "redeemed") redeemed++;
       else if (s === "expired") expired++;
     }
-    return { total: vouchers.length, available, claimed, expired };
+    return { total: vouchers.length, available, claimed, redeemed, expired };
   }, [vouchers]);
 
   const cards = [
     { label: "Total", value: stats.total, icon: Ticket, color: "from-indigo-500 to-sky-500" },
     { label: "Available", value: stats.available, icon: Clock, color: "from-emerald-500 to-teal-500" },
     { label: "Claimed", value: stats.claimed, icon: CheckCircle2, color: "from-violet-500 to-purple-500" },
+    { label: "Redeemed", value: stats.redeemed, icon: CheckCheck, color: "from-teal-500 to-emerald-600" },
     { label: "Expired", value: stats.expired, icon: XCircle, color: "from-amber-500 to-orange-500" },
   ];
 
@@ -37,7 +40,7 @@ export function AdminVoucherSummary({ vouchers, loading }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
       {cards.map((c) => (
         <div
           key={c.label}

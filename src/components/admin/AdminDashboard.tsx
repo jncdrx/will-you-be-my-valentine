@@ -74,6 +74,7 @@ export function AdminDashboard() {
     total: vouchers.length,
     available: vouchers.filter((v) => effectiveStatus(v) === "available").length,
     claimed: vouchers.filter((v) => effectiveStatus(v) === "claimed").length,
+    redeemed: vouchers.filter((v) => effectiveStatus(v) === "redeemed").length,
     expired: vouchers.filter((v) => effectiveStatus(v) === "expired").length,
   };
 

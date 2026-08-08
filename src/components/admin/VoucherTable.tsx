@@ -13,6 +13,8 @@ import {
   ArrowUpDown,
   Trash2,
   AlertTriangle,
+  CheckCheck,
+  UserCheck,
 } from "lucide-react";
 import {
   Voucher,
@@ -24,6 +26,9 @@ import {
   cancelVoucher,
   deleteVoucher,
   resendVoucher,
+  redeemVoucher,
+  listProfiles,
+  RecipientProfile,
   VOUCHER_TYPE_LABELS,
 } from "../../lib/vouchers";
 import { VoucherForm } from "./VoucherForm";
@@ -32,6 +37,7 @@ const STATUS_STYLES: Record<VoucherStatus, string> = {
   draft: "bg-slate-700/40 text-slate-300 border-slate-600",
   available: "bg-emerald-500/15 text-emerald-300 border-emerald-500/40",
   claimed: "bg-indigo-500/15 text-indigo-300 border-indigo-500/40",
+  redeemed: "bg-teal-500/15 text-teal-300 border-teal-500/40",
   expired: "bg-amber-500/15 text-amber-300 border-amber-500/40",
   cancelled: "bg-red-500/15 text-red-300 border-red-500/40",
 };
@@ -41,6 +47,7 @@ const FILTERS: { id: VoucherStatus | "all"; label: string }[] = [
   { id: "draft", label: "Draft" },
   { id: "available", label: "Available" },
   { id: "claimed", label: "Claimed" },
+  { id: "redeemed", label: "Redeemed" },
   { id: "expired", label: "Expired" },
   { id: "cancelled", label: "Cancelled" },
 ];
@@ -52,6 +59,7 @@ interface VoucherTableProps {
 export function VoucherTable({ refreshKey }: VoucherTableProps) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<VoucherStatus | "all">("all");
+  const [recipientFilter, setRecipientFilter] = useState<string>("all");
   const [sort, setSort] = useState<"newest" | "oldest">("newest");
   const [editing, setEditing] = useState<Voucher | null>(null);
   const [activityFor, setActivityFor] = useState<Voucher | null>(null);
@@ -63,17 +71,43 @@ export function VoucherTable({ refreshKey }: VoucherTableProps) {
     queryFn: listAllVouchers,
   });
 
+  const { data: recipientProfiles = [] } = useQuery<RecipientProfile[]>({
+    queryKey: ["adminRecipientProfiles"],
+    queryFn: listProfiles,
+  });
+
+  const recipientOptions = useMemo(() => {
+    const map = new Map<string, { id: string; name: string }>();
+    for (const p of recipientProfiles) {
+      map.set(p.id, {
+        id: p.id,
+        name: p.display_name ? `${p.display_name} (${p.email})` : p.email,
+      });
+    }
+    for (const v of vouchers) {
+      if (v.recipient_id && !map.has(v.recipient_id)) {
+        const name = v.recipient?.display_name
+          ? `${v.recipient.display_name} (${v.recipient.email})`
+          : v.recipient?.email || v.recipient_id;
+        map.set(v.recipient_id, { id: v.recipient_id, name });
+      }
+    }
+    return Array.from(map.values());
+  }, [recipientProfiles, vouchers]);
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return vouchers
       .filter((v: Voucher) => {
         if (filter !== "all" && effectiveStatus(v) !== filter) return false;
+        if (recipientFilter !== "all" && v.recipient_id !== recipientFilter) return false;
         if (!q) return true;
         return (
           v.title.toLowerCase().includes(q) ||
           (v.description ?? "").toLowerCase().includes(q) ||
           (v.recipient?.email ?? "").toLowerCase().includes(q) ||
-          (v.recipient?.display_name ?? "").toLowerCase().includes(q)
+          (v.recipient?.display_name ?? "").toLowerCase().includes(q) ||
+          `#vouch-${v.id.slice(0, 8).toLowerCase()}`.includes(q)
         );
       })
       .sort((a: Voucher, b: Voucher) => {
@@ -81,7 +115,17 @@ export function VoucherTable({ refreshKey }: VoucherTableProps) {
         const tb = new Date(b.created_at).getTime();
         return sort === "newest" ? tb - ta : ta - tb;
       });
-  }, [vouchers, search, filter, sort]);
+  }, [vouchers, search, filter, recipientFilter, sort]);
+
+  const handleRedeem = async (v: Voucher) => {
+    try {
+      await redeemVoucher(v.id);
+      toast.success("Voucher marked as redeemed.");
+      refetch();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Redeem failed.");
+    }
+  };
 
   const handleCancel = async (v: Voucher) => {
     if (!window.confirm(`Cancel "${v.title}"? The recipient will no longer be able to claim it.`))
@@ -133,7 +177,7 @@ export function VoucherTable({ refreshKey }: VoucherTableProps) {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search title, message, or recipient…"
+              placeholder="Search title, message, code, or recipient…"
               className="w-full rounded-2xl border border-slate-700 bg-slate-900/60 pl-9 pr-9 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:border-indigo-500 focus:outline-none min-h-[40px]"
             />
             {search && (
@@ -144,6 +188,21 @@ export function VoucherTable({ refreshKey }: VoucherTableProps) {
                 <X size={14} />
               </button>
             )}
+          </div>
+          <div className="flex items-center gap-2 text-xs text-slate-300">
+            <UserCheck size={14} className="text-slate-500 shrink-0" />
+            <select
+              value={recipientFilter}
+              onChange={(e) => setRecipientFilter(e.target.value)}
+              className="rounded-2xl border border-slate-700 bg-slate-900/60 px-3 py-2.5 text-slate-200 focus:outline-none min-h-[40px] max-w-[200px] truncate"
+            >
+              <option value="all">All Recipients</option>
+              {recipientOptions.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {opt.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-300">
             <ArrowUpDown size={14} className="text-slate-500" />
@@ -192,7 +251,9 @@ export function VoucherTable({ refreshKey }: VoucherTableProps) {
                 <th className="py-3 px-4 font-bold">Voucher</th>
                 <th className="py-3 px-4 font-bold">Recipient</th>
                 <th className="py-3 px-4 font-bold">Status</th>
-                <th className="py-3 px-4 font-bold">Sent</th>
+                <th className="py-3 px-4 font-bold">Sent Date</th>
+                <th className="py-3 px-4 font-bold">Claimed Date</th>
+                <th className="py-3 px-4 font-bold">Expiration Date</th>
                 <th className="py-3 px-4 font-bold text-right">Actions</th>
               </tr>
             </thead>
@@ -201,6 +262,7 @@ export function VoucherTable({ refreshKey }: VoucherTableProps) {
                 const st = effectiveStatus(v);
                 return (
                   <tr key={v.id} className="hover:bg-slate-800/40 align-top">
+                    {/* Voucher Column */}
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
                         {v.image_url ? (
@@ -211,26 +273,30 @@ export function VoucherTable({ refreshKey }: VoucherTableProps) {
                           />
                         ) : (
                           <div className="h-10 w-10 rounded-lg bg-slate-700 flex items-center justify-center text-slate-500 text-[10px]">
-                            {VOUCHER_TYPE_LABELS[v.voucher_type].slice(0, 1)}
+                            {VOUCHER_TYPE_LABELS[v.voucher_type]?.slice(0, 1) ?? "V"}
                           </div>
                         )}
                         <div className="min-w-0">
-                          <p className="font-semibold text-slate-100 truncate max-w-[220px]">{v.title}</p>
-                          <p className="text-slate-500">{VOUCHER_TYPE_LABELS[v.voucher_type]}</p>
-                          {v.claimed_at && (
-                            <p className="text-indigo-400 mt-0.5">
-                              Claimed {new Date(v.claimed_at).toLocaleString()}
-                            </p>
-                          )}
+                          <p className="font-semibold text-slate-100 truncate max-w-[200px]">{v.title}</p>
+                          <p className="text-slate-400 text-[11px]">{VOUCHER_TYPE_LABELS[v.voucher_type]}</p>
+                          <p className="text-slate-500 font-mono text-[10px]">
+                            #VOUCH-{v.id.slice(0, 8).toUpperCase()}
+                          </p>
                         </div>
                       </div>
                     </td>
+
+                    {/* Recipient Column */}
                     <td className="py-3 px-4 text-slate-300">
-                      {v.recipient?.display_name || v.recipient?.email || "—"}
+                      <p className="font-medium text-slate-200">
+                        {v.recipient?.display_name || v.recipient?.email || "—"}
+                      </p>
                       {v.recipient?.email && v.recipient?.display_name && (
-                        <p className="text-slate-500">{v.recipient.email}</p>
+                        <p className="text-slate-500 text-[11px]">{v.recipient.email}</p>
                       )}
                     </td>
+
+                    {/* Status Column */}
                     <td className="py-3 px-4">
                       <span
                         className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${STATUS_STYLES[st]}`}
@@ -238,11 +304,34 @@ export function VoucherTable({ refreshKey }: VoucherTableProps) {
                         {st}
                       </span>
                     </td>
+
+                    {/* Sent Date Column */}
                     <td className="py-3 px-4 text-slate-400">
                       {v.sent_at ? new Date(v.sent_at).toLocaleDateString() : "—"}
                     </td>
+
+                    {/* Claimed Date Column */}
+                    <td className="py-3 px-4 text-slate-400">
+                      {v.claimed_at ? new Date(v.claimed_at).toLocaleString() : "—"}
+                    </td>
+
+                    {/* Expiration Date Column */}
+                    <td className="py-3 px-4 text-slate-400">
+                      {v.expires_at ? new Date(v.expires_at).toLocaleDateString() : "Forever valid"}
+                    </td>
+
+                    {/* Actions Column */}
                     <td className="py-3 px-4">
                       <div className="flex items-center justify-end gap-1">
+                        {st === "claimed" && (
+                          <button
+                            onClick={() => handleRedeem(v)}
+                            title="Mark as Redeemed"
+                            className="p-2 text-slate-400 hover:text-teal-400 hover:bg-slate-800 rounded-lg"
+                          >
+                            <CheckCheck size={15} />
+                          </button>
+                        )}
                         <button
                           onClick={() => setActivityFor(v)}
                           title="Activity history"
