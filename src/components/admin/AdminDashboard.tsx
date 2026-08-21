@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { AnimatePresence } from "framer-motion";
-import { LogOut, Plus, RefreshCw, ShieldCheck, Ticket, Heart, ShieldAlert } from "lucide-react";
+import { LogOut, Plus, RefreshCw, ShieldCheck, Ticket, Heart, ShieldAlert, Film } from "lucide-react";
 import { signOutAll } from "../../lib/auth";
 import {
   listAllVouchers,
@@ -16,9 +16,10 @@ import { AdminVoucherSummary } from "./AdminVoucherSummary";
 import { VoucherTable } from "./VoucherTable";
 import { VoucherForm } from "./VoucherForm";
 import { AdminResponsesMusicPanel } from "./AdminResponsesMusicPanel";
+import { AdminAngelFlixPanel } from "./AdminAngelFlixPanel";
 import { AdminSecurityLogs } from "./AdminSecurityLogs";
 
-type Tab = "vouchers" | "content" | "security";
+type Tab = "vouchers" | "content" | "angelflix" | "security";
 
 export function AdminDashboard() {
   const navigate = useNavigate();
@@ -89,7 +90,7 @@ export function AdminDashboard() {
             </div>
             <div className="leading-tight">
               <p className="text-sm font-extrabold tracking-tight">Admin Dashboard</p>
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider">Voucher Management</p>
+              <p className="text-[10px] text-slate-400 uppercase tracking-wider">Voucher &amp; Media Management</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -112,10 +113,10 @@ export function AdminDashboard() {
 
       <main className="mx-auto max-w-6xl px-4 sm:px-6 py-6">
         {/* Main tabs */}
-        <div className="flex items-center gap-2 mb-6 bg-slate-900/60 p-1.5 rounded-2xl border border-slate-800 max-w-md">
+        <div className="flex items-center gap-2 mb-6 bg-slate-900/60 p-1.5 rounded-2xl border border-slate-800 max-w-2xl overflow-x-auto">
           <button
             onClick={() => setTab("vouchers")}
-            className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap ${
               tab === "vouchers"
                 ? "bg-slate-800 text-indigo-300 shadow border border-slate-700"
                 : "text-slate-400 hover:text-slate-200"
@@ -125,7 +126,7 @@ export function AdminDashboard() {
           </button>
           <button
             onClick={() => setTab("content")}
-            className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap ${
               tab === "content"
                 ? "bg-slate-800 text-indigo-300 shadow border border-slate-700"
                 : "text-slate-400 hover:text-slate-200"
@@ -134,8 +135,18 @@ export function AdminDashboard() {
             <Heart size={15} /> Responses &amp; Music
           </button>
           <button
+            onClick={() => setTab("angelflix")}
+            className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap ${
+              tab === "angelflix"
+                ? "bg-slate-800 text-rose-400 shadow border border-slate-700"
+                : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <Film size={15} className={tab === "angelflix" ? "text-rose-500" : ""} /> AngelFlix Studio
+          </button>
+          <button
             onClick={() => setTab("security")}
-            className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap ${
               tab === "security"
                 ? "bg-slate-800 text-indigo-300 shadow border border-slate-700"
                 : "text-slate-400 hover:text-slate-200"
@@ -165,6 +176,8 @@ export function AdminDashboard() {
           </>
         ) : tab === "content" ? (
           <AdminResponsesMusicPanel />
+        ) : tab === "angelflix" ? (
+          <AdminAngelFlixPanel />
         ) : (
           <AdminSecurityLogs />
         )}
