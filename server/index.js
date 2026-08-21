@@ -6,6 +6,12 @@ import multer from 'multer';
 import { createClient } from '@supabase/supabase-js';
 import { createHash, randomUUID } from 'crypto';
 import { handleConvertSse } from './apiHandler.js';
+import {
+  handleAngelFlixUpload,
+  handleGetAngelFlixMedia,
+  handleUpdateAngelFlixMedia,
+  handleDeleteAngelFlixMedia,
+} from './angelflixHandler.js';
 
 dotenv.config();
 
@@ -13,7 +19,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const upload = multer({ limits: { fileSize: 15 * 1024 * 1024 } }); // 15MB limit
+const upload = multer({ limits: { fileSize: 15 * 1024 * 1024 } }); // 15MB limit for songs
+const mediaUpload = multer({ limits: { fileSize: 100 * 1024 * 1024 } }); // 100MB limit for AngelFlix media
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
 const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
@@ -368,7 +375,13 @@ app.get('/api/music/songs', async (req, res) => {
   }
 });
 
+// AngelFlix Cloudinary Video & Media Endpoints
+app.post('/api/angelflix/upload', mediaUpload.single('file'), handleAngelFlixUpload);
+app.get('/api/angelflix/media', handleGetAngelFlixMedia);
+app.patch('/api/angelflix/media/:id', handleUpdateAngelFlixMedia);
+app.delete('/api/angelflix/media/:id', handleDeleteAngelFlixMedia);
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`🎵 Music Conversion API Server listening on port ${PORT}`);
+  console.log(`🎵 Music & AngelFlix API Server listening on port ${PORT}`);
 });
