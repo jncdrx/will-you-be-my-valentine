@@ -5,6 +5,7 @@ import {
   saveVideoBlob, deleteVideoBlob,
   extractVideoThumbnail, getVideoDurationSec, formatFileSize,
 } from '@/lib/videoStore';
+import { uploadAngelFlixMedia, deleteAngelFlixMedia } from '../../lib/angelflixApi';
 
 /* ─── Constants ─────────────────────────────────────── */
 const CATEGORIES: Category[] = ['Monthsaries', 'Dates', 'Adventures', 'Messages', 'Funny Moments', 'Special Days'];
@@ -349,8 +350,25 @@ export default function Admin() {
       : (backdropData ?? (backdropUrl.trim() || null) ?? finalThumb!);
 
     try {
+      let remoteVideoUrl: string | undefined = undefined;
+      let remoteThumbUrl: string | undefined = undefined;
+
       if (uploadMode === 'video' && videoFile) {
-        await saveVideoBlob(id, videoFile);
+        try {
+          const res = await uploadAngelFlixMedia(videoFile, {
+            title: form.title.trim(),
+            category: form.category,
+            description: form.description.trim(),
+            date: form.date,
+          }, (pct) => {
+            setStageLabel(`Uploading to Cloudinary CDN (${pct}%)…`);
+          });
+          if (res.videoUrl) remoteVideoUrl = res.videoUrl;
+          if (res.imageUrl) remoteThumbUrl = res.imageUrl;
+        } catch {
+          // Fallback seamlessly to IndexedDB local storage
+          await saveVideoBlob(id, videoFile);
+        }
       }
 
       const mem: Memory = {
@@ -362,10 +380,10 @@ export default function Admin() {
         duration: fmtDuration(durSec),
         durationSec: durSec,
         description: form.description.trim() || `A beautiful memory from ${fmtDateLabel(form.date)}.`,
-        thumbnail: finalThumb!,
-        backdropUrl: finalBackdrop!,
+        thumbnail: remoteThumbUrl || finalThumb!,
+        backdropUrl: remoteThumbUrl || finalBackdrop!,
         ...(form.location.trim() ? { location: form.location.trim() } : {}),
-        ...(uploadMode === 'video' ? { videoSrc: `idb:${id}` } : {}),
+        ...(remoteVideoUrl ? { videoSrc: remoteVideoUrl } : (uploadMode === 'video' ? { videoSrc: `idb:${id}` } : {})),
       };
 
       addCustomMemory(mem);
@@ -386,6 +404,9 @@ export default function Admin() {
     const mem = customMemories[idx];
     deleteCustomMemory(id);
     if (mem.videoSrc?.startsWith('idb:')) deleteVideoBlob(id);
+    if (mem.id && !mem.id.startsWith('builtin-')) {
+      deleteAngelFlixMedia(mem.id).catch(() => {});
+    }
     refresh();
     setDeleteConfirm(null);
     setSelected((s) => { const n = new Set(s); n.delete(id); return n; });
