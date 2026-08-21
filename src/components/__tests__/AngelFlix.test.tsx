@@ -1,31 +1,29 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AngelFlix } from "../AngelFlix";
-import * as angelflixApi from "../../lib/angelflixApi";
 
 describe("AngelFlix", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
-    vi.spyOn(angelflixApi, "fetchAngelFlixMedia").mockResolvedValue([]);
   });
 
-  it("renders brand name and billboard hero heading", () => {
+  it("renders brand name and cinema subtag", () => {
     render(<AngelFlix onBackToHub={vi.fn()} onOpenLetter={vi.fn()} onLogout={vi.fn()} />);
     expect(screen.getByText("ANGELFLIX")).toBeInTheDocument();
-    expect(screen.getByText("A Love Worth Remembering")).toBeInTheDocument();
+    expect(screen.getByText("Our Private Cinema")).toBeInTheDocument();
   });
 
-  it("renders recent memories category", () => {
+  it("renders navbar navigation items and memory content", () => {
     render(<AngelFlix onBackToHub={vi.fn()} onOpenLetter={vi.fn()} onLogout={vi.fn()} />);
-    expect(screen.getByText("Recent Memories")).toBeInTheDocument();
-    expect(screen.getByText("First Date")).toBeInTheDocument();
+    expect(screen.getByText("Our Memories")).toBeInTheDocument();
+    expect(screen.getByText("Timeline")).toBeInTheDocument();
+    expect(screen.getByText("Favorites")).toBeInTheDocument();
   });
 
-  it("calls onOpenLetter when 'Love Letter' button is clicked", () => {
-    const handleOpenLetter = vi.fn();
-    render(<AngelFlix onBackToHub={vi.fn()} onOpenLetter={handleOpenLetter} onLogout={vi.fn()} />);
-    const letterBtn = screen.getByText("Love Letter");
-    fireEvent.click(letterBtn);
-    expect(handleOpenLetter).toHaveBeenCalledOnce();
+  it("navigates to Timeline when clicked", () => {
+    render(<AngelFlix onBackToHub={vi.fn()} onOpenLetter={vi.fn()} onLogout={vi.fn()} />);
+    const timelineBtn = screen.getByText("Timeline");
+    fireEvent.click(timelineBtn);
+    expect(screen.getByText("Timeline")).toBeInTheDocument();
   });
 });

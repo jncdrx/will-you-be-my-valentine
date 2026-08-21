@@ -65,48 +65,43 @@ test.describe("Full Feature & End-to-End Functional Test Suite", () => {
     await expect(page.getByText("ANGELFLIX")).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(/Our Private Cinema/i).first()).toBeVisible();
 
-    // Verify Hero Billboard Content
-    await expect(page.getByText("A Love Worth Remembering")).toBeVisible();
-    await expect(page.getByText(/Since 2024 · Every moment matters/i)).toBeVisible();
+    // Verify Navbar Navigation Tabs
+    await expect(page.getByText("Our Memories")).toBeVisible();
+    await expect(page.getByText("Timeline")).toBeVisible();
+    const favNavBtn = page.getByText("Favorites");
+    await expect(favNavBtn).toBeVisible();
 
-    // Verify Category Carousels
-    await expect(page.getByText("Recent Memories")).toBeVisible();
-    await expect(page.getByText("Chapters of Us (Months 1 to 7)")).toBeVisible();
+    // Verify Hero Billboard Watch Now and Details CTA Buttons
+    const watchNowBtn = page.getByRole("button", { name: /Watch Now/i });
+    const detailsBtn = page.getByRole("button", { name: /Details/i });
+    await expect(watchNowBtn).toBeVisible();
+    await expect(detailsBtn).toBeVisible();
 
-    // Test "Made with love" Romantic Popup
-    const madeWithLoveBtn = page.getByRole("button", { name: /Made with love/i });
-    await expect(madeWithLoveBtn).toBeVisible();
-    await madeWithLoveBtn.click();
-    await expect(page.getByText(/Made with Love for Angel/i)).toBeVisible();
+    // Test Navigation to Timeline Page
+    const timelineNavBtn = page.getByText("Timeline");
+    await timelineNavBtn.click();
+    await expect(page.getByText(/Timeline/i).first()).toBeVisible();
 
-    // Close Romantic Popup
-    const closeLoveBtn = page.getByRole("button", { name: /I Love You Too/i });
-    await closeLoveBtn.click();
-    await expect(page.getByText(/Made with Love for Angel/i)).not.toBeVisible();
+    // Test Navigation to Favorites Page
+    await favNavBtn.click();
+    await expect(page.getByText(/Favorites|Saved/i).first()).toBeVisible();
 
-    // Test Exact Favorites Filter in Navbar
-    const favFilterBtn = page.getByRole("button", { name: "Favorites", exact: true });
-    await expect(favFilterBtn).toBeVisible();
-    await favFilterBtn.click();
-    await expect(page.getByText(/Filtered: Favorites/i)).toBeVisible();
+    // Return to Home
+    const homeNavBtn = page.getByRole("button", { name: "Home", exact: true });
+    await homeNavBtn.click();
 
-    // Open Cinema Player Modal by clicking "Watch Together"
-    const watchTogetherBtn = page.getByRole("button", { name: /Watch Together/i });
-    await watchTogetherBtn.click();
+    // Launch Cinematic Video Player
+    await watchNowBtn.click();
 
-    // Verify Cinema Player Modal
-    await expect(page.getByText(/ANGELFLIX VIDEO|ANGELFLIX CINEMA/i)).toBeVisible();
+    // Verify Video Player Interface and Controls
+    const backBtn = page.getByRole("button", { name: /Back/i }).or(page.locator("button").filter({ hasText: /Back/i })).first();
+    await expect(backBtn).toBeVisible();
 
-    // Test Cinema Like Heart Button inside Player
-    const likeBtn = page.getByRole("button", { name: /Like memory/i });
-    await expect(likeBtn).toBeVisible();
-    await likeBtn.click();
+    // Test Back Button from Video Player to return to Home
+    await backBtn.click();
 
-    // Close Cinema Player Modal
-    const closeCinemaBtn = page.getByRole("button", { name: /Close cinema player/i });
-    await expect(closeCinemaBtn).toBeVisible();
-    await closeCinemaBtn.click();
-    await expect(closeCinemaBtn).not.toBeVisible();
+    // Verify Return to Home Page
+    await expect(page.getByText("ANGELFLIX")).toBeVisible();
   });
 
   test("3. Love Letter & Timeline Experience Flow", async ({ page }) => {

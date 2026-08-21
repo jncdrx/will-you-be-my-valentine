@@ -21,6 +21,7 @@ import {
   deleteAngelFlixMedia,
   AngelFlixMediaRecord,
 } from "../../lib/angelflixApi";
+import AngelFlixNativeAdmin from "../../angelflix/pages/Admin";
 
 const CATEGORIES = [
   "Our Videos",
@@ -31,6 +32,7 @@ const CATEGORIES = [
 ];
 
 export function AdminAngelFlixPanel() {
+  const [studioMode, setStudioMode] = useState<"cloudinary" | "figma">("cloudinary");
   const [mediaList, setMediaList] = useState<AngelFlixMediaRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -168,27 +170,62 @@ export function AdminAngelFlixPanel() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl font-extrabold flex items-center gap-2 text-white font-display">
             <Film size={22} className="text-rose-500" />
             <span>AngelFlix Studio</span>
           </h1>
           <p className="text-xs text-slate-400">
-            Upload &amp; manage romantic videos and memories powered by Cloudinary
+            Upload &amp; manage romantic videos and memories powered by Cloudinary &amp; Figma Studio
           </p>
         </div>
 
-        <button
-          onClick={loadMedia}
-          disabled={loading}
-          className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all border border-slate-700 flex items-center gap-1 text-xs font-bold"
-        >
-          <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
-          <span>Refresh</span>
-        </button>
+        {/* Studio Sub-tabs */}
+        <div className="flex items-center gap-2 bg-slate-950/80 p-1 rounded-2xl border border-slate-800">
+          <button
+            onClick={() => setStudioMode("cloudinary")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              studioMode === "cloudinary"
+                ? "bg-rose-600 text-white shadow"
+                : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            Cloudinary Manager
+          </button>
+          <button
+            onClick={() => setStudioMode("figma")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              studioMode === "figma"
+                ? "bg-rose-600 text-white shadow"
+                : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            Figma AngelFlix Studio
+          </button>
+          {studioMode === "cloudinary" && (
+            <button
+              onClick={loadMedia}
+              disabled={loading}
+              className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all border border-slate-700 flex items-center gap-1 text-xs font-bold"
+              title="Refresh"
+            >
+              <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
+            </button>
+          )}
+        </div>
       </div>
 
+      {/* Render Figma Native Studio */}
+      {studioMode === "figma" && (
+        <div className="rounded-3xl overflow-hidden border border-slate-800 bg-[#09090b]">
+          <AngelFlixNativeAdmin />
+        </div>
+      )}
+
+      {/* Render Cloudinary Manager */}
+      {studioMode === "cloudinary" && (
+        <>
       {/* Upload Form Card */}
       <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-6">
         <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
@@ -635,6 +672,8 @@ export function AdminAngelFlixPanel() {
           </div>
         )}
       </AnimatePresence>
+      </>
+      )}
     </div>
   );
 }

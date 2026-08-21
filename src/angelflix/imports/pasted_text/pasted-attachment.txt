@@ -1,0 +1,1077 @@
+Continue designing the existing **AngelFlix** project.
+
+The AngelFlix homepage/landing screen has already been designed. **Do not redesign or replace the existing homepage.**
+
+Instead, use the existing AngelFlix homepage as the design foundation and expand it into a complete private video-streaming application for Angel.
+
+Create the additional screens beside the existing homepage inside the same Figma file.
+
+Reuse the exact same:
+
+* ANGELFLIX branding
+* Color palette
+* Typography
+* Navigation
+* Buttons
+* Card components
+* Border radius
+* Spacing system
+* Icons
+* Shadows
+* Hover states
+* Focus states
+* Cinematic visual language
+
+The entire application must feel like one cohesive product.
+
+This is not a commercial movie-streaming platform.
+
+AngelFlix is a private digital cinema containing personal videos and memories between two people.
+
+Do not use copyrighted movie posters, Netflix assets, Netflix logos, commercial movies, actors, television shows, ratings, episode counts, or streaming-service branding.
+
+Use believable romantic memory placeholders instead.
+
+==================================================
+CREATE THESE ADDITIONAL DESKTOP SCREENS
+=======================================
+
+Create the following complete screens:
+
+1. Our Memories
+2. Continue Watching
+3. Our Favorites
+4. Search
+5. Video Details
+6. Video Player
+7. All Categories / Collections
+8. Profile Menu State
+9. Empty States
+10. Loading / Error States
+
+Keep the already-created homepage unchanged except where reusable components need to be converted into proper Figma components.
+
+Use approximately **1440px desktop frames**.
+
+==================================================
+SCREEN 1 — OUR MEMORIES
+=======================
+
+Create a dedicated browsing page called:
+
+**Our Memories**
+
+This is the full library containing every published personal video.
+
+Use the same AngelFlix navbar from the homepage:
+
+← TV Home
+
+ANGELFLIX
+
+Home
+Our Memories
+Continue Watching
+Favorites
+
+Search icon
+Angel profile
+
+Highlight **Our Memories** as the active navigation item.
+
+At the top of the content area display:
+
+**Our Memories**
+
+Subtitle:
+
+**Every little moment worth keeping.**
+
+Underneath, create category/filter controls.
+
+Suggested filters:
+
+All
+Dates
+Monthsaries
+Trips
+Messages
+Funny Moments
+Special Days
+
+Do not use oversized pill buttons.
+
+Create subtle compact filters that match the cinematic interface.
+
+Below the filters, create a responsive video-card grid.
+
+Use approximately 4 cards per desktop row depending on available width.
+
+Use landscape **16:9 cards**.
+
+Each card should show:
+
+* Personal memory thumbnail
+* Video title
+* Date
+* Duration
+* Favorite icon when applicable
+* Watch-progress bar if partially watched
+* Completed state when already watched
+
+Example memories:
+
+**Our 7th Monthsary**
+August 2026 · 18 min
+
+**The Night We Got Lost**
+July 2026 · 9 min
+
+**Our Little Road Trip**
+June 2026 · 24 min
+
+**For You, Angel**
+May 2026 · 6 min
+
+**That Coffee Date**
+May 2026 · 14 min
+
+**The Day We Couldn't Stop Laughing**
+April 2026 · 11 min
+
+**Our First Adventure**
+March 2026 · 22 min
+
+**A Random Tuesday With You**
+March 2026 · 8 min
+
+Hover state:
+
+Slightly enlarge the selected card and reveal:
+
+▶ Play
+
+♡ Favorite
+
+ⓘ Details
+
+Keep overlays subtle and readable.
+
+Do not overcrowd every card with permanent buttons.
+
+==================================================
+SCREEN 2 — CONTINUE WATCHING
+============================
+
+Create a dedicated:
+
+**Continue Watching**
+
+page.
+
+Subtitle:
+
+**Pick up where we left off.**
+
+Only partially watched videos should appear here.
+
+Use larger cards than the standard library.
+
+Each item should clearly display:
+
+* Thumbnail
+* Title
+* Date
+* Duration
+* Current position
+* Progress bar
+* Percentage or remaining time
+* Resume button
+* Restart button
+
+Example:
+
+**Our 7th Monthsary**
+
+8:42 watched of 18:20
+
+[ Resume ]
+
+Secondary action:
+
+Start Again
+
+The progress bar should be visually important but elegant.
+
+Add a small section near the bottom:
+
+**Watched Recently**
+
+This can display completed videos more subtly.
+
+Do not mix unfinished videos with completely unwatched videos.
+
+==================================================
+SCREEN 3 — OUR FAVORITES
+========================
+
+Create:
+
+**Our Favorites**
+
+Subtitle:
+
+**The memories we'd watch over and over again.**
+
+Display only videos marked as favorites.
+
+Use a clean 16:9 video grid consistent with Our Memories.
+
+Add a heart icon to indicate favorites.
+
+The heart should use the existing muted rose accent rather than bright red.
+
+Provide a hover action:
+
+**Remove from Favorites**
+
+Do not permanently expose destructive actions.
+
+If there are no favorites, design an intentional empty state:
+
+Large subtle heart outline.
+
+Heading:
+
+**No favorites yet**
+
+Supporting text:
+
+**When a memory feels extra special, save it here.**
+
+Button:
+
+**Browse Our Memories**
+
+==================================================
+SCREEN 4 — SEARCH EXPERIENCE
+============================
+
+Create a complete AngelFlix search screen.
+
+The search icon in the navigation should open or transition into a large search interface.
+
+At the top:
+
+Search input:
+
+**Search our memories...**
+
+Include:
+
+Search icon
+Clear button
+
+Search suggestions can conceptually match:
+
+* Titles
+* Categories
+* Dates
+* Special occasions
+
+Example entered search:
+
+**monthsary**
+
+Display:
+
+**Results for “monthsary”**
+
+Then show matching video cards.
+
+Design another state for:
+
+**No results**
+
+Example:
+
+**Couldn't find that memory**
+
+Supporting text:
+
+**Try another title, date, or moment.**
+
+Button:
+
+**View All Memories**
+
+Do not show generic commercial streaming suggestions.
+
+==================================================
+SCREEN 5 — VIDEO DETAILS
+========================
+
+Create one polished video-detail page for a selected memory.
+
+Example memory:
+
+**Our 7th Monthsary**
+
+Use a large cinematic backdrop occupying the upper portion of the screen.
+
+Apply:
+
+* Dark left gradient
+* Bottom gradient into page background
+* Soft image treatment
+
+Content:
+
+Small label:
+
+**MONTHSARY**
+
+Large title:
+
+**Our 7th Monthsary**
+
+Metadata:
+
+August 7, 2026
+18 min
+Our Monthsaries
+
+Description:
+
+**Another month with you, another collection of little moments I never want to forget. This one is ours forever.**
+
+Primary button:
+
+▶ **Play**
+
+If partially watched:
+
+▶ **Resume from 8:42**
+
+Secondary controls:
+
+♡ Add to Favorites
+
+← Back
+
+Below the hero details, include:
+
+**About This Memory**
+
+Information such as:
+
+Date
+August 7, 2026
+
+Category
+Monthsary
+
+Length
+18 minutes
+
+Optional:
+
+Location
+General Trias, Cavite
+
+Do not make the metadata look like a boring administration table.
+
+Use clean horizontal or compact information blocks.
+
+Below this, add:
+
+**More Like This**
+
+Show related memories from the same category.
+
+==================================================
+SCREEN 6 — VIDEO PLAYER
+=======================
+
+Create a dedicated full-screen AngelFlix video-player design.
+
+This screen should prioritize the video above everything else.
+
+Background:
+
+Pure or near black.
+
+Place a large **16:9 video area** centered in the screen.
+
+When controls are visible, add a subtle dark gradient at the top and bottom.
+
+TOP PLAYER BAR
+
+Left:
+
+← Back
+
+Center or left:
+
+**Our 7th Monthsary**
+
+Optional smaller text:
+
+August 7, 2026
+
+Right:
+
+Fullscreen icon
+
+PLAYER CONTROLS
+
+At the bottom:
+
+Play / Pause
+
+Current time:
+
+08:42
+
+Progress timeline
+
+Total duration:
+
+18:20
+
+Volume
+
+Mute
+
+Optional captions control
+
+Fullscreen
+
+Use clean professional icons.
+
+Do not imitate Netflix's exact player UI.
+
+PROGRESS BAR
+
+The timeline should clearly distinguish:
+
+* Watched portion
+* Remaining portion
+* Current position
+
+Use the AngelFlix accent color sparingly.
+
+PLAYER PAUSED STATE
+
+Design another player state where the video is paused.
+
+Show:
+
+Large centered play control.
+
+Video title remains visible.
+
+PLAYER FINISHED STATE
+
+Design an end-of-video state.
+
+Darkened video backdrop.
+
+Centered message:
+
+**Another memory worth keeping.**
+
+Buttons:
+
+**Watch Again**
+
+**Back to AngelFlix**
+
+Below:
+
+**Play Next Memory**
+
+with a preview card for the next video.
+
+Do not automatically make the next video look like it will start without user consent.
+
+==================================================
+SCREEN 7 — COLLECTIONS / CATEGORIES
+===================================
+
+Create a screen called:
+
+**Collections**
+
+Subtitle:
+
+**Different chapters of us.**
+
+Create large cinematic category cards.
+
+Categories:
+
+**Our Monthsaries**
+
+Description:
+
+Every month we've chosen each other.
+
+**Our Dates**
+
+Description:
+
+The ordinary and extraordinary nights together.
+
+**Our Adventures**
+
+Description:
+
+Everywhere we've gone together.
+
+**Messages For You**
+
+Description:
+
+Things I wanted you to hear from me.
+
+**Funny Moments**
+
+Description:
+
+The clips we'll probably never stop laughing at.
+
+**Special Days**
+
+Description:
+
+Birthdays, celebrations, surprises, and everything between.
+
+Use larger editorial cards for these categories rather than normal video cards.
+
+Each category card should have:
+
+* Background memory image
+* Dark gradient
+* Collection name
+* Short description
+* Number of memories
+
+Example:
+
+**Our Monthsaries**
+
+7 memories
+
+Use an elegant layout with 2–3 category cards per desktop row.
+
+==================================================
+SCREEN 8 — ANGEL PROFILE MENU
+=============================
+
+Create the expanded profile menu activated by clicking Angel's avatar.
+
+Keep it compact.
+
+Include:
+
+Profile image
+
+**Angel**
+
+Small text:
+
+Our Cinema
+
+Menu options:
+
+**TV Home**
+
+**Letters**
+
+**AngelFlix Home**
+
+Divider
+
+**Sign Out**
+
+Do not turn this into a large account-management dashboard.
+
+This is a personal website, so the profile menu should remain simple.
+
+==================================================
+SCREEN 9 — EMPTY STATES
+=======================
+
+Create reusable empty-state components for AngelFlix.
+
+Design at least these states:
+
+### No videos yet
+
+Heading:
+
+**Our cinema is getting ready**
+
+Text:
+
+**The first memory will appear here soon.**
+
+Use a subtle empty film-frame illustration.
+
+### No Continue Watching
+
+Heading:
+
+**You're all caught up**
+
+Text:
+
+**Start another memory whenever you feel like going back.**
+
+Button:
+
+**Browse Memories**
+
+### No Favorites
+
+Heading:
+
+**No favorites yet**
+
+Text:
+
+**Save the memories you want close by.**
+
+Button:
+
+**Explore Our Memories**
+
+### No Search Results
+
+Heading:
+
+**Couldn't find that memory**
+
+Text:
+
+**Try another title, date, or moment.**
+
+Button:
+
+**View Everything**
+
+Keep illustrations minimal and elegant.
+
+Do not use emojis as illustrations.
+
+==================================================
+SCREEN 10 — LOADING AND ERROR STATES
+====================================
+
+Create reusable loading states.
+
+For video cards:
+
+Use dark skeleton thumbnails with subtle animation intent.
+
+For the main page:
+
+Show:
+
+Navigation immediately
+
+Then skeleton hero and cards.
+
+Do not create a blank loading page.
+
+Create a video playback error state:
+
+Icon
+
+**This memory couldn't play**
+
+Supporting text:
+
+**Something interrupted the video. Try again when you're ready.**
+
+Buttons:
+
+**Try Again**
+
+**Back to AngelFlix**
+
+Create a network state:
+
+**Connection lost**
+
+**Your memory is safe. We'll continue from where you stopped once you're back online.**
+
+Keep technical error messages out of the main interface.
+
+==================================================
+GLOBAL NAVIGATION BEHAVIOR
+==========================
+
+Every AngelFlix page should use the same navigation system.
+
+Desktop navigation:
+
+← TV Home
+
+ANGELFLIX
+
+Home
+Our Memories
+Continue Watching
+Favorites
+
+Search
+
+Angel Profile
+
+Highlight the active section with a subtle visual treatment.
+
+Do not use a large underline across the entire tab.
+
+The navigation should initially overlay hero sections where appropriate.
+
+On normal browsing pages, use a solid:
+
+#090909
+
+or equivalent existing dark navigation background.
+
+==================================================
+COMPONENT SYSTEM
+================
+
+Convert repeated elements into reusable Figma components.
+
+Create:
+
+AngelFlix / Navigation
+
+AngelFlix / Logo
+
+Button / Primary
+
+Button / Secondary
+
+Button / Icon
+
+Memory Card / Default
+
+Memory Card / Hover
+
+Memory Card / Focused
+
+Memory Card / Progress
+
+Memory Card / Completed
+
+Memory Card / Favorite
+
+Collection Card
+
+Progress Bar
+
+Search Input
+
+Filter
+
+Profile Avatar
+
+Profile Dropdown
+
+Empty State
+
+Loading Card
+
+Video Player Controls
+
+Use variants rather than duplicating unrelated components.
+
+==================================================
+AUTO LAYOUT
+===========
+
+Use Auto Layout wherever practical.
+
+Set sensible:
+
+* Padding
+* Gaps
+* Alignment
+* Width constraints
+* Responsive behavior
+
+Avoid manually positioning every individual card.
+
+Video rows should be reusable horizontal Auto Layout containers.
+
+Library grids should use a logical responsive structure.
+
+==================================================
+DESIGN TOKENS
+=============
+
+Reuse the colors already established by the homepage.
+
+If variables have not yet been created, create reusable Figma variables/styles for:
+
+Background / Primary
+
+Background / Surface
+
+Text / Primary
+
+Text / Secondary
+
+Accent / Rose
+
+Accent / Rose Dark
+
+Accent / Warm
+
+Border / Subtle
+
+Also establish consistent spacing:
+
+4
+8
+12
+16
+24
+32
+48
+64
+96
+
+And corner radius values:
+
+8
+12
+16
+
+Avoid random spacing values throughout the design.
+
+==================================================
+DESKTOP USER FLOW
+=================
+
+The completed prototype should visually support this flow:
+
+TV HOME
+↓
+ANGELFLIX HOME
+│
+├── Our Memories
+│      ↓
+│   Select Memory
+│      ↓
+│   Memory Details
+│      ↓
+│     Play
+│      ↓
+│   Video Player
+│
+├── Continue Watching
+│      ↓
+│     Resume
+│      ↓
+│   Video Player
+│
+├── Favorites
+│      ↓
+│   Memory Details
+│
+├── Search
+│      ↓
+│   Search Results
+│      ↓
+│   Memory Details
+│
+└── Collections
+↓
+Collection
+↓
+Memory
+↓
+Video Player
+
+Connect major screens using Figma Prototype interactions where practical.
+
+==================================================
+NEXT — CREATE MOBILE VERSIONS
+=============================
+
+After completing the desktop screens, create responsive mobile versions of the most important screens.
+
+Use approximately:
+
+390px width
+
+Create mobile frames for:
+
+1. AngelFlix Home
+2. Our Memories
+3. Video Details
+4. Video Player
+5. Search
+6. Continue Watching
+
+Do NOT simply shrink the desktop design.
+
+Adapt the layout properly.
+
+MOBILE NAVIGATION
+
+Do not squeeze the full desktop navbar onto mobile.
+
+Use:
+
+Top:
+
+ANGELFLIX logo
+
+Search
+
+Angel avatar
+
+Bottom navigation:
+
+Home
+
+Memories
+
+Continue
+
+Favorites
+
+Use professional icons with short labels.
+
+TV Home can live inside the profile menu or a small back control where appropriate.
+
+MOBILE HERO
+
+Use approximately:
+
+60–70vh
+
+Place the hero content toward the bottom.
+
+Use:
+
+Title
+
+Short metadata
+
+2-line description
+
+Watch button
+
+Details button
+
+Do not overload the hero.
+
+MOBILE VIDEO CARDS
+
+Use either:
+
+* 2-column landscape grid where appropriate
+
+or
+
+* Horizontal scrolling rows
+
+depending on the section.
+
+Maintain readable titles.
+
+Do not make cards extremely small.
+
+MOBILE VIDEO PLAYER
+
+When portrait:
+
+Video should fit naturally near the center/top.
+
+Controls should remain touch-friendly.
+
+When landscape:
+
+Video should become the primary full-screen experience.
+
+Minimum touch targets:
+
+Approximately 44px.
+
+==================================================
+IMPORTANT DESIGN CONSTRAINTS
+============================
+
+Do NOT:
+
+* Redesign the existing AngelFlix homepage from scratch
+* Create a visually unrelated second design system
+* Copy Netflix screens exactly
+* Use commercial film posters
+* Use copyrighted show imagery
+* Add fake star ratings
+* Add episode counts
+* Add age ratings
+* Use excessive red
+* Use excessive pink
+* Use excessive gradients
+* Add random emojis
+* Add unnecessary dashboards
+* Add subscription plans
+* Add pricing
+* Add advertisements
+* Add public profiles
+* Add social feeds
+* Add comments
+* Add unrelated streaming functionality
+
+AngelFlix is private and personal.
+
+It should remain focused on:
+
+**Angel + our memories + our videos.**
+
+==================================================
+FINAL DESIGN GOAL
+=================
+
+The final Figma project should no longer feel like a single streaming landing page.
+
+It should feel like a complete, believable private streaming application with:
+
+* Homepage
+* Full memory library
+* Categories
+* Continue Watching
+* Favorites
+* Search
+* Memory details
+* Video playback
+* Profile navigation
+* Loading states
+* Empty states
+* Error states
+* Desktop layouts
+* Mobile layouts
+* Reusable components
+* Consistent design tokens
+* Prototype navigation
+
+The emotional impression should be:
+
+**“We have our own private cinema.”**
+
+not:
+
+**“Someone changed the text on a Netflix template.”**
+
+Keep AngelFlix sophisticated, intimate, cinematic, personal, clean, and production-quality.
