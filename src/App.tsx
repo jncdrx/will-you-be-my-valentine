@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MusicPlayer } from "./components/MusicPlayer";
 import { MouseTrail } from "./components/MouseTrail";
@@ -16,6 +16,8 @@ import { PastMonthsaryNavbar } from "./components/PastMonthsaryNavbar";
 import { PastMonthsaryModal } from "./components/PastMonthsaryModal";
 import { MusicSelectorModal } from "./components/MusicSelectorModal";
 import { VouchersSection, VouchersSectionHandle } from "./components/user/VouchersSection";
+import { ExperienceHub } from "./components/ExperienceHub";
+import { AngelFlix } from "./components/AngelFlix";
 import { AdminRoutes } from "./components/admin/AdminRoutes";
 import { AdminLoginPage } from "./components/admin/AdminLoginPage";
 import { AdminDashboard } from "./components/admin/AdminDashboard";
@@ -35,6 +37,7 @@ import { Voucher, effectiveStatus } from "./lib/vouchers";
 import { ArrowUp, LogOut } from "lucide-react";
 import { toast } from "sonner";
 
+type ExperienceMode = "hub" | "letter" | "angelflix";
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
 
 export default function App() {
@@ -66,7 +69,27 @@ function getInitialStep(): ExperienceStep {
   return "welcome";
 }
 
+function getInitialMode(): ExperienceMode {
+  if (typeof window === "undefined") return "hub";
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const viewParam = params.get("view");
+    if (viewParam === "letter" || viewParam === "angelflix" || viewParam === "hub") {
+      return viewParam as ExperienceMode;
+    }
+    const saved = localStorage.getItem("angel_experience_mode");
+    if (saved === "letter" || saved === "angelflix" || saved === "hub") {
+      return saved as ExperienceMode;
+    }
+  } catch {
+    /* ignore storage errors */
+  }
+  return "hub";
+}
+
 function UserSite() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [mode, setMode] = useState<ExperienceMode>(getInitialMode);
   const [step, setStep] = useState<ExperienceStep>(getInitialStep);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -74,7 +97,7 @@ function UserSite() {
   const [unclaimedVoucherCount, setUnclaimedVoucherCount] = useState(0);
   const vouchersSectionRef = useRef<VouchersSectionHandle>(null);
 
-  // Private Access Authentication state (now backed by Supabase Auth)
+  // Private Access Authentication state (backed by Supabase Auth)
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
 
   // Response state for Angel
@@ -85,6 +108,17 @@ function UserSite() {
   const [songsList, setSongsList] = useState<Song[]>([]);
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
   const [isMusicModalOpen, setIsMusicModalOpen] = useState(false);
+
+  // Sync mode with URL search param and localStorage
+  const handleModeChange = (newMode: ExperienceMode) => {
+    setMode(newMode);
+    try {
+      localStorage.setItem("angel_experience_mode", newMode);
+      setSearchParams({ view: newMode }, { replace: true });
+    } catch {
+      /* ignore storage errors */
+    }
+  };
 
   // Restore Supabase Auth session on load
   useEffect(() => {
@@ -183,6 +217,7 @@ function UserSite() {
   const handleLogout = async () => {
     await signOutAll();
     setIsUnlocked(false);
+    setMode("hub");
     setStep("welcome");
     toast.info("Logged out successfully");
   };
@@ -219,7 +254,7 @@ function UserSite() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Stable callbacks for the vouchers section (avoid re-subscribing Realtime on every render)
+  // Stable callbacks for the vouchers section
   const handleVouchersChange = useCallback((list: Voucher[]) => {
     setUnclaimedVoucherCount(list.filter((v) => effectiveStatus(v) === "available").length);
   }, []);
@@ -233,10 +268,7 @@ function UserSite() {
   }, []);
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-start overflow-x-hidden text-center font-sans pb-16 pt-4">
-      {/* Soft Vignette Overlay */}
-      <div className="pointer-events-none fixed inset-0 z-0 bg-radial-gradient from-transparent via-rose-100/10 to-pink-200/20 mix-blend-multiply"></div>
-
+    <div className="relative min-h-screen w-full overflow-x-hidden font-sans">
       {/* Require Angel Authentication Gate if not unlocked */}
       {!isUnlocked && (
         <AngelAuthGate
@@ -247,6 +279,7 @@ function UserSite() {
         />
       )}
 
+      {/* Global Music & Cursor fx */}
       <MusicPlayer
         currentSong={selectedSong}
         onOpenSelector={() => setIsMusicModalOpen(true)}
@@ -266,102 +299,131 @@ function UserSite() {
       <FloatingHearts />
       <HeartBurst />
 
-      {/* Main Experience Past Monthsaries Navbar (only when unlocked) */}
+      {/* Unlocked Experience Flow */}
       {isUnlocked && (
-        <PastMonthsaryNavbar
-          currentStep={step}
-          onStepChange={handleStepChange}
-          onSelectPastMonth={(index: number) => setSelectedPastMonthIndex(index)}
-          savedResponseToken={savedResponseToken}
-          onOpenVouchers={() => vouchersSectionRef.current?.scrollTo()}
-          unclaimedVoucherCount={unclaimedVoucherCount}
-        />
-      )}
-
-      {/* Past Monthsary Detail Viewer Modal */}
-      {selectedPastMonthIndex !== null && (
-        <PastMonthsaryModal
-          initialMonthIndex={selectedPastMonthIndex}
-          onClose={() => setSelectedPastMonthIndex(null)}
-        />
-      )}
-
-      {/* View Switcher */}
-      {isUnlocked && (
-        <AnimatePresence mode="wait">
-          {step === "welcome" && (
-            <WelcomeScreen
-              key="welcome"
-              onOpenLetter={() => setStep("letter")}
+        <>
+          {/* 1. Hub Gateway Selection Screen */}
+          {mode === "hub" && (
+            <ExperienceHub
+              onSelectExperience={(selected) => handleModeChange(selected)}
+              onLogout={handleLogout}
+              unclaimedVoucherCount={unclaimedVoucherCount}
               isPlayingMusic={isPlayingMusic}
               onToggleMusic={() => setIsPlayingMusic(!isPlayingMusic)}
             />
           )}
 
-          {step === "letter" && (
-            <LoveLetterSection key="letter" onContinue={() => setStep("memories")} />
-          )}
-
-          {step === "memories" && (
-            <MemoriesSection key="memories" onGoToReaction={() => setStep("reaction")} />
-          )}
-
-          {step === "reaction" && (
-            <AngelReactionForm
-              key="reaction"
-              onSubmitted={handleSubmitted}
-              onBackToMemories={() => setStep("memories")}
-              existingToken={savedResponseToken || undefined}
+          {/* 2. AngelFlix Netflix Streaming Screen */}
+          {mode === "angelflix" && (
+            <AngelFlix
+              onBackToHub={() => handleModeChange("hub")}
+              onOpenLetter={() => handleModeChange("letter")}
+              onLogout={handleLogout}
             />
           )}
 
-          {step === "confirmation" && submittedResponseData && (
-            <SubmissionConfirmation
-              key="confirmation"
-              responseData={submittedResponseData}
-              onEdit={handleEditReply}
-            />
+          {/* 3. The Love Letter & Memories Interactive Journey */}
+          {mode === "letter" && (
+            <div className="relative flex min-h-screen w-full flex-col items-center justify-start text-center pb-16 pt-4">
+              {/* Soft Vignette Overlay */}
+              <div className="pointer-events-none fixed inset-0 z-0 bg-radial-gradient from-transparent via-rose-100/10 to-pink-200/20 mix-blend-multiply" />
+
+              {/* Main Experience Past Monthsaries Navbar */}
+              <PastMonthsaryNavbar
+                currentStep={step}
+                onStepChange={handleStepChange}
+                onSelectPastMonth={(index: number) => setSelectedPastMonthIndex(index)}
+                savedResponseToken={savedResponseToken}
+                onOpenVouchers={() => vouchersSectionRef.current?.scrollTo()}
+                unclaimedVoucherCount={unclaimedVoucherCount}
+                onOpenAngelFlix={() => handleModeChange("angelflix")}
+                onBackToHub={() => handleModeChange("hub")}
+              />
+
+              {/* Past Monthsary Detail Viewer Modal */}
+              {selectedPastMonthIndex !== null && (
+                <PastMonthsaryModal
+                  initialMonthIndex={selectedPastMonthIndex}
+                  onClose={() => setSelectedPastMonthIndex(null)}
+                />
+              )}
+
+              {/* Step View Switcher */}
+              <AnimatePresence mode="wait">
+                {step === "welcome" && (
+                  <WelcomeScreen
+                    key="welcome"
+                    onOpenLetter={() => setStep("letter")}
+                    isPlayingMusic={isPlayingMusic}
+                    onToggleMusic={() => setIsPlayingMusic(!isPlayingMusic)}
+                  />
+                )}
+
+                {step === "letter" && (
+                  <LoveLetterSection key="letter" onContinue={() => setStep("memories")} />
+                )}
+
+                {step === "memories" && (
+                  <MemoriesSection key="memories" onGoToReaction={() => setStep("reaction")} />
+                )}
+
+                {step === "reaction" && (
+                  <AngelReactionForm
+                    key="reaction"
+                    onSubmitted={handleSubmitted}
+                    onBackToMemories={() => setStep("memories")}
+                    existingToken={savedResponseToken || undefined}
+                  />
+                )}
+
+                {step === "confirmation" && submittedResponseData && (
+                  <SubmissionConfirmation
+                    key="confirmation"
+                    responseData={submittedResponseData}
+                    onEdit={handleEditReply}
+                  />
+                )}
+              </AnimatePresence>
+
+              {/* Vouchers section */}
+              {step !== "confirmation" && (
+                <VouchersSection
+                  ref={vouchersSectionRef}
+                  onVouchersChange={handleVouchersChange}
+                  onNewVoucher={handleNewVoucher}
+                />
+              )}
+
+              {/* Fixed Floating Lower-Left Logout Button */}
+              <motion.button
+                initial={{ opacity: 0, scale: 0.9, x: -10 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLogout}
+                aria-label="Log out of session"
+                className="fixed bottom-4 left-4 z-40 flex items-center gap-1.5 rounded-full border border-rose-200/90 bg-white/90 px-4 py-2.5 text-xs font-extrabold text-rose-700 shadow-xl backdrop-blur-xl hover:bg-rose-50 hover:border-rose-300 transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95 group"
+              >
+                <LogOut size={15} className="text-rose-500 group-hover:text-rose-600 transition-colors shrink-0" />
+                <span>Logout</span>
+              </motion.button>
+
+              {/* Floating Back to Top Button */}
+              {showBackToTop && (
+                <motion.button
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 12 }}
+                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                  className="fixed bottom-20 left-4 z-40 flex items-center gap-1 rounded-full border border-rose-200 bg-white/90 px-4 py-2 text-xs font-bold text-rose-700 shadow-xl backdrop-blur-md hover:bg-white min-h-[40px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95"
+                  aria-label="Back to top"
+                >
+                  <ArrowUp size={14} /> Top
+                </motion.button>
+              )}
+            </div>
           )}
-        </AnimatePresence>
-      )}
-
-      {/* Permanent Vouchers section (always visible when unlocked and not on confirmation step to avoid duplicate rendering; live via Realtime) */}
-      {isUnlocked && step !== "confirmation" && (
-        <VouchersSection
-          ref={vouchersSectionRef}
-          onVouchersChange={handleVouchersChange}
-          onNewVoucher={handleNewVoucher}
-        />
-      )}
-
-      {/* Fixed Floating Lower-Left Logout Button (UI/UX Pro Max) */}
-      {isUnlocked && (
-        <motion.button
-          initial={{ opacity: 0, scale: 0.9, x: -10 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleLogout}
-          aria-label="Log out of session"
-          className="fixed bottom-4 left-4 z-40 flex items-center gap-1.5 rounded-full border border-rose-200/90 bg-white/90 px-4 py-2.5 text-xs font-extrabold text-rose-700 shadow-xl backdrop-blur-xl hover:bg-rose-50 hover:border-rose-300 transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95 group"
-        >
-          <LogOut size={15} className="text-rose-500 group-hover:text-rose-600 transition-colors shrink-0" />
-          <span>Logout</span>
-        </motion.button>
-      )}
-
-      {/* Floating Back to Top Button */}
-      {showBackToTop && (
-        <motion.button
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 12 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-20 left-4 z-40 flex items-center gap-1 rounded-full border border-rose-200 bg-white/90 px-4 py-2 text-xs font-bold text-rose-700 shadow-xl backdrop-blur-md hover:bg-white min-h-[40px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95"
-          aria-label="Back to top"
-        >
-          <ArrowUp size={14} /> Top
-        </motion.button>
+        </>
       )}
     </div>
   );

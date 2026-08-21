@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Calendar, ChevronDown, BookOpen, CheckCircle2, Sparkles, Sprout, Cake, Utensils, Coffee, Crown, Gift } from "lucide-react";
+import { Heart, Calendar, ChevronDown, BookOpen, CheckCircle2, Sprout, Cake, Sparkles, Utensils, Coffee, Crown, Gift, Film, Home } from "lucide-react";
 import { monthsaryConfig } from "../config/monthsaryConfig";
 
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
@@ -12,6 +12,8 @@ interface PastMonthsaryNavbarProps {
   savedResponseToken: string | null;
   onOpenVouchers: () => void;
   unclaimedVoucherCount: number;
+  onOpenAngelFlix?: () => void;
+  onBackToHub?: () => void;
 }
 
 const experienceSteps: { key: ExperienceStep; label: string }[] = [
@@ -41,6 +43,8 @@ export function PastMonthsaryNavbar({
   savedResponseToken,
   onOpenVouchers,
   unclaimedVoucherCount,
+  onOpenAngelFlix,
+  onBackToHub,
 }: PastMonthsaryNavbarProps) {
   const [isPastDropdownOpen, setIsPastDropdownOpen] = useState(false);
 
@@ -56,32 +60,48 @@ export function PastMonthsaryNavbar({
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="sticky top-2 z-40 w-full max-w-2xl px-2 sm:px-3 mx-auto"
+      className="sticky top-2 z-40 w-full max-w-3xl px-2 sm:px-3 mx-auto"
     >
       <div className="rounded-[24px] bg-white/90 backdrop-blur-2xl px-3.5 sm:px-5 py-2.5 shadow-2xl shadow-rose-500/10 border border-white/90 transition-all relative">
-        {/* ROW 1: Branding, Past Monthsaries Dropdown, Saved Reply & Vouchers */}
+        {/* ROW 1: Branding, Experience Switcher, Dropdown, Saved Reply & Vouchers */}
         <div className="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
-          {/* Brand Logo / Title */}
-          <button
-            onClick={() => {
-              triggerHaptic();
-              onStepChange("welcome");
-            }}
-            className="flex items-center gap-2 shrink-0 group focus:outline-none focus:ring-2 focus:ring-rose-400 rounded-full px-1.5 py-1 transition-all min-h-[44px]"
-            aria-label="Go to welcome screen"
-          >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 via-pink-500 to-rose-600 flex items-center justify-center text-white shadow-md shadow-rose-500/30 group-hover:scale-105 transition-transform">
-              <Heart size={15} className="fill-white animate-pulse" />
-            </div>
-            <div className="flex flex-col text-left hidden sm:flex">
-              <span className="text-xs font-extrabold text-rose-700 font-display leading-tight">
-                7 Months of Us
-              </span>
-              <span className="text-[9px] text-gray-400 font-semibold uppercase tracking-wider">
-                {monthsaryConfig.girlfriendName}
-              </span>
-            </div>
-          </button>
+          {/* Brand Logo & Back to Hub */}
+          <div className="flex items-center gap-1.5">
+            {onBackToHub && (
+              <button
+                onClick={() => {
+                  triggerHaptic();
+                  onBackToHub();
+                }}
+                className="p-2 rounded-full bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 transition-all min-h-[40px] min-w-[40px] flex items-center justify-center active:scale-95"
+                title="Return to Experience Hub"
+                aria-label="Return to Experience Hub"
+              >
+                <Home size={16} />
+              </button>
+            )}
+
+            <button
+              onClick={() => {
+                triggerHaptic();
+                onStepChange("welcome");
+              }}
+              className="flex items-center gap-2 shrink-0 group focus:outline-none focus:ring-2 focus:ring-rose-400 rounded-full px-1.5 py-1 transition-all min-h-[40px]"
+              aria-label="Go to welcome screen"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 via-pink-500 to-rose-600 flex items-center justify-center text-white shadow-md shadow-rose-500/30 group-hover:scale-105 transition-transform">
+                <Heart size={15} className="fill-white animate-pulse" />
+              </div>
+              <div className="flex flex-col text-left hidden sm:flex">
+                <span className="text-xs font-extrabold text-rose-700 font-display leading-tight">
+                  7 Months of Us
+                </span>
+                <span className="text-[9px] text-gray-400 font-semibold uppercase tracking-wider">
+                  {monthsaryConfig.girlfriendName}
+                </span>
+              </div>
+            </button>
+          </div>
 
           {/* Past Monthsaries Selector Dropdown Pill */}
           <div className="relative">
@@ -90,7 +110,7 @@ export function PastMonthsaryNavbar({
                 triggerHaptic();
                 setIsPastDropdownOpen(!isPastDropdownOpen);
               }}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-extrabold transition-all border shadow-sm min-h-[44px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95 ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-extrabold transition-all border shadow-sm min-h-[40px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95 ${
                 isPastDropdownOpen
                   ? "bg-rose-500 text-white border-rose-500 shadow-rose-500/25 scale-[1.02]"
                   : "bg-rose-50/90 text-rose-700 border-rose-200 hover:bg-rose-100/90 hover:border-rose-300"
@@ -99,10 +119,7 @@ export function PastMonthsaryNavbar({
               aria-expanded={isPastDropdownOpen}
             >
               <Calendar size={14} className={isPastDropdownOpen ? "text-white" : "text-rose-500"} />
-              <span className="truncate max-w-[130px] sm:max-w-none">Past Monthsaries (1-7)</span>
-              <span className="hidden xs:inline-flex px-1.5 py-0.5 rounded-full text-[9px] font-extrabold bg-rose-200/80 text-rose-800 border border-rose-300">
-                7 Months
-              </span>
+              <span className="truncate max-w-[120px] sm:max-w-none">Past Months (1-7)</span>
               <ChevronDown
                 size={14}
                 className={`transition-transform duration-300 ${isPastDropdownOpen ? "rotate-180" : ""}`}
@@ -185,8 +202,23 @@ export function PastMonthsaryNavbar({
             </AnimatePresence>
           </div>
 
-          {/* Right Action Cluster */}
+          {/* Right Action Cluster: AngelFlix Switch, Saved Reply & Vouchers */}
           <div className="flex items-center gap-1.5">
+            {/* Quick Switch to AngelFlix Cinema */}
+            {onOpenAngelFlix && (
+              <button
+                onClick={() => {
+                  triggerHaptic();
+                  onOpenAngelFlix();
+                }}
+                className="flex items-center gap-1 rounded-full bg-zinc-900 px-3 py-1.5 text-[11px] font-extrabold text-white border border-zinc-700 hover:bg-zinc-800 transition-colors shadow-sm min-h-[40px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95"
+                title="Switch to AngelFlix Cinema"
+              >
+                <Film size={13} className="text-rose-500 shrink-0" />
+                <span>AngelFlix</span>
+              </button>
+            )}
+
             {/* View Saved Reply Quick Action */}
             {savedResponseToken && (
               <button
@@ -194,11 +226,10 @@ export function PastMonthsaryNavbar({
                   triggerHaptic();
                   onStepChange("confirmation");
                 }}
-                className="flex items-center gap-1 rounded-full bg-rose-100/90 px-3 py-1.5 text-[11px] font-extrabold text-rose-700 border border-rose-200 hover:bg-rose-200 transition-colors shadow-sm min-h-[44px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95"
+                className="flex items-center gap-1 rounded-full bg-rose-100/90 px-3 py-1.5 text-[11px] font-extrabold text-rose-700 border border-rose-200 hover:bg-rose-200 transition-colors shadow-sm min-h-[40px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95"
               >
                 <CheckCircle2 size={13} className="text-rose-500 shrink-0" />
-                <span className="hidden xs:inline">My Saved Reply</span>
-                <span className="xs:hidden">Reply</span>
+                <span className="hidden xs:inline">Saved Reply</span>
               </button>
             )}
 
@@ -208,12 +239,11 @@ export function PastMonthsaryNavbar({
                 triggerHaptic();
                 onOpenVouchers();
               }}
-              className="relative flex items-center gap-1 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 px-3 py-1.5 text-[11px] font-extrabold text-white shadow-sm hover:shadow-md transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95"
+              className="relative flex items-center gap-1 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 px-3 py-1.5 text-[11px] font-extrabold text-white shadow-sm hover:shadow-md transition-all min-h-[40px] focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-95"
               aria-label="Jump to my vouchers"
             >
               <Gift size={13} className="fill-white shrink-0" />
-              <span className="hidden xs:inline">My Vouchers</span>
-              <span className="xs:hidden">Vouchers</span>
+              <span className="hidden xs:inline">Vouchers</span>
               {unclaimedVoucherCount > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-white text-rose-600 text-[10px] font-extrabold border border-rose-300 shadow-sm animate-bounce">
                   {unclaimedVoucherCount}
@@ -236,7 +266,7 @@ export function PastMonthsaryNavbar({
                   triggerHaptic();
                   onStepChange(item.key);
                 }}
-                className="flex-1 focus:outline-none focus:ring-2 focus:ring-rose-400 rounded-xl min-h-[44px] flex flex-col items-center justify-center transition-all active:scale-95"
+                className="flex-1 focus:outline-none focus:ring-2 focus:ring-rose-400 rounded-xl min-h-[40px] flex flex-col items-center justify-center transition-all active:scale-95"
                 aria-label={`Go to ${item.label}`}
               >
                 <div className="w-full flex flex-col items-center gap-1">
