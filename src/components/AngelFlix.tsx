@@ -11,8 +11,6 @@ import {
   Star,
   X,
   Video,
-  Film,
-  Clock,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { angelflixConfig, AngelFlixItem } from "../config/angelflixConfig";

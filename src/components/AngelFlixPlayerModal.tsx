@@ -44,7 +44,6 @@ export function AngelFlixPlayerModal({
   const [videoTime, setVideoTime] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
-  const [volume, setVolume] = useState(1);
 
   const isVideo = Boolean(item?.videoUrl);
   const photos =

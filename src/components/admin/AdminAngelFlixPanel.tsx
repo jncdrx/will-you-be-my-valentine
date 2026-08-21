@@ -6,16 +6,12 @@ import {
   Play,
   Trash2,
   Edit2,
-  Heart,
   Star,
   RefreshCw,
   Video,
   Image as ImageIcon,
-  CheckCircle2,
-  AlertCircle,
   X,
   Clock,
-  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
