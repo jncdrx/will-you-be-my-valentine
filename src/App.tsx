@@ -87,6 +87,15 @@ function getInitialMode(): ExperienceMode {
   return "hub";
 }
 
+function getInitialUnlocked(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return sessionStorage.getItem("monthsary_authenticated") === "true";
+  } catch {
+    return false;
+  }
+}
+
 function UserSite() {
   const [, setSearchParams] = useSearchParams();
   const [mode, setMode] = useState<ExperienceMode>(getInitialMode);
@@ -98,7 +107,7 @@ function UserSite() {
   const vouchersSectionRef = useRef<VouchersSectionHandle>(null);
 
   // Private Access Authentication state (backed by Supabase Auth)
-  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(getInitialUnlocked);
 
   // Response state for Angel
   const [savedResponseToken, setSavedResponseToken] = useState<string | null>(null);
@@ -120,10 +129,14 @@ function UserSite() {
     }
   };
 
-  // Restore Supabase Auth session on load
+  // Restore Supabase Auth session or authenticated session on load
   useEffect(() => {
     let active = true;
     (async () => {
+      if (typeof window !== "undefined" && sessionStorage.getItem("monthsary_authenticated") === "true") {
+        if (active) setIsUnlocked(true);
+        return;
+      }
       if (isSupabaseConfigured()) {
         const { data } = await supabase.auth.getSession();
         if (active) {
@@ -216,6 +229,9 @@ function UserSite() {
 
   const handleLogout = async () => {
     await signOutAll();
+    sessionStorage.removeItem("monthsary_authenticated");
+    sessionStorage.removeItem("monthsary_angel_email");
+    localStorage.removeItem("angel_user_data");
     setIsUnlocked(false);
     setMode("hub");
     setStep("welcome");
@@ -235,7 +251,11 @@ function UserSite() {
   useEffect(() => {
     if (!isSupabaseConfigured()) return;
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsUnlocked(Boolean(session));
+      if (session) {
+        setIsUnlocked(true);
+      } else if (typeof window !== "undefined" && sessionStorage.getItem("monthsary_authenticated") !== "true") {
+        setIsUnlocked(false);
+      }
     });
     return () => sub.subscription.unsubscribe();
   }, []);
