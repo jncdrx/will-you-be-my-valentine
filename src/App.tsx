@@ -88,7 +88,7 @@ function getInitialMode(): ExperienceMode {
 }
 
 function UserSite() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const [mode, setMode] = useState<ExperienceMode>(getInitialMode);
   const [step, setStep] = useState<ExperienceStep>(getInitialStep);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
