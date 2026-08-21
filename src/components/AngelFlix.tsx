@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Play,
@@ -10,10 +10,14 @@ import {
   Home,
   Star,
   X,
+  Video,
+  Film,
+  Clock,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { angelflixConfig, AngelFlixItem } from "../config/angelflixConfig";
 import { AngelFlixPlayerModal } from "./AngelFlixPlayerModal";
+import { fetchAngelFlixMedia, AngelFlixMediaRecord } from "../lib/angelflixApi";
 
 interface AngelFlixProps {
   onBackToHub: () => void;
@@ -26,8 +30,56 @@ export function AngelFlix({ onBackToHub, onOpenLetter, onLogout }: AngelFlixProp
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [showLovePopup, setShowLovePopup] = useState(false);
   const [filterFavoriteOnly, setFilterFavoriteOnly] = useState(false);
+  const [uploadedMedia, setUploadedMedia] = useState<AngelFlixMediaRecord[]>([]);
+
+  const videosScrollRef = useRef<HTMLDivElement>(null);
   const recentScrollRef = useRef<HTMLDivElement>(null);
   const chaptersScrollRef = useRef<HTMLDivElement>(null);
+
+  // Fetch dynamic Cloudinary media from backend
+  useEffect(() => {
+    let active = true;
+    fetchAngelFlixMedia().then((list) => {
+      if (active && list.length > 0) {
+        setUploadedMedia(list);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Map uploaded records to AngelFlixItem format
+  const mappedUploadedItems: AngelFlixItem[] = uploadedMedia.map((m) => ({
+    id: m.id,
+    title: m.title,
+    subtitle: m.subtitle,
+    description: m.description,
+    imageUrl: m.imageUrl,
+    category: m.category,
+    date: m.date,
+    videoUrl: m.videoUrl || undefined,
+    tags: m.tags,
+    isFavorite: m.isFavorite,
+    photos: m.videoUrl ? undefined : [{ src: m.imageUrl, caption: m.subtitle || m.title }],
+  }));
+
+  // Separate into video highlights and recent memories
+  const uploadedVideos = mappedUploadedItems.filter(
+    (m) => m.category === "Our Videos" || Boolean(m.videoUrl)
+  );
+  const uploadedRecentMemories = mappedUploadedItems.filter(
+    (m) => m.category !== "Our Videos" && !m.videoUrl
+  );
+
+  const allRecentMemories = [...uploadedRecentMemories, ...angelflixConfig.recentMemories];
+  const displayedRecentMemories = filterFavoriteOnly
+    ? allRecentMemories.filter((m) => m.isFavorite)
+    : allRecentMemories;
+
+  const displayedVideos = filterFavoriteOnly
+    ? uploadedVideos.filter((v) => v.isFavorite)
+    : uploadedVideos;
 
   const handleCardClick = (item: AngelFlixItem) => {
     setSelectedItem(item);
@@ -35,7 +87,8 @@ export function AngelFlix({ onBackToHub, onOpenLetter, onLogout }: AngelFlixProp
   };
 
   const handleWatchTogether = () => {
-    setSelectedItem(angelflixConfig.recentMemories[0]);
+    const itemToPlay = uploadedVideos[0] || allRecentMemories[0] || angelflixConfig.recentMemories[0];
+    setSelectedItem(itemToPlay);
     setIsPlayerOpen(true);
     confetti({
       particleCount: 40,
@@ -61,10 +114,6 @@ export function AngelFlix({ onBackToHub, onOpenLetter, onLogout }: AngelFlixProp
       ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
   };
-
-  const displayedRecentMemories = filterFavoriteOnly
-    ? angelflixConfig.recentMemories.filter((m) => m.isFavorite)
-    : angelflixConfig.recentMemories;
 
   return (
     <div className="relative min-h-screen w-full bg-zinc-950 text-white font-sans overflow-x-hidden pb-20">
@@ -92,6 +141,17 @@ export function AngelFlix({ onBackToHub, onOpenLetter, onLogout }: AngelFlixProp
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-zinc-300">
+            {uploadedVideos.length > 0 && (
+              <button
+                onClick={() => {
+                  videosScrollRef.current?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="hover:text-white transition-colors flex items-center gap-1"
+              >
+                <Video size={14} className="text-rose-500" />
+                <span>Our Videos</span>
+              </button>
+            )}
             <button
               onClick={() => {
                 setFilterFavoriteOnly(false);
@@ -236,6 +296,88 @@ export function AngelFlix({ onBackToHub, onOpenLetter, onLogout }: AngelFlixProp
           </div>
         </div>
       </section>
+
+      {/* Category Section: Our Videos (When uploaded videos exist) */}
+      {displayedVideos.length > 0 && (
+        <section className="relative z-10 px-4 sm:px-12 max-w-7xl mx-auto mt-10" ref={videosScrollRef}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white font-display flex items-center gap-2">
+                <Video size={20} className="text-rose-500" />
+                <span>Our Videos &amp; Cinema Reels</span>
+              </h2>
+              <span className="text-xs bg-rose-600/30 border border-rose-500/50 text-rose-300 px-2 py-0.5 rounded-full font-bold">
+                Cloudinary Stream
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => scrollContainer(videosScrollRef, "left")}
+                className="p-2 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 transition-all active:scale-95"
+                aria-label="Scroll videos left"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                onClick={() => scrollContainer(videosScrollRef, "right")}
+                className="p-2 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 transition-all active:scale-95"
+                aria-label="Scroll videos right"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
+
+          <div
+            ref={videosScrollRef}
+            className="flex items-stretch gap-4 overflow-x-auto scrollbar-none py-2 scroll-smooth"
+          >
+            {displayedVideos.map((item) => (
+              <motion.div
+                key={item.id}
+                whileHover={{ scale: 1.04, y: -4 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => handleCardClick(item)}
+                className="flex-none w-[260px] sm:w-[300px] bg-zinc-900/90 rounded-2xl overflow-hidden border border-zinc-800 hover:border-rose-500/60 shadow-xl cursor-pointer group flex flex-col"
+              >
+                <div className="relative h-44 w-full overflow-hidden bg-zinc-800">
+                  <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
+                  <div className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-rose-600/80 backdrop-blur-sm text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Play size={20} className="fill-white translate-x-0.5" />
+                  </div>
+                  <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/70 backdrop-blur-md text-[10px] font-bold text-rose-300 border border-rose-500/30 flex items-center gap-1">
+                    <Video size={10} /> Video
+                  </div>
+                </div>
+
+                <div className="p-4 flex flex-col flex-1 justify-between space-y-1.5">
+                  <div>
+                    <h3 className="font-bold text-white text-base group-hover:text-rose-400 transition-colors">
+                      {item.title}
+                    </h3>
+                    {item.subtitle && (
+                      <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                        {item.subtitle}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between text-[11px] text-zinc-400 border-t border-zinc-800/80">
+                    <span>{item.category}</span>
+                    {item.isFavorite && <Heart size={12} className="text-rose-500 fill-rose-500" />}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Category Section: Recent Memories */}
       <section className="relative z-10 px-4 sm:px-12 max-w-7xl mx-auto mt-10" ref={recentScrollRef}>

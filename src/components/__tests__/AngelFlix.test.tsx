@@ -1,8 +1,14 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AngelFlix } from "../AngelFlix";
+import * as angelflixApi from "../../lib/angelflixApi";
 
 describe("AngelFlix", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    vi.spyOn(angelflixApi, "fetchAngelFlixMedia").mockResolvedValue([]);
+  });
+
   it("renders brand name and billboard hero heading", () => {
     render(<AngelFlix onBackToHub={vi.fn()} onOpenLetter={vi.fn()} onLogout={vi.fn()} />);
     expect(screen.getByText("ANGELFLIX")).toBeInTheDocument();

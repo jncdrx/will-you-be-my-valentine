@@ -45,7 +45,9 @@ async function getAuthToken(overrideToken?: string): Promise<string> {
  */
 export async function fetchAngelFlixMedia(): Promise<AngelFlixMediaRecord[]> {
   try {
-    const res = await fetch("/api/angelflix/media");
+    const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : "http://localhost:3001";
+    const url = typeof window !== "undefined" && window.location.origin && !window.location.origin.includes("null") ? "/api/angelflix/media" : `${origin}/api/angelflix/media`;
+    const res = await fetch(url);
     if (!res.ok) {
       throw new Error(`Failed to fetch media: ${res.statusText}`);
     }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -10,6 +10,10 @@ import {
   Calendar,
   Maximize2,
   Minimize2,
+  Volume2,
+  VolumeX,
+  RotateCcw,
+  Film,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { AngelFlixItem } from "../config/angelflixConfig";
@@ -34,27 +38,82 @@ export function AngelFlixPlayerModal({
   const [isLiked, setIsLiked] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  // Video state
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoPlaying, setVideoPlaying] = useState(true);
+  const [videoTime, setVideoTime] = useState(0);
+  const [videoDuration, setVideoDuration] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(1);
+
+  const isVideo = Boolean(item?.videoUrl);
   const photos =
     item?.photos && item.photos.length > 0
       ? item.photos
       : [{ src: item?.imageUrl || "", caption: item?.subtitle || "" }];
 
-  // Reset photo index when item changes
+  // Reset state when item changes
   useEffect(() => {
     setCurrentPhotoIndex(0);
     setIsLiked(Boolean(item?.isFavorite));
+    setVideoPlaying(true);
+    setVideoTime(0);
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => setVideoPlaying(false));
+    }
   }, [item]);
 
-  // Slideshow auto-advance timer
+  // Slideshow auto-advance timer (only for photo mode)
   useEffect(() => {
-    if (!isOpen || !isPlaying || photos.length <= 1) return;
+    if (!isOpen || isVideo || !isPlaying || photos.length <= 1) return;
 
     const interval = setInterval(() => {
       setCurrentPhotoIndex((prev) => (prev + 1) % photos.length);
     }, 4500);
 
     return () => clearInterval(interval);
-  }, [isOpen, isPlaying, photos.length]);
+  }, [isOpen, isVideo, isPlaying, photos.length]);
+
+  // Video time update
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setVideoTime(videoRef.current.currentTime);
+      setVideoDuration(videoRef.current.duration || 0);
+    }
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const time = parseFloat(e.target.value);
+    if (videoRef.current) {
+      videoRef.current.currentTime = time;
+      setVideoTime(time);
+    }
+  };
+
+  const toggleVideoPlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setVideoPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setVideoPlaying(false);
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
+
+  const formatTime = (secs: number) => {
+    if (isNaN(secs)) return "0:00";
+    const mins = Math.floor(secs / 60);
+    const remainingSecs = Math.floor(secs % 60);
+    return `${mins}:${remainingSecs < 10 ? "0" : ""}${remainingSecs}`;
+  };
 
   // Keyboard navigation
   const handleKeyDown = useCallback(
@@ -62,14 +121,18 @@ export function AngelFlixPlayerModal({
       if (!isOpen) return;
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") {
-        if (photos.length > 1) {
+        if (isVideo && videoRef.current) {
+          videoRef.current.currentTime = Math.min(videoRef.current.currentTime + 5, videoDuration);
+        } else if (photos.length > 1) {
           setCurrentPhotoIndex((prev) => (prev + 1) % photos.length);
         } else if (onNext) {
           onNext();
         }
       }
       if (e.key === "ArrowLeft") {
-        if (photos.length > 1) {
+        if (isVideo && videoRef.current) {
+          videoRef.current.currentTime = Math.max(videoRef.current.currentTime - 5, 0);
+        } else if (photos.length > 1) {
           setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
         } else if (onPrev) {
           onPrev();
@@ -77,10 +140,14 @@ export function AngelFlixPlayerModal({
       }
       if (e.key === " ") {
         e.preventDefault();
-        setIsPlaying((prev) => !prev);
+        if (isVideo) {
+          toggleVideoPlay();
+        } else {
+          setIsPlaying((prev) => !prev);
+        }
       }
     },
-    [isOpen, onClose, onNext, onPrev, photos.length]
+    [isOpen, isVideo, onClose, onNext, onPrev, photos.length, videoDuration]
   );
 
   useEffect(() => {
@@ -129,8 +196,9 @@ export function AngelFlixPlayerModal({
           {/* Top Control Bar */}
           <div className="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
             <div className="flex items-center gap-2">
-              <span className="bg-rose-600/90 text-white text-[11px] font-black tracking-widest px-2.5 py-0.5 rounded-full uppercase shadow">
-                ANGELFLIX CINEMA
+              <span className="bg-rose-600/90 text-white text-[11px] font-black tracking-widest px-2.5 py-0.5 rounded-full uppercase shadow flex items-center gap-1">
+                {isVideo && <Film size={12} />}
+                <span>{isVideo ? "ANGELFLIX VIDEO" : "ANGELFLIX CINEMA"}</span>
               </span>
               {item.date && (
                 <span className="flex items-center gap-1 text-xs text-zinc-300 font-medium">
@@ -158,66 +226,135 @@ export function AngelFlixPlayerModal({
             </div>
           </div>
 
-          {/* Main Media Screen with Ken Burns effect */}
-          <div className="relative w-full flex-1 min-h-[320px] sm:min-h-[460px] bg-black flex items-center justify-center overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentPhoto.src}
-                src={currentPhoto.src}
-                alt={currentPhoto.caption || item.title}
-                initial={{ opacity: 0, scale: 1.06 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.7, ease: "easeInOut" }}
-                className="max-h-[65vh] w-full object-contain select-none"
-              />
-            </AnimatePresence>
+          {/* Main Media Screen: Video or Photo Slideshow */}
+          <div className="relative w-full flex-1 min-h-[320px] sm:min-h-[480px] bg-black flex items-center justify-center overflow-hidden">
+            {isVideo && item.videoUrl ? (
+              <div className="relative w-full h-full flex items-center justify-center group">
+                <video
+                  ref={videoRef}
+                  src={item.videoUrl}
+                  poster={item.imageUrl}
+                  onTimeUpdate={handleTimeUpdate}
+                  onLoadedMetadata={handleTimeUpdate}
+                  onEnded={() => setVideoPlaying(false)}
+                  onClick={toggleVideoPlay}
+                  playsInline
+                  autoPlay
+                  className="max-h-[65vh] w-full object-contain cursor-pointer"
+                />
 
-            {/* Dark Vignette Overlay */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-black/30" />
-
-            {/* Previous Photo Button */}
-            {photos.length > 1 && (
-              <button
-                onClick={() =>
-                  setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length)
-                }
-                aria-label="Previous photo"
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/10 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-rose-500"
-              >
-                <ChevronLeft size={22} />
-              </button>
-            )}
-
-            {/* Next Photo Button */}
-            {photos.length > 1 && (
-              <button
-                onClick={() =>
-                  setCurrentPhotoIndex((prev) => (prev + 1) % photos.length)
-                }
-                aria-label="Next photo"
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/10 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-rose-500"
-              >
-                <ChevronRight size={22} />
-              </button>
-            )}
-
-            {/* Photo Slide Indicator */}
-            {photos.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
-                {photos.map((_, idx) => (
+                {/* Center Play Overlay when paused */}
+                {!videoPlaying && (
                   <button
-                    key={idx}
-                    onClick={() => setCurrentPhotoIndex(idx)}
-                    aria-label={`Go to slide ${idx + 1}`}
-                    className={`h-1.5 rounded-full transition-all ${
-                      idx === currentPhotoIndex
-                        ? "w-6 bg-rose-500"
-                        : "w-1.5 bg-zinc-600 hover:bg-zinc-400"
-                    }`}
+                    onClick={toggleVideoPlay}
+                    aria-label="Play video"
+                    className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-rose-600/90 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
+                  >
+                    <Play size={28} className="fill-white translate-x-0.5" />
+                  </button>
+                )}
+
+                {/* Video Scrubber Overlay on Hover */}
+                <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col gap-1.5 opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                  <input
+                    type="range"
+                    min={0}
+                    max={videoDuration || 100}
+                    value={videoTime}
+                    onChange={handleSeek}
+                    className="w-full h-1 bg-zinc-700 accent-rose-500 rounded-lg cursor-pointer"
                   />
-                ))}
+                  <div className="flex items-center justify-between text-[11px] font-bold text-zinc-300">
+                    <div className="flex items-center gap-3">
+                      <button onClick={toggleVideoPlay} className="hover:text-white">
+                        {videoPlaying ? <Pause size={14} /> : <Play size={14} className="fill-white" />}
+                      </button>
+                      <button onClick={toggleMute} className="hover:text-white">
+                        {isMuted ? <VolumeX size={14} className="text-rose-400" /> : <Volume2 size={14} />}
+                      </button>
+                      <span>
+                        {formatTime(videoTime)} / {formatTime(videoDuration)}
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        if (videoRef.current) {
+                          videoRef.current.currentTime = 0;
+                          videoRef.current.play();
+                          setVideoPlaying(true);
+                        }
+                      }}
+                      title="Replay from start"
+                      className="hover:text-white flex items-center gap-1"
+                    >
+                      <RotateCcw size={12} /> Replay
+                    </button>
+                  </div>
+                </div>
               </div>
+            ) : (
+              <>
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentPhoto.src}
+                    src={currentPhoto.src}
+                    alt={currentPhoto.caption || item.title}
+                    initial={{ opacity: 0, scale: 1.06 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.7, ease: "easeInOut" }}
+                    className="max-h-[65vh] w-full object-contain select-none"
+                  />
+                </AnimatePresence>
+
+                {/* Dark Vignette Overlay */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-black/30" />
+
+                {/* Previous Photo Button */}
+                {photos.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length)
+                    }
+                    aria-label="Previous photo"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/10 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  >
+                    <ChevronLeft size={22} />
+                  </button>
+                )}
+
+                {/* Next Photo Button */}
+                {photos.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setCurrentPhotoIndex((prev) => (prev + 1) % photos.length)
+                    }
+                    aria-label="Next photo"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/10 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  >
+                    <ChevronRight size={22} />
+                  </button>
+                )}
+
+                {/* Photo Slide Indicator */}
+                {photos.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
+                    {photos.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentPhotoIndex(idx)}
+                        aria-label={`Go to slide ${idx + 1}`}
+                        className={`h-1.5 rounded-full transition-all ${
+                          idx === currentPhotoIndex
+                            ? "w-6 bg-rose-500"
+                            : "w-1.5 bg-zinc-600 hover:bg-zinc-400"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
 
@@ -245,7 +382,7 @@ export function AngelFlixPlayerModal({
 
               {/* Playback Controls & Action Buttons */}
               <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
-                {photos.length > 1 && (
+                {!isVideo && photos.length > 1 && (
                   <button
                     onClick={() => setIsPlaying(!isPlaying)}
                     aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
