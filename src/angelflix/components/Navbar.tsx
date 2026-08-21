@@ -9,6 +9,9 @@ interface NavbarProps {
   transparent?: boolean;
   themePref: ThemePreference;
   onThemeChange: (p: ThemePreference) => void;
+  onBackToHub?: () => void;
+  onOpenLetter?: () => void;
+  onLogout?: () => void;
 }
 
 const ThemeIcon = ({ type }: { type: ThemePreference }) => {
@@ -38,7 +41,7 @@ const THEME_OPTIONS: { value: ThemePreference; label: string }[] = [
   { value: 'dark', label: 'Dark' },
 ];
 
-export default function Navbar({ currentPage, onNavigate, transparent = false, themePref, onThemeChange }: NavbarProps) {
+export default function Navbar({ currentPage, onNavigate, transparent = false, themePref, onThemeChange, onBackToHub, onOpenLetter, onLogout }: NavbarProps) {
   const [profileOpen, setProfileOpen] = useState(false);
 
   const navItems: { label: string; page: Page }[] = [
@@ -70,8 +73,9 @@ export default function Navbar({ currentPage, onNavigate, transparent = false, t
       {/* Left */}
       <div className="flex items-center gap-3 sm:gap-6">
         <button
+          onClick={() => { if (onBackToHub) onBackToHub(); else onNavigate('home'); }}
           style={{ color: navText }}
-          className="hidden sm:flex items-center gap-1.5 text-xs font-medium tracking-wide transition-all"
+          className="hidden sm:flex items-center gap-1.5 text-xs font-medium tracking-wide transition-all cursor-pointer"
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = navTextHover; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = navText; }}
         >
@@ -174,6 +178,28 @@ export default function Navbar({ currentPage, onNavigate, transparent = false, t
                 </div>
 
                 <div className="p-2">
+                  <button
+                    onClick={() => { setProfileOpen(false); if (onBackToHub) onBackToHub(); else onNavigate('home'); }}
+                    className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-left font-semibold text-rose-400"
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--border-subtle)'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                  >
+                    <span>🏠</span>
+                    <span>Experience Hub</span>
+                  </button>
+
+                  <button
+                    onClick={() => { setProfileOpen(false); if (onOpenLetter) onOpenLetter(); }}
+                    className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-left font-semibold text-rose-300"
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--border-subtle)'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                  >
+                    <span>💌</span>
+                    <span>The Love Letter</span>
+                  </button>
+
+                  <div style={{ height: '1px', background: 'var(--border)', margin: '4px 4px' }} />
+
                   {[
                     { label: 'Timeline', page: 'timeline' as Page, icon: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> },
                     { label: 'AngelFlix Home', page: 'home' as Page, icon: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5,3 19,12 5,21" /></svg> },
@@ -218,6 +244,7 @@ export default function Navbar({ currentPage, onNavigate, transparent = false, t
 
                   <div style={{ height: '1px', background: 'var(--border)', margin: '6px 4px' }} />
                   <button
+                    onClick={() => { setProfileOpen(false); onLogout?.(); }}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left"
                     style={{ color: 'var(--accent)' }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent-dim)'; }}

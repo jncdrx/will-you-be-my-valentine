@@ -6,6 +6,6 @@ interface AngelFlixProps {
   onLogout?: () => void;
 }
 
-export function AngelFlix(_props: AngelFlixProps) {
-  return <AngelFlixApp />;
+export function AngelFlix(props: AngelFlixProps) {
+  return <AngelFlixApp onBackToHub={props.onBackToHub} onOpenLetter={props.onOpenLetter} onLogout={props.onLogout} />;
 }

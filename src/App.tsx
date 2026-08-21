@@ -77,10 +77,6 @@ function getInitialMode(): ExperienceMode {
     if (viewParam === "letter" || viewParam === "angelflix" || viewParam === "hub") {
       return viewParam as ExperienceMode;
     }
-    const saved = localStorage.getItem("angel_experience_mode");
-    if (saved === "letter" || saved === "angelflix" || saved === "hub") {
-      return saved as ExperienceMode;
-    }
   } catch {
     /* ignore storage errors */
   }

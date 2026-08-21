@@ -67,7 +67,13 @@ const MOBILE_NAV: { page: Page; label: string; icon: (active: boolean) => React.
 
 const FADE_MS = 140;
 
-export default function App() {
+export interface AngelFlixAppProps {
+  onBackToHub?: () => void;
+  onOpenLetter?: () => void;
+  onLogout?: () => void;
+}
+
+export default function App({ onBackToHub, onOpenLetter, onLogout }: AngelFlixAppProps = {}) {
   const { preference: themePref, setPreference: setThemePref } = useTheme();
   const scrolled = useScrolled(60);
 
@@ -219,6 +225,9 @@ export default function App() {
         transparent={navTransparent}
         themePref={themePref}
         onThemeChange={(p: ThemePreference) => setThemePref(p)}
+        onBackToHub={onBackToHub}
+        onOpenLetter={onOpenLetter}
+        onLogout={onLogout}
       />
 
       <div
