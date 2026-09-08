@@ -216,6 +216,7 @@ button{min-height:40px;touch-action:manipulation}
 .inline-editor ::selection{background:#8d719b45;color:transparent}
 @media print{.inline-layer{display:none!important}}
 </style>
+<style>.header-size-controls{margin-top:12px;padding-top:12px;border-top:1px solid #e5ded8}.header-size-controls select{margin:6px 0;font-size:11px}.header-scope-note{display:block;font-size:10px;line-height:1.4;color:#807571;margin-top:5px}</style>
 </head>
 <body data-pane="page">
 <svg id="icons" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs>
@@ -289,23 +290,39 @@ button{min-height:40px;touch-action:manipulation}
 </div>
 <div class="paper-shell" id="preview"><p class="loading-message">Preparing your handwriting…</p></div></div>
 <div class="preview-bottom"><div class="pagination"><button id="prev-page" aria-label="Previous page"><svg class="icon"><use href="#i-left"/></svg></button><label class="sr-only" for="page-select">Preview page</label><select id="page-select"></select><button id="next-page" aria-label="Next page"><svg class="icon"><use href="#i-right"/></svg></button></div><div class="export-actions"><button id="export-png" title="Export the visible page at 300 dots per inch">PNG · this page</button><button id="export-html" title="Save a new standalone HTML with your current notes, handwriting and settings">Save HTML</button></div></div>
+<details id="page-layout-controls" class="no-print"><summary>Print size &amp; position · current page</summary><div class="layout-fields">
+<label>Preset <select id="content-preset"><option value="actual">Actual Size (100%)</option><option value="fit">Fit to Page</option><option value="fill">Fill Page</option><option value="custom">Custom Scale</option></select></label>
+<label>Content Scale (%) <input id="content-scale" type="number" min="50" max="200" step="1"></label>
+<label>Width (mm) <input id="content-width" type="number" min="1" step="0.1"></label><label>Height (mm) <input id="content-height" type="number" min="1" step="0.1"></label>
+<label>X (mm) <input id="content-x" type="number" step="0.1"></label><label>Y (mm) <input id="content-y" type="number" step="0.1"></label>
+<label>Top margin (mm) <input id="content-top" type="number" min="0" step="0.1"></label><label>Bottom margin (mm) <input id="content-bottom" type="number" min="0" step="0.1"></label>
+<label>Left margin (mm) <input id="content-left" type="number" min="0" step="0.1"></label><label>Right margin (mm) <input id="content-right" type="number" min="0" step="0.1"></label>
+<label>Additional section gap (mm) <input id="content-gap" type="number" min="0" max="50" step="0.1"></label>
+<button id="content-reset" type="button">Reset page sizing</button><button id="real-size-preview" type="button">Real-size preview (100%)</button>
+</div><p>Dimensions describe content, not paper. X/Y start at the paper’s top-left. Margins mark the safe area; use Fit or Fill to place content within it. Width/height stretch independently. Screen 100% uses CSS millimeters; check the calibration sheet for physical accuracy.</p></details>
+<div id="print-layout-warning" class="no-print" role="status" hidden></div>
 <div id="section-resize-controls" hidden role="region" aria-label="Selected section size">
  <strong id="resize-section-name"></strong><output id="resize-readout" aria-live="polite"></output>
  <label>Width (mm) <input id="resize-width" type="number" min="0.1" step="0.1"></label>
  <label>Height (mm) <input id="resize-height" type="number" min="0.1" step="0.1"></label>
+ <label>X (mm) <input id="resize-x" type="number" step="0.1"></label><label>Y (mm) <input id="resize-y" type="number" step="0.1"></label>
+ <label>Body font (px) <input id="resize-font" type="number" min="8" max="72" step="1"></label>
+ <label>Alignment <select id="resize-align"><option>left</option><option>center</option><option>right</option><option>justify</option></select></label>
+ <label>Header width (mm) <input id="resize-header-width" type="number" min="0.1" step="0.1"></label><label>Header height (mm) <input id="resize-header-height" type="number" min="0.1" step="0.1"></label>
  <label>Scale (%) <input id="resize-scale" type="number" min="5" max="1000" step="1"></label>
  <label><input id="resize-lock" type="checkbox"> Lock Aspect Ratio</label>
  <button id="resize-format" type="button">Text &amp; colors</button>
  <button id="resize-reset" type="button">Reset Section Size</button>
  <button id="resize-page-reset" type="button">Reset Page Layout</button>
  <button id="resize-done" type="button" aria-label="Deselect section">Done</button>
- <small>Drag corners to scale; drag edges to stretch. Arrow keys on a handle resize by 1 mm (Shift: 0.1 mm). Escape cancels a drag.</small>
+ <small>Drag corners to scale; drag edges to stretch; drag the purple grip to move. Section measurements are before page Content Scale. Arrow keys on a handle resize by 1 mm (Shift: 0.1 mm). Escape cancels a drag.</small>
 </div>
 <style>
+ #preview>svg{overflow:hidden}#page-layout-controls{padding:10px 20px;background:#fff;border-top:1px solid #ddd;font-size:12px;max-height:34vh;overflow:auto;flex-shrink:0}#page-layout-controls summary{cursor:pointer;font-weight:600}.layout-fields{display:flex;flex-wrap:wrap;gap:10px;padding-top:12px}.layout-fields label{display:flex;align-items:center;gap:5px}.layout-fields input{width:72px}#page-layout-controls p{color:#726568;font-size:11px}#print-layout-warning{padding:9px 20px;background:#fff1d6;color:#744600;font-size:12px;flex-shrink:0}#section-resize-controls{max-height:30vh;overflow:auto}
  #section-resize-controls:not([hidden]){display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 20px;background:#fff;border-top:1px solid #ddd;flex-shrink:0;font-size:12px}
  #section-resize-controls label{display:flex;align-items:center;gap:5px}#section-resize-controls input[type=number]{width:75px;padding:5px}#section-resize-controls small{width:100%;color:#726568}#resize-readout{font-variant-numeric:tabular-nums;color:#743648}
  .section-resize-outline{fill:none;stroke:#8a4260;stroke-width:1.5;vector-effect:non-scaling-stroke;pointer-events:none}.section-resize-handle{fill:white;stroke:#8a4260;stroke-width:1.5;vector-effect:non-scaling-stroke;pointer-events:all;touch-action:none}.section-resize-handle:focus{fill:#eac0d0;outline:none}
- @media print{#section-resize-controls,.section-resize-overlay{display:none!important}}
+ @media print{.print-safe-guide,#section-resize-controls,.section-resize-overlay{display:none!important}}
 </style>
 <div id="fallback-note" class="fallback-note"></div></section></div></main></div>
 <nav id="mobile-tabs" role="tablist" aria-label="Workspace"><button role="tab" data-pane="library" aria-selected="false"><svg class="icon"><use href="#i-book"/></svg>Library</button><button role="tab" data-pane="edit" aria-selected="false"><svg class="icon"><use href="#i-pen"/></svg>Edit</button><button role="tab" data-pane="page" aria-selected="true"><svg class="icon"><use href="#i-print"/></svg>Page</button></nav>
@@ -539,7 +556,7 @@ function validSectionLayouts(raw){
   if(!/^[1-9]\d{0,4}$/.test(page)||!sections||typeof sections!=='object')continue;
   for(const [key] of FIELDS){const value=sections[key];if(!value||typeof value!=='object')continue;
    if(!['sx','sy','dx','dy'].every(k=>typeof value[k]==='number'&&Number.isFinite(value[k])))continue;
-   (result[page]??={})[key]={sx:num(value.sx,.05,10,1),sy:num(value.sy,.05,10,1),dx:num(value.dx,-1000,1000,0),dy:num(value.dy,-1000,1000,0),locked:!!value.locked};
+   (result[page]??={})[key]={sx:num(value.sx,.05,10,1),sy:num(value.sy,.05,10,1),dx:num(value.dx,-1000,1000,0),dy:num(value.dy,-1000,1000,0),locked:!!value.locked,headerSx:num(value.headerSx,.05,10,1),headerSy:num(value.headerSy,.05,10,1)};
   }
  }
  return result;
@@ -559,11 +576,12 @@ function validProject(raw){
   d.status=String(item.status||'').slice(0,80);d.market=String(item.market||'').slice(0,180);d.aliases=String(item.aliases||'').slice(0,300);d.chartNote=String(item.chartNote||'').slice(0,2000);
   // Old projects can inherit missing descriptive metadata without changing their edited medical fields.
   const source=SAMPLE_DRUGS.find(x=>x.id===d.id);if(source){if(!d.groups.length)d.groups=clone(source.groups||[]);for(const k of ['status','market','aliases','chartNote'])if(!d[k])d[k]=source[k]||'';}
-  d.sectionColors=validSectionColors(item.sectionColors);d.sectionFormats=validSectionFormats(item.sectionFormats);
-  d.sectionLayouts=validSectionLayouts(item.sectionLayouts);
+  d.sectionColors=validSectionColors(item.sectionColors);d.sectionFormats=validSectionFormats(item.sectionFormats);if(typeof item.headerSizePx==='number'&&Number.isFinite(item.headerSizePx))d.headerSizePx=num(item.headerSizePx,8,36,12);
+  d.sectionLayouts=validSectionLayouts(item.sectionLayouts);d.pageLayouts=validPageLayouts(item.pageLayouts);
   p.drugs.push(d);
  }
  const rs=raw.settings||{},s=p.settings;
+ if(typeof rs.headerSizePx==='number'&&Number.isFinite(rs.headerSizePx))s.headerSizePx=num(rs.headerSizePx,8,36,12);
  for(const [k,min,max] of [['width',90,500],['height',90,500],['left',12,50],['right',5,40],['top',5,35],['bottom',7,40],['firstLine',3,80],['lineGap',4.3,80],['cap',1.9,72*25.4/96],['letterSpacing',0,1],['wordSpacing',.7,4],['baseline',-1.5,1.5],['offsetX',-15,15],['offsetY',-15,15]])s[k]=num(rs[k],min,max,s[k]);
  s.autoSpacing=rs.autoSpacing!==false;s.writingLines=rs.writingLines===true;s.editorPreset=['recommended','compact','refill','existing','custom'].includes(rs.editorPreset)?rs.editorPreset:'custom';
  for(const k of ['ink','accent','highlight','paper','rule','frame'])s[k]=color(rs[k],s[k]);
@@ -762,10 +780,44 @@ function startPage(title,drug,part=1){
  if(first>s.height-s.bottom-s.lineGap*2)throw Error('The title and margins leave too little writing space. Shorten the title or increase the page height.');
  return {title:title||'Untitled',drug,part,titleLines,titleCap,headerHeight,first,y:first,blocks:[],raw:[],width:s.width,height:s.height};
 }
+
+function headerSizePx(record,key,scope='section'){
+ const fallback=state.settings.headerSizePx??Math.min(3.05,state.settings.cap)*96/25.4;
+ if(scope==='global')return fallback;
+ const drugSize=record?.headerSizePx??fallback;
+ return scope==='drug'?drugSize:(record?.sectionFormats?.[key]?.headerSizePx??drugSize);
+}
+function setHeaderSize(record,key,scope,value){
+ if(!state.drugs.includes(record)||!FIELDS.some(([k])=>k===key)||!['section','drug','global'].includes(scope))return;
+ const size=value===null?null:num(value,8,36,headerSizePx(record,key,scope));
+ if(scope==='global'){if(size===null)delete state.settings.headerSizePx;else state.settings.headerSizePx=size;}
+ else if(scope==='drug'){if(size===null)delete record.headerSizePx;else record.headerSizePx=size;}
+ else {record.sectionFormats??={};record.sectionFormats[key]??={};if(size===null)delete record.sectionFormats[key].headerSizePx;else record.sectionFormats[key].headerSizePx=size;}
+ refreshFormattedSection(record,key);syncHeaderSizes();
+}
+function headerSizeControls(record,key){return `<div class="header-size-controls"><label class="field-name">Header size applies to<select data-header-scope aria-label="Header size scope"><option value="section">This section · this drug</option><option value="drug">All headers · this drug</option><option value="global">Global default · all drugs</option></select></label><div class="section-size-row"><label>Header size <span class="section-size-value"><input type="number" min="8" max="36" step="1" data-header-size aria-label="Header size in pixels" value="${Number(headerSizePx(record,key).toFixed(2))}"> px</span></label><input type="range" min="8" max="36" step="1" data-header-size aria-label="Header size slider" value="${headerSizePx(record,key)}"></div><button type="button" data-header-default class="small quiet">Use inherited size</button><small class="header-scope-note">Custom section sizes override drug and global defaults.</small></div>`;}
+function syncHeaderSizes(){
+ for(const group of document.querySelectorAll('.section-format')){
+  const record=state.drugs.find(d=>d.id===group.dataset.formatDrug);if(!record)continue;
+  const scope=group.querySelector('[data-header-scope]');if(!scope)continue;
+  for(const input of group.querySelectorAll('[data-header-size]'))input.value=Number(headerSizePx(record,group.dataset.formatSection,scope.value).toFixed(2));
+  group.querySelector('[data-header-default]').textContent=scope.value==='global'?'Reset global header size':'Use inherited size';
+ }
+}
+function bindHeaderSizes(group,record,key){
+ const scope=group.querySelector('[data-header-scope]');scope.onchange=syncHeaderSizes;
+ for(const input of group.querySelectorAll('[data-header-size]')){
+  input.oninput=()=>{if(input.value!==''&&Number(input.value)>=8&&Number(input.value)<=36)setHeaderSize(record,key,scope.value,Number(input.value));};
+  input.onchange=()=>setHeaderSize(record,key,scope.value,input.value===''?headerSizePx(record,key,scope.value):Number(input.value));
+ }
+ group.querySelector('[data-header-default]').onclick=()=>setHeaderSize(record,key,scope.value,null);
+}
+
 function validSectionFormats(raw){
  const result={};
  for(const [key] of FIELDS){const value=raw?.[key];if(!value||typeof value!=='object')continue;const format={};
   if(typeof value.sizePx==='number'&&Number.isFinite(value.sizePx))format.sizePx=num(value.sizePx,8,72,12);
+  if(typeof value.headerSizePx==='number'&&Number.isFinite(value.headerSizePx))format.headerSizePx=num(value.headerSizePx,8,36,12);
   if(['left','center','right','justify'].includes(value.align))format.align=value.align;
   if(Object.keys(format).length)result[key]=format;
  }
@@ -800,7 +852,7 @@ function setSectionFormat(record,key,patch){
 }
 function sectionFormatControls(record,key){
  const format=sectionTypography(record,key),size=Number((format.cap*96/25.4).toFixed(2));
- return `<div class="section-format" data-format-drug="${esc(record.id)}" data-format-section="${key}"><div class="section-size-row"><label>Text size <span class="section-size-value"><input type="number" min="8" max="72" step="1" value="${size}" data-section-size aria-label="${key} text size in pixels"> px</span></label><input type="range" min="8" max="72" step="1" value="${size}" data-section-size aria-label="${key} text size slider"></div><label class="section-align-row">Alignment<select data-section-align aria-label="${key} text alignment">${['left','center','right','justify'].map(value=>`<option value="${value}" ${format.align===value?'selected':''}>${value[0].toUpperCase()+value.slice(1)}</option>`).join('')}</select></label><span class="section-format-scope">This drug · this section only</span></div>`;
+ return `<div class="section-format" data-format-drug="${esc(record.id)}" data-format-section="${key}"><div class="section-size-row"><label>Text size <span class="section-size-value"><input type="number" min="8" max="72" step="1" value="${size}" data-section-size aria-label="${key} text size in pixels"> px</span></label><input type="range" min="8" max="72" step="1" value="${size}" data-section-size aria-label="${key} text size slider"></div><label class="section-align-row">Alignment<select data-section-align aria-label="${key} text alignment">${['left','center','right','justify'].map(value=>`<option value="${value}" ${format.align===value?'selected':''}>${value[0].toUpperCase()+value.slice(1)}</option>`).join('')}</select></label><span class="section-format-scope">This drug · this section only</span>${headerSizeControls(record,key)}</div>`;
 }
 function syncSectionFormats(record,key){
  const format=sectionTypography(record,key);
@@ -812,7 +864,7 @@ function syncSectionFormats(record,key){
 }
 function bindSectionFormats(root,record){
  for(const group of root.querySelectorAll('.section-format')){
-  const key=group.dataset.formatSection;
+  const key=group.dataset.formatSection;bindHeaderSizes(group,record,key);
   for(const input of group.querySelectorAll('[data-section-size]')){
    input.oninput=()=>{const value=Number(input.value);if(input.value!==''&&value>=8&&value<=72)setSectionFormat(record,key,{sizePx:value});};
    input.onchange=()=>{const value=num(input.value,8,72,sectionTypography(record,key).cap*96/25.4);input.value=value;setSectionFormat(record,key,{sizePx:value});};
@@ -825,7 +877,7 @@ function openSectionText(record,key){
  if(!host){host=document.createElement('div');host.id='section-text-controls';$('section-color-modal').querySelector('.scm-header').insertAdjacentElement('afterend',host);}
  host.innerHTML=sectionFormatControls(record,key)+`<button type="button" id="section-format-reset" class="small quiet" style="margin-bottom:10px">Reset text formatting</button><label class="field-name" for="section-direct-text">Edit section text</label><textarea id="section-direct-text" maxlength="50000" rows="5">${esc(record.fields[key])}</textarea><div class="section-color-label">Section colors</div>`;
  bindSectionFormats(host,record);
- $('section-format-reset').onclick=()=>{delete record.sectionFormats?.[key];refreshFormattedSection(record,key);syncSectionFormats(record,key);};
+ $('section-format-reset').onclick=()=>{delete record.sectionFormats?.[key];refreshFormattedSection(record,key);syncSectionFormats(record,key);syncHeaderSizes();};
  $('section-direct-text').oninput=e=>{
   record.fields[key]=e.target.value;record.edited=true;
   const field=$('field-'+key);if(selectedDrug()===record&&field){field.value=e.target.value;field.closest('details').querySelector('.missing').hidden=!!e.target.value.trim();}
@@ -868,8 +920,9 @@ function addRecordPages(d,isFree=false){
  const next=()=>{p=startPage(isFree?state.free.title:d.name,d,all.length+1);all.push(p)};
  const maxSlots=(gap=s.lineGap,padding=2)=>Math.floor((s.height-s.bottom-p.y-padding)/gap)+1;
  const addBlock=(key,label,text,refs='')=>{
-  const format=sectionTypography(d,key),gap=format.gap,padding=format.padding;
-  const rows=sectionRows(text,key,bodyWidth,format.cap),headingCap=Math.min(3.05,s.cap),headWidth=width-13;let at=0,continued=false;
+  const format=sectionTypography(d,key),headingCap=headerSizePx(d,key)*25.4/96,badgeWidth=headingCap/3.05*4.8,gap=Math.max(format.gap,headingCap*1.5),padding=format.padding;
+  if(p.blocks.length)p.y=Math.max(p.y,p.blocks.at(-1).bottom+headingCap+3);
+  const rows=sectionRows(text,key,bodyWidth,format.cap),headWidth=width-badgeWidth-8.2;let at=0,continued=false;
   while(at<rows.length){
    const heads=wrapText(label.toUpperCase(),headWidth,headingCap,true);let available=maxSlots(gap,Math.max(2,padding))-heads.length;
    const minimum=rows[at]?.type==='subhead'?Math.min(3,rows.length-at):Math.min(2,rows.length-at);
@@ -882,7 +935,7 @@ function addRecordPages(d,isFree=false){
     if(count>2&&rows[at+count-1].paragraphStart&&!rows[at+count-1].paragraphEnd)count--;
    }
    const slice=rows.slice(at,at+count),bottom=p.y+(heads.length+count-1)*gap+padding;
-   p.blocks.push({kind:'section',key,label,gap,align:format.align,headLines:heads,headingCap,continued,rows:slice,lines:slice.map(r=>r.text),y:p.y,top:p.y-headingCap-1.65,bottom,refs,missing:!text.trim()});p.raw.push(label,...slice.map(r=>r.text));
+   p.blocks.push({kind:'section',key,label,gap,badgeWidth,align:format.align,headLines:heads,headingCap,continued,rows:slice,lines:slice.map(r=>r.text),y:p.y,top:p.y-headingCap-1.65,bottom,refs,missing:!text.trim()});p.raw.push(label,...slice.map(r=>r.text));
    p.y+=(heads.length+count+1)*gap;at+=count;continued=true;if(at<rows.length)next();
   }
  };
@@ -895,24 +948,97 @@ function addRecordPages(d,isFree=false){
  }
  for(const item of all)item.partTotal=all.length;return all;
 }
+function validPageLayouts(raw){
+ const result={};if(!raw||typeof raw!=='object')return result;
+ for(const [part,value] of Object.entries(raw).slice(0,1000)){
+  if(!/^[1-9]\d{0,4}$/.test(part)||!value||typeof value!=='object')continue;
+  const entry={};for(const [key,lo,hi] of [['sx',.05,10],['sy',.05,10],['anchorX',-1000,1000],['anchorY',-1000,1000],['x',-1000,1000],['y',-1000,1000],['top',0,500],['bottom',0,500],['left',0,500],['right',0,500],['gap',0,50]])if(typeof value[key]==='number'&&Number.isFinite(value[key]))entry[key]=num(value[key],lo,hi,0);
+  entry.preset=['actual','fit','fill','custom'].includes(value.preset)?value.preset:'custom';result[part]=entry;
+ }return result;
+}
+function headerBox(p,b){
+ const saved=p.drug?.sectionLayouts?.[p.part]?.[b.key]||{},baseWidth=state.settings.width-state.settings.left-state.settings.right,baseHeight=b.y+(b.headLines.length-1)*(b.gap||state.settings.lineGap)+1.9-b.top;
+ return {width:baseWidth*(saved.headerSx||1),height:baseHeight*(saved.headerSy||1),baseWidth,baseHeight,sx:saved.headerSx||1,sy:saved.headerSy||1};
+}
+function headerTransform(p,b){const h=headerBox(p,b);return `translate(${state.settings.left} ${b.top}) scale(${h.sx} ${h.sy}) translate(${-state.settings.left} ${-b.top})`;}
+function pageBounds(p){
+ const s=state.settings;let x=s.left,y=s.top-2,right=s.width-s.right,bottom=s.top+2;
+ for(const b of p?.blocks||[]){
+  if(b.kind==='section'){const box=sectionBox(p,b),h=headerBox(p,b);x=Math.min(x,box.x);y=Math.min(y,box.y);right=Math.max(right,box.x+Math.max(box.width,h.width*box.sx));bottom=Math.max(bottom,box.y+Math.max(box.height,h.height*box.sy));}
+  else bottom=Math.max(bottom,b.y+(b.rows.length-1)*s.lineGap+3);
+ }
+ return {x,y,width:Math.max(1,right-x),height:Math.max(1,bottom-y)};
+}
+function pageGeometry(p){
+ const s=state.settings,v=p?.drug?.pageLayouts?.[p.part]||{},bounds=pageBounds(p),margins={};
+ for(const k of ['top','bottom','left','right'])margins[k]=v[k]??s[k];
+ return {baseX:v.anchorX??bounds.x,baseY:v.anchorY??bounds.y,baseWidth:bounds.width,baseHeight:bounds.height,x:v.x??v.anchorX??bounds.x,y:v.y??v.anchorY??bounds.y,sx:v.sx??1,sy:v.sy??1,width:bounds.width*(v.sx??1),height:bounds.height*(v.sy??1),margins,availableWidth:s.width-margins.left-margins.right,availableHeight:s.height-margins.top-margins.bottom,preset:v.preset||'actual',gap:v.gap||0};
+}
+function setPageLayout(p,patch){
+ if(!p?.drug)return;const g=pageGeometry(p);p.drug.pageLayouts??={};
+ p.drug.pageLayouts[p.part]=validPageLayouts({[p.part]:{anchorX:g.baseX,anchorY:g.baseY,...p.drug.pageLayouts[p.part],...patch}})[p.part];
+}
+function pagePreset(p,preset){
+ if(preset==='custom'){setPageLayout(p,{preset});return;}
+ if(preset==='actual'){setPageLayout(p,{sx:1,sy:1,preset});return;}
+ const g=pageGeometry(p);if(g.availableWidth<=0||g.availableHeight<=0){notify('Margins leave no printable area. Reduce the margins.');return;}
+ const bounds=pageBounds(p),scale=(preset==='fit'?Math.min:Math.max)(g.availableWidth/g.baseWidth,g.availableHeight/g.baseHeight);
+ setPageLayout(p,{sx:scale,sy:scale,x:g.margins.left+(g.availableWidth-g.baseWidth*scale)/2-(bounds.x-g.baseX)*scale,y:g.margins.top+(g.availableHeight-g.baseHeight*scale)/2-(bounds.y-g.baseY)*scale,preset});
+}
+function pageContentTransform(p){const g=pageGeometry(p),s=state.settings;return `translate(${g.x+s.offsetX} ${g.y+s.offsetY}) scale(${g.sx} ${g.sy}) translate(${-g.baseX} ${-g.baseY})`;}
+function pageWarnings(p){
+ if(calibration||!p)return [];const g=pageGeometry(p),bounds=pageBounds(p),s=state.settings,x=g.x+s.offsetX+(bounds.x-g.baseX)*g.sx,y=g.y+s.offsetY+(bounds.y-g.baseY)*g.sy,result=[];
+ if(g.availableWidth<=0||g.availableHeight<=0)result.push('Margins leave no printable area.');
+ if(x<-.01||y<-.01||x+g.width>s.width+.01||y+g.height>s.height+.01)result.push('Content extends outside the paper and will be clipped.');
+ else if(x<g.margins.left-.01||y<g.margins.top-.01||x+g.width>s.width-g.margins.right+.01||y+g.height>s.height-g.margins.bottom+.01)result.push('Content crosses the selected printable margins; your printer may clip it.');
+ return result;
+}
+function renderPageLayout(){
+ const p=pages[pageIndex],enabled=!!p?.drug&&!calibration,g=pageGeometry(p);
+ for(const input of $('page-layout-controls').querySelectorAll('input,select,button'))input.disabled=!enabled;
+ for(const [key,value] of Object.entries({scale:g.sx*100,width:g.width,height:g.height,x:g.x,y:g.y,gap:g.gap,...g.margins})){
+  const input=$('content-'+key);if(input&&document.activeElement!==input)input.value=Number(value.toFixed(2));
+ }
+ $('content-preset').value=g.preset;
+ const svg=$('preview').querySelector('svg');svg?.querySelector('.print-safe-guide')?.remove();
+ if(svg&&enabled&&$('page-layout-controls').open){const guide=document.createElementNS('http://www.w3.org/2000/svg','rect');guide.setAttribute('class','print-safe-guide');for(const [k,v] of Object.entries({x:g.margins.left,y:g.margins.top,width:Math.max(0,g.availableWidth),height:Math.max(0,g.availableHeight),fill:'none',stroke:'#8a4260','stroke-width':.25,'stroke-dasharray':'2 1','pointer-events':'none'}))guide.setAttribute(k,v);svg.append(guide);}
+
+ const warning=$('print-layout-warning'),messages=pageWarnings(p);warning.hidden=!messages.length;warning.textContent=messages.join(' ')+' Export keeps your chosen size; no automatic shrinking.';
+}
+for(const field of ['scale','width','height','x','y','top','bottom','left','right','gap'])$('content-'+field).addEventListener('change',e=>{
+ const p=pages[pageIndex],v=e.target.valueAsNumber;if(!p?.drug||!Number.isFinite(v)){renderPageLayout();return;}const g=pageGeometry(p);let patch={preset:'custom'};
+ if(field==='scale')patch={...patch,sx:num(v,50,200,100)/100,sy:num(v,50,200,100)/100};
+ else if(field==='width'||field==='height')patch[field==='width'?'sx':'sy']=Math.max(1,v)/(field==='width'?g.baseWidth:g.baseHeight);
+ else patch[field]=v;
+ setPageLayout(p,patch);commitResize();renderPageLayout();
+});
+$('page-layout-controls').ontoggle=()=>renderPageLayout();
+$('content-preset').onchange=e=>{pagePreset(pages[pageIndex],e.target.value);commitResize();};
+$('content-reset').onclick=()=>{const p=pages[pageIndex];if(p?.drug)delete p.drug.pageLayouts?.[p.part];commitResize();};
+$('real-size-preview').onclick=()=>{state.settings.zoom='100';$('preview-zoom').value='100';fitPaper();save();};
+for(const field of ['width','height'])$('resize-header-'+field).onchange=e=>{
+ const selected=selectedSection(),v=e.target.valueAsNumber;if(!selected||!Number.isFinite(v)||v<=0)return;
+ const {p,b}=selected,box=sectionBox(p,b),h=headerBox(p,b);setSectionBox(p,b,{});
+ p.drug.sectionLayouts[p.part][b.key][field==='width'?'headerSx':'headerSy']=num(v/(field==='width'?h.baseWidth*box.sx:h.baseHeight*box.sy),.05,10,1);commitResize();
+};
+$('resize-font').onchange=e=>{const selected=selectedSection();if(selected&&Number.isFinite(e.target.valueAsNumber))setSectionFormat(selected.p.drug,selected.b.key,{sizePx:num(e.target.valueAsNumber,8,72,12)});};
+$('resize-align').onchange=e=>{const selected=selectedSection();if(selected)setSectionFormat(selected.p.drug,selected.b.key,{align:e.target.value});};
+
 // Layout overrides are separate from text pagination: resizing never moves a
 // continued section to another page or changes another section's geometry.
 function sectionBox(p,b,proposal){
  const s=state.settings,baseWidth=s.width-s.left-s.right,baseHeight=b.bottom-b.top;
- const index=p.blocks.indexOf(b),previous=p.blocks[index-1],next=p.blocks[index+1];
- const left=Math.max(s.left,-s.offsetX),right=Math.min(s.width-s.right,s.width-s.offsetX);
- const top=Math.max(s.top,previous?previous.bottom:b.top,-s.offsetY),bottom=Math.min(s.height-s.bottom,next?next.top:s.height-s.bottom,s.height-s.offsetY);
+ const left=-1000,right=2000,top=-1000,bottom=2000;
  const saved=p.drug?.sectionLayouts?.[p.part]?.[b.key]||{};
- const desired={x:s.left+(saved.dx||0),y:b.top+(saved.dy||0),width:baseWidth*(saved.sx||1),height:baseHeight*(saved.sy||1),...proposal};
- const width=Math.max(.1,Math.min(Math.max(baseWidth*.05,Number.isFinite(desired.width)?desired.width:baseWidth),right-left));
- const height=Math.max(.1,Math.min(Math.max(baseHeight*.05,Number.isFinite(desired.height)?desired.height:baseHeight),bottom-top));
- const x=Math.max(left,Math.min(Number.isFinite(desired.x)?desired.x:s.left,right-width));
- const y=Math.max(top,Math.min(Number.isFinite(desired.y)?desired.y:b.top,bottom-height));
+ const extra=p.blocks.indexOf(b)*(p.drug?.pageLayouts?.[p.part]?.gap||0);
+ const desired={x:s.left+(saved.dx||0),y:b.top+extra+(saved.dy||0),width:baseWidth*(saved.sx||1),height:baseHeight*(saved.sy||1),...proposal};
+ const width=num(desired.width,baseWidth*.05,baseWidth*10,baseWidth),height=num(desired.height,baseHeight*.05,baseHeight*10,baseHeight);
+ const x=num(desired.x,-1000,1000,s.left),y=num(desired.y,-1000,1000,b.top);
  return {x,y,width,height,sx:width/baseWidth,sy:height/baseHeight,baseWidth,baseHeight,left,right,top,bottom,locked:!!saved.locked};
 }
 function setSectionBox(p,b,proposal){
  const box=sectionBox(p,b,proposal);p.drug.sectionLayouts??={};p.drug.sectionLayouts[p.part]??={};
- p.drug.sectionLayouts[p.part][b.key]={sx:box.sx,sy:box.sy,dx:box.x-state.settings.left,dy:box.y-b.top,locked:proposal.locked??box.locked};
+ p.drug.sectionLayouts[p.part][b.key]={...p.drug.sectionLayouts[p.part][b.key],sx:box.sx,sy:box.sy,dx:box.x-state.settings.left,dy:box.y-b.top-p.blocks.indexOf(b)*(p.drug?.pageLayouts?.[p.part]?.gap||0),locked:proposal.locked??box.locked};
  return box;
 }
 function resetSectionLayout(p,key){
@@ -935,16 +1061,18 @@ function renderSectionResize(){
  const {p,b}=selected,box=sectionBox(p,b),s=state.settings;
  $('resize-section-name').textContent=`${b.label} · Page ${p.part}`;
  $('resize-readout').textContent=`${box.width.toFixed(1)} × ${box.height.toFixed(1)} mm · ${(box.sx*100).toFixed(1)}% W / ${(box.sy*100).toFixed(1)}% H`;
- for(const [id,value] of [['width',box.width],['height',box.height],['scale',box.sx*100]]){const input=$('resize-'+id);if(document.activeElement!==input)input.value=Number(value.toFixed(2));}
- $('resize-lock').checked=box.locked;
- const x=box.x+s.offsetX,y=box.y+s.offsetY,w=box.width,h=box.height;
- const group=document.createElementNS('http://www.w3.org/2000/svg','g');group.setAttribute('class','section-resize-overlay');
+ for(const [id,value] of [['width',box.width],['height',box.height],['scale',box.sx*100],['x',box.x],['y',box.y],['font',sectionTypography(p.drug,b.key).cap*96/25.4],['header-width',headerBox(p,b).width*box.sx],['header-height',headerBox(p,b).height*box.sy]]){const input=$('resize-'+id);if(document.activeElement!==input)input.value=Number(value.toFixed(2));}
+ $('resize-lock').checked=box.locked;$('resize-align').value=b.align||'left';
+ const x=box.x,y=box.y,w=box.width,h=box.height;
+ const group=document.createElementNS('http://www.w3.org/2000/svg','g');group.setAttribute('class','section-resize-overlay');group.setAttribute('transform',pageContentTransform(p));
  const handles=[['nw',x,y],['n',x+w/2,y],['ne',x+w,y],['e',x+w,y+h/2],['se',x+w,y+h],['s',x+w/2,y+h],['sw',x,y+h],['w',x,y+h/2]];
  const radius=1.4;
  group.innerHTML=`<rect class="section-resize-outline" x="${x}" y="${y}" width="${w}" height="${h}"/>`+handles.map(([dir,hx,hy])=>`<rect class="section-resize-handle" data-resize-handle="${dir}" x="${hx-radius}" y="${hy-radius}" width="${radius*2}" height="${radius*2}" tabindex="0" role="button" aria-label="Resize ${b.label}, ${dir} handle" style="cursor:${['nw','se'].includes(dir)?'nwse':['ne','sw'].includes(dir)?'nesw':['n','s'].includes(dir)?'ns':'ew'}-resize"/>`).join('');
+ group.insertAdjacentHTML('beforeend',`<rect data-move-section="" x="${x+2}" y="${y+1}" width="10" height="2.5" rx="1" fill="#8a4260" tabindex="0" role="button" aria-label="Move ${b.label}; arrow keys move by 1 mm" style="cursor:move;pointer-events:all;touch-action:none"/>`);
  svg.append(group);
 }
 function resizeFromHandle(box,dir,dx,dy){
+ if(dir==='move')return {x:box.x+dx,y:box.y+dy};
  const west=dir.includes('w'),north=dir.includes('n'),horizontal=/[we]/.test(dir),vertical=/[ns]/.test(dir),corner=horizontal&&vertical;
  let width=box.width+(horizontal?(west?-dx:dx):0),height=box.height+(vertical?(north?-dy:dy):0);
  const anchorX=west?box.x+box.width:box.x,anchorY=north?box.y+box.height:box.y;
@@ -963,7 +1091,7 @@ function finishSectionDrag(cancel=false){
  if($('preview').hasPointerCapture?.(drag.pointerId))$('preview').releasePointerCapture(drag.pointerId);
  commitResize();
 }
-function pagePointer(event){const svg=$('preview').querySelector('svg'),matrix=svg?.getScreenCTM();if(!matrix)return null;const point=svg.createSVGPoint();point.x=event.clientX;point.y=event.clientY;return point.matrixTransform(matrix.inverse());}
+function pagePointer(event){const svg=$('preview').querySelector('svg'),matrix=svg?.getScreenCTM();if(!matrix)return null;const point=svg.createSVGPoint();point.x=event.clientX;point.y=event.clientY;const pt=point.matrixTransform(matrix.inverse()),g=pageGeometry(pages[pageIndex]);return {x:(pt.x-state.settings.offsetX-g.x)/g.sx+g.baseX,y:(pt.y-state.settings.offsetY-g.y)/g.sy+g.baseY};}
 function pageSVG(p,index,total,cal=false,namespace='page-'+index,includeDefs=true){
  const s=state.settings,W=s.width,H=s.height,L=s.left,R=s.right,C=W-L-R;let bg='',content='',rules='';
  const framed=['drug','action','dosage','indication','contraindication','adverse','effects','notes'];
@@ -994,17 +1122,19 @@ function pageSVG(p,index,total,cal=false,namespace='page-'+index,includeDefs=tru
   content+=`<g class="manual-header-space" data-top="${f(titleY)}" data-height="${f(p.headerHeight)}" aria-hidden="true"></g>`;
   for(const b of p.blocks){
    if(b.kind==='section'){
-     const gap=b.gap||s.lineGap;
+     const gap=b.gap||s.lineGap,badgeWidth=b.badgeWidth||4.8;
      const bnum=FIELDS.findIndex(([k])=>k===b.key)+1,headBottom=b.y+(b.headLines.length-1)*gap+1.9,critical=b.key==='contraindication'||b.key==='adverse';
      const sc=getSectionColors(b.key,p.drug);
      content+=`<g class="section-card" transform="${sectionTransform(p,b)}" data-drug-id="${esc(p.drug?.id||'')}" data-section="${b.key}" data-top="${f(b.top)}" data-bottom="${f(b.bottom)}" data-continued="${b.continued}"><rect x="${L}" y="${f(b.top)}" width="${C}" height="${f(b.bottom-b.top)}" fill="transparent"/>`;
+     content+=`<g class="section-header" transform="${headerTransform(p,b)}">`;
      if(s.decorations){
       if(framed.includes(b.key))content+=`<rect class="card-border decoration" x="${L}" y="${f(b.top)}" width="${C}" height="${f(b.bottom-b.top)}" rx="1" fill="none" stroke="${sc.border}" stroke-width="0.32" stroke-opacity="0" ${b.key==='notes'?'stroke-dasharray="1.5 1"':''}/>`;
       content+=`<rect class="card-header-bg decoration" x="${L+.2}" y="${f(b.top+.2)}" width="${C-.4}" height="${f(headBottom-b.top-.2)}" rx=".8" fill="${sc.highlight}"/>`;
-      content+=`<rect class="card-badge-bg decoration" x="${L+1.4}" y="${f(b.y-b.headingCap-.35)}" width="4.8" height="${f(b.headingCap+1.25)}" rx=".9" fill="${sc.badgeBg}"/>`;
+      content+=`<rect class="card-badge-bg decoration" x="${L+1.4}" y="${f(b.y-b.headingCap-.35)}" width="${f(badgeWidth)}" height="${f(b.headingCap+1.25)}" rx=".9" fill="${sc.badgeBg}"/>`;
      }
-     content+=st(String(bnum),L+3.8,b.y-.15,b.headingCap*.83,`class="section-number" text-anchor="middle" font-weight="700" fill="${s.decorations?sc.badgeText:s.ink}"`);
-     b.headLines.forEach((line,i)=>content+=st(line,L+8,b.y+i*gap,b.headingCap,`class="section-title" font-weight="700" fill="${s.decorations?sc.headerText:s.ink}"`));
+     content+=st(String(bnum),L+1.4+badgeWidth/2,b.y-.15,b.headingCap*.83,`class="section-number" text-anchor="middle" font-weight="700" fill="${s.decorations?sc.badgeText:s.ink}"`);
+     b.headLines.forEach((line,i)=>content+=st(line,L+badgeWidth+3.2,b.y+i*gap,b.headingCap,`class="section-title" font-weight="700" fill="${s.decorations?sc.headerText:s.ink}"`));
+    content+='</g>';
     if(b.continued)content+=st('CONT.',W-R-1.8,b.top-1.3,1.85,'text-anchor="end" opacity=".8"');
     b.rows.forEach((row,i)=>{
      const y=b.y+(b.headLines.length+i)*gap,cap=row.cap||s.cap,x=L+3.5+row.indent;
@@ -1022,7 +1152,7 @@ function pageSVG(p,index,total,cal=false,namespace='page-'+index,includeDefs=tru
   // No printed page numbering, reference footer, or source-status footer.
  }
  const label=cal?`Calibration sheet, ${W} by ${H} mm.`:`${p.title}, page ${p.part} of ${p.partTotal}. ${p.raw.join(' ')}`;
- let svg=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}" width="${W}mm" height="${H}mm" data-width="${W}" data-height="${H}" role="img" aria-label="${esc(label)}">${includeDefs?defs(content):''}${bg}${rules}<g class="printed-content" transform="translate(${s.offsetX} ${s.offsetY})">${content}</g></svg>`;
+ let svg=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}" width="${W}mm" height="${H}mm" data-width="${W}" data-height="${H}" role="img" aria-label="${esc(label)}">${includeDefs?defs(content):''}${bg}${rules}<g class="printed-content" transform="${cal?`translate(${s.offsetX} ${s.offsetY})`:pageContentTransform(p)}">${content}</g></svg>`;
  // Print contains many SVGs. Namespace every glyph definition to avoid duplicate-ID
  // collisions with the live preview (including white titles becoming invisible).
  const ns=String(namespace).replace(/[^a-zA-Z0-9_-]/g,'');
@@ -1033,7 +1163,7 @@ function pageSVG(p,index,total,cal=false,namespace='page-'+index,includeDefs=tru
 // Cache each record independently: editing one entry does not repaginate the library.
 let layoutSignature='',recordLayouts=new WeakMap(),freeLayout;
 function cachedRecordPages(record,isFree=false){
- const key=JSON.stringify(isFree?state.free:[record.name,record.fields,record.fieldSources,record.sectionFormats]);
+ const key=JSON.stringify(isFree?state.free:[record.name,record.fields,record.fieldSources,record.sectionFormats,record.headerSizePx]);
  const cached=isFree?freeLayout:recordLayouts.get(record);
  if(cached?.key===key)return cached.pages;
  const entry={key,pages:addRecordPages(record,isFree)};
@@ -1042,7 +1172,7 @@ function cachedRecordPages(record,isFree=false){
 }
 function refreshLayoutMetrics(){
  const s=state.settings;
- const signature=JSON.stringify([s.width,s.height,s.left,s.right,s.top,s.bottom,s.firstLine,s.lineGap,s.cap,s.letterSpacing,s.wordSpacing,s.baseline,s.numberStyle,
+ const signature=JSON.stringify([s.headerSizePx,s.width,s.height,s.left,s.right,s.top,s.bottom,s.firstLine,s.lineGap,s.cap,s.letterSpacing,s.wordSpacing,s.baseline,s.numberStyle,
  [...new Set([...Object.keys(BASE_GLYPHS),...Object.keys(state.glyphs)])].map(c=>{const g=glyphFor(c);return [c,g.w,g.h,g.rel,g.desc,g.scale,g.dy,g.spacing]})]);
  if(signature!==layoutSignature){layoutSignature=signature;measureCache.clear();recordLayouts=new WeakMap();freeLayout=null;}
 }
@@ -1209,7 +1339,7 @@ let inlineEditorCache=new Map();const boundInlineEditors=new WeakSet();
 function mountInlineEditors(p){
  if(calibration||!p?.drug)return;
  const svg=$('preview').querySelector('svg');if(!svg)return;
- const layer=svg.querySelector('.inline-layer')||document.createElementNS('http://www.w3.org/2000/svg','foreignObject');layer.setAttribute('width',state.settings.width);layer.setAttribute('height',state.settings.height);layer.setAttribute('class','inline-layer');
+ const layer=svg.querySelector('.inline-layer')||document.createElementNS('http://www.w3.org/2000/svg','foreignObject');layer.setAttribute('width',state.settings.width);layer.setAttribute('height',state.settings.height);layer.setAttribute('class','inline-layer');layer.setAttribute('transform',pageContentTransform(p));
  const host=layer.firstElementChild||document.createElement('div');host.setAttribute('xmlns','http://www.w3.org/1999/xhtml');host.className='inline-host';
  const s=state.settings,previousEditors=inlineEditorCache;inlineEditorCache=new Map();
  for(const b of p.blocks){
@@ -1217,7 +1347,7 @@ function mountInlineEditors(p){
   const cacheKey=b.key+':'+b.rows[0].start,signature=JSON.stringify([b.rows,b.align,s.ink,p.drug.fields[b.key].slice(b.rows[0].start,b.rows.at(-1).end)]),cached=previousEditors.get(cacheKey);
   const gap=b.gap||s.lineGap,top=b.y+(b.headLines.length-1)*gap+2;
   const box=sectionBox(p,b);
-  const editorStyle={left:(box.x+.5*box.sx+s.offsetX)+'px',top:(box.y+(top-b.top)*box.sy+s.offsetY)+'px',width:(s.width-s.left-s.right-1)+'px',height:(b.bottom-top-.2)+'px',caretColor:s.ink,transformOrigin:'0 0',transform:`scale(${box.sx},${box.sy})`};
+  const editorStyle={left:(box.x+.5*box.sx)+'px',top:(box.y+(top-b.top)*box.sy)+'px',width:(s.width-s.left-s.right-1)+'px',height:(b.bottom-top-.2)+'px',caretColor:s.ink,transformOrigin:'0 0',transform:`scale(${box.sx},${box.sy})`};
   if(cached&&cached.record===p.drug&&cached.signature===signature&&cached.metrics===layoutSignature){Object.assign(cached.editor.style,editorStyle);inlineEditorCache.set(cacheKey,cached);continue;}
   const editor=cached?.record===p.drug?cached.editor:document.createElement('div');editor.replaceChildren();editor.className='inline-editor';editor.contentEditable='true';editor.setAttribute('contenteditable','true');editor.setAttribute('role','textbox');editor.setAttribute('aria-multiline','true');editor.setAttribute('aria-label',b.label+' — edit handwritten text');editor.setAttribute('spellcheck','false');editor.tabIndex=0;
   editor.dataset.record=p.drug.id;editor.dataset.field=b.key;editor.dataset.start=b.rows[0].start;editor.dataset.end=b.rows.at(-1).end+(b.rows.at(-1).newline?1:0);
@@ -1310,7 +1440,7 @@ function updatePreview(){
  $('fallback-note').innerHTML=`${originals} photo characters${added?` + ${added} added samples`:''}. ${helpers}${missing?` Other system-type characters: ${esc(missing.slice(0,100))}.`:''} <button id="edit-handwriting-inline">Add your own samples</button>`;
  $('edit-handwriting-inline').onclick=()=>changeView('handwriting');
  const zoom=$('preview-zoom');if(zoom)zoom.value=s.zoom;
- mountInlineEditors(p);renderRulers();renderSectionResize();if(preserveInline)inlineRestore();inlineRendering=wasInlineRendering;
+ mountInlineEditors(p);renderRulers();renderSectionResize();renderPageLayout();if(preserveInline)inlineRestore();inlineRendering=wasInlineRendering;
  requestAnimationFrame(()=>{if(typeof fitPaper==='function')fitPaper()});
 }
 /* Library queries are local. Drug names, chart aliases, classes and category names are searchable. */
@@ -1602,7 +1732,7 @@ function preparePrint(){
  $('print-root').innerHTML=`<svg class="print-assets" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">${assets}</svg>`+pages.map((p,i)=>`<div class="print-page">${pageSVG(p,i,pages.length,calibration,'print',false)}</div>`).join('');
 }
 window.addEventListener('beforeprint',()=>preparePrint());
-$('print-button').onclick=()=>{clearTimeout(renderTimer);layoutAndRender();$('print-summary').textContent=`${pages.length} page${pages.length===1?'':'s'} · ${state.settings.width} × ${state.settings.height} mm · ${state.settings.output==='full'?'Complete notebook pages':'Existing planner paper, without background or rules'}${calibration?' · Calibration sheet':''}.`;if(pages.length>25)$('print-summary').textContent+=' Large selection: choose Selected drug only or Filtered library for smaller batches.';$('print-dialog').showModal()};
+$('print-button').onclick=()=>{clearTimeout(renderTimer);layoutAndRender();$('print-summary').textContent=`${pages.length} page${pages.length===1?'':'s'} · ${state.settings.width} × ${state.settings.height} mm · ${state.settings.output==='full'?'Complete notebook pages':'Existing planner paper, without background or rules'}${calibration?' · Calibration sheet':''}.`;if(pages.length>25)$('print-summary').textContent+=' Large selection: choose Selected drug only or Filtered library for smaller batches.';const warnings=pages.flatMap((p,i)=>pageWarnings(p).map(w=>`Page ${i+1}: ${w}`));if(warnings.length)$('print-summary').textContent+=' WARNING: '+warnings.join(' ')+' Content will not be shrunk.';$('print-dialog').showModal()};
 $('cancel-print').onclick=()=>$('print-dialog').close();$('confirm-print').onclick=async()=>{$('print-dialog').close();notify('Preparing pages for the print dialog…');await prepareGlyphColors();await new Promise(r=>setTimeout(r,80));preparePrint();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));window.print()};
 $('show-help').onclick=()=>changeView('help');
 $('prev-page').onclick=()=>{if(pageIndex>0){pageIndex--;updatePreview()}};$('next-page').onclick=()=>{if(pageIndex<pages.length-1){pageIndex++;updatePreview()}};$('page-select').onchange=e=>{pageIndex=Number(e.target.value);updatePreview()};
@@ -1625,41 +1755,42 @@ $('preview-zoom').onchange=e=>{state.settings.zoom=e.target.value;fitPaper();sav
 $('focus-page').onclick=()=>{const on=document.body.classList.toggle('focus-mode');$('focus-page').textContent=on?'Back to editor':'Focus page';$('focus-page').setAttribute('aria-pressed',String(on));fitPaper()};
 $('preview').addEventListener('click',e=>{
  if(Date.now()<sectionDragClickUntil){e.stopPropagation();return;}
- if(e.target.closest('[data-resize-handle]')){e.stopPropagation();return;}
+ if(e.target.closest('[data-resize-handle],[data-move-section]')){e.stopPropagation();return;}
  const card=e.target.closest('[data-section],.inline-editor');
  if(card)selectSection(card.dataset.section||card.dataset.field);
  else{sectionSelection=null;renderSectionResize();}
 },true);
 $('preview').addEventListener('focusin',e=>{const editor=e.target.closest('.inline-editor');if(editor)selectSection(editor.dataset.field);});
 $('preview').addEventListener('pointerdown',e=>{
- const handle=e.target.closest('[data-resize-handle]'),selected=selectedSection();if(!handle||!selected||e.button!==0)return;
+ const handle=e.target.closest('[data-resize-handle],[data-move-section]'),selected=selectedSection();if(!handle||!selected||e.button!==0)return;
  const point=pagePointer(e);if(!point)return;e.preventDefault();e.stopPropagation();
- const {p,b}=selected;sectionDrag={p,b,dir:handle.dataset.resizeHandle,point,box:sectionBox(p,b),pointerId:e.pointerId,saved:p.drug.sectionLayouts?.[p.part]?.[b.key]?{...p.drug.sectionLayouts[p.part][b.key]}:null};
+ const {p,b}=selected;sectionDrag={p,b,dir:handle.dataset.resizeHandle||'move',point,box:sectionBox(p,b),pointerId:e.pointerId,saved:p.drug.sectionLayouts?.[p.part]?.[b.key]?{...p.drug.sectionLayouts[p.part][b.key]}:null};
  $('preview').setPointerCapture(e.pointerId);
 },true);
 $('preview').addEventListener('pointermove',e=>{
  const drag=sectionDrag;if(!drag||e.pointerId!==drag.pointerId)return;const point=pagePointer(e);if(!point)return;
  setSectionBox(drag.p,drag.b,resizeFromHandle(drag.box,drag.dir,point.x-drag.point.x,point.y-drag.point.y));
  $('preview').querySelector(`[data-section="${drag.b.key}"]`)?.setAttribute('transform',sectionTransform(drag.p,drag.b));
- mountInlineEditors(drag.p);renderSectionResize();
+ updatePreview();
 });
 $('preview').addEventListener('pointerup',()=>finishSectionDrag());
 $('preview').addEventListener('pointercancel',()=>finishSectionDrag(true));
 $('preview').addEventListener('lostpointercapture',()=>finishSectionDrag(true));
 $('preview').addEventListener('keydown',e=>{
- const handle=e.target.closest('[data-resize-handle]'),selected=selectedSection();if(!handle||!selected||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
- e.preventDefault();e.stopPropagation();const step=e.shiftKey?.1:1,dir=handle.dataset.resizeHandle,{p,b}=selected;
+ const handle=e.target.closest('[data-resize-handle],[data-move-section]'),selected=selectedSection();if(!handle||!selected||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
+ e.preventDefault();e.stopPropagation();const step=e.shiftKey?.1:1,dir=handle.dataset.resizeHandle||'move',{p,b}=selected;
  setSectionBox(p,b,resizeFromHandle(sectionBox(p,b),dir,e.key==='ArrowLeft'?-step:e.key==='ArrowRight'?step:0,e.key==='ArrowUp'?-step:e.key==='ArrowDown'?step:0));commitResize();
- $('preview').querySelector(`[data-resize-handle="${dir}"]`)?.focus();
+ $('preview').querySelector(dir==='move'?'[data-move-section]':`[data-resize-handle="${dir}"]`)?.focus();
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(sectionDrag){e.preventDefault();finishSectionDrag(true);}else{sectionSelection=null;renderSectionResize();}}});
-for(const field of ['width','height','scale'])$('resize-'+field).addEventListener('change',e=>{
+for(const field of ['width','height','scale','x','y'])$('resize-'+field).addEventListener('change',e=>{
  const selected=selectedSection(),value=e.target.valueAsNumber;if(!selected)return;
- const {p,b}=selected,box=sectionBox(p,b);if(!Number.isFinite(value)||value<=0){e.target.value=field==='scale'?box.sx*100:box[field];return;}
+ const {p,b}=selected,box=sectionBox(p,b);if(!Number.isFinite(value)||(!['x','y'].includes(field)&&value<=0)){e.target.value=field==='scale'?box.sx*100:box[field];return;}
  let proposal;
- if(field==='scale'||box.locked){
+ if(['x','y'].includes(field))proposal={[field]:value};
+ else if(field==='scale'||box.locked){
   const ratio=field==='scale'?(Math.max(5,Math.min(1000,value))/100)/box.sx:value/box[field];
-  const limited=Math.max(box.baseWidth*.05/box.width,box.baseHeight*.05/box.height,Math.min(ratio,(box.right-box.x)/box.width,(box.bottom-box.y)/box.height));
+  const limited=Math.max(box.baseWidth*.05/box.width,box.baseHeight*.05/box.height,ratio);
   proposal={width:box.width*limited,height:box.height*limited};
  }else proposal={[field]:Math.max(value,field==='width'?box.baseWidth*.05:box.baseHeight*.05)};
  const result=setSectionBox(p,b,proposal);e.target.value=Number((field==='scale'?result.sx*100:result[field]).toFixed(2));commitResize();

@@ -24,9 +24,8 @@ for(const path of ['public/folio.html','public/folio/index.html'])test(`${path}:
   assert.match(printed.getAttribute('transform'),/scale\(0.7 0.7\)/);
   assert.equal(w.document.querySelector('#print-root .section-resize-handle'),null);
   a.setSectionBox(p,b,{width:1e6,height:1e6,x:-100,y:-100});
-  const constrained=a.sectionBox(p,b);assert.ok(constrained.x>=a.state.settings.left);assert.ok(constrained.y>=a.state.settings.top);
-  assert.ok(constrained.x+constrained.width<=a.state.settings.width-a.state.settings.right+.001);
-  assert.ok(constrained.y+constrained.height<=neighbor.top+.001);
+  const enlarged=a.sectionBox(p,b);assert.equal(enlarged.x,-100);assert.equal(enlarged.y,-100);
+  assert.ok(enlarged.width>a.state.settings.width);assert.ok(enlarged.height>neighbor.top,'enlargement is no longer constrained to adjacent sections');
   a.setSectionBox(second,b,{width:original.width*.5});
   a.resetSectionLayout(p,b.key);assert.equal(a.sectionBox(p,b).width,original.width);
   assert.ok(a.sectionBox(second,b).width<original.width);

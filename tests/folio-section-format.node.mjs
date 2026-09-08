@@ -8,7 +8,7 @@ for(const path of ['public/folio.html','public/folio/index.html'])test(`${path}:
  try{
   w.HTMLCanvasElement.prototype.getContext=()=>({measureText:t=>({width:t.length})});w.requestAnimationFrame=()=>1;
   const script=[...w.document.scripts].find(s=>s.textContent.includes('function pageSVG')).textContent;
-  w.eval(script.slice(0,script.lastIndexOf('prepareGlyphColors().then('))+`window.api={setSectionFormat,sectionTypography,alignedSectionLine,layoutAndRender,cachedRecordPages,pageSVG,validProject,openSectionColorModal,preparePrint,get state(){return state}};`);
+  w.eval(script.slice(0,script.lastIndexOf('prepareGlyphColors().then('))+`window.api={setHeaderSize,headerSizePx,setSectionFormat,sectionTypography,alignedSectionLine,layoutAndRender,cachedRecordPages,pageSVG,validProject,openSectionColorModal,preparePrint,get state(){return state}};`);
   const a=w.api,[drug,other]=a.state.drugs,settings=JSON.stringify(a.state.settings);
   a.layoutAndRender();const before=a.cachedRecordPages(other),otherSVG=a.pageSVG(before[0],0,before.length);
   a.setSectionFormat(drug,'action',{sizePx:24,align:'center'});
@@ -37,5 +37,23 @@ for(const path of ['public/folio.html','public/folio/index.html'])test(`${path}:
   a.state.scope='all';a.preparePrint();
   assert.ok(w.document.querySelector('#print-root [data-drug-id="'+drug.id+'"] [data-alignment="justify"]'));
   assert.ok(!w.document.querySelector('#print-root [data-drug-id="'+other.id+'"] [data-alignment="justify"]'));
+  const originalBody=a.sectionTypography(other,'drug').cap;
+  a.setHeaderSize(drug,'drug','section',20);
+  assert.equal(a.headerSizePx(drug,'drug'),20);
+  assert.notEqual(a.headerSizePx(other,'drug'),20);
+  a.setHeaderSize(drug,'drug','drug',16);
+  assert.equal(a.headerSizePx(drug,'action'),16);
+  assert.equal(a.headerSizePx(drug,'drug'),20,'section override wins');
+  a.setHeaderSize(drug,'drug','global',14);
+  assert.equal(a.headerSizePx(other,'drug'),14);
+  assert.equal(a.headerSizePx(drug,'action'),16,'drug override wins');
+  assert.equal(a.sectionTypography(other,'drug').cap,originalBody,'body size stays unchanged');
+  const restored=a.validProject(JSON.parse(JSON.stringify(a.state)));
+  assert.equal(restored.settings.headerSizePx,14);assert.equal(restored.drugs[0].headerSizePx,16);
+  assert.equal(restored.drugs[0].sectionFormats.drug.headerSizePx,20);
+  const headerPages=a.cachedRecordPages(drug),headerBlock=headerPages.flatMap(p=>p.blocks).find(b=>b.key==='drug');
+  assert.ok(Math.abs(headerBlock.headingCap-20*25.4/96)<.001);
+  const printed=parse(a.pageSVG(headerPages.find(p=>p.blocks.includes(headerBlock)),0,headerPages.length));
+  assert.ok(Number(printed.querySelector('.card-badge-bg').getAttribute('width'))>4.8);
  }finally{w.close()}
 });
