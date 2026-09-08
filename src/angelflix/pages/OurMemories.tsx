@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Memory, Category } from '@/data/memories';
 import MemoryCard from '@/components/MemoryCard';
 import { useInView } from '@/hooks/useInView';
+import { netflixSound } from '../../lib/netflixSound';
 
 type Filter = 'All' | Category;
 type SortKey = 'newest' | 'oldest' | 'shortest' | 'longest';
@@ -73,7 +74,10 @@ export default function OurMemories({ memories, favorites, watched, onPlay, onDe
               return (
                 <button
                   key={f}
-                  onClick={() => setFilter(f)}
+                  onClick={() => {
+                    netflixSound.playClick();
+                    setFilter(f);
+                  }}
                   className="px-3.5 py-1.5 rounded-full text-sm font-medium"
                   style={{
                     background: active ? 'var(--accent)' : 'var(--bg-card)',
@@ -94,7 +98,10 @@ export default function OurMemories({ memories, favorites, watched, onPlay, onDe
             <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Sort</span>
             <select
               value={sort}
-              onChange={(e) => setSort(e.target.value as SortKey)}
+              onChange={(e) => {
+                netflixSound.playClick();
+                setSort(e.target.value as SortKey);
+              }}
               className="text-sm rounded-lg px-2.5 py-1.5 outline-none appearance-none cursor-pointer"
               style={{
                 background: 'var(--bg-card)',
@@ -115,7 +122,10 @@ export default function OurMemories({ memories, favorites, watched, onPlay, onDe
             {(['grid', 'list'] as ViewMode[]).map((v) => (
               <button
                 key={v}
-                onClick={() => setView(v)}
+                onClick={() => {
+                  netflixSound.playClick();
+                  setView(v);
+                }}
                 className="w-9 h-8 flex items-center justify-center"
                 style={{
                   background: view === v ? 'var(--bg-elevated)' : 'var(--bg-card)',

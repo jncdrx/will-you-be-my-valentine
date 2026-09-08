@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Memory, formatTime } from '@/data/memories';
 import MemoryCard from '@/components/MemoryCard';
+import { netflixSound } from '../../lib/netflixSound';
 
 const MOOD_OPTIONS = ['Romantic', 'Heartfelt', 'Funny', 'Sweet', 'Adventurous', 'Nostalgic', 'Cozy', 'Silly'];
 const MOOD_COLORS: Record<string, string> = {
@@ -27,6 +28,20 @@ export default function VideoDetails({ memories, memoryId, favorites, watched, o
   const [localNote, setLocalNote] = useState(note);
   const [noteSaved, setNoteSaved] = useState(false);
   const memory = memories.find((m) => m.id === memoryId) ?? memories[0];
+
+  if (!memory) {
+    return (
+      <div style={{ background: 'var(--bg-primary)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+        <div className="text-center">
+          <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>No memory found.</p>
+          <button onClick={onBack} className="px-5 py-2.5 rounded-full text-sm font-semibold text-white" style={{ background: 'var(--accent)' }}>
+            Back to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const watchedSec = watched.get(memory.id);
   const isPartial = watchedSec != null && watchedSec > 0 && watchedSec < memory.durationSec * 0.95;
   const isFav = favorites.has(memory.id);
@@ -38,28 +53,33 @@ export default function VideoDetails({ memories, memoryId, favorites, watched, o
       <div className="relative" style={{ height: '65vh', minHeight: '420px' }}>
         <img src={memory.backdropUrl} alt={memory.title} className="absolute inset-0 w-full h-full object-cover" style={{ transition: 'none' }} />
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 pointer-events-none"
           style={{
             background: 'linear-gradient(to right, rgba(9,9,9,0.95) 35%, rgba(9,9,9,0.5) 65%, transparent 100%), linear-gradient(to top, rgba(9,9,9,1) 0%, rgba(9,9,9,0.5) 40%, transparent 70%)',
           }}
         />
 
         <button
-          onClick={onBack}
-          className="absolute top-20 left-4 sm:left-8 lg:left-16 flex items-center gap-2 text-sm"
-          style={{ color: 'rgba(255,255,255,0.55)' }}
+          onClick={() => {
+            netflixSound.playBack();
+            onBack();
+          }}
+          className="absolute top-20 left-4 sm:left-8 lg:left-16 z-20 flex items-center gap-2 text-sm cursor-pointer"
+          style={{ color: 'rgba(255,255,255,0.7)' }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'white'; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.55)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'; }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15,18 9,12 15,6" /></svg>
           Back
         </button>
 
-        <div className="absolute inset-0 flex flex-col justify-end px-4 sm:px-8 lg:px-16 pb-8 sm:pb-12">
-          <div className="text-xs font-semibold mb-2 tracking-widest" style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
-            {memory.category}
+        <div className="absolute inset-0 flex flex-col justify-end px-4 sm:px-8 lg:px-16 pb-8 sm:pb-12 pointer-events-none">
+          <div className="pointer-events-auto">
+            <div className="text-xs font-semibold mb-2 tracking-widest" style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+              {memory.category}
+            </div>
+            <h1 className="font-display font-bold leading-tight mb-3" style={{ color: 'var(--text-inverse)', fontSize: 'clamp(1.6rem, 4vw, 3.2rem)' }}>{memory.title}</h1>
           </div>
-          <h1 className="font-display font-bold leading-tight mb-3" style={{ color: 'var(--text-inverse)', fontSize: 'clamp(1.6rem, 4vw, 3.2rem)' }}>{memory.title}</h1>
           <div className="flex items-center gap-2 sm:gap-4 mb-4 text-xs sm:text-sm flex-wrap" style={{ color: 'rgba(255,255,255,0.5)' }}>
             <span>{memory.date}</span><span>·</span><span>{memory.duration}</span>
             {memory.location && <><span>·</span><span className="hidden sm:inline">{memory.location}</span></>}
@@ -68,7 +88,10 @@ export default function VideoDetails({ memories, memoryId, favorites, watched, o
 
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <button
-              onClick={() => onPlay(memory.id)}
+              onClick={() => {
+                netflixSound.playSelect();
+                onPlay(memory.id);
+              }}
               className="flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full text-sm font-semibold"
               style={{ background: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent-hover)'; }}
@@ -79,7 +102,10 @@ export default function VideoDetails({ memories, memoryId, favorites, watched, o
             </button>
 
             <button
-              onClick={() => onToggleFavorite(memory.id)}
+              onClick={() => {
+                netflixSound.playPop();
+                onToggleFavorite(memory.id);
+              }}
               className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-sm font-medium"
               style={{
                 background: isFav ? 'rgba(183,71,90,0.2)' : 'rgba(255,255,255,0.1)',

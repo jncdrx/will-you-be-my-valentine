@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTheme, ThemePreference } from '@/hooks/useTheme';
 import { useScrolled } from '@/hooks/useScrolled';
 import { MEMORIES, Memory } from '@/data/memories';
-import { getCustomMemories } from '@/lib/store';
+import { getCustomMemories, fetchBackendMemories } from '@/lib/store';
 import Navbar, { Page } from '@/components/Navbar';
 import Toast, { ToastData } from '@/components/Toast';
 import Home from '@/pages/Home';
@@ -14,6 +14,9 @@ import VideoDetails from '@/pages/VideoDetails';
 import VideoPlayer from '@/pages/VideoPlayer';
 import Collections from '@/pages/Collections';
 import Timeline from '@/pages/Timeline';
+import NetflixIntroAnimation from './components/NetflixIntroAnimation';
+import { netflixSound } from '../lib/netflixSound';
+import { motion } from 'framer-motion';
 
 let toastCounter = 0;
 
@@ -85,22 +88,38 @@ export default function App({ onBackToHub, onOpenLetter, onLogout }: AngelFlixAp
 
   const [memories, setMemories] = useState<Memory[]>(() => [...MEMORIES, ...getCustomMemories()]);
 
-  // Re-merge when window regains focus (user may have uploaded in admin tab)
-  useEffect(() => {
-    const onFocus = () => setMemories([...MEMORIES, ...getCustomMemories()]);
-    window.addEventListener('focus', onFocus);
-    return () => window.removeEventListener('focus', onFocus);
+  const loadMemories = useCallback(async () => {
+    const list = await fetchBackendMemories();
+    setMemories(list);
   }, []);
 
-  const [selectedId, setSelectedId] = useState<string>('1');
+  // Fetch backend memories on mount and re-sync on focus/storage
+  useEffect(() => {
+    loadMemories();
+    const onFocus = () => loadMemories();
+    window.addEventListener('focus', onFocus);
+    window.addEventListener('storage', onFocus);
+    return () => {
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('storage', onFocus);
+    };
+  }, [loadMemories]);
+
+  const [selectedId, setSelectedId] = useState<string>(() => memories[0]?.id || '');
+
+  useEffect(() => {
+    if (!selectedId && memories.length > 0) {
+      setSelectedId(memories[0].id);
+    }
+  }, [memories, selectedId]);
+
   const [prevPage, setPrevPage] = useState<Page>('home');
-  const [favorites, setFavorites] = useState<Set<string>>(new Set(['1', '3']));
-  const [watched, setWatched] = useState<Map<string, number>>(
-    new Map([['2', 320], ['5', 600]])
-  );
+  const [favorites, setFavorites] = useState<Set<string>>(() => new Set());
+  const [watched, setWatched] = useState<Map<string, number>>(() => new Map());
   const [toast, setToast] = useState<ToastData | null>(null);
   const [notes, setNotes] = useState<Map<string, string>>(new Map());
   const [moods, setMoods] = useState<Map<string, string[]>>(new Map());
+  const [showIntro, setShowIntro] = useState<boolean>(true);
   const fadeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const transitionTo = useCallback((target: Page, extraSetup?: () => void) => {
@@ -137,11 +156,13 @@ export default function App({ onBackToHub, onOpenLetter, onLogout }: AngelFlixAp
 
   const navigate = (target: Page) => {
     if (target === page && target === renderedPage) return;
+    netflixSound.playClick();
     setPrevPage(page);
     transitionTo(target);
   };
 
   const handlePlay = (id: string) => {
+    netflixSound.playSelect();
     setSelectedId(id);
     setPrevPage(page);
     setPage('player');
@@ -149,11 +170,13 @@ export default function App({ onBackToHub, onOpenLetter, onLogout }: AngelFlixAp
   };
 
   const handleDetails = (id: string) => {
+    netflixSound.playSelect();
     setPrevPage(page);
     transitionTo('details', () => setSelectedId(id));
   };
 
   const handleToggleFavorite = (id: string) => {
+    netflixSound.playPop();
     setFavorites((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
@@ -180,11 +203,13 @@ export default function App({ onBackToHub, onOpenLetter, onLogout }: AngelFlixAp
   };
 
   const handleBack = () => {
+    netflixSound.playBack();
     const target = prevPage === 'player' ? 'home' : prevPage;
     transitionTo(target);
   };
 
   const handleSurpriseMe = () => {
+    netflixSound.playClick();
     const random = memories[Math.floor(Math.random() * memories.length)];
     showToast(`How about "${random.title}"?`, 'heart');
     setPrevPage(page);
@@ -218,7 +243,19 @@ export default function App({ onBackToHub, onOpenLetter, onLogout }: AngelFlixAp
   }
 
   return (
-    <div style={{ background: 'var(--bg-primary)', minHeight: '100vh' }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+      style={{ background: 'var(--bg-primary)', minHeight: '100vh' }}
+    >
+      {showIntro && (
+        <NetflixIntroAnimation
+          onComplete={() => setShowIntro(false)}
+          autoPlaySound={true}
+        />
+      )}
+
       <Navbar
         currentPage={page}
         onNavigate={navigate}
@@ -277,6 +314,6 @@ export default function App({ onBackToHub, onOpenLetter, onLogout }: AngelFlixAp
           })}
         </nav>
       )}
-    </div>
+    </motion.div>
   );
 }

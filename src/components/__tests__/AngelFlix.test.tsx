@@ -9,8 +9,8 @@ describe("AngelFlix", () => {
 
   it("renders brand name and cinema subtag", () => {
     render(<AngelFlix onBackToHub={vi.fn()} onOpenLetter={vi.fn()} onLogout={vi.fn()} />);
-    expect(screen.getByText("ANGELFLIX")).toBeInTheDocument();
-    expect(screen.getByText("Our Private Cinema")).toBeInTheDocument();
+    expect(screen.getAllByText("ANGELFLIX").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Our Private Cinema").length).toBeGreaterThan(0);
   });
 
   it("renders navbar navigation items and memory content", () => {

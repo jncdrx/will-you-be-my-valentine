@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Memory, formatTime } from '@/data/memories';
 import { getVideoBlobURL } from '@/lib/videoStore';
+import { netflixSound } from '../../lib/netflixSound';
 
 type PlayerState = 'playing' | 'paused' | 'ended';
 
@@ -15,7 +16,7 @@ interface VideoPlayerProps {
 
 export default function VideoPlayer({ memories, memoryId, watched, onBack, onUpdateWatched, onPlayNext }: VideoPlayerProps) {
   const memory = memories.find((m) => m.id === memoryId) ?? memories[0];
-  const nextMemory = memories[memories.findIndex((m) => m.id === memoryId) + 1] ?? null;
+  const nextMemory = memory ? (memories[memories.findIndex((m) => m.id === memory.id) + 1] ?? null) : null;
 
   // Real video element support
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -25,7 +26,7 @@ export default function VideoPlayer({ memories, memoryId, watched, onBack, onUpd
   useEffect(() => {
     let blobUrl: string | null = null;
     setResolvedVideoSrc(null);
-    if (!memory.videoSrc) return;
+    if (!memory?.videoSrc) return;
 
     if (memory.videoSrc.startsWith('idb:')) {
       getVideoBlobURL(memory.id).then((url) => {
@@ -39,11 +40,11 @@ export default function VideoPlayer({ memories, memoryId, watched, onBack, onUpd
     return () => {
       if (blobUrl) URL.revokeObjectURL(blobUrl);
     };
-  }, [memory.id, memory.videoSrc]);
+  }, [memory?.id, memory?.videoSrc]);
 
-  const initialSec = watched.get(memory.id) ?? 0;
-  const [currentSec, setCurrentSec] = useState(initialSec >= memory.durationSec * 0.95 ? 0 : initialSec);
-  const [effectiveDuration, setEffectiveDuration] = useState(memory.durationSec);
+  const initialSec = memory ? (watched.get(memory.id) ?? 0) : 0;
+  const [currentSec, setCurrentSec] = useState(memory && initialSec >= memory.durationSec * 0.95 ? 0 : initialSec);
+  const [effectiveDuration, setEffectiveDuration] = useState(memory?.durationSec ?? 60);
   const [playerState, setPlayerState] = useState<PlayerState>('paused');
   const [showControls, setShowControls] = useState(true);
   const [volume, setVolume] = useState(0.8);
@@ -61,6 +62,19 @@ export default function VideoPlayer({ memories, memoryId, watched, onBack, onUpd
   const playerStateRef = useRef(playerState);
   const currentSecRef = useRef(currentSec);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  if (!memory) {
+    return (
+      <div style={{ background: '#090909', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', padding: '2rem' }}>
+        <div className="text-center">
+          <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>No video memory available.</p>
+          <button onClick={onBack} className="px-5 py-2.5 rounded-full text-sm font-semibold text-white" style={{ background: 'var(--accent)' }}>
+            Back to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   useEffect(() => { playerStateRef.current = playerState; }, [playerState]);
   useEffect(() => { currentSecRef.current = currentSec; }, [currentSec]);
@@ -133,6 +147,7 @@ export default function VideoPlayer({ memories, memoryId, watched, onBack, onUpd
   }, []);
 
   const togglePlay = useCallback(() => {
+    netflixSound.playClick();
     if (isRealVideo && videoRef.current) {
       if (videoRef.current.paused || videoRef.current.ended) {
         videoRef.current.play().catch(() => {});
@@ -150,6 +165,7 @@ export default function VideoPlayer({ memories, memoryId, watched, onBack, onUpd
   }, [isRealVideo, resetControlsTimer]);
 
   const seekBy = useCallback((delta: number) => {
+    netflixSound.playClick();
     if (isRealVideo && videoRef.current) {
       videoRef.current.currentTime = Math.max(0, Math.min(videoRef.current.duration, videoRef.current.currentTime + delta));
     } else {
@@ -272,9 +288,18 @@ export default function VideoPlayer({ memories, memoryId, watched, onBack, onUpd
         )}
 
         {/* Top bar */}
-        <div className="absolute top-0 left-0 right-0 flex items-center px-8 pt-6" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, transparent 100%)', height: '120px', opacity: showControls ? 1 : 0, transition: 'opacity 0.25s ease' }}>
-          <button onClick={(e) => { e.stopPropagation(); onBack(); }} className="flex items-center gap-2 text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'white'; }} onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'; }}>
+        <div className="absolute top-0 left-0 right-0 z-30 flex items-center px-8 pt-6" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, transparent 100%)', height: '120px', opacity: showControls ? 1 : 0, pointerEvents: showControls ? 'auto' : 'none', transition: 'opacity 0.25s ease' }}>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              netflixSound.playBack();
+              onBack();
+            }}
+            className="flex items-center gap-2 text-sm cursor-pointer z-40"
+            style={{ color: 'rgba(255,255,255,0.7)' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'white'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'; }}
+          >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15,18 9,12 15,6" /></svg>
             Back
           </button>
@@ -399,15 +424,31 @@ export default function VideoPlayer({ memories, memoryId, watched, onBack, onUpd
         <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ background: 'rgba(0,0,0,0.78)' }}>
           <p className="font-display text-2xl font-semibold text-white mb-8">Another memory worth keeping.</p>
           <div className="flex items-center gap-4 mb-10">
-            <button onClick={() => { setCurrentSec(0); setPlayerState('paused'); if (isRealVideo && videoRef.current) { videoRef.current.currentTime = 0; } }}
-              className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white" style={{ background: 'var(--accent)' }}
+            <button
+              onClick={() => {
+                netflixSound.playSelect();
+                setCurrentSec(0);
+                setPlayerState('paused');
+                if (isRealVideo && videoRef.current) {
+                  videoRef.current.currentTime = 0;
+                }
+              }}
+              className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white"
+              style={{ background: 'var(--accent)' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent-hover)'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent)'; }}>
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent)'; }}
+            >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1,4 1,10 7,10" /><path d="M3.51 15a9 9 0 1 0 .49-3.27" /></svg>
               Watch Again
             </button>
-            <button onClick={onBack} className="px-6 py-3 rounded-full text-sm font-semibold"
-              style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.15)' }}>
+            <button
+              onClick={() => {
+                netflixSound.playBack();
+                onBack();
+              }}
+              className="px-6 py-3 rounded-full text-sm font-semibold"
+              style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.15)' }}
+            >
               Back to AngelFlix
             </button>
           </div>
@@ -420,7 +461,12 @@ export default function VideoPlayer({ memories, memoryId, watched, onBack, onUpd
                   <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: 'var(--accent)', color: 'white' }}>{autoplayCountdown}s</span>
                 )}
               </div>
-              <button onClick={() => { setAutoplayCountdown(null); onPlayNext(nextMemory.id); }}
+              <button
+                onClick={() => {
+                  netflixSound.playSelect();
+                  setAutoplayCountdown(null);
+                  onPlayNext(nextMemory.id);
+                }}
                 className="flex items-center gap-0 rounded-xl overflow-hidden group"
                 style={{ background: 'var(--bg-card)', border: `1px solid ${autoplayCountdown != null ? 'var(--accent)' : 'var(--border)'}`, width: '300px', transition: 'border-color 0.2s' }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Memory } from '@/data/memories';
 import MemoryCard from '@/components/MemoryCard';
+import { netflixSound } from '../../lib/netflixSound';
 
 interface SearchProps {
   memories: Memory[];
@@ -63,7 +64,14 @@ export default function Search({ memories, favorites, watched, onPlay, onDetails
               style={{ color: 'var(--text-primary)' }}
             />
             {query && (
-              <button onClick={() => setQuery('')} style={{ color: 'var(--text-muted)' }} className="hover:text-current transition-colors">
+              <button
+                onClick={() => {
+                  netflixSound.playClick();
+                  setQuery('');
+                }}
+                style={{ color: 'var(--text-muted)' }}
+                className="hover:text-current transition-colors"
+              >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
@@ -86,7 +94,10 @@ export default function Search({ memories, favorites, watched, onPlay, onDetails
                   {recentSearches.map((s) => (
                     <button
                       key={s}
-                      onClick={() => setQuery(s)}
+                      onClick={() => {
+                        netflixSound.playClick();
+                        setQuery(s);
+                      }}
                       className="flex items-center gap-2 px-4 py-2 rounded-full text-sm"
                       style={{ background: 'var(--bg-elevated)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}
                       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-strong)'; }}
@@ -98,7 +109,10 @@ export default function Search({ memories, favorites, watched, onPlay, onDetails
                   ))}
                 </div>
                 <button
-                  onClick={() => setRecentSearches([])}
+                  onClick={() => {
+                    netflixSound.playClick();
+                    setRecentSearches([]);
+                  }}
                   className="text-xs"
                   style={{ color: 'var(--text-muted)' }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--accent)'; }}
@@ -113,7 +127,11 @@ export default function Search({ memories, favorites, watched, onPlay, onDetails
               {suggestions.map((s) => (
                 <button
                   key={s}
-                  onClick={() => { setQuery(s); addToRecent(s); }}
+                  onClick={() => {
+                    netflixSound.playClick();
+                    setQuery(s);
+                    addToRecent(s);
+                  }}
                   className="px-4 py-2 rounded-full text-sm"
                   style={{ background: 'var(--bg-card)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-strong)'; }}

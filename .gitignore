@@ -29,3 +29,7 @@ dist-ssr
 
 # Supabase CLI local artifacts (contains local link info / connection strings)
 supabase/.temp
+
+# Test results
+test-results/
+

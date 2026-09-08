@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemePreference } from '@/hooks/useTheme';
+import { netflixSound } from '../../lib/netflixSound';
 
 export type Page = 'home' | 'memories' | 'continue' | 'favorites' | 'search' | 'details' | 'player' | 'collections' | 'timeline';
 
@@ -43,6 +44,16 @@ const THEME_OPTIONS: { value: ThemePreference; label: string }[] = [
 
 export default function Navbar({ currentPage, onNavigate, transparent = false, themePref, onThemeChange, onBackToHub, onOpenLetter, onLogout }: NavbarProps) {
   const [profileOpen, setProfileOpen] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(() => netflixSound.isSoundEnabled());
+
+  useEffect(() => {
+    const handleToggled = (e: Event) => {
+      const custom = e as CustomEvent<{ enabled: boolean }>;
+      setSoundEnabled(custom.detail?.enabled ?? netflixSound.isSoundEnabled());
+    };
+    window.addEventListener('netflix:sound-toggled', handleToggled);
+    return () => window.removeEventListener('netflix:sound-toggled', handleToggled);
+  }, []);
 
   const navItems: { label: string; page: Page }[] = [
     { label: 'Home', page: 'home' },
@@ -73,7 +84,11 @@ export default function Navbar({ currentPage, onNavigate, transparent = false, t
       {/* Left */}
       <div className="flex items-center gap-3 sm:gap-6">
         <button
-          onClick={() => { if (onBackToHub) onBackToHub(); else onNavigate('home'); }}
+          onClick={() => {
+            netflixSound.playBack();
+            if (onBackToHub) onBackToHub();
+            else onNavigate('home');
+          }}
           style={{ color: navText }}
           className="hidden sm:flex items-center gap-1.5 text-xs font-medium tracking-wide transition-all cursor-pointer"
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = navTextHover; }}
@@ -85,11 +100,17 @@ export default function Navbar({ currentPage, onNavigate, transparent = false, t
           TV Home
         </button>
 
-        <button onClick={() => onNavigate('home')} className="flex items-baseline gap-2">
-          <span style={{ color: logoColor, letterSpacing: '0.2em', fontWeight: 700, fontSize: '13px', fontFamily: "'Inter', sans-serif" }}>
+        <button
+          onClick={() => {
+            netflixSound.playTudum();
+            onNavigate('home');
+          }}
+          className="flex items-baseline gap-2 cursor-pointer"
+        >
+          <span style={{ color: logoColor, letterSpacing: '0.08em', fontWeight: 900, fontSize: '20px', fontFamily: "'Bebas Neue', 'Anton', 'Montserrat', -apple-system, sans-serif" }}>
             ANGELFLIX
           </span>
-          <span style={{ color: subtagColor }} className="text-xs hidden sm:block">
+          <span style={{ color: subtagColor, fontFamily: "'Montserrat', -apple-system, sans-serif", fontSize: '11px', letterSpacing: '0.05em' }} className="hidden sm:block font-semibold">
             Our Private Cinema
           </span>
         </button>
@@ -102,7 +123,10 @@ export default function Navbar({ currentPage, onNavigate, transparent = false, t
           return (
             <button
               key={item.page}
-              onClick={() => onNavigate(item.page)}
+              onClick={() => {
+                netflixSound.playClick();
+                onNavigate(item.page);
+              }}
               className="relative px-3 py-1.5 text-sm flex flex-col items-center gap-0"
               style={{ color: active ? navTextActive : navText, fontWeight: active ? 600 : 500, background: 'transparent' }}
               onMouseEnter={(e) => { if (!active) (e.currentTarget as HTMLElement).style.color = navTextHover; }}
@@ -240,6 +264,49 @@ export default function Navbar({ currentPage, onNavigate, transparent = false, t
                         );
                       })}
                     </div>
+                  </div>
+
+                  <div style={{ height: '1px', background: 'var(--border)', margin: '4px 4px' }} />
+
+                  <div className="px-3 py-2 space-y-1">
+                    <button
+                      onClick={() => {
+                        const next = netflixSound.toggleSound();
+                        setSoundEnabled(next);
+                      }}
+                      className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-sm text-left"
+                      style={{
+                        background: soundEnabled ? 'var(--accent-dim)' : 'transparent',
+                        color: soundEnabled ? 'var(--accent)' : 'var(--text-secondary)',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!soundEnabled) (e.currentTarget as HTMLElement).style.background = 'var(--border-subtle)';
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!soundEnabled) (e.currentTarget as HTMLElement).style.background = 'transparent';
+                      }}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <span style={{ opacity: soundEnabled ? 1 : 0.55 }}>
+                          {soundEnabled ? (
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" />
+                              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                            </svg>
+                          ) : (
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" />
+                              <line x1="23" y1="9" x2="17" y2="15" />
+                              <line x1="17" y1="9" x2="23" y2="15" />
+                            </svg>
+                          )}
+                        </span>
+                        <span className="font-medium">Netflix Sound FX</span>
+                      </div>
+                      <span className="text-xs font-semibold uppercase opacity-75">
+                        {soundEnabled ? 'ON' : 'OFF'}
+                      </span>
+                    </button>
                   </div>
 
                   <div style={{ height: '1px', background: 'var(--border)', margin: '6px 4px' }} />

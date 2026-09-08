@@ -9,6 +9,7 @@ import { handleConvertSse } from './apiHandler.js';
 import {
   handleAngelFlixUpload,
   handleGetAngelFlixMedia,
+  handleCreateAngelFlixMedia,
   handleUpdateAngelFlixMedia,
   handleDeleteAngelFlixMedia,
 } from './angelflixHandler.js';
@@ -377,6 +378,7 @@ app.get('/api/music/songs', async (req, res) => {
 
 // AngelFlix Cloudinary Video & Media Endpoints
 app.post('/api/angelflix/upload', mediaUpload.single('file'), handleAngelFlixUpload);
+app.post('/api/angelflix/media', handleCreateAngelFlixMedia);
 app.get('/api/angelflix/media', handleGetAngelFlixMedia);
 app.patch('/api/angelflix/media/:id', handleUpdateAngelFlixMedia);
 app.delete('/api/angelflix/media/:id', handleDeleteAngelFlixMedia);

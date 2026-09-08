@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Calendar, ChevronDown, BookOpen, CheckCircle2, Sprout, Cake, Sparkles, Utensils, Coffee, Crown, Gift, Film, Home } from "lucide-react";
 import { monthsaryConfig } from "../config/monthsaryConfig";
@@ -55,6 +55,18 @@ export function PastMonthsaryNavbar({
   };
 
   const currentStepIndex = experienceSteps.findIndex((item) => item.key === currentStep);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsPastDropdownOpen(false);
+      }
+    };
+    if (isPastDropdownOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isPastDropdownOpen]);
 
   return (
     <motion.header

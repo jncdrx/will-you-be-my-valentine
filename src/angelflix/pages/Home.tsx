@@ -4,6 +4,7 @@ import MemoryCard from '@/components/MemoryCard';
 import { Page } from '@/components/Navbar';
 import { useInView } from '@/hooks/useInView';
 import { useCountUp } from '@/hooks/useCountUp';
+import { netflixSound } from '../../lib/netflixSound';
 
 const START_DATE = new Date('2026-01-07');
 const NEXT_MONTHSARY_DAY = 7;
@@ -59,7 +60,8 @@ interface HomeProps {
 const CYCLE_MS = 6000;
 
 export default function Home({ memories, favorites, watched, onPlay, onDetails, onToggleFavorite, onNavigate, onSurpriseMe }: HomeProps) {
-  const FEATURED = [memories[0], memories[2], memories[6] ?? memories[0]].filter(Boolean);
+  const hasMemories = memories.length > 0;
+  const FEATURED = hasMemories ? [memories[0], memories[2], memories[6] ?? memories[0]].filter(Boolean) : [];
   const [featuredIdx, setFeaturedIdx] = useState(0);
   const [heroFading, setHeroFading] = useState(false);
   const cycleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -74,23 +76,25 @@ export default function Home({ memories, favorites, watched, onPlay, onDetails, 
   const daysCount = useCountUp(daysTogether(), 1200, statsIn);
   const monthsaryCount = useCountUp(daysUntilNextMonthsary(), 800, statsIn);
 
-  const featured = FEATURED[featuredIdx];
+  const featured = FEATURED[featuredIdx] || (hasMemories ? memories[0] : null);
 
   const goTo = (idx: number) => {
-    if (idx === featuredIdx) return;
+    if (idx === featuredIdx || FEATURED.length === 0) return;
     setHeroFading(true);
     setTimeout(() => { setFeaturedIdx(idx); setHeroFading(false); }, 280);
   };
 
   const resetCycle = () => {
     if (cycleTimer.current) clearTimeout(cycleTimer.current);
-    cycleTimer.current = setTimeout(() => { goTo((featuredIdx + 1) % FEATURED.length); }, CYCLE_MS);
+    if (FEATURED.length > 1) {
+      cycleTimer.current = setTimeout(() => { goTo((featuredIdx + 1) % FEATURED.length); }, CYCLE_MS);
+    }
   };
 
   useEffect(() => {
     resetCycle();
     return () => { if (cycleTimer.current) clearTimeout(cycleTimer.current); };
-  }, [featuredIdx]);
+  }, [featuredIdx, FEATURED.length]);
 
   const scroll = (dir: 'left' | 'right') => {
     rowRef.current?.scrollBy({ left: dir === 'right' ? 680 : -680, behavior: 'smooth' });
@@ -106,41 +110,87 @@ export default function Home({ memories, favorites, watched, onPlay, onDetails, 
   return (
     <div style={{ background: 'var(--bg-primary)', minHeight: '100vh' }}>
       {/* Hero */}
-      <div className="relative" style={{ height: '88vh', minHeight: '520px' }}>
-        <img
-          key={featured.id}
-          src={featured.backdropUrl}
-          alt={featured.title}
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ transition: 'none', opacity: heroFading ? 0 : 1, transitionProperty: 'opacity', transitionDuration: '280ms', transitionTimingFunction: 'ease' }}
-        />
-
-        <div
-          className="absolute inset-0"
+      {!featured ? (
+        <div className="relative flex flex-col justify-center items-center text-center px-4 sm:px-8 min-h-[65vh] pt-20"
           style={{
-            background:
-              'linear-gradient(to right, rgba(9,9,9,0.93) 28%, rgba(9,9,9,0.35) 65%, transparent 100%), ' +
-              'linear-gradient(to top, rgba(9,9,9,1) 0%, rgba(9,9,9,0.35) 38%, transparent 65%)',
+            background: 'linear-gradient(to bottom, rgba(183,71,90,0.12) 0%, transparent 100%)',
           }}
-        />
-
-        <div
-          className="absolute inset-0 flex flex-col justify-center px-4 sm:px-8 lg:px-16"
-          style={{ paddingTop: '5rem', opacity: heroFading ? 0 : 1, transition: 'opacity 280ms ease' }}
         >
-          <div className="text-sm font-medium mb-3 hidden sm:block" style={{ color: 'rgba(255,255,255,0.45)', letterSpacing: '0.04em' }}>
-            {getGreeting()}, Angel ♡
+          <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-3xl mb-4 shadow-xl">
+            🎬
           </div>
-          <div className="flex items-center gap-2 mb-4">
-            <span
-              className="text-xs font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full"
-              style={{ background: 'var(--accent-dim)', color: 'var(--accent)', border: '1px solid rgba(183,71,90,0.3)' }}
+          <div
+            className="text-xs font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-3"
+            style={{ background: 'var(--accent-dim)', color: 'var(--accent)', border: '1px solid rgba(183,71,90,0.3)' }}
+          >
+            ANGELFLIX CINEMA
+          </div>
+          <h1
+            className="font-display font-bold leading-tight mb-3"
+            style={{ color: 'var(--text-primary)', fontSize: 'clamp(1.8rem, 4vw, 3.5rem)', letterSpacing: '-0.02em' }}
+          >
+            Our Private Cinema
+          </h1>
+          <p style={{ color: 'var(--text-secondary)' }} className="text-sm sm:text-base max-w-lg mb-8 leading-relaxed">
+            Your uploaded video memories and special moments will appear here.
+          </p>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => onNavigate('memories')}
+              className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold shadow-lg transition-all hover:scale-105 active:scale-95"
+              style={{ background: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
             >
-              {featured.category}
-            </span>
-            <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
-            <span style={{ color: 'rgba(255,255,255,0.45)' }} className="text-sm hidden sm:inline">{featured.date}</span>
+              <span>▦</span> Explore Memories
+            </button>
+            <button
+              onClick={() => onNavigate('search')}
+              className="px-5 py-3 rounded-full text-sm font-semibold transition-all hover:scale-105 active:scale-95"
+              style={{
+                background: 'var(--btn-secondary-bg)',
+                color: 'var(--btn-secondary-text)',
+                border: '1px solid var(--btn-secondary-border)',
+              }}
+            >
+              Search
+            </button>
           </div>
+        </div>
+      ) : (
+        <div className="relative" style={{ height: '88vh', minHeight: '520px' }}>
+          <img
+            key={featured.id}
+            src={featured.backdropUrl}
+            alt={featured.title}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ transition: 'none', opacity: heroFading ? 0 : 1, transitionProperty: 'opacity', transitionDuration: '280ms', transitionTimingFunction: 'ease' }}
+          />
+
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(to right, rgba(9,9,9,0.93) 28%, rgba(9,9,9,0.35) 65%, transparent 100%), ' +
+                'linear-gradient(to top, rgba(9,9,9,1) 0%, rgba(9,9,9,0.35) 38%, transparent 65%)',
+            }}
+          />
+
+          <div
+            className="absolute inset-0 flex flex-col justify-center px-4 sm:px-8 lg:px-16"
+            style={{ paddingTop: '5rem', opacity: heroFading ? 0 : 1, transition: 'opacity 280ms ease' }}
+          >
+            <div className="text-sm font-medium mb-3 hidden sm:block" style={{ color: 'rgba(255,255,255,0.45)', letterSpacing: '0.04em' }}>
+              {getGreeting()}, Angel ♡
+            </div>
+            <div className="flex items-center gap-2 mb-4">
+              <span
+                className="text-xs font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full"
+                style={{ background: 'var(--accent-dim)', color: 'var(--accent)', border: '1px solid rgba(183,71,90,0.3)' }}
+              >
+                {featured.category}
+              </span>
+              <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
+              <span style={{ color: 'rgba(255,255,255,0.45)' }} className="text-sm hidden sm:inline">{featured.date}</span>
+            </div>
 
           <h1
             className="font-display font-bold leading-tight mb-3 max-w-2xl"
@@ -155,7 +205,10 @@ export default function Home({ memories, favorites, watched, onPlay, onDetails, 
 
           <div className="flex items-center gap-2 sm:gap-3 mb-8 flex-wrap">
             <button
-              onClick={() => onPlay(featured.id)}
+              onClick={() => {
+                netflixSound.playSelect();
+                onPlay(featured.id);
+              }}
               className="flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full text-sm font-semibold"
               style={{ background: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent-hover)'; (e.currentTarget as HTMLElement).style.color = '#fff'; }}
@@ -166,7 +219,10 @@ export default function Home({ memories, favorites, watched, onPlay, onDetails, 
             </button>
 
             <button
-              onClick={() => onDetails(featured.id)}
+              onClick={() => {
+                netflixSound.playSelect();
+                onDetails(featured.id);
+              }}
               className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-sm font-semibold"
               style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.15)' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.18)'; }}
@@ -179,7 +235,10 @@ export default function Home({ memories, favorites, watched, onPlay, onDetails, 
             </button>
 
             <button
-              onClick={() => onToggleFavorite(featured.id)}
+              onClick={() => {
+                netflixSound.playPop();
+                onToggleFavorite(featured.id);
+              }}
               className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: favorites.has(featured.id) ? 'var(--accent)' : 'rgba(255,255,255,0.6)' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.14)'; }}
@@ -192,7 +251,10 @@ export default function Home({ memories, favorites, watched, onPlay, onDetails, 
 
             {onSurpriseMe && (
               <button
-                onClick={onSurpriseMe}
+                onClick={() => {
+                  netflixSound.playClick();
+                  onSurpriseMe();
+                }}
                 className="hidden sm:flex items-center gap-2 px-5 py-3 rounded-full text-sm font-medium"
                 style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.55)', border: '1px solid rgba(255,255,255,0.1)' }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.12)'; (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.8)'; }}
@@ -210,7 +272,11 @@ export default function Home({ memories, favorites, watched, onPlay, onDetails, 
             {FEATURED.map((_, i) => (
               <button
                 key={i}
-                onClick={() => { goTo(i); resetCycle(); }}
+                onClick={() => {
+                  netflixSound.playClick();
+                  goTo(i);
+                  resetCycle();
+                }}
                 className="rounded-full"
                 style={{ width: i === featuredIdx ? '24px' : '6px', height: '6px', background: i === featuredIdx ? 'var(--accent)' : 'rgba(255,255,255,0.3)', transition: 'width 300ms ease, background 300ms ease' }}
               />
@@ -218,9 +284,10 @@ export default function Home({ memories, favorites, watched, onPlay, onDetails, 
           </div>
         </div>
       </div>
+      )}
 
       {/* Scrollable content */}
-      <div style={{ background: 'var(--bg-primary)' }} className="relative -mt-20 z-10 pb-16">
+      <div style={{ background: 'var(--bg-primary)' }} className={`relative ${featured ? '-mt-20' : 'mt-2'} z-10 pb-16`}>
 
         {/* Stats strip */}
         <div ref={statsRef} className="px-4 sm:px-8 lg:px-16 pt-8 pb-2">

@@ -1,11 +1,19 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { Memory, MEMORIES, Category } from '@/data/memories';
-import { getCustomMemories, addCustomMemory, deleteCustomMemory, saveCustomMemories } from '@/lib/store';
+import {
+  getCustomMemories,
+  addCustomMemory,
+  deleteCustomMemory,
+  saveCustomMemories,
+  fetchBackendMemories,
+  createBackendMemory,
+  deleteBackendMemory,
+} from '@/lib/store';
 import {
   saveVideoBlob, deleteVideoBlob,
   extractVideoThumbnail, getVideoDurationSec, formatFileSize,
 } from '@/lib/videoStore';
-import { uploadAngelFlixMedia, deleteAngelFlixMedia } from '../../lib/angelflixApi';
+import { uploadAngelFlixMedia } from '../../lib/angelflixApi';
 
 /* ─── Constants ─────────────────────────────────────── */
 const CATEGORIES: Category[] = ['Monthsaries', 'Dates', 'Adventures', 'Messages', 'Funny Moments', 'Special Days'];
@@ -268,7 +276,14 @@ export default function Admin() {
     return () => window.removeEventListener('keydown', h);
   }, []);
 
-  const refresh = () => setCustomMemories(getCustomMemories());
+  const refresh = useCallback(async () => {
+    const list = await fetchBackendMemories();
+    setCustomMemories(list);
+  }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   /* ─── Video file handling ─── */
   const handleVideoFile = useCallback(async (file: File) => {
@@ -386,7 +401,7 @@ export default function Admin() {
         ...(remoteVideoUrl ? { videoSrc: remoteVideoUrl } : (uploadMode === 'video' ? { videoSrc: `idb:${id}` } : {})),
       };
 
-      addCustomMemory(mem);
+      await createBackendMemory(mem);
       refresh();
       resetForm();
       setStage('done');
@@ -402,11 +417,8 @@ export default function Admin() {
   const doDelete = (id: string) => {
     const idx = customMemories.findIndex((m) => m.id === id);
     const mem = customMemories[idx];
-    deleteCustomMemory(id);
-    if (mem.videoSrc?.startsWith('idb:')) deleteVideoBlob(id);
-    if (mem.id && !mem.id.startsWith('builtin-')) {
-      deleteAngelFlixMedia(mem.id).catch(() => {});
-    }
+    deleteBackendMemory(id);
+    if (mem?.videoSrc?.startsWith('idb:')) deleteVideoBlob(id);
     refresh();
     setDeleteConfirm(null);
     setSelected((s) => { const n = new Set(s); n.delete(id); return n; });

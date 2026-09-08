@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { COLLECTIONS, Memory } from '@/data/memories';
 import MemoryCard from '@/components/MemoryCard';
+import { netflixSound } from '../../lib/netflixSound';
 
 interface CollectionsProps {
   memories: Memory[];
@@ -24,7 +25,10 @@ export default function Collections({ memories, favorites, watched, onPlay, onDe
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(9,9,9,1) 0%, rgba(9,9,9,0.5) 50%, rgba(9,9,9,0.25) 100%)' }} />
           <div className="absolute inset-0 flex flex-col justify-end px-4 sm:px-8 lg:px-16 pb-8">
             <button
-              onClick={() => setActiveCollection(null)}
+              onClick={() => {
+                netflixSound.playBack();
+                setActiveCollection(null);
+              }}
               className="flex items-center gap-2 text-sm mb-3 w-fit"
               style={{ color: 'rgba(255,255,255,0.5)' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'white'; }}
@@ -69,7 +73,10 @@ export default function Collections({ memories, favorites, watched, onPlay, onDe
             return (
               <button
                 key={col.id}
-                onClick={() => setActiveCollection(col.id)}
+                onClick={() => {
+                  netflixSound.playSelect();
+                  setActiveCollection(col.id);
+                }}
                 className="relative rounded-2xl overflow-hidden text-left group"
                 style={{ height: '220px', border: '1px solid var(--border)' }}
               >

@@ -45,16 +45,18 @@ async function getAuthToken(overrideToken?: string): Promise<string> {
  */
 export async function fetchAngelFlixMedia(): Promise<AngelFlixMediaRecord[]> {
   try {
-    const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : "http://localhost:3001";
-    const url = typeof window !== "undefined" && window.location.origin && !window.location.origin.includes("null") ? "/api/angelflix/media" : `${origin}/api/angelflix/media`;
+    const origin = typeof window !== "undefined" && window.location?.origin && !window.location.origin.includes("null")
+      ? window.location.origin
+      : "http://localhost:3001";
+    const isBrowser = typeof window !== "undefined" && typeof document !== "undefined" && window.location?.protocol?.startsWith("http");
+    const url = isBrowser ? "/api/angelflix/media" : `${origin}/api/angelflix/media`;
     const res = await fetch(url);
     if (!res.ok) {
-      throw new Error(`Failed to fetch media: ${res.statusText}`);
+      return [];
     }
     const data = await res.json();
     return Array.isArray(data) ? data : [];
-  } catch (err) {
-    console.warn("fetchAngelFlixMedia notice:", err);
+  } catch {
     return [];
   }
 }

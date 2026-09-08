@@ -18,6 +18,7 @@ import { MusicSelectorModal } from "./components/MusicSelectorModal";
 import { VouchersSection, VouchersSectionHandle } from "./components/user/VouchersSection";
 import { ExperienceHub } from "./components/ExperienceHub";
 import { AngelFlix } from "./components/AngelFlix";
+import { FolioExperience } from "./components/FolioExperience";
 import { AdminRoutes } from "./components/admin/AdminRoutes";
 import { AdminLoginPage } from "./components/admin/AdminLoginPage";
 import { AdminDashboard } from "./components/admin/AdminDashboard";
@@ -34,16 +35,19 @@ import {
 import { supabase, isSupabaseConfigured } from "./lib/supabase";
 import { signOutAll } from "./lib/auth";
 import { Voucher, effectiveStatus } from "./lib/vouchers";
+import { netflixSound } from "./lib/netflixSound";
 import { ArrowUp, LogOut } from "lucide-react";
 import { toast } from "sonner";
 
-type ExperienceMode = "hub" | "letter" | "angelflix";
+type ExperienceMode = "hub" | "letter" | "angelflix" | "folio";
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<UserSite />} />
+      <Route path="/folio" element={<Navigate to="/?view=folio" replace />} />
+      <Route path="/notebook" element={<Navigate to="/?view=folio" replace />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="/admin" element={<AdminRoutes />}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
@@ -74,8 +78,8 @@ function getInitialMode(): ExperienceMode {
   try {
     const params = new URLSearchParams(window.location.search);
     const viewParam = params.get("view");
-    if (viewParam === "letter" || viewParam === "angelflix" || viewParam === "hub") {
-      return viewParam as ExperienceMode;
+    if (viewParam === "letter" || viewParam === "angelflix" || viewParam === "hub" || viewParam === "folio" || viewParam === "notebook") {
+      return (viewParam === "notebook" ? "folio" : viewParam) as ExperienceMode;
     }
   } catch {
     /* ignore storage errors */
@@ -114,8 +118,23 @@ function UserSite() {
   const [selectedSong, setSelectedSong] = useState<Song | null>(null);
   const [isMusicModalOpen, setIsMusicModalOpen] = useState(false);
 
+  // Attach global Netflix UI click sound listener
+  useEffect(() => {
+    const detach = netflixSound.attachGlobalListener();
+    return () => detach();
+  }, []);
+
   // Sync mode with URL search param and localStorage
   const handleModeChange = (newMode: ExperienceMode) => {
+    if (newMode === "angelflix") {
+      try {
+        sessionStorage.removeItem("angelflix_intro_seen");
+      } catch {
+        /* ignore */
+      }
+    } else {
+      netflixSound.playClick();
+    }
     setMode(newMode);
     try {
       localStorage.setItem("angel_experience_mode", newMode);
@@ -295,26 +314,6 @@ function UserSite() {
         />
       )}
 
-      {/* Global Music & Cursor fx */}
-      <MusicPlayer
-        currentSong={selectedSong}
-        onOpenSelector={() => setIsMusicModalOpen(true)}
-      />
-      <MusicSelectorModal
-        isOpen={isMusicModalOpen}
-        onClose={() => setIsMusicModalOpen(false)}
-        songs={songsList}
-        selectedSongId={selectedSong?.id || null}
-        onSelectSong={(song) => {
-          setSelectedSong(song);
-          saveSelectedSongId(song.id);
-          setIsMusicModalOpen(false);
-        }}
-      />
-      <MouseTrail />
-      <FloatingHearts />
-      <HeartBurst />
-
       {/* Unlocked Experience Flow */}
       {isUnlocked && (
         <>
@@ -338,11 +337,38 @@ function UserSite() {
             />
           )}
 
-          {/* 3. The Love Letter & Memories Interactive Journey */}
+          {/* 3. Angel's Handwritten Pharmacology Folio Notebook */}
+          {mode === "folio" && (
+            <FolioExperience
+              onBackToHub={() => handleModeChange("hub")}
+            />
+          )}
+
+          {/* 4. The Love Letter & Memories Interactive Journey */}
           {mode === "letter" && (
             <div className="relative flex min-h-screen w-full flex-col items-center justify-start text-center pb-16 pt-4">
               {/* Soft Vignette Overlay */}
               <div className="pointer-events-none fixed inset-0 z-0 bg-radial-gradient from-transparent via-rose-100/10 to-pink-200/20 mix-blend-multiply" />
+
+              {/* Romantic Atmosphere: Music Player, Song Selector & Cursor Effects (Only in Love Letter) */}
+              <MusicPlayer
+                currentSong={selectedSong}
+                onOpenSelector={() => setIsMusicModalOpen(true)}
+              />
+              <MusicSelectorModal
+                isOpen={isMusicModalOpen}
+                onClose={() => setIsMusicModalOpen(false)}
+                songs={songsList}
+                selectedSongId={selectedSong?.id || null}
+                onSelectSong={(song) => {
+                  setSelectedSong(song);
+                  saveSelectedSongId(song.id);
+                  setIsMusicModalOpen(false);
+                }}
+              />
+              <MouseTrail />
+              <FloatingHearts />
+              <HeartBurst />
 
               {/* Main Experience Past Monthsaries Navbar */}
               <PastMonthsaryNavbar

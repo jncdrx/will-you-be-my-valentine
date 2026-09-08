@@ -231,6 +231,94 @@ export async function handleGetAngelFlixMedia(req, res) {
 }
 
 /**
+ * POST /api/angelflix/media
+ * Create a new AngelFlix memory record from JSON metadata
+ */
+export async function handleCreateAngelFlixMedia(req, res) {
+  try {
+    const admin = await requireAdmin(req, res);
+    if (!admin) return;
+
+    const {
+      id = randomUUID(),
+      title,
+      subtitle = '',
+      category = 'Our Videos',
+      description = '',
+      imageUrl = '',
+      videoUrl = null,
+      publicId = null,
+      resourceType = videoUrl ? 'video' : 'image',
+      duration = 60,
+      date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      tags = [],
+      isFavorite = false,
+      location = '',
+    } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ error: 'Title is required.' });
+    }
+
+    const mediaRecord = {
+      id,
+      title: title.trim(),
+      subtitle: subtitle.trim() || (videoUrl ? 'Private Video Memory' : 'Photo Memory'),
+      description: description.trim() || `Uploaded on ${date}`,
+      category: category.trim(),
+      imageUrl,
+      videoUrl,
+      publicId,
+      resourceType,
+      duration: duration ? Number(duration) : 60,
+      date,
+      tags: Array.isArray(tags) ? tags : [category],
+      isFavorite: Boolean(isFavorite),
+      location,
+      createdAt: new Date().toISOString(),
+    };
+
+    if (supabaseUrl && !supabaseUrl.includes('placeholder')) {
+      try {
+        const { data, error } = await supabase
+          .from('angelflix_media')
+          .insert({
+            id: mediaRecord.id,
+            title: mediaRecord.title,
+            subtitle: mediaRecord.subtitle,
+            description: mediaRecord.description,
+            category: mediaRecord.category,
+            image_url: mediaRecord.imageUrl,
+            video_url: mediaRecord.videoUrl,
+            public_id: mediaRecord.publicId,
+            resource_type: mediaRecord.resourceType,
+            duration_seconds: mediaRecord.duration,
+            date_str: mediaRecord.date,
+            tags: mediaRecord.tags,
+            is_favorite: mediaRecord.isFavorite,
+            created_at: mediaRecord.createdAt,
+          })
+          .select()
+          .single();
+
+        if (!error && data) {
+          localMediaCache.set(mediaRecord.id, mediaRecord);
+          return res.json({ success: true, media: mediaRecord });
+        }
+      } catch (dbErr) {
+        console.warn('Database insert notice:', dbErr);
+      }
+    }
+
+    localMediaCache.set(mediaRecord.id, mediaRecord);
+    return res.json({ success: true, media: mediaRecord });
+  } catch (err) {
+    console.error('Create AngelFlix media error:', err);
+    return res.status(500).json({ error: err.message || 'Failed to create media.' });
+  }
+}
+
+/**
  * PATCH /api/angelflix/media/:id
  */
 export async function handleUpdateAngelFlixMedia(req, res) {

@@ -1,4 +1,5 @@
 import { Memory, formatTime } from '@/data/memories';
+import { netflixSound } from '../../lib/netflixSound';
 
 interface ContinueWatchingProps {
   memories: Memory[];
@@ -86,7 +87,10 @@ export default function ContinueWatching({ memories, favorites, watched, onPlay,
 
                       <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                         <button
-                          onClick={() => onPlay(m.id)}
+                          onClick={() => {
+                            netflixSound.playSelect();
+                            onPlay(m.id);
+                          }}
                           className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold"
                           style={{ background: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--accent-hover)'; }}
@@ -96,7 +100,10 @@ export default function ContinueWatching({ memories, favorites, watched, onPlay,
                           Resume
                         </button>
                         <button
-                          onClick={() => onPlay(m.id)}
+                          onClick={() => {
+                            netflixSound.playSelect();
+                            onPlay(m.id);
+                          }}
                           className="px-4 sm:px-5 py-2.5 rounded-full text-sm font-medium"
                           style={{ background: 'var(--btn-secondary-bg)', color: 'var(--btn-secondary-text)', border: '1px solid var(--btn-secondary-border)' }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; }}
@@ -105,7 +112,10 @@ export default function ContinueWatching({ memories, favorites, watched, onPlay,
                           Start Again
                         </button>
                         <button
-                          onClick={() => onDetails(m.id)}
+                          onClick={() => {
+                            netflixSound.playSelect();
+                            onDetails(m.id);
+                          }}
                           className="px-4 py-2.5 rounded-full text-sm font-medium hidden sm:block"
                           style={{ color: 'var(--text-muted)' }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
@@ -114,7 +124,10 @@ export default function ContinueWatching({ memories, favorites, watched, onPlay,
                           Details
                         </button>
                         <button
-                          onClick={() => onToggleFavorite(m.id)}
+                          onClick={() => {
+                            netflixSound.playPop();
+                            onToggleFavorite(m.id);
+                          }}
                           className="ml-auto w-9 h-9 flex items-center justify-center rounded-full"
                           style={{ color: favorites.has(m.id) ? 'var(--accent)' : 'var(--text-muted)', border: '1px solid var(--border)' }}
                         >

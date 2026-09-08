@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { Memory } from '@/data/memories';
+import { netflixSound } from '../../lib/netflixSound';
 
 interface TimelineProps {
   memories: Memory[];
@@ -12,12 +13,27 @@ interface TimelineProps {
 const FULL_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 function groupByMonth(memories: Memory[]) {
-  const sorted = [...memories].sort((a, b) => b.dateSort.localeCompare(a.dateSort));
+  const sorted = [...memories].sort((a, b) => (b.dateSort || b.date || '').localeCompare(a.dateSort || a.date || ''));
   const groups: { key: string; year: string; month: string; memories: Memory[] }[] = [];
   for (const m of sorted) {
-    const [year, monthIdx] = m.dateSort.split('-');
-    const month = FULL_MONTHS[parseInt(monthIdx) - 1];
-    const key = `${year}-${monthIdx}`;
+    const raw = m.dateSort || m.date || '';
+    let year = '2026';
+    let month = 'August';
+
+    if (raw.includes('-') && raw.split('-').length >= 2) {
+      const parts = raw.split('-');
+      year = parts[0];
+      const mIdx = parseInt(parts[1], 10);
+      month = FULL_MONTHS[mIdx - 1] || 'August';
+    } else {
+      const d = new Date(raw);
+      if (!isNaN(d.getTime())) {
+        year = String(d.getFullYear());
+        month = FULL_MONTHS[d.getMonth()] || 'August';
+      }
+    }
+
+    const key = `${year}-${month}`;
     const last = groups[groups.length - 1];
     if (last && last.key === key) {
       last.memories.push(m);
@@ -57,6 +73,13 @@ export default function Timeline({ memories, favorites, watched, onDetails, onPl
         </div>
 
         {/* Timeline */}
+        {groups.length === 0 ? (
+          <div className="py-16 text-center rounded-2xl p-8" style={{ border: '1px dashed var(--border)', background: 'var(--bg-card)' }}>
+            <p className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
+              No timeline memories recorded yet. Add memories in the Admin Studio to see your journey unfold.
+            </p>
+          </div>
+        ) : (
         <div className="relative">
           {/* Vertical line */}
           <div
@@ -128,6 +151,7 @@ export default function Timeline({ memories, favorites, watched, onDetails, onPl
             <p className="pl-8 sm:pl-4 text-sm" style={{ color: 'var(--text-muted)' }}>Where it all began ♡</p>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
@@ -149,10 +173,14 @@ function TimelineCard({ memory, isFavorite, progress, completed, catColor, onDet
   return (
     <div
       ref={ref}
-      onClick={() => onDetails(memory.id)}
+      onClick={() => {
+        netflixSound.playSelect();
+        onDetails(memory.id);
+      }}
       className="group cursor-pointer rounded-xl overflow-hidden flex gap-0"
       style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', transition: 'border-color 0.15s ease, box-shadow 0.15s ease' }}
       onMouseEnter={(e) => {
+        netflixSound.playHover();
         (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-strong)';
         (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-hover)';
       }}
@@ -189,7 +217,11 @@ function TimelineCard({ memory, isFavorite, progress, completed, catColor, onDet
           style={{ background: 'rgba(0,0,0,0.45)', transition: 'opacity 0.15s ease' }}
         >
           <button
-            onClick={(e) => { e.stopPropagation(); onPlay(memory.id); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              netflixSound.playSelect();
+              onPlay(memory.id);
+            }}
             className="w-8 h-8 rounded-full flex items-center justify-center"
             style={{ background: 'var(--accent)' }}
           >

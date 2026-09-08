@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Memory, formatTime } from '@/data/memories';
+import { netflixSound } from '../../lib/netflixSound';
 
 interface MemoryCardProps {
   memory: Memory;
@@ -23,6 +24,7 @@ export default function MemoryCard({ memory, isFavorite, watchedSec, onPlay, onD
 
   const handleFav = (e: React.MouseEvent) => {
     e.stopPropagation();
+    netflixSound.playPop();
     setHeartPop(true);
     onToggleFavorite(memory.id);
     setTimeout(() => setHeartPop(false), 400);
@@ -38,9 +40,15 @@ export default function MemoryCard({ memory, isFavorite, watchedSec, onPlay, onD
         transform: hovered ? 'scale(1.035)' : 'scale(1)',
         transition: 'transform 0.2s ease, box-shadow 0.2s ease, background-color 200ms ease, border-color 200ms ease',
       }}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={() => {
+        setHovered(true);
+        netflixSound.playHover();
+      }}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => onDetails(memory.id)}
+      onClick={() => {
+        netflixSound.playSelect();
+        onDetails(memory.id);
+      }}
     >
       {/* Thumbnail */}
       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
