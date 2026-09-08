@@ -289,6 +289,24 @@ button{min-height:40px;touch-action:manipulation}
 </div>
 <div class="paper-shell" id="preview"><p class="loading-message">Preparing your handwriting…</p></div></div>
 <div class="preview-bottom"><div class="pagination"><button id="prev-page" aria-label="Previous page"><svg class="icon"><use href="#i-left"/></svg></button><label class="sr-only" for="page-select">Preview page</label><select id="page-select"></select><button id="next-page" aria-label="Next page"><svg class="icon"><use href="#i-right"/></svg></button></div><div class="export-actions"><button id="export-png" title="Export the visible page at 300 dots per inch">PNG · this page</button><button id="export-html" title="Save a new standalone HTML with your current notes, handwriting and settings">Save HTML</button></div></div>
+<div id="section-resize-controls" hidden role="region" aria-label="Selected section size">
+ <strong id="resize-section-name"></strong><output id="resize-readout" aria-live="polite"></output>
+ <label>Width (mm) <input id="resize-width" type="number" min="0.1" step="0.1"></label>
+ <label>Height (mm) <input id="resize-height" type="number" min="0.1" step="0.1"></label>
+ <label>Scale (%) <input id="resize-scale" type="number" min="5" max="1000" step="1"></label>
+ <label><input id="resize-lock" type="checkbox"> Lock Aspect Ratio</label>
+ <button id="resize-format" type="button">Text &amp; colors</button>
+ <button id="resize-reset" type="button">Reset Section Size</button>
+ <button id="resize-page-reset" type="button">Reset Page Layout</button>
+ <button id="resize-done" type="button" aria-label="Deselect section">Done</button>
+ <small>Drag corners to scale; drag edges to stretch. Arrow keys on a handle resize by 1 mm (Shift: 0.1 mm). Escape cancels a drag.</small>
+</div>
+<style>
+ #section-resize-controls:not([hidden]){display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 20px;background:#fff;border-top:1px solid #ddd;flex-shrink:0;font-size:12px}
+ #section-resize-controls label{display:flex;align-items:center;gap:5px}#section-resize-controls input[type=number]{width:75px;padding:5px}#section-resize-controls small{width:100%;color:#726568}#resize-readout{font-variant-numeric:tabular-nums;color:#743648}
+ .section-resize-outline{fill:none;stroke:#8a4260;stroke-width:1.5;vector-effect:non-scaling-stroke;pointer-events:none}.section-resize-handle{fill:white;stroke:#8a4260;stroke-width:1.5;vector-effect:non-scaling-stroke;pointer-events:all;touch-action:none}.section-resize-handle:focus{fill:#eac0d0;outline:none}
+ @media print{#section-resize-controls,.section-resize-overlay{display:none!important}}
+</style>
 <div id="fallback-note" class="fallback-note"></div></section></div></main></div>
 <nav id="mobile-tabs" role="tablist" aria-label="Workspace"><button role="tab" data-pane="library" aria-selected="false"><svg class="icon"><use href="#i-book"/></svg>Library</button><button role="tab" data-pane="edit" aria-selected="false"><svg class="icon"><use href="#i-pen"/></svg>Edit</button><button role="tab" data-pane="page" aria-selected="true"><svg class="icon"><use href="#i-print"/></svg>Page</button></nav>
 <div id="print-root" aria-hidden="true"></div><div id="toast" class="toast" role="status" hidden></div>
@@ -514,6 +532,18 @@ function validSectionColors(raw){
  }
  return result;
 }
+function validSectionLayouts(raw){
+ const result={};
+ if(!raw||typeof raw!=='object')return result;
+ for(const [page,sections] of Object.entries(raw).slice(0,1000)){
+  if(!/^[1-9]\d{0,4}$/.test(page)||!sections||typeof sections!=='object')continue;
+  for(const [key] of FIELDS){const value=sections[key];if(!value||typeof value!=='object')continue;
+   if(!['sx','sy','dx','dy'].every(k=>typeof value[k]==='number'&&Number.isFinite(value[k])))continue;
+   (result[page]??={})[key]={sx:num(value.sx,.05,10,1),sy:num(value.sy,.05,10,1),dx:num(value.dx,-1000,1000,0),dy:num(value.dy,-1000,1000,0),locked:!!value.locked};
+  }
+ }
+ return result;
+}
 function validProject(raw){
  if(!raw||raw.format!=='folio-notebook'||raw.version!==1||!Array.isArray(raw.drugs)||raw.drugs.length>1000)throw Error('This is not a supported Folio project.');
  const p=clone(DEFAULT_PROJECT);p.title=String(raw.title||p.title).slice(0,150);p.drugs=[];
@@ -530,6 +560,7 @@ function validProject(raw){
   // Old projects can inherit missing descriptive metadata without changing their edited medical fields.
   const source=SAMPLE_DRUGS.find(x=>x.id===d.id);if(source){if(!d.groups.length)d.groups=clone(source.groups||[]);for(const k of ['status','market','aliases','chartNote'])if(!d[k])d[k]=source[k]||'';}
   d.sectionColors=validSectionColors(item.sectionColors);d.sectionFormats=validSectionFormats(item.sectionFormats);
+  d.sectionLayouts=validSectionLayouts(item.sectionLayouts);
   p.drugs.push(d);
  }
  const rs=raw.settings||{},s=p.settings;
@@ -864,6 +895,75 @@ function addRecordPages(d,isFree=false){
  }
  for(const item of all)item.partTotal=all.length;return all;
 }
+// Layout overrides are separate from text pagination: resizing never moves a
+// continued section to another page or changes another section's geometry.
+function sectionBox(p,b,proposal){
+ const s=state.settings,baseWidth=s.width-s.left-s.right,baseHeight=b.bottom-b.top;
+ const index=p.blocks.indexOf(b),previous=p.blocks[index-1],next=p.blocks[index+1];
+ const left=Math.max(s.left,-s.offsetX),right=Math.min(s.width-s.right,s.width-s.offsetX);
+ const top=Math.max(s.top,previous?previous.bottom:b.top,-s.offsetY),bottom=Math.min(s.height-s.bottom,next?next.top:s.height-s.bottom,s.height-s.offsetY);
+ const saved=p.drug?.sectionLayouts?.[p.part]?.[b.key]||{};
+ const desired={x:s.left+(saved.dx||0),y:b.top+(saved.dy||0),width:baseWidth*(saved.sx||1),height:baseHeight*(saved.sy||1),...proposal};
+ const width=Math.max(.1,Math.min(Math.max(baseWidth*.05,Number.isFinite(desired.width)?desired.width:baseWidth),right-left));
+ const height=Math.max(.1,Math.min(Math.max(baseHeight*.05,Number.isFinite(desired.height)?desired.height:baseHeight),bottom-top));
+ const x=Math.max(left,Math.min(Number.isFinite(desired.x)?desired.x:s.left,right-width));
+ const y=Math.max(top,Math.min(Number.isFinite(desired.y)?desired.y:b.top,bottom-height));
+ return {x,y,width,height,sx:width/baseWidth,sy:height/baseHeight,baseWidth,baseHeight,left,right,top,bottom,locked:!!saved.locked};
+}
+function setSectionBox(p,b,proposal){
+ const box=sectionBox(p,b,proposal);p.drug.sectionLayouts??={};p.drug.sectionLayouts[p.part]??={};
+ p.drug.sectionLayouts[p.part][b.key]={sx:box.sx,sy:box.sy,dx:box.x-state.settings.left,dy:box.y-b.top,locked:proposal.locked??box.locked};
+ return box;
+}
+function resetSectionLayout(p,key){
+ if(key)delete p.drug.sectionLayouts?.[p.part]?.[key];else delete p.drug.sectionLayouts?.[p.part];
+}
+function sectionTransform(p,b){const box=sectionBox(p,b);return `translate(${box.x} ${box.y}) scale(${box.sx} ${box.sy}) translate(${-state.settings.left} ${-b.top})`;}
+let sectionSelection=null,sectionDrag=null,sectionDragClickUntil=0;
+function selectedSection(){
+ const p=pages[pageIndex];if(calibration||!p?.drug||sectionSelection?.id!==p.drug.id||sectionSelection?.part!==p.part)return null;
+ const b=p.blocks.find(b=>b.key===sectionSelection.key);return b?{p,b}:null;
+}
+function selectSection(key){
+ const p=pages[pageIndex];if(!p?.drug)return;
+ sectionSelection={id:p.drug.id,part:p.part,key};closeSectionColorModal();renderSectionResize();
+}
+function renderSectionResize(){
+ const svg=$('preview').querySelector('svg'),selected=selectedSection(),panel=$('section-resize-controls');
+ svg?.querySelector('.section-resize-overlay')?.remove();panel.hidden=!selected;
+ if(!selected||!svg)return;
+ const {p,b}=selected,box=sectionBox(p,b),s=state.settings;
+ $('resize-section-name').textContent=`${b.label} · Page ${p.part}`;
+ $('resize-readout').textContent=`${box.width.toFixed(1)} × ${box.height.toFixed(1)} mm · ${(box.sx*100).toFixed(1)}% W / ${(box.sy*100).toFixed(1)}% H`;
+ for(const [id,value] of [['width',box.width],['height',box.height],['scale',box.sx*100]]){const input=$('resize-'+id);if(document.activeElement!==input)input.value=Number(value.toFixed(2));}
+ $('resize-lock').checked=box.locked;
+ const x=box.x+s.offsetX,y=box.y+s.offsetY,w=box.width,h=box.height;
+ const group=document.createElementNS('http://www.w3.org/2000/svg','g');group.setAttribute('class','section-resize-overlay');
+ const handles=[['nw',x,y],['n',x+w/2,y],['ne',x+w,y],['e',x+w,y+h/2],['se',x+w,y+h],['s',x+w/2,y+h],['sw',x,y+h],['w',x,y+h/2]];
+ const radius=1.4;
+ group.innerHTML=`<rect class="section-resize-outline" x="${x}" y="${y}" width="${w}" height="${h}"/>`+handles.map(([dir,hx,hy])=>`<rect class="section-resize-handle" data-resize-handle="${dir}" x="${hx-radius}" y="${hy-radius}" width="${radius*2}" height="${radius*2}" tabindex="0" role="button" aria-label="Resize ${b.label}, ${dir} handle" style="cursor:${['nw','se'].includes(dir)?'nwse':['ne','sw'].includes(dir)?'nesw':['n','s'].includes(dir)?'ns':'ew'}-resize"/>`).join('');
+ svg.append(group);
+}
+function resizeFromHandle(box,dir,dx,dy){
+ const west=dir.includes('w'),north=dir.includes('n'),horizontal=/[we]/.test(dir),vertical=/[ns]/.test(dir),corner=horizontal&&vertical;
+ let width=box.width+(horizontal?(west?-dx:dx):0),height=box.height+(vertical?(north?-dy:dy):0);
+ const anchorX=west?box.x+box.width:box.x,anchorY=north?box.y+box.height:box.y;
+ const maxW=west?anchorX-box.left:box.right-anchorX,maxH=north?anchorY-box.top:box.bottom-anchorY;
+ if(corner||box.locked){
+  let ratio=corner?(Math.abs(dx/box.width)>Math.abs(dy/box.height)?width/box.width:height/box.height):horizontal?width/box.width:height/box.height;
+  ratio=Math.max(box.baseWidth*.05/box.width,box.baseHeight*.05/box.height,Math.min(ratio,maxW/box.width,maxH/box.height));width=box.width*ratio;height=box.height*ratio;
+ }else{width=Math.max(box.baseWidth*.05,Math.min(width,maxW));height=Math.max(box.baseHeight*.05,Math.min(height,maxH));}
+ return {x:west?anchorX-width:box.x,y:north?anchorY-height:box.y,width,height};
+}
+function commitResize(){updatePreview();$('print-root').replaceChildren();save();}
+function finishSectionDrag(cancel=false){
+ if(!sectionDrag)return;
+ const drag=sectionDrag;sectionDrag=null;sectionDragClickUntil=Date.now()+250;
+ if(cancel){if(drag.saved)(drag.p.drug.sectionLayouts[drag.p.part]??={})[drag.b.key]=drag.saved;else resetSectionLayout(drag.p,drag.b.key);}
+ if($('preview').hasPointerCapture?.(drag.pointerId))$('preview').releasePointerCapture(drag.pointerId);
+ commitResize();
+}
+function pagePointer(event){const svg=$('preview').querySelector('svg'),matrix=svg?.getScreenCTM();if(!matrix)return null;const point=svg.createSVGPoint();point.x=event.clientX;point.y=event.clientY;return point.matrixTransform(matrix.inverse());}
 function pageSVG(p,index,total,cal=false,namespace='page-'+index,includeDefs=true){
  const s=state.settings,W=s.width,H=s.height,L=s.left,R=s.right,C=W-L-R;let bg='',content='',rules='';
  const framed=['drug','action','dosage','indication','contraindication','adverse','effects','notes'];
@@ -897,7 +997,7 @@ function pageSVG(p,index,total,cal=false,namespace='page-'+index,includeDefs=tru
      const gap=b.gap||s.lineGap;
      const bnum=FIELDS.findIndex(([k])=>k===b.key)+1,headBottom=b.y+(b.headLines.length-1)*gap+1.9,critical=b.key==='contraindication'||b.key==='adverse';
      const sc=getSectionColors(b.key,p.drug);
-     content+=`<g class="section-card" data-drug-id="${esc(p.drug?.id||'')}" data-section="${b.key}" data-top="${f(b.top)}" data-bottom="${f(b.bottom)}" data-continued="${b.continued}">`;
+     content+=`<g class="section-card" transform="${sectionTransform(p,b)}" data-drug-id="${esc(p.drug?.id||'')}" data-section="${b.key}" data-top="${f(b.top)}" data-bottom="${f(b.bottom)}" data-continued="${b.continued}"><rect x="${L}" y="${f(b.top)}" width="${C}" height="${f(b.bottom-b.top)}" fill="transparent"/>`;
      if(s.decorations){
       if(framed.includes(b.key))content+=`<rect class="card-border decoration" x="${L}" y="${f(b.top)}" width="${C}" height="${f(b.bottom-b.top)}" rx="1" fill="none" stroke="${sc.border}" stroke-width="0.32" stroke-opacity="0" ${b.key==='notes'?'stroke-dasharray="1.5 1"':''}/>`;
       content+=`<rect class="card-header-bg decoration" x="${L+.2}" y="${f(b.top+.2)}" width="${C-.4}" height="${f(headBottom-b.top-.2)}" rx=".8" fill="${sc.highlight}"/>`;
@@ -1116,7 +1216,8 @@ function mountInlineEditors(p){
   if(b.kind!=='section'||!b.rows.length||b.rows[0].start===undefined)continue;
   const cacheKey=b.key+':'+b.rows[0].start,signature=JSON.stringify([b.rows,b.align,s.ink,p.drug.fields[b.key].slice(b.rows[0].start,b.rows.at(-1).end)]),cached=previousEditors.get(cacheKey);
   const gap=b.gap||s.lineGap,top=b.y+(b.headLines.length-1)*gap+2;
-  const editorStyle={left:(s.left+.5+s.offsetX)+'px',top:(top+s.offsetY)+'px',width:(s.width-s.left-s.right-1)+'px',height:(b.bottom-top-.2)+'px',caretColor:s.ink};
+  const box=sectionBox(p,b);
+  const editorStyle={left:(box.x+.5*box.sx+s.offsetX)+'px',top:(box.y+(top-b.top)*box.sy+s.offsetY)+'px',width:(s.width-s.left-s.right-1)+'px',height:(b.bottom-top-.2)+'px',caretColor:s.ink,transformOrigin:'0 0',transform:`scale(${box.sx},${box.sy})`};
   if(cached&&cached.record===p.drug&&cached.signature===signature&&cached.metrics===layoutSignature){Object.assign(cached.editor.style,editorStyle);inlineEditorCache.set(cacheKey,cached);continue;}
   const editor=cached?.record===p.drug?cached.editor:document.createElement('div');editor.replaceChildren();editor.className='inline-editor';editor.contentEditable='true';editor.setAttribute('contenteditable','true');editor.setAttribute('role','textbox');editor.setAttribute('aria-multiline','true');editor.setAttribute('aria-label',b.label+' — edit handwritten text');editor.setAttribute('spellcheck','false');editor.tabIndex=0;
   editor.dataset.record=p.drug.id;editor.dataset.field=b.key;editor.dataset.start=b.rows[0].start;editor.dataset.end=b.rows.at(-1).end+(b.rows.at(-1).newline?1:0);
@@ -1209,7 +1310,7 @@ function updatePreview(){
  $('fallback-note').innerHTML=`${originals} photo characters${added?` + ${added} added samples`:''}. ${helpers}${missing?` Other system-type characters: ${esc(missing.slice(0,100))}.`:''} <button id="edit-handwriting-inline">Add your own samples</button>`;
  $('edit-handwriting-inline').onclick=()=>changeView('handwriting');
  const zoom=$('preview-zoom');if(zoom)zoom.value=s.zoom;
- mountInlineEditors(p);renderRulers();if(preserveInline)inlineRestore();inlineRendering=wasInlineRendering;
+ mountInlineEditors(p);renderRulers();renderSectionResize();if(preserveInline)inlineRestore();inlineRendering=wasInlineRendering;
  requestAnimationFrame(()=>{if(typeof fitPaper==='function')fitPaper()});
 }
 /* Library queries are local. Drug names, chart aliases, classes and category names are searchable. */
@@ -1523,10 +1624,51 @@ function fitPaper(){
 $('preview-zoom').onchange=e=>{state.settings.zoom=e.target.value;fitPaper();save()};
 $('focus-page').onclick=()=>{const on=document.body.classList.toggle('focus-mode');$('focus-page').textContent=on?'Back to editor':'Focus page';$('focus-page').setAttribute('aria-pressed',String(on));fitPaper()};
 $('preview').addEventListener('click',e=>{
- const card=e.target.closest('[data-section]'),p=pages[pageIndex];
- if(!card||!p?.drug)return;
- openSectionColorModal(card.dataset.section, card);
+ if(Date.now()<sectionDragClickUntil){e.stopPropagation();return;}
+ if(e.target.closest('[data-resize-handle]')){e.stopPropagation();return;}
+ const card=e.target.closest('[data-section],.inline-editor');
+ if(card)selectSection(card.dataset.section||card.dataset.field);
+ else{sectionSelection=null;renderSectionResize();}
+},true);
+$('preview').addEventListener('focusin',e=>{const editor=e.target.closest('.inline-editor');if(editor)selectSection(editor.dataset.field);});
+$('preview').addEventListener('pointerdown',e=>{
+ const handle=e.target.closest('[data-resize-handle]'),selected=selectedSection();if(!handle||!selected||e.button!==0)return;
+ const point=pagePointer(e);if(!point)return;e.preventDefault();e.stopPropagation();
+ const {p,b}=selected;sectionDrag={p,b,dir:handle.dataset.resizeHandle,point,box:sectionBox(p,b),pointerId:e.pointerId,saved:p.drug.sectionLayouts?.[p.part]?.[b.key]?{...p.drug.sectionLayouts[p.part][b.key]}:null};
+ $('preview').setPointerCapture(e.pointerId);
+},true);
+$('preview').addEventListener('pointermove',e=>{
+ const drag=sectionDrag;if(!drag||e.pointerId!==drag.pointerId)return;const point=pagePointer(e);if(!point)return;
+ setSectionBox(drag.p,drag.b,resizeFromHandle(drag.box,drag.dir,point.x-drag.point.x,point.y-drag.point.y));
+ $('preview').querySelector(`[data-section="${drag.b.key}"]`)?.setAttribute('transform',sectionTransform(drag.p,drag.b));
+ mountInlineEditors(drag.p);renderSectionResize();
 });
+$('preview').addEventListener('pointerup',()=>finishSectionDrag());
+$('preview').addEventListener('pointercancel',()=>finishSectionDrag(true));
+$('preview').addEventListener('lostpointercapture',()=>finishSectionDrag(true));
+$('preview').addEventListener('keydown',e=>{
+ const handle=e.target.closest('[data-resize-handle]'),selected=selectedSection();if(!handle||!selected||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
+ e.preventDefault();e.stopPropagation();const step=e.shiftKey?.1:1,dir=handle.dataset.resizeHandle,{p,b}=selected;
+ setSectionBox(p,b,resizeFromHandle(sectionBox(p,b),dir,e.key==='ArrowLeft'?-step:e.key==='ArrowRight'?step:0,e.key==='ArrowUp'?-step:e.key==='ArrowDown'?step:0));commitResize();
+ $('preview').querySelector(`[data-resize-handle="${dir}"]`)?.focus();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(sectionDrag){e.preventDefault();finishSectionDrag(true);}else{sectionSelection=null;renderSectionResize();}}});
+for(const field of ['width','height','scale'])$('resize-'+field).addEventListener('change',e=>{
+ const selected=selectedSection(),value=e.target.valueAsNumber;if(!selected)return;
+ const {p,b}=selected,box=sectionBox(p,b);if(!Number.isFinite(value)||value<=0){e.target.value=field==='scale'?box.sx*100:box[field];return;}
+ let proposal;
+ if(field==='scale'||box.locked){
+  const ratio=field==='scale'?(Math.max(5,Math.min(1000,value))/100)/box.sx:value/box[field];
+  const limited=Math.max(box.baseWidth*.05/box.width,box.baseHeight*.05/box.height,Math.min(ratio,(box.right-box.x)/box.width,(box.bottom-box.y)/box.height));
+  proposal={width:box.width*limited,height:box.height*limited};
+ }else proposal={[field]:Math.max(value,field==='width'?box.baseWidth*.05:box.baseHeight*.05)};
+ const result=setSectionBox(p,b,proposal);e.target.value=Number((field==='scale'?result.sx*100:result[field]).toFixed(2));commitResize();
+});
+$('resize-lock').onchange=e=>{const selected=selectedSection();if(selected){setSectionBox(selected.p,selected.b,{locked:e.target.checked});commitResize();}};
+$('resize-reset').onclick=()=>{const selected=selectedSection();if(selected){resetSectionLayout(selected.p,selected.b.key);commitResize();}};
+$('resize-page-reset').onclick=()=>{const selected=selectedSection();if(selected){resetSectionLayout(selected.p);commitResize();}};
+$('resize-format').onclick=()=>{const selected=selectedSection();if(selected)openSectionColorModal(selected.b.key,null,selected.p.drug);};
+$('resize-done').onclick=()=>{sectionSelection=null;renderSectionResize();};
 const PRESET_SWATCHES=[{name:'Wine',hex:'#743648'},{name:'Rose',hex:'#a76172'},{name:'Navy',hex:'#2c4f7c'},{name:'Sage',hex:'#3e6b5c'},{name:'Amber',hex:'#96622b'},{name:'Crimson',hex:'#9e2a2b'},{name:'Violet',hex:'#5e4b77'},{name:'Ink',hex:'#3d4043'}];
 $('scm-swatches').innerHTML=PRESET_SWATCHES.map(s=>`<button type="button" class="scm-swatch-btn" style="background:${s.hex}" data-hex="${s.hex}" title="${s.name}"></button>`).join('');
 $('scm-swatches').onclick=e=>{const btn=e.target.closest('[data-hex]');if(btn)updateCurrentSectionColor(btn.dataset.hex)};
