@@ -23,6 +23,10 @@ export default defineConfig({
   build: {
     minify: "esbuild",
     rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        folioSync: path.resolve(__dirname, 'folio-sync.html'),
+      },
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],

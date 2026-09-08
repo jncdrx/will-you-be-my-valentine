@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pharmacology / Drug Index — Bethanechol</title>
+
+  <!-- Google Fonts: Inter for UI/structure, Patrick Hand & Caveat for authentic handwriting -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+
+  <style id="custom-section-colors">
+    /* ==========================================================================
+       SECTION COLOR CONTROLS (CSS VARIABLES)
+       --------------------------------------------------------------------------
+       You can edit these CSS variables directly or click ANY section on the
+       page below to change its colors separately in real time.
+       ========================================================================== */
+    :root {
+      /* --- 1. DRUG SECTION --- */
+      --drug-color: #743648;
+      --drug-header-bg: #f5e4e8;
+      --drug-border-color: #d8b4be;
+      --drug-badge-bg: var(--drug-color);
+      --drug-badge-color: #ffffff;
+      --drug-header-text: var(--drug-color);
+
+      /* --- 2. MODE OF ACTION SECTION --- */
+      --mode-action-color: #743648;
+      --mode-action-header-bg: #f5e4e8;
+      --mode-action-border-color: #d8b4be;
+      --mode-action-badge-bg: var(--mode-action-color);
+      --mode-action-badge-color: #ffffff;
+      --mode-action-header-text: var(--mode-action-color);
+
+      /* --- 3. DOSAGE AND SIZE AVAILABLE SECTION --- */
+      --dosage-color: #743648;
+      --dosage-header-bg: #f5e4e8;
+      --dosage-border-color: #d8b4be;
+      --dosage-badge-bg: var(--dosage-color);
+      --dosage-badge-color: #ffffff;
+      --dosage-header-text: var(--dosage-color);
+
+      /* --- 4. INDICATION SECTION --- */
+      --indication-color: #743648;
+      --indication-header-bg: #f5e4e8;
+      --indication-border-color: #d8b4be;
+      --indication-badge-bg: var(--indication-color);
+      --indication-badge-color: #ffffff;
+      --indication-header-text: var(--indication-color);
+
+      /* --- 5. CONTRAINDICATION SECTION --- */
+      --contraindication-color: #743648;
+      --contraindication-header-bg: #f5e4e8;
+      --contraindication-border-color: #d8b4be;
+      --contraindication-badge-bg: var(--contraindication-color);
+      --contraindication-badge-color: #ffffff;
+      --contraindication-header-text: var(--contraindication-color);
+
+      /* --- 6. ADVERSE REACTION SECTION --- */
+      --adverse-reaction-color: #743648;
+      --adverse-reaction-header-bg: #f5e4e8;
+      --adverse-reaction-border-color: #d8b4be;
+      --adverse-reaction-badge-bg: var(--adverse-reaction-color);
+      --adverse-reaction-badge-color: #ffffff;
+      --adverse-reaction-header-text: var(--adverse-reaction-color);
+
+      /* --- Global Layout & Typography Tokens --- */
+      --page-bg: #ece8e3;
+      --sheet-bg: #ffffff;
+      --ink-primary: #25282a;
+      --ink-muted: #6e6761;
+      --subheading-color: #524d49;
+      --card-radius: 6px;
+      --card-border-width: 1.5px;
+      --card-gap: 15px;
+      --badge-size: 22px;
+      --badge-radius: 4px;
+    }
+  </style>
+
+  <style>
+    /* Section-Specific CSS Variable Mappings */
+    .section-drug {
+      --section-color: var(--drug-color);
+      --section-header-bg: var(--drug-header-bg);
+      --section-border-color: var(--drug-border-color);
+      --section-badge-bg: var(--drug-badge-bg);
+      --section-badge-color: var(--drug-badge-color);
+      --section-header-text: var(--drug-header-text);
+    }
+
+    .section-mode-action {
+      --section-color: var(--mode-action-color);
+      --section-header-bg: var(--mode-action-header-bg);
+      --section-border-color: var(--mode-action-border-color);
+      --section-badge-bg: var(--mode-action-badge-bg);
+      --section-badge-color: var(--mode-action-badge-color);
+      --section-header-text: var(--mode-action-header-text);
+    }
+
+    .section-dosage {
+      --section-color: var(--dosage-color);
+      --section-header-bg: var(--dosage-header-bg);
+      --section-border-color: var(--dosage-border-color);
+      --section-badge-bg: var(--dosage-badge-bg);
+      --section-badge-color: var(--dosage-badge-color);
+      --section-header-text: var(--dosage-header-text);
+    }
+
+    .section-indication {
+      --section-color: var(--indication-color);
+      --section-header-bg: var(--indication-header-bg);
+      --section-border-color: var(--indication-border-color);
+      --section-badge-bg: var(--indication-badge-bg);
+      --section-badge-color: var(--indication-badge-color);
+      --section-header-text: var(--indication-header-text);
+    }
+
+    .section-contraindication {
+      --section-color: var(--contraindication-color);
+      --section-header-bg: var(--contraindication-header-bg);
+      --section-border-color: var(--contraindication-border-color);
+      --section-badge-bg: var(--contraindication-badge-bg);
+      --section-badge-color: var(--contraindication-badge-color);
+      --section-header-text: var(--contraindication-header-text);
+    }
+
+    .section-adverse-reaction {
+      --section-color: var(--adverse-reaction-color);
+      --section-header-bg: var(--adverse-reaction-header-bg);
+      --section-border-color: var(--adverse-reaction-border-color);
+      --section-badge-bg: var(--adverse-reaction-badge-bg);
+      --section-badge-color: var(--adverse-reaction-badge-color);
+      --section-header-text: var(--adverse-reaction-header-text);
+    }
+
+    /* Base Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--page-bg);
+      color: var(--ink-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 48px;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Screen Interactive Top Toolbar (hidden in print) */
+    .toolbar {
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #ffffff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #dcd5cb;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      flex-wrap: wrap;
+    }
+
+    .toolbar-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #554d46;
+    }
+
+    .toolbar-info svg {
+      width: 16px;
+      height: 16px;
+      stroke: #743648;
+      flex-shrink: 0;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: 1px solid #d4cdc3;
+      background: #faf8f5;
+      color: #383431;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      line-height: 1;
+    }
+
+    .btn:hover {
+      background: #f0ece5;
+      border-color: #b8aea2;
+    }
+
+    .btn-primary {
+      background: #743648;
+      border-color: #743648;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: #5b2837;
+      border-color: #5b2837;
+      color: #ffffff;
+    }
+
+    /* Main Printable A5 Sheet */
+    .sheet-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 540px;
+    }
+
+    .sheet {
+      width: 100%;
+      background-color: var(--sheet-bg);
+      padding: 36px 28px 44px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 16px 32px -4px rgba(0, 0, 0, 0.12);
+      border-radius: 2px;
+      margin: 0 auto;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    /* Top Running Document Header */
+    .document-header {
+      margin-bottom: 28px;
+    }
+
+    .document-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      user-select: none;
+    }
+
+    /* Uniform Section Card (All 6 cards have 4 complete, unclipped borders) */
+    .drug-card {
+      width: 100%;
+      background-color: var(--sheet-bg);
+      border: var(--card-border-width) solid var(--section-border-color);
+      border-radius: var(--card-radius);
+      margin-bottom: var(--card-gap);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      box-sizing: border-box;
+      /* Print protection: never split between pages and preserve borders */
+      break-inside: avoid;
+      page-break-inside: avoid;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.2s ease;
+    }
+
+    .drug-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .drug-card:hover {
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.09);
+      border-color: var(--section-color);
+    }
+
+    .drug-card.is-active {
+      outline: 2.5px solid var(--section-color);
+      outline-offset: 2px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    }
+
+    /* Card Header: Badge + Section Title + Palette Trigger */
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 12px;
+      min-height: 36px;
+      background-color: var(--section-header-bg);
+      border-bottom: var(--card-border-width) solid var(--section-border-color);
+      break-after: avoid;
+      page-break-after: avoid;
+      user-select: none;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    /* Numbered Square Badge */
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--badge-size);
+      height: var(--badge-size);
+      background-color: var(--section-badge-bg);
+      color: var(--section-badge-color);
+      border-radius: var(--badge-radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      flex-shrink: 0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    /* Header Title Text */
+    .card-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+      color: var(--section-header-text);
+      line-height: 1;
+      margin: 0;
+      flex: 1;
+      transition: color 0.2s ease;
+    }
+
+    /* Clear Visual Edit Button on Card Header */
+    .edit-pill {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--section-header-text);
+      opacity: 0.85;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .drug-card:hover .edit-pill {
+      opacity: 1;
+      background: #ffffff;
+      transform: scale(1.05);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Card Content Body: Handwritten Style */
+    .card-body {
+      padding: 10px 14px 12px;
+      color: var(--ink-primary);
+      font-family: 'Patrick Hand', 'Caveat', 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive, sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .card-body p {
+      margin: 0 0 6px 0;
+    }
+
+    .card-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Structured Sub-Headings inside Content */
+    .sub-heading {
+      font-family: 'Patrick Hand', 'Caveat', 'Inter', cursive, sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--subheading-color);
+      margin-top: 6px;
+      margin-bottom: 1px;
+      line-height: 1.4;
+    }
+
+    .sub-heading:first-child {
+      margin-top: 0;
+    }
+
+    /* ==========================================================================
+       INTERACTIVE SECTION COLOR PICKER (DESKTOP, TABLET & MOBILE RESPONSIVE)
+       ========================================================================== */
+
+    /* Dimmed Backdrop Overlay (for Tablet and Mobile) */
+    .popover-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 15, 16, 0.42);
+      z-index: 998;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      display: none;
+    }
+
+    .popover-backdrop.is-open {
+      display: block;
+    }
+
+    /* Pull handle for Mobile Bottom Sheet */
+    .popover-handle {
+      display: none;
+      width: 38px;
+      height: 4px;
+      background: #d8cfc7;
+      border-radius: 2px;
+      margin: 0 auto 12px;
+    }
+
+    /* Main Popover Container (Desktop Default: Floating Side Inspector) */
+    .color-popover {
+      position: fixed;
+      top: 90px;
+      right: calc(50% - 270px - 340px);
+      width: 320px;
+      max-width: calc(100vw - 32px);
+      background: #ffffff;
+      border: 1px solid #dcd3ca;
+      border-radius: 12px;
+      box-shadow: 0 16px 40px rgba(35, 20, 25, 0.22);
+      padding: 16px;
+      z-index: 999;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      box-sizing: border-box;
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
+      display: none;
+      animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .color-popover.is-open {
+      display: block;
+    }
+
+    @keyframes popoverFadeIn {
+      from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .popover-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee8e0;
+    }
+
+    .popover-title-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #7b726b;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .popover-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2b2725;
+    }
+
+    .popover-close {
+      background: none;
+      border: none;
+      font-size: 18px;
+      line-height: 1;
+      color: #928880;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .popover-close:hover {
+      color: #2b2725;
+      background: #f3efe9;
+    }
+
+    /* Preset Color Swatches - 8 items per row, overflow-safe */
+    .swatch-group {
+      margin-bottom: 14px;
+    }
+
+    .swatch-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #55504c;
+      margin-bottom: 7px;
+      display: block;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 6px;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 8px 0 12px;
+      padding: 0;
+    }
+
+    /* Swatch button reset: all:unset prevents default button margins/padding/min-width from overflowing */
+    .swatch-btn {
+      all: unset !important;
+      display: block !important;
+      width: 100% !important;
+      aspect-ratio: 1 !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+      max-width: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border-radius: 5px !important;
+      box-sizing: border-box !important;
+      border: 1.5px solid rgba(0, 0, 0, 0.18) !important;
+      cursor: pointer !important;
+      transition: transform 0.12s ease, box-shadow 0.12s ease !important;
+    }
+
+    .swatch-btn:hover {
+      transform: scale(1.18) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+      z-index: 2 !important;
+    }
+
+    .swatch-btn:focus-visible {
+      outline: 2px solid #2b2725 !important;
+      outline-offset: 1px !important;
+    }
+
+    /* Single Primary Color Row */
+    .color-control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 8px 10px;
+      background: #faf7f2;
+      border-radius: 6px;
+      border: 1px solid #eae2d7;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .color-control-info {
+      flex: 1;
+    }
+
+    .color-control-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #332f2c;
+    }
+
+    .color-control-desc {
+      font-size: 10px;
+      color: #79716a;
+    }
+
+    .color-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    input[type="color"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 34px !important;
+      height: 30px !important;
+      min-height: 0 !important;
+      border: 1px solid #d4cdc3 !important;
+      border-radius: 5px !important;
+      cursor: pointer !important;
+      background: transparent !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 4px;
+    }
+
+    .hex-text {
+      width: 68px;
+      font-family: monospace;
+      font-size: 11px;
+      padding: 5px 6px;
+      border: 1px solid #d4cdc3;
+      border-radius: 4px;
+      background: #ffffff;
+      color: #2b2725;
+      text-transform: uppercase;
+      box-sizing: border-box;
+    }
+
+    /* Advanced Color Customization Accordion */
+    .advanced-toggle {
+      width: 100%;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: #743648;
+      background: none;
+      border: none;
+      padding: 6px 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .advanced-toggle:hover {
+      text-decoration: underline;
+    }
+
+    .advanced-fields {
+      display: none;
+      margin-top: 8px;
+      padding: 9px;
+      background: #faf8f5;
+      border-radius: 6px;
+      border: 1px solid #eee7de;
+      gap: 8px;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .advanced-fields.is-open {
+      display: flex;
+    }
+
+    .advanced-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #4f4a45;
+    }
+
+    .advanced-row label {
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .advanced-row input[type="color"] {
+      width: 28px !important;
+      height: 26px !important;
+      border-radius: 4px !important;
+    }
+
+    .popover-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #eee8e0;
+      gap: 8px;
+      width: 100%;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2b2628;
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS: DESKTOP, TABLET, AND PHONE
+       ========================================================================== */
+
+    /* Tablet Screen: 691px to 1180px */
+    @media (min-width: 691px) and (max-width: 1180px) {
+      .color-popover {
+        position: fixed !important;
+        top: 80px !important;
+        right: 16px !important;
+        left: auto !important;
+        bottom: auto !important;
+        width: 310px !important;
+        max-width: calc(100vw - 32px) !important;
+        max-height: calc(100vh - 100px) !important;
+        box-shadow: 0 16px 40px rgba(35, 20, 25, 0.25) !important;
+      }
+    }
+
+    /* Mobile Phone Screen: <= 690px */
+    @media (max-width: 690px) {
+      body {
+        padding: 12px 10px calc(32px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .toolbar {
+        padding: 8px 12px;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .toolbar-info {
+        font-size: 11px;
+        gap: 6px;
+      }
+
+      .toolbar-info svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .btn {
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+
+      .sheet {
+        padding: 24px 16px 30px;
+        border-radius: 4px;
+      }
+
+      .document-header {
+        margin-bottom: 18px;
+      }
+
+      .document-title {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+      }
+
+      .drug-card {
+        margin-bottom: 12px;
+        border-radius: 5px;
+      }
+
+      .card-header {
+        padding: 6px 10px;
+        min-height: 34px;
+        gap: 8px;
+      }
+
+      .card-badge {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+      }
+
+      .card-title {
+        font-size: 11.5px;
+        letter-spacing: 0.7px;
+      }
+
+      .edit-pill {
+        font-size: 9.5px;
+        padding: 3px 6px;
+        gap: 3px;
+      }
+
+      .card-body {
+        padding: 8px 12px 10px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .sub-heading {
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      /* Mobile Pinned Bottom Sheet */
+      .popover-handle {
+        display: block;
+      }
+
+      .color-popover {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 16px 16px 0 0 !important;
+        max-height: 85vh !important;
+        overflow-y: auto !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3) !important;
+        padding: 14px 18px calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+        z-index: 1001 !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: none !important;
+        animation: sheetSlideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+
+      @keyframes sheetSlideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
+    }
+
+    /* ==========================================================================
+       PRINT & PDF EXPORT STYLES
+       ========================================================================== */
+    @media print {
+      @page {
+        size: A5 portrait;
+        margin: 10mm 12mm 12mm 12mm;
+      }
+
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      html, body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        height: auto !important;
+      }
+
+      .no-print, .toolbar, .color-popover, .popover-backdrop, .edit-pill, .toast {
+        display: none !important;
+      }
+
+      .sheet-wrapper {
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+
+      .sheet {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+
+      .document-header {
+        margin-top: 2mm;
+        margin-bottom: 6mm;
+      }
+
+      .drug-card {
+        margin-bottom: 4mm !important;
+        cursor: default !important;
+        box-shadow: none !important;
+        outline: none !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        -webkit-box-decoration-break: clone !important;
+        box-decoration-break: clone !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Helper Toolbar (Automatically hidden when printing/exporting to PDF) -->
+  <aside class="toolbar no-print" aria-label="Page controls">
+    <div class="toolbar-info">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
+      <span>Click any section or its 🎨 button to change color</span>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn" id="btn-copy-css" title="Copy active CSS variables to clipboard">
+        Copy CSS
+      </button>
+      <button class="btn btn-primary" id="btn-print" title="Print or Save as PDF">
+        Print / PDF
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Sheet Container -->
+  <div class="sheet-wrapper">
+    <main class="sheet" role="article" aria-label="Pharmacology Drug Index">
+
+      <!-- Top Running Header -->
+      <header class="document-header">
+        <div class="document-title">PHARMACOLOGY / DRUG INDEX</div>
+      </header>
+
+      <!-- Section 1: DRUG -->
+      <section class="drug-card section-drug" data-section="drug" data-name="DRUG" data-var="--drug-color" aria-labelledby="sec-title-1">
+        <div class="card-header">
+          <span class="card-badge" aria-hidden="true">1</span>
+          <h2 id="sec-title-1" class="card-title">DRUG</h2>
+          <span class="edit-pill no-print" aria-label="Change section color">🎨 Edit Color</span>
+        </div>
+        <div class="card-body">
+          <p>Bethanechol. Also listed as Bethanecol in chart. Direct muscarinic agonist.</p>
+        </div>
+      </section>
+
+      <!-- Section 2: MODE OF ACTION -->
+      <section class="drug-card section-mode-action" data-section="mode-action" data-name="MODE OF ACTION" data-var="--mode-action-color" aria-labelledby="sec-title-2">
+        <div class="card-header">
+          <span class="card-badge" aria-hidden="true">2</span>
+          <h2 id="sec-title-2" class="card-title">MODE OF ACTION</h2>
+          <span class="edit-pill no-print" aria-label="Change section color">🎨 Edit Color</span>
+        </div>
+        <div class="card-body">
+          <p>Stimulates muscarinic receptors, increasing bladder detrusor contraction and gastrointestinal motility.</p>
+        </div>
+      </section>
+
+      <!-- Section 3: DOSAGE AND SIZE AVAILABLE -->
+      <section class="drug-card section-dosage" data-section="dosage" data-name="DOSAGE AND SIZE AVAILABLE" data-var="--dosage-color" aria-labelledby="sec-title-3">
+        <div class="card-header">
+          <span class="card-badge" aria-hidden="true">3</span>
+          <h2 id="sec-title-3" class="card-title">DOSAGE AND SIZE AVAILABLE</h2>
+          <span class="edit-pill no-print" aria-label="Change section color">🎨 Edit Color</span>
+        </div>
+        <div class="card-body">
+          <div class="sub-heading">FORMS / STRENGTHS</div>
+          <p>Oral tablets 5, 10, 25, 50 mg.</p>
+          <div class="sub-heading">DOSE / SCOPE</div>
+          <p>Adult nonobstructive urinary retention 10–50 mg orally 3–4 times daily, individualized to response.</p>
+        </div>
+      </section>
+
+      <!-- Section 4: INDICATION -->
+      <section class="drug-card section-indication" data-section="indication" data-name="INDICATION" data-var="--indication-color" aria-labelledby="sec-title-4">
+        <div class="card-header">
+          <span class="card-badge" aria-hidden="true">4</span>
+          <h2 id="sec-title-4" class="card-title">INDICATION</h2>
+          <span class="edit-pill no-print" aria-label="Change section color">🎨 Edit Color</span>
+        </div>
+        <div class="card-body">
+          <p>Postoperative/postpartum nonobstructive urinary retention, neurogenic bladder atony.</p>
+        </div>
+      </section>
+
+      <!-- Section 5: CONTRAINDICATION -->
+      <section class="drug-card section-contraindication" data-section="contraindication" data-name="CONTRAINDICATION" data-var="--contraindication-color" aria-labelledby="sec-title-5">
+        <div class="card-header">
+          <span class="card-badge" aria-hidden="true">5</span>
+          <h2 id="sec-title-5" class="card-title">CONTRAINDICATION</h2>
+          <span class="edit-pill no-print" aria-label="Change section color">🎨 Edit Color</span>
+        </div>
+        <div class="card-body">
+          <p>Hypersensitivity, hyperthyroidism, peptic ulcer, latent or active asthma, pronounced bradycardia or hypotension, vasomotor instability, coronary artery disease, epilepsy or parkinsonism. Do not use with mechanical GI/urinary obstruction or when contraction may harm recent surgery or a weakened wall, consult the product label for the complete exclusions.</p>
+        </div>
+      </section>
+
+      <!-- Section 6: ADVERSE REACTION -->
+      <section class="drug-card section-adverse-reaction" data-section="adverse-reaction" data-name="ADVERSE REACTION" data-var="--adverse-reaction-color" aria-labelledby="sec-title-6">
+        <div class="card-header">
+          <span class="card-badge" aria-hidden="true">6</span>
+          <h2 id="sec-title-6" class="card-title">ADVERSE REACTION</h2>
+          <span class="edit-pill no-print" aria-label="Change section color">🎨 Edit Color</span>
+        </div>
+        <div class="card-body">
+          <p>Bronchospasm, marked bradycardia or hypotension, cholinergic toxicity.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Translucent Backdrop for Tablet / Mobile -->
+    <div class="popover-backdrop no-print" id="popover-backdrop" aria-hidden="true"></div>
+
+    <!-- Interactive Section Color Picker Popover -->
+    <aside class="color-popover no-print" id="color-popover" aria-label="Section Color Inspector">
+      <!-- Handle for Mobile Bottom Sheet -->
+      <div class="popover-handle" aria-hidden="true"></div>
+
+      <div class="popover-header">
+        <div>
+          <span class="popover-title-badge" id="popover-badge">SECTION 1</span>
+          <h3 class="popover-title" id="popover-title">DRUG</h3>
+        </div>
+        <button class="popover-close" id="popover-close" aria-label="Close color picker">✕</button>
+      </div>
+
+      <!-- Quick Preset Swatches (8 columns, zero overflow) -->
+      <div class="swatch-group">
+        <span class="swatch-label">Quick Color Palette</span>
+        <div class="swatches" id="swatch-container">
+          <!-- Swatches dynamically generated via JS -->
+        </div>
+      </div>
+
+      <!-- Main One-Click Color Picker -->
+      <div class="color-control-row">
+        <div class="color-control-info">
+          <div class="color-control-name">Theme Color</div>
+          <div class="color-control-desc">Updates border, badge &amp; tints</div>
+        </div>
+        <div class="color-input-wrapper">
+          <input type="color" id="primary-color-input" value="#743648" aria-label="Primary theme color picker">
+          <input type="text" class="hex-text" id="primary-hex-input" value="#743648" maxlength="7" spellcheck="false" aria-label="Primary theme color hex">
+        </div>
+      </div>
+
+      <!-- Advanced Color Customization Toggle -->
+      <button class="advanced-toggle" id="advanced-toggle" type="button">
+        <span>Fine-tune individual colors</span>
+        <span id="advanced-arrow">▼</span>
+      </button>
+
+      <div class="advanced-fields" id="advanced-fields">
+        <div class="advanced-row">
+          <label for="adv-header-bg">Header Background</label>
+          <input type="color" id="adv-header-bg" aria-label="Header background color">
+        </div>
+        <div class="advanced-row">
+          <label for="adv-border">Card Border</label>
+          <input type="color" id="adv-border" aria-label="Card border color">
+        </div>
+        <div class="advanced-row">
+          <label for="adv-badge-bg">Badge Background</label>
+          <input type="color" id="adv-badge-bg" aria-label="Badge background color">
+        </div>
+        <div class="advanced-row">
+          <label for="adv-badge-text">Badge Number Text</label>
+          <input type="color" id="adv-badge-text" aria-label="Badge number text color">
+        </div>
+        <div class="advanced-row">
+          <label for="adv-header-text">Header Title Text</label>
+          <input type="color" id="adv-header-text" aria-label="Header title text color">
+        </div>
+      </div>
+
+      <!-- Popover Footer -->
+      <div class="popover-footer">
+        <button class="btn" id="btn-reset-section">Reset Section</button>
+        <button class="btn btn-primary" id="btn-done">Done</button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="toast no-print" id="toast" role="status" aria-live="polite">Copied to clipboard!</div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // Default Section Color Map
+      const DEFAULT_COLORS = {
+        'drug': '#743648',
+        'mode-action': '#743648',
+        'dosage': '#743648',
+        'indication': '#743648',
+        'contraindication': '#743648',
+        'adverse-reaction': '#743648'
+      };
+
+      // Curated Preset Palette Swatches
+      const PRESET_SWATCHES = [
+        { name: 'Wine Plum', hex: '#743648' },
+        { name: 'Dusty Rose', hex: '#a76172' },
+        { name: 'Slate Navy', hex: '#2c4f7c' },
+        { name: 'Forest Emerald', hex: '#2b6b55' },
+        { name: 'Warm Amber', hex: '#9e622b' },
+        { name: 'Crimson Alert', hex: '#a62b2b' },
+        { name: 'Deep Violet', hex: '#5e437c' },
+        { name: 'Graphite Ink', hex: '#3d4044' }
+      ];
+
+      // DOM Elements
+      const cards = document.querySelectorAll('.drug-card');
+      const popover = document.getElementById('color-popover');
+      const backdrop = document.getElementById('popover-backdrop');
+      const popoverBadge = document.getElementById('popover-badge');
+      const popoverTitle = document.getElementById('popover-title');
+      const popoverClose = document.getElementById('popover-close');
+      const btnDone = document.getElementById('btn-done');
+      const btnResetSection = document.getElementById('btn-reset-section');
+      const swatchContainer = document.getElementById('swatch-container');
+      const primaryColorInput = document.getElementById('primary-color-input');
+      const primaryHexInput = document.getElementById('primary-hex-input');
+      const advancedToggle = document.getElementById('advanced-toggle');
+      const advancedFields = document.getElementById('advanced-fields');
+      const advancedArrow = document.getElementById('advanced-arrow');
+      const advHeaderBg = document.getElementById('adv-header-bg');
+      const advBorder = document.getElementById('adv-border');
+      const advBadgeBg = document.getElementById('adv-badge-bg');
+      const advBadgeText = document.getElementById('adv-badge-text');
+      const advHeaderText = document.getElementById('adv-header-text');
+      const btnPrint = document.getElementById('btn-print');
+      const btnCopyCss = document.getElementById('btn-copy-css');
+      const toast = document.getElementById('toast');
+
+      let currentSectionKey = null;
+      let activeCard = null;
+
+      // Helper: Convert HEX to RGB
+      function hexToRgb(hex) {
+        let c = hex.replace('#', '').trim();
+        if (c.length === 3) c = c.split('').map(x => x + x).join('');
+        const num = parseInt(c, 16);
+        return {
+          r: (num >> 16) & 255,
+          g: (num >> 8) & 255,
+          b: num & 255
+        };
+      }
+
+      // Helper: Mix color with white for soft header background and borders
+      function mixWithWhite(hex, weightOfColor) {
+        const { r, g, b } = hexToRgb(hex);
+        const w = Math.max(0, Math.min(1, weightOfColor));
+        const nr = Math.round(r * w + 255 * (1 - w));
+        const ng = Math.round(g * w + 255 * (1 - w));
+        const nb = Math.round(b * w + 255 * (1 - w));
+        return `#${((1 << 24) + (nr << 16) + (ng << 8) + nb).toString(16).slice(1)}`;
+      }
+
+      // Helper: Validate Hex String
+      function isValidHex(hex) {
+        return /^#[0-9A-Fa-f]{6}$/.test(hex);
+      }
+
+      // Render preset swatches
+      PRESET_SWATCHES.forEach(swatch => {
+        const btn = document.createElement('button');
+        btn.className = 'swatch-btn';
+        btn.style.backgroundColor = swatch.hex;
+        btn.title = `${swatch.name} (${swatch.hex})`;
+        btn.type = 'button';
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          applySectionTheme(swatch.hex);
+        };
+        swatchContainer.appendChild(btn);
+      });
+
+      // Apply complete theme to currently selected section
+      function applySectionTheme(primaryHex) {
+        if (!currentSectionKey || !isValidHex(primaryHex)) return;
+
+        const headerBg = mixWithWhite(primaryHex, 0.14);
+        const borderColor = mixWithWhite(primaryHex, 0.36);
+        const badgeBg = primaryHex;
+        const badgeText = '#ffffff';
+        const headerText = primaryHex;
+
+        // Update CSS Variables directly on root
+        const root = document.documentElement;
+        root.style.setProperty(`--${currentSectionKey}-color`, primaryHex);
+        root.style.setProperty(`--${currentSectionKey}-header-bg`, headerBg);
+        root.style.setProperty(`--${currentSectionKey}-border-color`, borderColor);
+        root.style.setProperty(`--${currentSectionKey}-badge-bg`, badgeBg);
+        root.style.setProperty(`--${currentSectionKey}-badge-color`, badgeText);
+        root.style.setProperty(`--${currentSectionKey}-header-text`, headerText);
+
+        // Synchronize input fields
+        primaryColorInput.value = primaryHex;
+        primaryHexInput.value = primaryHex.toUpperCase();
+        advHeaderBg.value = headerBg;
+        advBorder.value = borderColor;
+        advBadgeBg.value = badgeBg;
+        advBadgeText.value = badgeText;
+        advHeaderText.value = headerText;
+
+        debouncedSaveColors();
+      }
+
+      // Open popover for a section
+      function openSectionEditor(card) {
+        if (activeCard) activeCard.classList.remove('is-active');
+        activeCard = card;
+        activeCard.classList.add('is-active');
+
+        currentSectionKey = card.getAttribute('data-section');
+        const sectionName = card.getAttribute('data-name');
+        const badgeNum = card.querySelector('.card-badge').textContent.trim();
+
+        popoverBadge.textContent = `SECTION ${badgeNum}`;
+        popoverTitle.textContent = sectionName;
+
+        // Read current computed values
+        const style = getComputedStyle(document.documentElement);
+        const currentColor = style.getPropertyValue(`--${currentSectionKey}-color`).trim() || DEFAULT_COLORS[currentSectionKey];
+        const currentHeaderBg = style.getPropertyValue(`--${currentSectionKey}-header-bg`).trim() || mixWithWhite(currentColor, 0.14);
+        const currentBorder = style.getPropertyValue(`--${currentSectionKey}-border-color`).trim() || mixWithWhite(currentColor, 0.36);
+        const currentBadgeBg = style.getPropertyValue(`--${currentSectionKey}-badge-bg`).trim() || currentColor;
+        const currentBadgeText = style.getPropertyValue(`--${currentSectionKey}-badge-color`).trim() || '#ffffff';
+        const currentHeaderText = style.getPropertyValue(`--${currentSectionKey}-header-text`).trim() || currentColor;
+
+        primaryColorInput.value = isValidHex(currentColor) ? currentColor : '#743648';
+        primaryHexInput.value = primaryColorInput.value.toUpperCase();
+        advHeaderBg.value = isValidHex(currentHeaderBg) ? currentHeaderBg : mixWithWhite(primaryColorInput.value, 0.14);
+        advBorder.value = isValidHex(currentBorder) ? currentBorder : mixWithWhite(primaryColorInput.value, 0.36);
+        advBadgeBg.value = isValidHex(currentBadgeBg) ? currentBadgeBg : primaryColorInput.value;
+        advBadgeText.value = isValidHex(currentBadgeText) ? currentBadgeText : '#ffffff';
+        advHeaderText.value = isValidHex(currentHeaderText) ? currentHeaderText : primaryColorInput.value;
+
+        popover.classList.add('is-open');
+
+        // Manage backdrop and positioning across screen widths
+        if (window.innerWidth <= 1180) {
+          if (backdrop) backdrop.classList.add('is-open');
+          popover.style.top = '';
+        } else {
+          if (backdrop) backdrop.classList.remove('is-open');
+          // Desktop: Anchor nicely alongside the card
+          const rect = card.getBoundingClientRect();
+          const popoverHeight = popover.offsetHeight || 420;
+          const top = Math.max(80, Math.min(window.innerHeight - popoverHeight - 20, rect.top));
+          popover.style.top = top + 'px';
+        }
+      }
+
+      function closePopover() {
+        saveColorsToStorage();
+        popover.classList.remove('is-open');
+        if (backdrop) backdrop.classList.remove('is-open');
+        if (activeCard) {
+          activeCard.classList.remove('is-active');
+          activeCard = null;
+        }
+      }
+
+      // Card click events
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          openSectionEditor(card);
+        });
+      });
+
+      // Primary color picker input
+      primaryColorInput.addEventListener('input', (e) => {
+        applySectionTheme(e.target.value);
+      });
+
+      // Primary hex text input
+      primaryHexInput.addEventListener('input', (e) => {
+        let val = e.target.value.trim();
+        if (!val.startsWith('#')) val = '#' + val;
+        if (isValidHex(val)) {
+          applySectionTheme(val);
+        }
+      });
+
+      let saveDebounceTimer = null;
+      function debouncedSaveColors(ms = 250) {
+        clearTimeout(saveDebounceTimer);
+        saveDebounceTimer = setTimeout(saveColorsToStorage, ms);
+      }
+
+      // Advanced field fine-tuning
+      advHeaderBg.addEventListener('input', (e) => {
+        if (!currentSectionKey) return;
+        document.documentElement.style.setProperty(`--${currentSectionKey}-header-bg`, e.target.value);
+        debouncedSaveColors();
+      });
+
+      advBorder.addEventListener('input', (e) => {
+        if (!currentSectionKey) return;
+        document.documentElement.style.setProperty(`--${currentSectionKey}-border-color`, e.target.value);
+        debouncedSaveColors();
+      });
+
+      advBadgeBg.addEventListener('input', (e) => {
+        if (!currentSectionKey) return;
+        document.documentElement.style.setProperty(`--${currentSectionKey}-badge-bg`, e.target.value);
+        debouncedSaveColors();
+      });
+
+      advBadgeText.addEventListener('input', (e) => {
+        if (!currentSectionKey) return;
+        document.documentElement.style.setProperty(`--${currentSectionKey}-badge-color`, e.target.value);
+        debouncedSaveColors();
+      });
+
+      advHeaderText.addEventListener('input', (e) => {
+        if (!currentSectionKey) return;
+        document.documentElement.style.setProperty(`--${currentSectionKey}-header-text`, e.target.value);
+        debouncedSaveColors();
+      });
+
+      // Toggle Advanced Accordion
+      advancedToggle.addEventListener('click', () => {
+        const isOpen = advancedFields.classList.toggle('is-open');
+        advancedArrow.textContent = isOpen ? '▲' : '▼';
+      });
+
+      // Reset Current Section to Default
+      btnResetSection.addEventListener('click', () => {
+        if (!currentSectionKey) return;
+        const defaultHex = DEFAULT_COLORS[currentSectionKey];
+        applySectionTheme(defaultHex);
+        showToast(`Reset Section to default`);
+      });
+
+      popoverClose.addEventListener('click', closePopover);
+      btnDone.addEventListener('click', closePopover);
+      if (backdrop) backdrop.addEventListener('click', closePopover);
+
+      // Close popover when clicking outside on desktop
+      document.addEventListener('click', (e) => {
+        if (popover.classList.contains('is-open')) {
+          if (!popover.contains(e.target) && !e.target.closest('.drug-card') && !e.target.closest('.toolbar') && e.target !== backdrop) {
+            closePopover();
+          }
+        }
+      });
+
+      // Print button
+      btnPrint.addEventListener('click', () => {
+        closePopover();
+        window.print();
+      });
+
+      // Copy CSS variables
+      btnCopyCss.addEventListener('click', () => {
+        const keys = ['drug', 'mode-action', 'dosage', 'indication', 'contraindication', 'adverse-reaction'];
+        const style = getComputedStyle(document.documentElement);
+        let css = ':root {\n';
+        keys.forEach(k => {
+          css += `  /* ${k.toUpperCase()} */\n`;
+          css += `  --${k}-color: ${style.getPropertyValue(`--${k}-color`).trim()};\n`;
+          css += `  --${k}-header-bg: ${style.getPropertyValue(`--${k}-header-bg`).trim()};\n`;
+          css += `  --${k}-border-color: ${style.getPropertyValue(`--${k}-border-color`).trim()};\n`;
+          css += `  --${k}-badge-bg: ${style.getPropertyValue(`--${k}-badge-bg`).trim()};\n`;
+          css += `  --${k}-badge-color: ${style.getPropertyValue(`--${k}-badge-color`).trim()};\n`;
+          css += `  --${k}-header-text: ${style.getPropertyValue(`--${k}-header-text`).trim()};\n\n`;
+        });
+        css += '}';
+
+        navigator.clipboard.writeText(css).then(() => {
+          showToast('Copied CSS Variables to clipboard!');
+        }).catch(() => {
+          showToast('CSS copied to console');
+          console.log(css);
+        });
+      });
+
+      // Toast notification helper
+      let toastTimer;
+      function showToast(msg) {
+        clearTimeout(toastTimer);
+        toast.textContent = msg;
+        toast.classList.add('show');
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2200);
+      }
+
+      // LocalStorage persistence
+      const STORAGE_KEY = 'pharmacology_drug_index_custom_colors';
+      function saveColorsToStorage() {
+        try {
+          const keys = ['drug', 'mode-action', 'dosage', 'indication', 'contraindication', 'adverse-reaction'];
+          const style = getComputedStyle(document.documentElement);
+          const data = {};
+          keys.forEach(k => {
+            data[k] = {
+              color: style.getPropertyValue(`--${k}-color`).trim(),
+              headerBg: style.getPropertyValue(`--${k}-header-bg`).trim(),
+              borderColor: style.getPropertyValue(`--${k}-border-color`).trim(),
+              badgeBg: style.getPropertyValue(`--${k}-badge-bg`).trim(),
+              badgeColor: style.getPropertyValue(`--${k}-badge-color`).trim(),
+              headerText: style.getPropertyValue(`--${k}-header-text`).trim()
+            };
+          });
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {}
+      }
+
+      function loadColorsFromStorage() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const data = JSON.parse(raw);
+          const root = document.documentElement;
+          Object.keys(data).forEach(k => {
+            const sec = data[k];
+            if (sec.color) root.style.setProperty(`--${k}-color`, sec.color);
+            if (sec.headerBg) root.style.setProperty(`--${k}-header-bg`, sec.headerBg);
+            if (sec.borderColor) root.style.setProperty(`--${k}-border-color`, sec.borderColor);
+            if (sec.badgeBg) root.style.setProperty(`--${k}-badge-bg`, sec.badgeBg);
+            if (sec.badgeColor) root.style.setProperty(`--${k}-badge-color`, sec.badgeColor);
+            if (sec.headerText) root.style.setProperty(`--${k}-header-text`, sec.headerText);
+          });
+        } catch (e) {}
+      }
+
+      // Initialize saved colors
+      loadColorsFromStorage();
+    })();
+  </script>
+</body>
+</html>

@@ -1,28 +1,16 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Routes, Route, Navigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MusicPlayer } from "./components/MusicPlayer";
 import { MouseTrail } from "./components/MouseTrail";
-import { FloatingHearts } from "./components/FloatingHearts";
 import { HeartBurst } from "./components/HeartBurst";
-import { WelcomeScreen } from "./components/WelcomeScreen";
-import { LoveLetterSection } from "./components/LoveLetterSection";
-import { MemoriesSection } from "./components/MemoriesSection";
-import { AngelReactionForm } from "./components/AngelReactionForm";
 import { AngelAuthGate } from "./components/AngelAuthGate";
-import { SubmissionConfirmation } from "./components/SubmissionConfirmation";
 import { PastMonthsaryNavbar } from "./components/PastMonthsaryNavbar";
-import { PastMonthsaryModal } from "./components/PastMonthsaryModal";
-import { MusicSelectorModal } from "./components/MusicSelectorModal";
-import { VouchersSection, VouchersSectionHandle } from "./components/user/VouchersSection";
+import type { VouchersSectionHandle } from "./components/user/VouchersSection";
 import { ExperienceHub } from "./components/ExperienceHub";
-import { AngelFlix } from "./components/AngelFlix";
 import { FolioExperience } from "./components/FolioExperience";
 import { AdminRoutes } from "./components/admin/AdminRoutes";
-import { AdminLoginPage } from "./components/admin/AdminLoginPage";
-import { AdminDashboard } from "./components/admin/AdminDashboard";
-import { AdminSecurityLogs } from "./components/admin/AdminSecurityLogs";
 import {
   getResponseByToken,
   MonthsaryResponse,
@@ -42,8 +30,24 @@ import { toast } from "sonner";
 type ExperienceMode = "hub" | "letter" | "angelflix" | "folio";
 type ExperienceStep = "welcome" | "letter" | "memories" | "reaction" | "confirmation";
 
+// Folio opens without downloading the letter effects, video player, or administration screens.
+const FloatingHearts = lazy(() => import("./components/FloatingHearts").then(m => ({ default: m.FloatingHearts })));
+const WelcomeScreen = lazy(() => import("./components/WelcomeScreen").then(m => ({ default: m.WelcomeScreen })));
+const LoveLetterSection = lazy(() => import("./components/LoveLetterSection").then(m => ({ default: m.LoveLetterSection })));
+const MemoriesSection = lazy(() => import("./components/MemoriesSection").then(m => ({ default: m.MemoriesSection })));
+const AngelReactionForm = lazy(() => import("./components/AngelReactionForm").then(m => ({ default: m.AngelReactionForm })));
+const SubmissionConfirmation = lazy(() => import("./components/SubmissionConfirmation").then(m => ({ default: m.SubmissionConfirmation })));
+const PastMonthsaryModal = lazy(() => import("./components/PastMonthsaryModal").then(m => ({ default: m.PastMonthsaryModal })));
+const MusicSelectorModal = lazy(() => import("./components/MusicSelectorModal").then(m => ({ default: m.MusicSelectorModal })));
+const VouchersSection = lazy(() => import("./components/user/VouchersSection").then(m => ({ default: m.VouchersSection })));
+const AngelFlix = lazy(() => import("./components/AngelFlix").then(m => ({ default: m.AngelFlix })));
+const AdminLoginPage = lazy(() => import("./components/admin/AdminLoginPage").then(m => ({ default: m.AdminLoginPage })));
+const AdminDashboard = lazy(() => import("./components/admin/AdminDashboard").then(m => ({ default: m.AdminDashboard })));
+const AdminSecurityLogs = lazy(() => import("./components/admin/AdminSecurityLogs").then(m => ({ default: m.AdminSecurityLogs })));
+
 export default function App() {
   return (
+    <Suspense fallback={<div role="status" className="flex min-h-screen items-center justify-center bg-[#f5f3ef] text-[#512735]">Opening page…</div>}>
     <Routes>
       <Route path="/" element={<UserSite />} />
       <Route path="/folio" element={<Navigate to="/?view=folio" replace />} />
@@ -56,6 +60,7 @@ export default function App() {
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </Suspense>
   );
 }
 
