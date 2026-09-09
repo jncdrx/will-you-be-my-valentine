@@ -28,3 +28,21 @@ for(const path of ['public/folio.html','public/folio/index.html'])test(`${path}:
   if(one>=0){a.go(one);assert.equal(w.document.getElementById('companion-page').hidden,true);}
  }finally{w.close()}
 });
+
+for(const path of ['public/folio.html','public/folio/index.html'])test(`${path}: every drug's second page stays beside its first page`,()=>{
+ const w=new JSDOM(readFileSync(path,'utf8'),{runScripts:'outside-only',url:'http://localhost'}).window;
+ try{
+  w.matchMedia=()=>({matches:false});w.HTMLCanvasElement.prototype.getContext=()=>({measureText:t=>({width:t.length})});w.requestAnimationFrame=()=>1;
+  const script=[...w.document.scripts].find(s=>s.textContent.includes('function pageSVG')).textContent;
+  w.eval(script.replace(/^prepareGlyphColors\(\).then\(.*$/m,'')+`window.api={layoutAndRender,cachedRecordPages,updatePreview,get state(){return state},go(i){pageIndex=i;updatePreview()}};`);
+  const a=w.api,records=a.state.drugs.filter(drug=>a.cachedRecordPages(drug).length>=2);
+  assert.equal(records.length,121,'fixture must cover every drug');
+  for(const drug of records){
+   a.state.selected=drug.id;a.state.scope='selected';a.layoutAndRender(true);a.go(1);
+   const spread=w.document.getElementById('drug-spread');
+   assert.equal(spread.querySelectorAll('.paper-shell svg').length,2,`${drug.name} Page 2 must have a companion page`);
+   assert.equal(w.document.getElementById('active-page-label').textContent,'Back / Page 2',`${drug.name} Page 2 must be labeled as the back`);
+   assert.equal(w.document.getElementById('companion-page-label').textContent,'Front / Page 1',`${drug.name} Page 1 must remain beside Page 2`);
+  }
+ }finally{w.close()}
+});

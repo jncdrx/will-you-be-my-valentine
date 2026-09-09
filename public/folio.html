@@ -2105,8 +2105,10 @@ let touchPreviewZoom=matchMedia('(pointer:coarse)').matches?'page':null;
 let companionPreviewMarkup='';
 function renderSpread(p){
  const siblings=!calibration&&p?.drug?pages.map((page,index)=>({page,index})).filter(item=>item.page.drug===p.drug):[];
- const paired=siblings.length===2,other=paired?siblings.find(item=>item.index!==pageIndex):null;
- const label=page=>paired?(page.part===1?'Front / Page 1':'Back / Page 2'):`Page ${page?.part||1}`;
+ const pairStart=p?.part%2===0?p.part-1:p?.part;
+ const pair=siblings.filter(item=>item.page.part>=pairStart&&item.page.part<pairStart+2);
+ const other=pair.find(item=>item.index!==pageIndex)||null,paired=!!other;
+ const label=page=>page?.part===1?'Front / Page 1':page?.part===2?'Back / Page 2':`Page ${page?.part||1}`;
  $('drug-spread').dataset.paired=String(paired);
  $('drug-spread').setAttribute('aria-label',`${p?.drug?.name||'Notebook'} · ${paired?'Front and back pages':'Page preview'}`);
  $('active-page-label').textContent=label(p);$('active-page').style.order=String(p?.part||1);

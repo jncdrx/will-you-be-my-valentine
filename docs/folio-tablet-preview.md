@@ -1,6 +1,6 @@
 # Folio two-page tablet preview
 
-Two-page drugs display a grouped Front / Page 1 and Back / Page 2 spread. Tap a page or its heading to select it for editing. The active page retains the existing inline editing and resize handlers; its companion uses the same printable SVG renderer and shared handwriting assets.
+Every drug opens with a grouped Front / Page 1 and Back / Page 2 spread, including records that continue to later pages. Further pages pair as Page 3 and Page 4; an unpaired final continuation remains available through the page selector. Tap a page or its heading to select it for editing. The active page retains the existing inline editing and resize handlers; its companion uses the same printable SVG renderer and shared handwriting assets.
 
 Touch sessions start in Fit page without changing the saved paper settings. The iPad landscape layout places controls in a side column. Larger numeric zoom levels stack pages when two enlarged sheets would exceed the available width. Narrow screens also stack; all scaling preserves the physical page aspect ratio. Print and export page dimensions remain unchanged.
 
