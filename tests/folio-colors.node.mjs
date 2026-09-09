@@ -9,14 +9,15 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
     const dom = new JSDOM(html, { runScripts: 'outside-only', url: 'http://localhost:5173' });
     const w = dom.window;
     try {
+      w.matchMedia = () => ({ matches: false, addEventListener() {}, removeEventListener() {} });
       w.HTMLCanvasElement.prototype.getContext = () => ({ measureText: () => ({ width: 10 }) });
       const frames = [];
       w.requestAnimationFrame = fn => { frames.push(fn); return frames.length; };
       const script = [...w.document.scripts].find(s => s.textContent.includes('function pageSVG')).textContent;
       // Boot event bindings and the real renderer; omit asynchronous image decoding.
-      w.eval(script.slice(0, script.lastIndexOf('prepareGlyphColors().then(')) + `
-        window.folio = { updateCurrentSectionColor, getSectionColors, pageSVG, validProject,
-          get state(){return state}, openSectionColorModal,
+      w.eval(script.slice(0, script.lastIndexOf('prepareGlyphColors().then(')) + script.slice(script.indexOf('function getDoseParts(')) + `
+        window.folio = { updateCurrentSectionColor, getSectionColors, categoryAccent, pageSVG, validProject,
+          get state(){return state}, get storage(){return STORAGE}, openSectionColorModal,
           showPage(page){pages=[page];pageIndex=0;updatePreview()} };
       `);
       const api = w.folio;
@@ -24,9 +25,46 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
       const keys = ['drug', 'action', 'dosage', 'indication', 'contraindication', 'adverse', 'effects', 'notes'];
       const owner = api.state.drugs.find(d => d.id === api.state.selected);
       const other = api.state.drugs.find(d => d.id !== owner.id);
+      const otherOriginalColors = JSON.stringify(other.sectionColors?.drug);
       const p = { title: 'Test', part: 1, partTotal: 1, headerHeight: 10, raw: [], drug: owner,
         blocks: keys.map(key => ({ kind: 'section', key, top: 30, bottom: 50,
           y: 35, headingCap: 3, headLines: [key], rows: [] })) };
+      const expected = {
+        atropine: '#aa285d', neostigmine: '#aa285d', epinephrine: '#795035',
+        phentolamine: '#286444', hydrochlorothiazide: '#efaa32',
+        nitroglycerin: '#b4232c', amiodarone: '#7041a0',
+      };
+      const luminance = hex => {
+        const rgb = hex.slice(1).match(/../g).map(v => parseInt(v, 16) / 255)
+          .map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4);
+        return rgb[0] * .2126 + rgb[1] * .7152 + rgb[2] * .0722;
+      };
+      const contrast = (a, b) => (Math.max(luminance(a), luminance(b)) + .05) /
+        (Math.min(luminance(a), luminance(b)) + .05);
+      for (const record of api.state.drugs) {
+        assert.ok(api.categoryAccent(record), record.id + ' has an assigned palette');
+        for (const key of keys) {
+          const sc = api.getSectionColors(key, record);
+          assert.equal(sc.accent, api.categoryAccent(record), 'legacy overrides must not defeat category defaults');
+          assert.ok(contrast(sc.badgeBg, sc.badgeText) >= 4.5);
+          assert.ok(contrast(sc.highlight, sc.headerText) >= 4.5);
+        }
+      }
+      for (const [id, accent] of Object.entries(expected)) {
+        const record = api.state.drugs.find(d => d.id === id);
+        assert.equal(api.categoryAccent(record), accent);
+        for (const part of [1, 2]) {
+          const svg = new w.DOMParser().parseFromString(api.pageSVG({
+            ...p, drug: record, part, partTotal: 2,
+          }, part - 1, 2), 'image/svg+xml');
+          for (const title of svg.querySelectorAll('.section-title')) assert.equal(title.getAttribute('fill'), api.getSectionColors('drug', record).headerText);
+          for (const badge of svg.querySelectorAll('.card-badge-bg')) assert.equal(badge.getAttribute('fill'), accent);
+        }
+      }
+      const multi = api.state.drugs.find(d => d.id === 'propranolol');
+      assert.equal(api.categoryAccent(multi), '#286444', 'first assigned category wins');
+      const reloaded = api.validProject(JSON.parse(JSON.stringify(api.state)));
+      assert.equal(api.getSectionColors('drug', reloaded.drugs.find(d => d.id === 'pilocarpine')).accent, '#aa285d');
       const preview = w.document.getElementById('preview');
       preview.innerHTML = api.pageSVG(p, 0, 1);
       const svg = preview.firstElementChild;
@@ -40,7 +78,7 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
       assert.equal(inputQueries, 0, 'drag events must not query or synchronize the document before painting');
       w.document.querySelector = originalQuery;
       assert.equal(frames.length, 1, 'color drag must coalesce into one frame');
-      frames.shift()();
+      while (frames.length) frames.shift()();
       assert.equal(preview.firstElementChild, svg, 'preserve SVG and handwriting nodes');
       assert.equal(drug.querySelector('.card-badge-bg').getAttribute('fill'), '#1267ab');
       assert.equal(drug.querySelector('.section-title').getAttribute('fill'), '#1267ab');
@@ -49,18 +87,18 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
       assert.ok(!new w.DOMParser().parseFromString(exported, 'image/svg+xml').querySelector('parsererror'));
       assert.equal(api.validProject(JSON.parse(JSON.stringify(api.state))).drugs.find(d => d.id === owner.id).sectionColors.drug.accent, '#1267ab');
       assert.ok(exported.includes('fill="#1267ab"'));
-      assert.equal(other.sectionColors?.drug, undefined, 'editing one drug must not edit another');
+      assert.equal(JSON.stringify(other.sectionColors?.drug), otherOriginalColors, 'editing one drug must not edit another');
       assert.ok(!api.pageSVG({ ...p, drug: other }, 0, 1).includes('fill="#1267ab"'), 'export must use each page drug, not the selected drug');
       api.openSectionColorModal('drug', null, other);
       api.updateCurrentSectionColor('#442288');
       api.openSectionColorModal('drug', null, owner);
-      frames.shift()();
+      while (frames.length) frames.shift()();
       assert.equal(drug.querySelector('.card-badge-bg').getAttribute('fill'), '#1267ab', 'a queued update for another drug must not paint this page');
       assert.equal(api.getSectionColors('drug', other).accent, '#442288');
       for (const key of keys) {
         api.openSectionColorModal(key);
         api.updateCurrentSectionColor('#228866', key);
-        frames.shift()();
+        while (frames.length) frames.shift()();
         const card = preview.querySelector('[data-section="' + key + '"]');
         assert.equal(card.querySelector('.card-badge-bg').getAttribute('fill'), '#228866');
         for (const [id, selector, attr] of [
@@ -73,11 +111,11 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
           const input = w.document.getElementById(id);
           input.value = '#987654';
           input.dispatchEvent(new w.Event('input', { bubbles: true }));
-          frames.shift()();
+          while (frames.length) frames.shift()();
           assert.equal(card.querySelector(selector).getAttribute(attr), '#987654');
         }
         w.document.getElementById('scm-reset').click();
-        frames.shift()();
+        while (frames.length) frames.shift()();
         assert.equal(preview.firstElementChild, svg, 'reset must preserve handwriting too');
         assert.equal(card.querySelector('.card-badge-bg').getAttribute('fill'), api.getSectionColors(key).badgeBg);
         assert.equal(owner.sectionColors[key], undefined);
@@ -89,15 +127,15 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
       const field = w.document.getElementById('scm-hex');
       field.value = '#ff0000';
       field.dispatchEvent(new w.Event('input'));
-      frames.shift()();
+      while (frames.length) frames.shift()();
       const surface = w.document.getElementById('scm-sv');
       surface.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'ArrowLeft', shiftKey: true, cancelable: true }));
-      frames.shift()();
+      while (frames.length) frames.shift()();
       assert.equal(api.getSectionColors('drug').accent, '#ff1919');
       const hue = w.document.getElementById('scm-hue');
       hue.value = '120';
       hue.dispatchEvent(new w.Event('input'));
-      frames.shift()();
+      while (frames.length) frames.shift()();
       assert.equal(api.getSectionColors('drug').accent, '#19ff19');
       field.value = '#invalid';
       field.dispatchEvent(new w.Event('input'));
@@ -118,16 +156,16 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
       pointer('pointerdown', 20, 20);
       for (let i = 0; i < 100; i++) pointer('pointermove', i, 30);
       assert.equal(frames.length, 1);
-      frames.shift()();
+      while (frames.length) frames.shift()();
       await new Promise(resolve => setTimeout(resolve, 700));
       assert.equal(writes, 0, 'no storage serialization during a held drag');
       pointer('pointerup', 100, 0);
-      frames.shift()();
+      while (frames.length) frames.shift()();
       assert.equal(api.getSectionColors('drug').accent, '#00ff00', 'pointer release must apply the final position');
       assert.equal(drug.querySelector('.card-badge-bg').getAttribute('fill'), '#00ff00');
       await new Promise(resolve => setTimeout(resolve, 500));
       assert.equal(writes, 1, 'save exactly once after releasing the drag');
-      const saved = JSON.parse(w.localStorage.getItem('folio.handwritten-notebook.v5.manual-header.colored-sections'));
+      const saved = JSON.parse(w.localStorage.getItem(api.storage));
       assert.equal(saved.drugs.find(d => d.id === owner.id).sectionColors.drug.accent, '#00ff00');
       assert.equal(saved.drugs.find(d => d.id === other.id).sectionColors.drug.accent, '#442288');
       const legacy = JSON.parse(JSON.stringify(api.state));

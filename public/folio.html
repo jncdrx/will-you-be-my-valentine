@@ -206,6 +206,24 @@ button{min-height:40px;touch-action:manipulation}
 }
 @media(prefers-reduced-motion:reduce){.scm-swatch-btn{transition:none}}
 </style>
+<style id="spread-tablet-style">
+@media screen{
+ #drug-spread{display:grid;gap:20px;align-items:start;flex:none;max-width:100%;padding:0 0 4px}
+ .spread-page{min-width:0;display:flex;flex-direction:column;gap:8px;align-items:stretch}
+ .spread-label{height:44px;min-height:44px;flex:none;width:100%;padding:4px 6px;font-size:12px;line-height:16px;background:#f9f5f2;color:#745361}
+ .spread-label[aria-pressed=true]{background:#f1e0e7;border-color:#a96880;color:#632b42;box-shadow:inset 0 -2px #a96880}
+ #companion-preview{cursor:pointer}#companion-preview svg{pointer-events:none}
+ #drug-spread .paper-shell{aspect-ratio:var(--paper-ratio,148 / 210)}
+ .sheet-stage{scroll-padding:16px;touch-action:pan-x pan-y pinch-zoom}
+ @media(pointer:coarse){
+  button,button.small,summary,select,input:not([type=checkbox]):not([type=color]),.visual-track button,.preset-buttons button{min-height:44px!important}
+  input:not([type=range]):not([type=checkbox]):not([type=color]),select,textarea,.field-card textarea{font-size:16px!important}
+  input[type=checkbox]{width:24px;height:24px}.check-row{min-height:44px;align-items:center}
+  .inline-editor{touch-action:pan-x pan-y pinch-zoom}
+  .spread-label{min-height:44px!important}
+ }
+}
+</style>
 <style id="inline-edit-style">
 .inline-layer{pointer-events:none}
 .inline-host{position:relative;width:100%;height:100%;pointer-events:none}
@@ -422,6 +440,34 @@ button{min-height:40px;touch-action:manipulation}
   .preview-context,.preview-toolbar,.preview-controls{flex-shrink:0}
  }
 }
+</style>
+<style id="landscape-spread-style">
+@media screen{
+ .app{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+ @media(min-width:741px) and (max-width:1280px) and (orientation:landscape){
+  :root{--nav-height:56px}
+  .topbar{padding-block:6px}.top-actions{flex:2}#save-status{display:none!important}
+  #mobile-tabs{padding-block:4px;height:calc(56px + env(safe-area-inset-bottom,0px))}
+  #mobile-tabs button{min-height:48px;flex-direction:row;gap:10px;font-size:12px}
+  .preview-panel{display:grid;grid-template-columns:260px minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr) auto;gap:0}
+  .preview-context{grid-column:1;grid-row:1;padding:12px 14px 4px;display:block}
+  #active-drug-name{font-size:18px}#page-source-review{padding-inline:0}
+  .preview-toolbar{grid-column:1;grid-row:2;padding:4px 14px 12px}
+  .preview-label{display:none}.toolbar-right{width:100%;display:grid;gap:8px}
+  .preview-toolbar select{width:100%;max-width:none}
+  .preview-controls{grid-column:1;grid-row:3;padding:0 14px 12px;display:grid;gap:10px}
+  .page-tool-switch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .page-tool-switch button{padding:8px 4px;font-size:12px}.page-tool-switch .icon{display:none}
+  .preview-controls label{display:flex;justify-content:space-between}.preview-controls select{width:135px}
+  .preview-meta,#page-tool-hint{display:none}
+  .sheet-stage{grid-column:2;grid-row:1 / 5;padding:12px 16px 16px!important;height:100%;border-left:1px solid #dcd2cc}
+  .preview-bottom{grid-column:2;grid-row:5;padding:8px 12px}.export-actions{display:none}
+  #page-layout-controls{grid-column:1;grid-row:5;padding:0 14px;overflow:auto;max-height:40vh}
+  .layout-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #section-resize-controls:not([hidden]){grid-column:1;grid-row:4;grid-template-columns:repeat(2,minmax(0,1fr));padding:10px 14px;max-height:none;min-height:0}
+  #print-layout-warning{grid-column:1;grid-row:4;align-self:end;max-height:80px}
+ }
+}
 </style></head>
 <body data-pane="page">
 <svg aria-hidden="true" id="icons" style="position:absolute;width:0;height:0;overflow:hidden"><defs>
@@ -493,7 +539,10 @@ button{min-height:40px;touch-action:manipulation}
 <button class="primary small" id="scm-done" style="font-size:11px;padding:6px 14px">Done</button>
 </div>
 </div>
-<div class="paper-shell" id="preview"><p class="loading-message">Preparing your handwriting…</p></div></div>
+<div id="drug-spread" role="group" aria-label="Drug page preview">
+<div class="spread-page" id="active-page"><button type="button" class="spread-label" id="active-page-label" aria-pressed="true">Page 1</button><div class="paper-shell" id="preview"><p class="loading-message">Preparing your handwriting…</p></div></div>
+<div class="spread-page" id="companion-page" hidden><button type="button" class="spread-label" id="companion-page-label" aria-pressed="false">Back / Page 2</button><div class="paper-shell" id="companion-preview"></div></div>
+</div></div>
 <div class="preview-bottom"><div class="pagination"><button aria-label="Previous page" id="prev-page"><svg class="icon"><use href="#i-left"></use></svg></button><label class="sr-only" for="page-select">Preview page</label><select id="page-select"></select><button aria-label="Next page" id="next-page"><svg class="icon"><use href="#i-right"></use></svg></button></div><div class="export-actions"><button id="export-png" title="Export the visible page at 300 dots per inch">PNG · this page</button><button id="export-json" title="Save an editable backup to restore with Open">JSON backup</button><button id="export-html" title="Save a new standalone HTML with your current notes, handwriting and settings">Save HTML</button></div></div>
 <details class="no-print" id="page-layout-controls"><summary>Print size &amp; position · current page</summary><div class="layout-fields">
 <label>Preset <select id="content-preset"><option value="actual">Actual Size (100%)</option><option value="fit">Fit to Page</option><option value="fill">Fill Page</option><option value="custom">Custom Scale</option></select></label>
@@ -567,14 +616,36 @@ function mixHex(c1,c2,ratio){
  }catch{return c1}
 }
 function sectionColorRecord(){return pages[pageIndex]?.drug||selectedDrug();}
+// First assigned chart category wins for drugs listed in multiple categories.
+// Autonomic is the existing cholinergic/cholinesterase chart column.
+const CATEGORY_ACCENTS={
+ 'autonomic':'#aa285d',
+ 'cholinoceptor blockers':'#aa285d',
+ 'cholinoceptor blockers & cholinesterase drugs':'#aa285d',
+ 'sympathomimetics':'#795035','sympathomimetic drugs':'#795035',
+ 'adrenoceptor blockers':'#286444',
+ 'cardiovascular':'#efaa32','cardiovascular drugs':'#efaa32',
+ 'angina / erectile dysfunction':'#b4232c','drugs for angina pectoris':'#b4232c',
+ 'antiarrhythmics':'#7041a0','antiarrhythmic drugs':'#7041a0'
+};
+function categoryAccent(record){
+ for(const group of record?.groups||[]){
+  const accent=CATEGORY_ACCENTS[group.trim().toLowerCase().replace(/\s+/g,' ')];
+  if(accent)return accent;
+ }
+ return null;
+}
 function getSectionColors(key,record=currentEditRecord||sectionColorRecord()){
- const sc=record?.sectionColors?.[key]||{};
- const accent=color(sc.accent,state.settings.accent||'#743648');
- const highlight=color(sc.highlight,state.settings.highlight||mixHex(accent,'#ffffff',0.84));
- const border=color(sc.border,state.settings.frame||mixHex(accent,'#ffffff',0.62));
+ const category=categoryAccent(record),stored=record?.sectionColors?.[key]||{};
+ // Retain old custom colors in saved data, but start categorized pages with
+ // the assigned palette. New deliberate edits remain available and persist.
+ const sc=category&&stored.categoryAccent!==category?{}:stored;
+ const accent=color(sc.accent,category||state.settings.accent||'#743648');
+ const highlight=color(sc.highlight,category?mixHex(accent,'#ffffff',0.84):state.settings.highlight||mixHex(accent,'#ffffff',0.84));
+ const border=color(sc.border,category?mixHex(accent,'#ffffff',0.55):state.settings.frame||mixHex(accent,'#ffffff',0.62));
  const badgeBg=color(sc.badgeBg,accent);
- const badgeText=color(sc.badgeText,'#ffffff');
- const headerText=color(sc.headerText,accent);
+ const badgeText=color(sc.badgeText,category==='#efaa32'?'#442900':'#ffffff');
+ const headerText=color(sc.headerText,category==='#efaa32'?'#764000':accent);
  return {accent,highlight,border,badgeBg,badgeText,headerText};
 }
 let currentEditSectionKey='drug';
@@ -622,7 +693,13 @@ function applyLiveSectionColor(key,record=currentEditRecord||sectionColorRecord(
 function paintSectionColor(key,record){
  const sc=getSectionColors(key,record);
  syncSectionColorControls(key,record);
- const cards=document.querySelectorAll(`#preview [data-drug-id="${record.id}"][data-section="${key}"]`);
+ if(record===selectedDrug()){
+  const summary=document.querySelector('#field-editor [data-key="'+key+'"] summary');
+  if(summary){summary.style.background=sc.highlight;summary.style.color=sc.headerText;
+   const number=summary.querySelector('.field-number');if(number){number.style.background=sc.badgeBg;number.style.color=sc.badgeText;}}
+ }
+
+ const cards=document.querySelectorAll(`#preview [data-drug-id="${record.id}"][data-section="${key}"], #companion-preview [data-drug-id="${record.id}"][data-section="${key}"]`);
  for(const card of cards){
   const border=card.querySelector('.card-border')||card.querySelector('rect.decoration[stroke]');
   if(border)border.setAttribute('stroke',sc.border);
@@ -642,7 +719,7 @@ function updateCurrentSectionColor(accentHex, key = currentEditSectionKey, recor
  const highlight=mixHex(accentHex,'#ffffff',0.82);
  const border=mixHex(accentHex,'#ffffff',0.55);
  record.sectionColors[key]={
-  accent:accentHex,highlight,border,badgeBg:accentHex,badgeText:'#ffffff',headerText:accentHex
+  categoryAccent:categoryAccent(record),accent:accentHex,highlight,border,badgeBg:accentHex,badgeText:'#ffffff',headerText:accentHex
  };
  // Paint the latest color once per frame without rebuilding handwriting or pagination.
  applyLiveSectionColor(key,record);
@@ -729,6 +806,7 @@ function validSectionColors(raw){
    const value=raw?.[key]?.[field];
    if(/^#[0-9a-f]{6}$/i.test(value||''))values[field]=value;
   }
+  if(/^#[0-9a-f]{6}$/i.test(raw?.[key]?.categoryAccent||''))values.categoryAccent=raw[key].categoryAccent;
   if(Object.keys(values).length)result[key]=values;
  }
  return result;
@@ -1251,9 +1329,10 @@ function renderSectionResize(){
  const x=box.x,y=box.y,w=box.width,h=box.height;
  const group=document.createElementNS('http://www.w3.org/2000/svg','g');group.setAttribute('class','section-resize-overlay');group.setAttribute('transform',pageContentTransform(p));
  const handles=[['nw',x,y],['n',x+w/2,y],['ne',x+w,y],['e',x+w,y+h/2],['se',x+w,y+h],['s',x+w/2,y+h],['sw',x,y+h],['w',x,y+h/2]];
- const radius=Math.max(1.4,6/(svg.getBoundingClientRect().width/state.settings.width));
+ const pixelsPerUnit=(svg.getBoundingClientRect().width||560)/state.settings.width*pageGeometry(p).sx;
+ const radius=Math.max(1.4,(matchMedia('(pointer:coarse)').matches?22:6)/pixelsPerUnit);
  group.innerHTML=`<rect class="section-resize-outline" x="${x}" y="${y}" width="${w}" height="${h}"/>`+handles.map(([dir,hx,hy])=>`<rect class="section-resize-handle" data-resize-handle="${dir}" x="${hx-radius}" y="${hy-radius}" width="${radius*2}" height="${radius*2}" tabindex="0" role="button" aria-label="Resize ${b.label}, ${dir} handle" style="cursor:${['nw','se'].includes(dir)?'nwse':['ne','sw'].includes(dir)?'nesw':['n','s'].includes(dir)?'ns':'ew'}-resize"/>`).join('');
- group.insertAdjacentHTML('beforeend',`<rect data-move-section="" x="${x+2}" y="${y+1}" width="10" height="2.5" rx="1" fill="#8a4260" tabindex="0" role="button" aria-label="Move ${b.label}; arrow keys move by 1 mm" style="cursor:move;pointer-events:all;touch-action:none"/>`);
+ group.insertAdjacentHTML('beforeend',`<rect data-move-section="" x="${x+w/2-radius}" y="${y+Math.min(h/2,radius*3)}" width="${radius*2}" height="${radius*2}" rx="1" fill="#8a4260" tabindex="0" role="button" aria-label="Move ${b.label}; arrow keys move by 1 mm" style="cursor:move;pointer-events:all;touch-action:none"/>`);
  svg.append(group);
 }
 function resizeFromHandle(box,dir,dx,dy){
@@ -1271,10 +1350,12 @@ function resizeFromHandle(box,dir,dx,dy){
 function commitResize(){updatePreview();$('print-root').replaceChildren();save();}
 function finishSectionDrag(cancel=false){
  if(!sectionDrag)return;
- const drag=sectionDrag;sectionDrag=null;sectionDragClickUntil=Date.now()+250;
+ const drag=sectionDrag;sectionDrag=null;
  if(cancel){if(drag.saved)(drag.p.drug.sectionLayouts[drag.p.part]??={})[drag.b.key]=drag.saved;else resetSectionLayout(drag.p,drag.b.key);}
  if($('preview').hasPointerCapture?.(drag.pointerId))$('preview').releasePointerCapture(drag.pointerId);
  commitResize();
+ // Start suppression after rendering, which may take longer than the click window on tablets.
+ sectionDragClickUntil=Date.now()+500;
 }
 function pagePointer(event){const svg=$('preview').querySelector('svg'),matrix=svg?.getScreenCTM();if(!matrix)return null;const point=svg.createSVGPoint();point.x=event.clientX;point.y=event.clientY;const pt=point.matrixTransform(matrix.inverse()),g=pageGeometry(pages[pageIndex]);return {x:(pt.x-state.settings.offsetX-g.x)/g.sx+g.baseX,y:(pt.y-state.settings.offsetY-g.y)/g.sy+g.baseY};}
 function pageSVG(p,index,total,cal=false,namespace='page-'+index,includeDefs=true){
@@ -1617,6 +1698,7 @@ function updatePreview(){
  if(currentEditRecord&&currentEditRecord!==p?.drug)closeSectionColorModal();
  $('export-png').disabled=!p;$('print-button').disabled=!p;
  if(p)renderLivePreview(p);else $('preview').innerHTML='<p class="loading-message">Add a drug or open Freeform notes to begin.</p>';
+ renderSpread(p);
  $('preview-meta').textContent=`${s.width===148&&s.height===210?'A5 · ':''}${s.width} × ${s.height} mm · ${s.output==='full'?'Complete page':'Ink only'} · ${Number(s.lineGap.toFixed(2))} mm spacing`;
  $('active-drug-name').textContent=p?.drug?.name||(state.mode==='free'?state.free.title:'Notebook');$('page-source-review').hidden=!p?.drug;
  const originals=Object.keys(BASE_GLYPHS).length,added=Object.keys(state.glyphs).filter(c=>!BASE_GLYPHS[c]).length;
@@ -1680,7 +1762,7 @@ function renderEditor(){
  const panel=$('editor-panel');panel.classList.toggle('help-panel',view==='help');panel.scrollTop=0;
  if(view==='settings')return renderSettings();if(view==='handwriting')return renderHandwriting();if(view==='help')return renderHelp();if(state.mode==='free')return renderFree();
  const d=selectedDrug();if(!d){panel.innerHTML='<h2>Your notebook is empty</h2><p>Add a drug from the library or open a saved project.</p>';return;}
- panel.innerHTML=`<div class="edit-title-row"><div><div class="panel-eyebrow">EDIT NOTES</div><h2>${esc(d.name)}</h2></div><button id="editor-preview" class="quiet" title="Go to page preview"><svg class="icon"><use href="#i-page"/></svg>Preview</button></div><div class="record-meta">${(d.groups||[]).map(g=>`<span>${esc(g)}</span>`).join('')}</div><button class="source-link" id="editor-source"><svg class="icon"><use href="#i-check"/></svg>${esc(sourceStatus(d))}<span aria-hidden="true">↗</span></button><p class="panel-intro">Choose a section to edit. The blank title space and your handwritten page design are preserved.</p><div id="completeness" class="completeness ${complete(d)<8?'incomplete':''}">${complete(d)} of 8 sections filled</div><details class="name-fold"><summary>Drug name in library</summary><label class="sr-only" for="drug-name">Drug title</label><input id="drug-name" class="text-input title-input" value="${esc(d.name)}" maxlength="80"></details><div id="field-editor">${FIELDS.map(([k,label],i)=>`<details class="field-card" data-key="${k}" ${k==='dosage'?'open':''}><summary><span class="field-number">${i+1}</span><span>${esc(label)}</span><span class="missing" ${d.fields[k].trim()?'hidden':''}>Empty</span></summary><div class="field-body"><label class="field-name" for="field-${k}">${k==='dosage'?'FORMS / STRENGTHS':esc(label)}</label><textarea id="field-${k}" data-field="${k}" maxlength="50000" spellcheck="true">${esc(editableText(d,k))}</textarea>${k==='dosage'?lockedDoseHTML(d):''}${formatFold(d,k)}<button class="field-colors quiet" data-format-key="${k}">Section colors &amp; formatting</button></div></details>`).join('')}</div><p class="study-notice" id="medical-status">Study notes only. PDF text and preserved original doses have not been independently clinically verified.</p><details class="reference-panel"><summary>Original folio references &amp; links</summary><p>These references were carried over from your original HTML. They are not citations for every PDF replacement. Use Source review to see the PDF text.</p><div id="source-links">${d.sources.map(r=>`<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">[${esc(r.code)}] ${esc(r.title)} ↗</a><p>${esc(r.scope)}</p>`).join('')||'<p>No original references.</p>'}</div><details><summary>Edit reference links</summary><label for="source-editor" class="field-name">One per line: code | title | https URL</label><textarea id="source-editor">${esc(d.sources.map(r=>[r.code,r.title,r.url].join(' | ')).join('\n'))}</textarea><button id="save-sources">Update references</button></details></details><details class="record-options"><summary>Restore or remove this entry</summary><p>Restore changes text only. Your original dose and custom formatting are kept.</p><div class="panel-tools"><button id="restore-drug">Restore PDF-updated text</button><button id="delete-drug" class="danger">Delete drug</button></div></details>`;
+ panel.innerHTML=`<div class="edit-title-row"><div><div class="panel-eyebrow">EDIT NOTES</div><h2>${esc(d.name)}</h2></div><button id="editor-preview" class="quiet" title="Go to page preview"><svg class="icon"><use href="#i-page"/></svg>Preview</button></div><div class="record-meta">${(d.groups||[]).map(g=>`<span>${esc(g)}</span>`).join('')}</div><button class="source-link" id="editor-source"><svg class="icon"><use href="#i-check"/></svg>${esc(sourceStatus(d))}<span aria-hidden="true">↗</span></button><p class="panel-intro">Choose a section to edit. The blank title space and your handwritten page design are preserved.</p><div id="completeness" class="completeness ${complete(d)<8?'incomplete':''}">${complete(d)} of 8 sections filled</div><details class="name-fold"><summary>Drug name in library</summary><label class="sr-only" for="drug-name">Drug title</label><input id="drug-name" class="text-input title-input" value="${esc(d.name)}" maxlength="80"></details><div id="field-editor">${FIELDS.map(([k,label],i)=>`<details class="field-card" data-key="${k}" ${k==='dosage'?'open':''}><summary style="background:${getSectionColors(k,d).highlight};color:${getSectionColors(k,d).headerText}"><span class="field-number" style="background:${getSectionColors(k,d).badgeBg};color:${getSectionColors(k,d).badgeText}">${i+1}</span><span>${esc(label)}</span><span class="missing" ${d.fields[k].trim()?'hidden':''}>Empty</span></summary><div class="field-body"><label class="field-name" for="field-${k}">${k==='dosage'?'FORMS / STRENGTHS':esc(label)}</label><textarea id="field-${k}" data-field="${k}" maxlength="50000" spellcheck="true">${esc(editableText(d,k))}</textarea>${k==='dosage'?lockedDoseHTML(d):''}${formatFold(d,k)}<button class="field-colors quiet" data-format-key="${k}">Section colors &amp; formatting</button></div></details>`).join('')}</div><p class="study-notice" id="medical-status">Study notes only. PDF text and preserved original doses have not been independently clinically verified.</p><details class="reference-panel"><summary>Original folio references &amp; links</summary><p>These references were carried over from your original HTML. They are not citations for every PDF replacement. Use Source review to see the PDF text.</p><div id="source-links">${d.sources.map(r=>`<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">[${esc(r.code)}] ${esc(r.title)} ↗</a><p>${esc(r.scope)}</p>`).join('')||'<p>No original references.</p>'}</div><details><summary>Edit reference links</summary><label for="source-editor" class="field-name">One per line: code | title | https URL</label><textarea id="source-editor">${esc(d.sources.map(r=>[r.code,r.title,r.url].join(' | ')).join('\n'))}</textarea><button id="save-sources">Update references</button></details></details><details class="record-options"><summary>Restore or remove this entry</summary><p>Restore changes text only. Your original dose and custom formatting are kept.</p><div class="panel-tools"><button id="restore-drug">Restore PDF-updated text</button><button id="delete-drug" class="danger">Delete drug</button></div></details>`;
  bindSectionFormats(panel,d);
  $('editor-preview').onclick=()=>{setPane('page');};$('editor-source').onclick=()=>openSourceReview(d);
  $('drug-name').oninput=e=>{d.name=e.target.value;d.edited=true;renderSidebar();scheduleRender();};
@@ -2018,14 +2100,48 @@ window.addEventListener('pagehide',persistLocal);
 window.addEventListener('beforeunload',persistLocal);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)persistLocal()});
 const stage=document.querySelector('.sheet-stage');
+// Start touch sessions with the whole page visible; this is display-only state.
+let touchPreviewZoom=matchMedia('(pointer:coarse)').matches?'page':null;
+let companionPreviewMarkup='';
+function renderSpread(p){
+ const siblings=!calibration&&p?.drug?pages.map((page,index)=>({page,index})).filter(item=>item.page.drug===p.drug):[];
+ const paired=siblings.length===2,other=paired?siblings.find(item=>item.index!==pageIndex):null;
+ const label=page=>paired?(page.part===1?'Front / Page 1':'Back / Page 2'):`Page ${page?.part||1}`;
+ $('drug-spread').dataset.paired=String(paired);
+ $('drug-spread').setAttribute('aria-label',`${p?.drug?.name||'Notebook'} · ${paired?'Front and back pages':'Page preview'}`);
+ $('active-page-label').textContent=label(p);$('active-page').style.order=String(p?.part||1);
+ $('companion-page').hidden=!other;
+ if(!other){$('companion-preview').replaceChildren();companionPreviewMarkup='';return;}
+ $('companion-page').style.order=String(other.page.part);
+ const first=other.page.part<p.part?$('companion-page'):$('active-page');
+ if($('drug-spread').firstElementChild!==first)$('drug-spread').prepend(first);
+ $('companion-page-label').textContent=label(other.page);
+ $('companion-page-label').setAttribute('aria-label',`Edit ${label(other.page)}`);
+ $('companion-page-label').onclick=()=>{document.activeElement?.blur();sectionSelection=null;pageIndex=other.index;updatePreview();$('active-page-label').focus({preventScroll:true});};
+ const markup=pageSVG(other.page,other.index,pages.length,false,'folio-companion',false).replaceAll('#folio-companion-g','#folio-preview-g');
+ if(markup!==companionPreviewMarkup){$('companion-preview').innerHTML=markup;companionPreviewMarkup=markup;}
+ $('companion-preview').onclick=()=>$('companion-page-label').click();
+}
 function fitPaper(){
  if(!stage.clientWidth)return;const el=$('preview'),s=state.settings,style=getComputedStyle(stage),available=Math.max(1,stage.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight)),availableHeight=Math.max(1,stage.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom));let width;
- if(s.zoom==='page')width=Math.min(available,availableHeight*s.width/s.height);
- else if(s.zoom==='width')width=Math.min(760,available);
- else width=s.width*96/25.4*(Number(s.zoom)||100)/100;
- el.style.width=width+'px';el.style.maxWidth='none';stage.style.justifyContent=width>available?'flex-start':'center';
+ const paired=$('drug-spread').dataset.paired==='true',gap=20,labelHeight=56,coarse=matchMedia('(pointer:coarse)').matches;
+ const zoom=touchPreviewZoom||s.zoom,numericWidth=s.width*96/25.4*(Number(zoom)||100)/100;
+ let columns=paired&&available>=480?2:1;
+ if(coarse&&!['page','width'].includes(zoom)&&numericWidth*2+gap>available)columns=1;
+ $('drug-spread').style.setProperty('--paper-ratio',`${s.width} / ${s.height}`);
+ const pageAvailable=Math.max(1,(available-gap*(columns-1))/columns);
+ $('preview-zoom').value=zoom;
+ if(zoom==='page')width=Math.min(pageAvailable,Math.max(1,availableHeight-labelHeight)*s.width/s.height);
+ else if(zoom==='width')width=Math.min(760,pageAvailable);
+ else width=numericWidth;
+ // Numeric zoom remains useful on desktop; touch devices stay within their scroll pane.
+ if(coarse)width=Math.min(width,pageAvailable);
+ for(const paper of [el,$('companion-preview')]){paper.style.width=width+'px';paper.style.maxWidth='none';}
+ $('drug-spread').style.gridTemplateColumns=`repeat(${columns}, ${width}px)`;
+ stage.style.justifyContent=width*columns+gap*(columns-1)>available?'flex-start':'center';
+ renderSectionResize();
 }
-$('preview-zoom').onchange=e=>{state.settings.zoom=e.target.value;fitPaper();save()};
+$('preview-zoom').onchange=e=>{state.settings.zoom=e.target.value;if(touchPreviewZoom!==null)touchPreviewZoom=e.target.value;fitPaper();save()};
 $('focus-page').onclick=()=>{const on=document.body.classList.toggle('focus-mode');$('focus-page').textContent=on?'Back to editor':'Focus page';$('focus-page').setAttribute('aria-pressed',String(on));fitPaper()};
 $('preview').addEventListener('click',e=>{
  if(pageTool==='read')return;
@@ -2038,6 +2154,7 @@ $('preview').addEventListener('click',e=>{
 },true);
 $('preview').addEventListener('focusin',e=>{const editor=e.target.closest('.inline-editor');if(editor)selectSection(editor.dataset.field);});
 $('preview').addEventListener('pointerdown',e=>{
+ if(pageTool!=='resize')return;
  const handle=e.target.closest('[data-resize-handle],[data-move-section]'),selected=selectedSection();if(!handle||!selected||e.button!==0)return;
  const point=pagePointer(e);if(!point)return;e.preventDefault();e.stopPropagation();
  const {p,b}=selected;sectionDrag={p,b,dir:handle.dataset.resizeHandle||'move',point,box:sectionBox(p,b),pointerId:e.pointerId,saved:p.drug.sectionLayouts?.[p.part]?.[b.key]?{...p.drug.sectionLayouts[p.part][b.key]}:null};
@@ -2080,7 +2197,7 @@ const PRESET_SWATCHES=[{name:'Wine',hex:'#743648'},{name:'Rose',hex:'#a76172'},{
 $('scm-swatches').innerHTML=PRESET_SWATCHES.map(s=>`<button type="button" class="scm-swatch-btn" style="background:${s.hex}" data-hex="${s.hex}" title="${s.name}"></button>`).join('');
 $('scm-swatches').onclick=e=>{const btn=e.target.closest('[data-hex]');if(btn)updateCurrentSectionColor(btn.dataset.hex)};
 $('scm-color-input').oninput=e=>updateCurrentSectionColor(e.target.value);
-function ensureSectionColor(k){const record=currentEditRecord||sectionColorRecord();if(!record.sectionColors)record.sectionColors={};if(!record.sectionColors[k])record.sectionColors[k]=getSectionColors(k,record);return record.sectionColors[k];}
+function ensureSectionColor(k){const record=currentEditRecord||sectionColorRecord();if(!record.sectionColors)record.sectionColors={};if(!record.sectionColors[k]||record.sectionColors[k].categoryAccent!==categoryAccent(record))record.sectionColors[k]={...getSectionColors(k,record),categoryAccent:categoryAccent(record)};return record.sectionColors[k];}
 for(const [id,field] of Object.entries(sectionColorFields)){
  $(id).onclick=()=>openInlineColorPicker(field,$(id).getAttribute('aria-label'));
  $(id).oninput=e=>{
