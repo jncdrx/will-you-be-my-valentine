@@ -1613,7 +1613,7 @@ function mountInlineEditors(p){
   const cacheKey=b.key+':'+b.rows[0].start,signature=JSON.stringify([b.rows,b.align,s.ink,p.drug.fields[b.key].slice(b.rows[0].start,b.rows.at(-1).end)]),cached=previousEditors.get(cacheKey);
   const gap=b.gap||s.lineGap,top=b.y+(b.headLines.length-1)*gap+2;
   const box=sectionBox(p,b);
-  const editorStyle={left:(box.x+.5*box.sx)+'px',top:(box.y+(top-b.top)*box.sy)+'px',width:(s.width-s.left-s.right-1)+'px',height:(b.bottom-top-.2)+'px',caretColor:s.ink,transformOrigin:'0 0',transform:`scale(${box.sx},${box.sy})`};
+  const editorStyle={left:(box.x+.5*box.sx)+'px',top:(box.y+(top-b.top)*box.sy)+'px',width:(s.width-s.left-s.right-1)+'px',height:(b.bottom-top-.2)+'px',caretColor:'#c02669',transformOrigin:'0 0',transform:`scale(${box.sx},${box.sy})`};
   if(cached&&cached.record===p.drug&&cached.signature===signature&&cached.metrics===layoutSignature){Object.assign(cached.editor.style,editorStyle);inlineEditorCache.set(cacheKey,cached);continue;}
   const editor=cached?.record===p.drug?cached.editor:document.createElement('div');editor.replaceChildren();editor.className='inline-editor';editor.contentEditable='true';editor.setAttribute('contenteditable','true');editor.setAttribute('role','textbox');editor.setAttribute('aria-multiline','true');editor.setAttribute('aria-label',b.label+' — edit handwritten text');editor.setAttribute('spellcheck','false');editor.tabIndex=0;
   editor.dataset.record=p.drug.id;editor.dataset.field=b.key;editor.dataset.start=b.rows[0].start;editor.dataset.end=b.rows.at(-1).end+(b.rows.at(-1).newline?1:0);
