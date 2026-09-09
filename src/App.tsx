@@ -21,7 +21,7 @@ import {
   saveSelectedSongId,
 } from "./lib/supabase";
 import { supabase, isSupabaseConfigured } from "./lib/supabase";
-import { signOutAll } from "./lib/auth";
+import { signOutAll, RECIPIENT_EMAIL } from "./lib/auth";
 import { Voucher, effectiveStatus } from "./lib/vouchers";
 import { netflixSound } from "./lib/netflixSound";
 import { ArrowUp, LogOut } from "lucide-react";
@@ -93,12 +93,7 @@ function getInitialMode(): ExperienceMode {
 }
 
 function getInitialUnlocked(): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    return sessionStorage.getItem("monthsary_authenticated") === "true";
-  } catch {
-    return false;
-  }
+  return false;
 }
 
 function UserSite() {
@@ -153,14 +148,10 @@ function UserSite() {
   useEffect(() => {
     let active = true;
     (async () => {
-      if (typeof window !== "undefined" && sessionStorage.getItem("monthsary_authenticated") === "true") {
-        if (active) setIsUnlocked(true);
-        return;
-      }
       if (isSupabaseConfigured()) {
-        const { data } = await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getUser();
         if (active) {
-          setIsUnlocked(Boolean(data?.session));
+          setIsUnlocked(!error && data.user?.email?.toLowerCase() === RECIPIENT_EMAIL);
         }
       }
     })();
@@ -271,11 +262,7 @@ function UserSite() {
   useEffect(() => {
     if (!isSupabaseConfigured()) return;
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        setIsUnlocked(true);
-      } else if (typeof window !== "undefined" && sessionStorage.getItem("monthsary_authenticated") !== "true") {
-        setIsUnlocked(false);
-      }
+      setIsUnlocked(session?.user.email?.toLowerCase() === RECIPIENT_EMAIL);
     });
     return () => sub.subscription.unsubscribe();
   }, []);

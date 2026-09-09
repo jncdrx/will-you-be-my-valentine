@@ -36,7 +36,37 @@ vi.mock("../supabase", () => ({
 }));
 
 const { invoke, setSession, signOut, rpc } = mocks;
-import { signInRecipient, signInAdmin, isAdmin } from "../auth";
+import { signInRecipient, signInAdmin, isAdmin, requestRecipientCode, verifyRecipientCode } from "../auth";
+
+describe("recipient OTP", () => {
+  beforeEach(() => { invoke.mockReset(); setSession.mockReset(); signOut.mockReset(); });
+  it("sends through the fixed-recipient endpoint without setting a session", async () => {
+    invoke.mockResolvedValue({ data: { success: true }, error: null });
+    await requestRecipientCode();
+    expect(invoke).toHaveBeenCalledWith("recipient-otp", { body: { action: "send" } });
+    expect(setSession).not.toHaveBeenCalled();
+  });
+  it("does not install a session for an invalid code", async () => {
+    invoke.mockResolvedValue({ data: { success: false, message: "Invalid code" }, error: null });
+    await expect(verifyRecipientCode("123456")).rejects.toThrow("Invalid code");
+    expect(setSession).not.toHaveBeenCalled();
+  });
+  it("rejects malformed codes before sending a request", async () => {
+    await expect(verifyRecipientCode("abc")).rejects.toThrow();
+    expect(invoke).not.toHaveBeenCalled();
+  });
+  it("installs the verified recipient session", async () => {
+    invoke.mockResolvedValue({ data: { success: true, session: { access_token: "at", refresh_token: "rt" } }, error: null });
+    setSession.mockResolvedValue({ data: { session: { user: { email: "angelicogn@gmail.com" } } }, error: null });
+    await expect(verifyRecipientCode("123456")).resolves.toBeUndefined();
+  });
+  it("signs out if the returned session belongs to a different user", async () => {
+    invoke.mockResolvedValue({ data: { success: true, session: { access_token: "at", refresh_token: "rt" } }, error: null });
+    setSession.mockResolvedValue({ data: { session: { user: { email: "other@example.com" } } }, error: null });
+    await expect(verifyRecipientCode("123456")).rejects.toThrow();
+    expect(signOut).toHaveBeenCalled();
+  });
+});
 
 function okSession(email: string) {
   return {

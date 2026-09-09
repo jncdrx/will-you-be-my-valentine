@@ -1,6 +1,26 @@
 import { supabase, isSupabaseConfigured } from "./supabase";
 
 export type Role = "admin" | "user";
+export const RECIPIENT_EMAIL = "angelicogn@gmail.com";
+
+export async function requestRecipientCode(): Promise<void> {
+  if (!isSupabaseConfigured()) throw new LoginError("Sign-in is not configured.");
+  const { data, error } = await supabase.functions.invoke("recipient-otp", { body: { action: "send" } });
+  if (error || !data?.success) throw new LoginError(data?.message || "Could not send the code. Please try again.");
+}
+
+export async function verifyRecipientCode(code: string): Promise<void> {
+  const token = code.trim();
+  if (!/^\d{6,10}$/.test(token)) throw new LoginError("Enter the code from your email.");
+  if (!isSupabaseConfigured()) throw new LoginError("Sign-in is not configured.");
+  const { data, error } = await supabase.functions.invoke("recipient-otp", { body: { action: "verify", token } });
+  if (error || !data?.success || !data.session?.access_token || !data.session?.refresh_token) throw new LoginError(data?.message || "That code is invalid or expired. Please try again.");
+  const { data: session, error: sessionError } = await supabase.auth.setSession(data.session);
+  if (sessionError || !session.session || session.session.user.email?.toLowerCase() !== RECIPIENT_EMAIL) {
+    await supabase.auth.signOut();
+    throw new LoginError("Unable to verify your sign-in. Please try again.");
+  }
+}
 
 /**
  * Error thrown by the secure login flow. Carries structured fields the UI uses to

@@ -18,3 +18,10 @@ enabled = true
 
 [auth]
 enabled = true
+
+[auth.email.template.magic_link]
+subject = "Your personal page sign-in code"
+content_path = "./supabase/templates/recipient-code.html"
+
+[functions.recipient-otp]
+verify_jwt = false

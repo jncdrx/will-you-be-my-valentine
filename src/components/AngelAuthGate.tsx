@@ -1,210 +1,76 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Lock, Heart, KeyRound, Sparkles, Mail, AlertCircle, RefreshCw } from "lucide-react";
-import { monthsaryConfig } from "../config/monthsaryConfig";
-import { signInRecipient, LoginError } from "../lib/auth";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Heart, Lock, Mail, ArrowRight, RefreshCw, AlertCircle } from "lucide-react";
+import { RECIPIENT_EMAIL, requestRecipientCode, verifyRecipientCode } from "../lib/auth";
 
-interface AngelAuthGateProps {
-  onUnlocked: () => void;
-}
+export function AngelAuthGate({ onUnlocked }: { onUnlocked: () => void }) {
+  const [sent, setSent] = useState(false);
+  const [code, setCode] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [resendAt, setResendAt] = useState(0);
+  const [now, setNow] = useState(Date.now());
+  const pending = useRef(false);
+  const input = useRef<HTMLInputElement>(null);
+  const remaining = Math.max(0, Math.ceil((resendAt - now) / 1000));
 
-export function AngelAuthGate({ onUnlocked }: AngelAuthGateProps) {
-  const [emailInput, setEmailInput] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [shake, setShake] = useState(false);
-
-  // Lock background scroll while auth gate is visible
   useEffect(() => {
+    const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => { document.body.style.overflow = previous; window.clearInterval(timer); };
   }, []);
+  useEffect(() => { if (sent) input.current?.focus(); }, [sent]);
 
-  const triggerHaptic = () => {
-    if (typeof navigator !== "undefined" && navigator.vibrate) {
-      navigator.vibrate(10);
-    }
-  };
-
-  const handleShake = () => {
-    setShake(true);
-    setTimeout(() => setShake(false), 600);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    triggerHaptic();
-    setErrorMsg(null);
-
-    const formattedEmail = emailInput.trim().toLowerCase();
-    const password = passwordInput.trim();
-
-    if (!formattedEmail) {
-      setErrorMsg("Please enter your email address, my love!");
-      handleShake();
-      return;
-    }
-
-    if (!password) {
-      setErrorMsg("Please enter your private password, my love!");
-      handleShake();
-      return;
-    }
-
-    setIsLoading(true);
-
+  const send = async () => {
+    if (pending.current || Date.now() < resendAt) return;
+    pending.current = true; setBusy(true); setError(""); setNotice("");
+    setResendAt(Date.now() + 60000); setNow(Date.now());
     try {
-      // Secure login (edge function) with allowed-recipient email gate.
-      await signInRecipient(formattedEmail, password);
-      sessionStorage.setItem("monthsary_authenticated", "true");
-      sessionStorage.setItem("monthsary_angel_email", formattedEmail);
-      onUnlocked();
-    } catch (err) {
-      console.error("Login verification exception:", err);
-      if (err instanceof LoginError) {
-        // Lockout message is generic (does not reveal whether the email exists).
-        setErrorMsg(err.message);
-      } else {
-        setErrorMsg(err instanceof Error ? err.message : "Verification error. Please try again.");
-      }
-      handleShake();
-    } finally {
-      setIsLoading(false);
-    }
+      await requestRecipientCode();
+      setSent(true); setCode("");
+      setNotice("Code requested. Check your inbox or spam folder and use the latest email.");
+      input.current?.focus();
+    } catch (err) { setError(err instanceof Error ? err.message : "Could not send the code. Please try again."); }
+    finally { pending.current = false; setBusy(false); }
+  };
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!sent) { await send(); return; }
+    if (pending.current) return;
+    pending.current = true; setBusy(true); setError("");
+    try { await verifyRecipientCode(code); onUnlocked(); }
+    catch (err) { setError(err instanceof Error ? err.message : "Could not verify the code."); }
+    finally { pending.current = false; setBusy(false); }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-rose-950/60 backdrop-blur-xl p-4 overflow-y-auto">
-      {/* Background Floating Ambient Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-rose-400/20 rounded-full blur-3xl pointer-events-none animate-pulse" />
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.94, y: 20 }}
-        animate={{
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          x: shake ? [-10, 10, -8, 8, -4, 4, 0] : 0,
-        }}
-        transition={{ duration: 0.4 }}
-        className="relative w-full max-w-md bg-white/95 backdrop-blur-2xl p-7 sm:p-9 rounded-3xl border border-white/90 shadow-2xl text-center overflow-hidden my-auto max-h-[92vh] flex flex-col justify-between"
-      >
-        <div className="overflow-y-auto pr-1">
-          {/* Top Decorative Lock Icon */}
-          <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-rose-500 via-pink-500 to-rose-600 text-white shadow-lg shadow-rose-500/30">
-            <Lock size={28} className="animate-bounce" />
-          </div>
-
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-100/80 border border-rose-200 text-rose-700 text-xs font-extrabold uppercase tracking-wider mb-2">
-            <Heart size={12} className="fill-rose-500 text-rose-500 shrink-0" />
-            <span>Angel's Private Monthsary Gate</span>
-          </span>
-
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-rose-600 font-display mt-1">
-            Welcome, {monthsaryConfig.girlfriendName}
-          </h1>
-
-          <p className="text-xs sm:text-sm text-gray-600 mt-1.5 mb-6 leading-relaxed">
-            Please enter your email and private access password to unlock your surprise website
-          </p>
-
-          {/* EMAIL & PASSWORD LOGIN FORM */}
-          <form onSubmit={handleSubmit} className="space-y-4 text-left">
-            {/* Email Input */}
-            <div>
-              <label className="block text-[11px] font-extrabold text-rose-700 uppercase tracking-wider mb-1.5">
-                Your Email Address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-rose-400">
-                  <Mail size={18} />
-                </div>
-                <input
-                  type="email"
-                  value={emailInput}
-                  onChange={(e) => {
-                    setEmailInput(e.target.value);
-                    setErrorMsg(null);
-                  }}
-                  placeholder="Enter your email address..."
-                  aria-label="Your Email Address"
-                  className="w-full pl-10 pr-4 py-3.5 rounded-2xl border border-rose-200 bg-rose-50/50 text-sm text-gray-800 font-semibold focus:border-rose-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-300/50 transition-all placeholder:font-normal min-h-[48px]"
-                  autoFocus
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Password Input */}
-            <div>
-              <label className="block text-[11px] font-extrabold text-rose-700 uppercase tracking-wider mb-1.5">
-                Private Access Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-rose-400">
-                  <KeyRound size={18} />
-                </div>
-                <input
-                  type="password"
-                  value={passwordInput}
-                  onChange={(e) => {
-                    setPasswordInput(e.target.value);
-                    setErrorMsg(null);
-                  }}
-                  placeholder="Enter private password..."
-                  aria-label="Private Access Password"
-                  className="w-full pl-10 pr-4 py-3.5 rounded-2xl border border-rose-200 bg-rose-50/50 text-sm text-gray-800 font-bold tracking-widest focus:border-rose-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-300/50 transition-all placeholder:tracking-normal placeholder:font-normal min-h-[48px]"
-                  required
-                />
-              </div>
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              disabled={isLoading}
-              aria-label="Unlock my personal page"
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white font-bold text-base shadow-xl shadow-rose-500/25 hover:shadow-2xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 min-h-[52px] mt-2 active:scale-95"
-            >
-              {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <RefreshCw size={18} className="animate-spin shrink-0" />
-                  <span>Unlocking surprise...</span>
-                </span>
-              ) : (
-                <>
-                  <Sparkles size={18} className="shrink-0" />
-                  <span>Unlock My Personal Page</span>
-                </>
-              )}
-            </motion.button>
-          </form>
-
-          {/* Error Alert */}
-          <AnimatePresence>
-            {errorMsg && (
-              <motion.div
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -5 }}
-                className="mt-4 flex items-center justify-center gap-2 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs font-bold text-red-600 shadow-sm"
-              >
-                <AlertCircle size={15} className="shrink-0" />
-                <span>{errorMsg}</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto overscroll-contain bg-[#f3e9e7] bg-[radial-gradient(ellipse_at_top,#fffaf5,transparent_70%)] px-4 py-6 sm:py-10">
+      <section aria-labelledby="angel-welcome" className="relative my-auto w-full max-w-[460px] shrink-0 rounded-[28px] border border-white bg-[#fffdfa] p-6 text-left shadow-[0_24px_80px_-32px_#70404c55] sm:p-10">
+        <div aria-hidden="true" className="mb-7 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#e8d6d8] bg-[#f5e9eb] text-[#8b4759]"><Heart size={23} strokeWidth={1.5} /></div>
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#976474]">A little world, just for you</p>
+        <h1 id="angel-welcome" className="font-serif text-[36px] font-normal leading-[1.12] tracking-[-0.04em] text-[#502f3a] sm:text-[42px]">{sent ? "Check your inbox," : "Welcome home,"}<br /><span className="italic text-[#9c5367]">my baby angel.</span></h1>
+        <p className="mb-7 mt-4 text-sm leading-6 text-[#796b70]">{sent ? "Enter the one-time code from your email to open your personal page." : "Your little world is one code away. We’ll email you a sign-in code—no password needed."}</p>
+        <div className="mb-6 flex items-center gap-3 rounded-xl border border-[#eadde0] bg-[#f8f0f1] p-4 text-[#60434e]">
+          <Mail size={19} className="shrink-0" aria-hidden="true" />
+          <div className="min-w-0"><p className="mb-1 text-[11px] text-[#927881]">Your sign-in email</p><p className="break-all text-sm font-medium">{RECIPIENT_EMAIL}</p></div>
         </div>
-
-        <div className="mt-6 pt-4 border-t border-rose-100 flex items-center justify-center gap-1 text-[11px] font-medium text-rose-400">
-          <Heart size={10} className="fill-rose-400 text-rose-400 shrink-0" />
-          <span>Made exclusively for {monthsaryConfig.girlfriendName}</span>
-        </div>
-      </motion.div>
+        <form onSubmit={submit} aria-busy={busy} className="space-y-5">
+          {sent && <div>
+            <label htmlFor="angel-code" className="mb-2 block text-xs font-semibold text-[#60434e]">Email verification code</label>
+            <input ref={input} id="angel-code" name="code" type="text" inputMode="numeric" autoComplete="one-time-code" value={code} onChange={(event) => { setCode(event.target.value.replace(/\D/g, "").slice(0, 10)); setError(""); }} required minLength={6} maxLength={10} pattern="[0-9]{6,10}" placeholder="Enter your code" aria-describedby={error ? "otp-error otp-help" : "otp-help"} aria-invalid={Boolean(error)} className="min-h-[56px] w-full rounded-xl border border-[#dfd3d6] bg-white px-4 py-3 text-center text-xl tracking-[0.18em] text-[#42363b] placeholder:text-base placeholder:tracking-normal placeholder:text-[#a1959a] focus:border-[#a56175] focus:outline-none focus:ring-4 focus:ring-[#a56175]/10" />
+            <p id="otp-help" className="mt-2 text-xs leading-5 text-[#927881]">You can paste the full code. Each code works once.</p>
+          </div>}
+          {notice && <p role="status" className="text-xs leading-5 text-[#557160]">{notice}</p>}
+          {error && <div id="otp-error" role="alert" className="flex items-start gap-2 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800"><AlertCircle size={17} className="mt-0.5 shrink-0" /><span>{error}</span></div>}
+          <button type="submit" disabled={busy || (!sent && remaining > 0)} className="flex min-h-[54px] w-full items-center justify-center gap-3 rounded-xl bg-[#8b4058] px-5 py-4 text-sm font-semibold text-white transition-colors hover:bg-[#723348] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8b4058] disabled:cursor-wait disabled:opacity-60">
+            {busy ? <RefreshCw size={17} className="animate-spin motion-reduce:animate-none" /> : <ArrowRight size={17} />}
+            {busy ? "Please wait…" : sent ? "Verify & open my page" : remaining > 0 ? `Try again in ${remaining}s` : "Send me a sign-in code"}
+          </button>
+          {sent && <button type="button" onClick={send} disabled={busy || remaining > 0} className="min-h-11 w-full rounded-lg text-sm font-medium text-[#8b4058] underline decoration-[#dbc5cc] underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#8b4058] disabled:text-[#927881] disabled:no-underline">{remaining > 0 ? `Resend code in ${remaining}s` : "Send a new code"}</button>}
+        </form>
+        <div className="mt-7 flex items-start justify-center gap-2 border-t border-[#eee3e5] pt-5 text-center text-[11px] leading-5 text-[#927881]"><Lock size={12} className="mt-1 shrink-0" /><span>Made exclusively for my dearest baby angel</span></div>
+      </section>
     </div>
   );
 }
