@@ -1,0 +1,2194 @@
+{
+  "drugs": {
+    "bethanechol": [
+      {
+        "page": 2,
+        "title": "BETHANECOL",
+        "fields": {
+          "classification": "Direct-acting muscarinic agonist.",
+          "action": "Direct-acting muscarinic agonist that selectively binds to and activates muscarinic acetylcholine receptors, stimulating the parasympathetic nervous system. It increases tone in the bladder detrusor muscle to prompt urination and enhances gastrointestinal smooth muscle tone and peristalsis.",
+          "forms": "Oral tablets: 5 mg, 10 mg, 25 mg, 50 mg. Subcutaneous injection: 5 mg/mL.",
+          "indication": "Treatment of acute postoperative and postpartum nonobstructive (functional) urinary retention, and neurogenic atony of the urinary bladder with retention.",
+          "contraindication": "Hypersensitivity, mechanical gastrointestinal or urinary obstruction, hyperthyroidism, peptic ulcer disease, active or latent bronchial asthma, pronounced bradycardia, hypotension, and coronary artery disease.",
+          "adverse": "Severe drop in blood pressure with reflex tachycardia, syncope, bronchospasm, heart block, and cardiac arrest.",
+          "effects": "Abdominal discomfort, cramps, excessive salivation, diarrhea, nausea, vomiting, sweating, flushing, headache, and urinary urgency.",
+          "notes": "Should be taken on an empty stomach (1 hour before or 2 hours after meals) to minimize nausea and vomiting. Atropine sulfate is the specific antidote for overdosage."
+        }
+      }
+    ],
+    "pilocarpine": [
+      {
+        "page": 3,
+        "title": "PILOCARPINE",
+        "fields": {
+          "classification": "Direct-acting muscarinic agonist.",
+          "action": "Direct-acting cholinergic parasympathomimetic agent that stimulates muscarinic receptors, causing contraction of the iris sphincter (miosis) and ciliary muscle, and stimulation of exocrine (salivary) glands.",
+          "forms": "Ophthalmic solution: 0.5%, 1%, 2%, 3%, 4%, 6%. Ophthalmic gel: 4%. Oral tablets (saligen): 5 mg.",
+          "indication": "Management of chronic open-angle glaucoma, acute angle-closure glaucoma, and treatment of symptoms of xerostomia (dry mouth) caused by salivary gland hypofunction or Sjögren’s syndrome.",
+          "contraindication": "Acute inflammation of the anterior chamber, hypersensitivity, secondary glaucoma where constriction is undesirable, and uncontrolled asthma or severe acute cardiac disease.",
+          "adverse": "Retinal detachment, paradoxical increase in intraocular pressure, and systemic cholinergic toxicity (hypotension, bronchospasm).",
+          "effects": "Blurred vision, decreased night vision, brow ache, eye irritation, lacrimation, increased sweating, flushing, and rhinitis.",
+          "notes": "Caution patients about driving or performing hazardous tasks at night due to impaired vision from miosis."
+        }
+      }
+    ],
+    "muscarine": [
+      {
+        "page": 4,
+        "title": "MUSCARINE",
+        "fields": {
+          "classification": "Direct-acting muscarinic agonist.",
+          "action": "A natural, potent direct-acting muscarinic receptor agonist that mimics acetylcholine at parasympathetic neuroeffector junctions, leading to excessive parasympathetic overstimulation.",
+          "forms": "Not an FDA-approved pharmaceutical drug; available strictly as a research toxin or standard reference compound (isolated naturally from Amanita muscaria and other mushrooms).",
+          "indication": "None clinically approved (used primarily in pharmacological research to study muscarinic pathways).",
+          "contraindication": "N/A (Toxin; not used therapeutically).",
+          "adverse": "Severe cholinergic poisoning profile (SLUDGE: Salivation, Lacrimation, Urination, Defecation, Gastrointestinal distress, Emesis), severe miosis, extreme bradycardia, hypotension, and fatal bronchoconstriction.",
+          "effects": "Profuse sweating, excessive salivation, blurred vision, abdominal cramping, and severe vomiting.",
+          "notes": "Muscarine is not broken down by acetylcholinesterase, contributing to its high toxicity profile. Treated medically with atropine as an antidote."
+        }
+      }
+    ],
+    "nicotine": [
+      {
+        "page": 5,
+        "title": "NICOTINE",
+        "fields": {
+          "classification": "Direct Acting Nicotinic Agents.",
+          "action": "Binds to and stimulates nicotinic acetylcholine receptors in the central nervous system, adrenal medulla, autonomic ganglia, and neuromuscular junctions, prompting the release of dopamine and other neurotransmitters.",
+          "forms": "Transdermal patches: 7 mg/24hr, 14 mg/24hr, 21 mg/24hr. Chewing gum/lozenges: 2 mg, 4 mg. Inhaler: 10 mg cartridge. Nasal spray: 10 mg/mL.",
+          "indication": "Nicotine replacement therapy (NRT) for smoking cessation and relief of nicotine withdrawal symptoms.",
+          "contraindication": "Immediate post-myocardial infarction period, severe or worsening angina pectoris, severe cardiac arrhythmias, and active temporal/jaw TMJ disorders (for gum).",
+          "adverse": "Tachycardia, hypertension, cardiac arrhythmias, and acute nicotine toxicity (seizures, respiratory failure).",
+          "effects": "Local skin irritation (patch), mouth irritation or hiccups (gum/lozenge), insomnia, headache, dizziness, nausea, and vivid dreams.",
+          "notes": "Advise patients to completely stop smoking while using any nicotine replacement product to avoid dangerous cardiovascular spikes."
+        }
+      }
+    ],
+    "varenicline": [
+      {
+        "page": 6,
+        "title": "VARENICLINE",
+        "fields": {
+          "classification": "Direct Acting Nicotinic Agents.",
+          "action": "Partial agonist-antagonist that binds selectively to alpha-4 beta-2 nicotinic acetylcholine receptors, reducing feelings of pleasure derived from nicotine while alleviating withdrawal symptoms.",
+          "forms": "Oral tablets: 0.5 mg and 1 mg (often sold in continuation or starter packs).",
+          "indication": "Adjunctive aid for smoking cessation treatment in adults.",
+          "contraindication": "Hypersensitivity to varenicline or its excipients.",
+          "adverse": "Serious neuropsychiatric events (changes in behavior, depression, suicidal ideation), severe skin reactions (Stevens-Johnson syndrome), and cardiovascular events in high-risk patients.",
+          "effects": "Nausea (most common), insomnia, abnormal/vivid dreams, constipation, flatulence, and dry mouth.",
+          "notes": "Should be taken with food and a full glass of water to help minimize treatment-related nausea."
+        }
+      }
+    ],
+    "succinylcholine": [
+      {
+        "page": 7,
+        "title": "SUCCINYLCHOLINE",
+        "fields": {
+          "classification": "Direct Acting Nicotinic Agents.",
+          "action": "A depolarizing skeletal muscle relaxant. It mimics acetylcholine, binding to nicotinic receptors at the neuromuscular junction to cause prolonged depolarization, rendering the motor end-plate resistant to further activation by ACh.",
+          "forms": "Solution for injection /IV infusion: 20 mg/mL, 50 mg/mL, 100 mg/mL.",
+          "indication": "Adjunct to general anesthesia to facilitate endotracheal intubation and to relax skeletal muscles during surgery or mechanical ventilation.",
+          "contraindication": "Personal or family history of malignant hyperthermia, major burns, massive skeletal muscle trauma, extensive denervation of skeletal muscle, and pre-existing hyperkalemia.",
+          "adverse": "Malignant hyperthermia, severe hyperkalemia (which can cause cardiac arrest), cardiac arrhythmias, and prolonged apnea.",
+          "effects": "Postoperative muscle fasciculations and transient muscle pain (myalgia).",
+          "notes": "Has a rapid onset (under 1 minute) and very short duration of action (5 to 10 minutes). Must be administered only by personnel skilled in airway management."
+        }
+      }
+    ],
+    "edrophonium": [
+      {
+        "page": 8,
+        "title": "ENDROPHONIUM",
+        "fields": {
+          "classification": "Indirect Acting Alcohol.",
+          "action": "A short-acting reversible indirect-acting acetylcholinesterase inhibitor. It reversibly binds to the active center of acetylcholinesterase, temporarily preventing the breakdown of acetylcholine and amplifying cholinergic effects at both muscarinic and nicotinic receptor sites.",
+          "forms": "Intravenous/Intramuscular injection: 10 mg/mL.",
+          "indication": "Differential diagnosis of myasthenia gravis (Tensilon test) and evaluation of acute myasthenic crises vs. cholinergic crises; also used as a temporary reversal agent for non-depolarizing neuromuscular blocking drugs.",
+          "contraindication": "Known hypersensitivity, mechanical intestinal or urinary obstruction.",
+          "adverse": "Severe bradycardia, laryngospasm, bronchoconstriction, and cardiac arrhythmias or arrest.",
+          "effects": "Increased salivation, lacrimation, diaphoresis, nausea, vomiting, abdominal cramps, and miosis.",
+          "notes": "Due to its ultra-short duration of action (about 5–10 minutes) and the risk of profound bradycardia, an antagonist like atropine sulfate must always be immediately available during administration."
+        }
+      }
+    ],
+    "neostigmine": [
+      {
+        "page": 9,
+        "title": "NEOSTIGMINE",
+        "fields": {
+          "classification": "Indirect Acting Carbamates.",
+          "action": "Reversible indirect-acting acetylcholinesterase inhibitor that forms a covalent carbamyl-enzyme complex, inhibiting the breakdown of acetylcholine and increasing its availability at neuromuscular junctions and autonomic synapses.",
+          "forms": "Solution for injection: 0.5 mg/mL, 1 mg/mL. Oral tablets: 15 mg.",
+          "indication": "Reversal of effects of non-depolarizing neuromuscular blocking agents after surgery; symptomatic management of myasthenia gravis.",
+          "contraindication": "Peritonitis, mechanical obstruction of the intestinal or urinary tract, and known hypersensitivity.",
+          "adverse": "Severe bronchospasm, cardiovascular depression, bradycardia, and cholinergic crisis.",
+          "effects": "Muscle twitching, excessive salivation, nausea, vomiting, diarrhea, abdominal cramps, and urinary frequency.",
+          "notes": "Often administered alongside an anticholinergic agent (such as atropine or glycopyrrolate) to block unwanted muscarinic side effects like severe bradycardia."
+        }
+      }
+    ],
+    "pyridostigmine": [
+      {
+        "page": 10,
+        "title": "PYRIDOSTIGMINE",
+        "fields": {
+          "classification": "Indirect Acting Carbamates.",
+          "action": "Reversible acetylcholinesterase inhibitor that prolongs the action of acetylcholine at the neuromuscular junction. It has a longer duration of action compared to neostigmine.",
+          "forms": "Oral tablets: 60 mg. Extended-release tablets: 180 mg. Syrup: 60 mg/5 mL. Injection: 5 mg/mL.",
+          "indication": "Long-term treatment of myasthenia gravis and prophylaxis against nerve agents (such as Soman) in military settings.",
+          "contraindication": "Mechanical obstruction of the gastrointestinal or urinary tract, and hypersensitivity to anticholinesterase agents.",
+          "adverse": "Syncope, seizures, severe bradycardia, bronchospasm, and dysrhythmias.",
+          "effects": "Muscle cramps, increased bronchial secretions, excessive sweating, diarrhea, nausea, and abdominal discomfort.",
+          "notes": "Dosage must be carefully titrated to the individual patient to balance therapeutic weakness relief against the onset of a cholinergic crisis."
+        }
+      }
+    ],
+    "physostigmine": [
+      {
+        "page": 11,
+        "title": "PHYSOSTIGMINE",
+        "fields": {
+          "classification": "Indirect Acting Carbamates.",
+          "action": "Reversible acetylcholinesterase inhibitor. Unlike other carbamates, it contains a tertiary amine structure, allowing it to readily cross the blood-brain barrier and treat central nervous system effects.",
+          "forms": "Solution for injection: 1 mg/mL.",
+          "indication": "Treatment of severe anticholinergic toxicity (e.g., overdose from atropine, scopolamine, or tricyclic antidepressants).",
+          "contraindication": "Asthma, gangrene, diabetes, cardiovascular disease, mechanical obstruction of the intestinal or urinary tract, and poisoning by depolarizing neuromuscular blockers.",
+          "adverse": "Seizures, hypersalivation leading to respiratory compromise, bradycardia, asystole, and bronchospasm.",
+          "effects": "Nausea, vomiting, sweating, dizziness, and restlessness.",
+          "notes": "Administer via slow IV injection to prevent cardiac arrhythmias and seizures. Atropine should be on hand as a reversing agent if severe cholinergic side effects emerge."
+        }
+      }
+    ],
+    "parathion": [
+      {
+        "page": 12,
+        "title": "PARATHION",
+        "fields": {
+          "classification": "Indirect Acting Organophosphates.",
+          "action": "Irreversible organophosphate acetylcholinesterase inhibitor. It phosphorylates the active site of the enzyme, permanently deactivating it and causing a massive accumulation of acetylcholine across all cholinergic synapses.",
+          "forms": "Agricultural/industrial formulations (restricted-use pesticide; not an approved clinical pharmaceutical drug).",
+          "indication": "None clinically (historically used exclusively as an agricultural insecticide/pesticide).",
+          "contraindication": "N/A (Highly toxic chemical agent; contraindicated for any medical or household use due to extreme mammalian toxicity).",
+          "adverse": "Fatal respiratory failure, severe pulmonary edema, uncontrollable convulsions, profound bradycardia, complete neuromuscular paralysis, and death.",
+          "effects": "Profuse sweating, excessive lacrimation, uncontrollable diarrhea, vomiting, muscle fasciculations, miosis, and confusion.",
+          "notes": "Highly absorbed through skin, lungs, and the GI tract. Treated aggressively with decontamination, high-dose atropine (to block muscarinic signs), and pralidoxime (2-PAM) to regenerate acetylcholinesterase if administered early."
+        }
+      }
+    ],
+    "malathion": [
+      {
+        "page": 13,
+        "title": "MALATHION",
+        "fields": {
+          "classification": "Indirect Acting Organophosphates.",
+          "action": "Organophosphate acetylcholinesterase inhibitor. In mammals, it is biotransformed to malaoxon, inhibiting acetylcholinesterase, though it has a lower systemic mammalian toxicity than parathion.",
+          "forms": "Topical lotion/shampoo: 0.5% (Ovide). Agricultural formulations vary.",
+          "indication": "Treatment of head lice and their ova (eggs) via topical application.",
+          "contraindication": "Neonates and infants (due to potential for increased skin absorption and neurotoxicity), and known hypersensitivity.",
+          "adverse": "Local chemical burns, skin irritation, stinging, and systemic toxicity if ingested or excessively absorbed through broken skin.",
+          "effects": "Scalp irritation, erythema, and temporary increase in localized sweating.",
+          "notes": "Flammable formulation; patients must keep away from open flames or hair dryers while the product is wet on the hair."
+        }
+      }
+    ],
+    "sarin": [
+      {
+        "page": 14,
+        "title": "SARIN, TABUN, others",
+        "fields": {
+          "classification": "Indirect Acting Organophosphates.",
+          "action": "Extremely potent, irreversible organophosphate nerve agents. They covalently bind to the active serine site of acetylcholinesterase, leading to permanent enzyme inactivation and a toxic, lethal flood of acetylcholine throughout the central and peripheral nervous systems.",
+          "forms": "Not a pharmaceutical drug; chemical warfare agents.",
+          "indication": "None (classified strictly as weapons of mass destruction / chemical warfare agents).",
+          "contraindication": "N/A.",
+          "adverse": "Rapid loss of consciousness, violent convulsions, copious airway secretions, immediate respiratory muscle paralysis, asphyxiation, and death.",
+          "effects": "Sudden pin-point pupils (miosis), extreme rhinorrhea, intense dyspnea, and uncontrolled body secretions.",
+          "notes": "Extremely lethal via inhalation or minimal skin contact. Immediate emergency response requires removal from exposure, decontamination, and prompt administration of atropine and pralidoxime alongside an anticonvulsant like diazepam."
+        }
+      }
+    ],
+    "tabun": [
+      {
+        "page": 14,
+        "title": "SARIN, TABUN, others",
+        "fields": {
+          "classification": "Indirect Acting Organophosphates.",
+          "action": "Extremely potent, irreversible organophosphate nerve agents. They covalently bind to the active serine site of acetylcholinesterase, leading to permanent enzyme inactivation and a toxic, lethal flood of acetylcholine throughout the central and peripheral nervous systems.",
+          "forms": "Not a pharmaceutical drug; chemical warfare agents.",
+          "indication": "None (classified strictly as weapons of mass destruction / chemical warfare agents).",
+          "contraindication": "N/A.",
+          "adverse": "Rapid loss of consciousness, violent convulsions, copious airway secretions, immediate respiratory muscle paralysis, asphyxiation, and death.",
+          "effects": "Sudden pin-point pupils (miosis), extreme rhinorrhea, intense dyspnea, and uncontrolled body secretions.",
+          "notes": "Extremely lethal via inhalation or minimal skin contact. Immediate emergency response requires removal from exposure, decontamination, and prompt administration of atropine and pralidoxime alongside an anticonvulsant like diazepam."
+        }
+      }
+    ],
+    "rivastigmine": [
+      {
+        "page": 15,
+        "title": "RIVERSTIGMINE",
+        "fields": {
+          "classification": "Indirect-acting agents for Alzheimer's disease.",
+          "action": "Dual inhibitor of both acetylcholinesterase and butyrylcholinesterase (pseudocholinesterase) in the brain, helping to increase cortical levels of acetylcholine.",
+          "forms": "Oral capsules: 1.5 mg, 3 mg, 4.5 mg, 6 mg. Oral solution: 2 mg/mL. Transdermal patches: 4.6 mg/24hr, 9.5 mg/24hr, 13.3 mg/24hr.",
+          "indication": "Treatment of mild to moderate dementia of the Alzheimer's type and mild to moderate dementia associated with Parkinson's disease.",
+          "contraindication": "Known hypersensitivity to rivastigmine, other carbamate derivatives, or previous history of application-site contact dermatitis with the rivastigmine patch.",
+          "adverse": "Severe bradycardia, syncopal episodes, gastrointestinal hemorrhage, and worsening of extrapyramidal symptoms.",
+          "effects": "Nausea, vomiting, anorexia, weight loss, abdominal pain, dizziness, asthenia, and insomnia.",
+          "notes": "Oral forms should be taken with food (breakfast and dinner) to reduce gastrointestinal side effects. Patches should be applied daily to clean, dry, hairless skin and rotated to avoid skin irritation."
+        }
+      }
+    ],
+    "galantamine": [
+      {
+        "page": 16,
+        "title": "GALANTAMINE",
+        "fields": {
+          "classification": "Indirect-acting agents for Alzheimer's disease.",
+          "action": "A reversible, competitive acetylcholinesterase inhibitor that also acts as an allosteric modulator at nicotinic acetylcholine receptors, enhancing the action of acetylcholine at nicotinic sites.",
+          "forms": "Oral tablets: 4 mg, 8 mg, 12 mg. Extended-release capsules: 8 mg, 16 mg, 24 mg. Oral solution: 4 mg/mL.",
+          "indication": "Treatment of mild to moderate dementia of the Alzheimer's type.",
+          "contraindication": "Severe renal impairment (creatinine clearance less than 9 mL/min) and severe hepatic impairment.",
+          "adverse": "Slowed heart rate (bradycardia), heart block, syncope, gastrointestinal bleeding, and increased risk of seizures.",
+          "effects": "Nausea, vomiting, diarrhea, weight loss, decreased appetite, dizziness, headache, and fatigue.",
+          "notes": "Take with food and ensure adequate fluid intake during treatment to minimize GI side effects. Titrate dosage slowly over intervals of at least 4 weeks."
+        }
+      }
+    ],
+    "donepezil": [
+      {
+        "page": 17,
+        "title": "DONEPAZIL",
+        "fields": {
+          "classification": "Indirect-acting agents for Alzheimer's disease.",
+          "action": "Highly selective, reversible inhibitor of acetylcholinesterase, increasing the concentration of acetylcholine available in synaptic clefts within the central nervous system.",
+          "forms": "Oral tablets: 5 mg, 10 mg, 23 mg. Orally disintegrating tablets (ODT): 5 mg, 10 mg.",
+          "indication": "Treatment of mild, moderate, to severe dementia of the Alzheimer's type.",
+          "contraindication": "Known hypersensitivity to donepezil or piperidine derivatives.",
+          "adverse": "Syncope, severe bradycardia, QT prolongation, gastrointestinal ulceration, and upper GI bleeding.",
+          "effects": "Vivid dreams, insomnia, diarrhea, muscle cramps, fatigue, nausea, and vomiting.",
+          "notes": "Usually taken once daily at bedtime, with or without food. It has a long half-life (about 70 hours), making once-daily dosing convenient for chronic compliance."
+        }
+      }
+    ],
+    "atropine": [
+      {
+        "page": 19,
+        "title": "ATROPINE",
+        "fields": {
+          "classification": "Antimuscarinic, Nonselective.",
+          "action": "Competitive, non-selective muscarinic receptor antagonist that blocks the effects of acetylcholine at parasympathetic neuroeffector sites on smooth muscle, cardiac muscle, and secretory glands.",
+          "forms": "Injection: 0.1 mg/mL, 0.4 mg/mL, 0.5 mg/mL, 1 mg/mL. Ophthalmic solution: 1%. Eye ointment: 1%.",
+          "indication": "Preoperative medication to reduce salivary and bronchial secretions, treatment of symptomatic bradycardia, resuscitation during asystole, and as an antidote for organophosphate or nerve agent poisoning.",
+          "contraindication": "Glaucoma (narrow-angle), obstructive gastrointestinal disease, obstructive uropathy, paralytic ileus, toxic megacolon, and tachycardia secondary to cardiac insufficiency or thyrotoxicosis.",
+          "adverse": "Ventricular fibrillation, acute psychosis, severe paradoxical bradycardia (with low doses), and anaphylaxis.",
+          "effects": "Xerostomia (dry mouth), blurred vision, photophobia, tachycardia, constipation, urinary retention, and flushing.",
+          "notes": "Frequently used as the primary antidote for acute cholinergic toxicity (antidote for organophosphates, carbamates, and muscarinic mushroom poisoning)."
+        }
+      }
+    ],
+    "darifenacin": [
+      {
+        "page": 20,
+        "title": "DOREFENACIN, FESOTERODIN, SOLIFENACIN,\nTLTERODINE",
+        "fields": {
+          "classification": "Antimuscarinic, Selective.",
+          "action": "Competitive muscarinic receptor antagonists that display relative selectivity for the urinary bladder over salivary glands, reducing bladder smooth muscle contractions and detrusor pressure.",
+          "forms": "Darifenacin (ER): 7.5 mg, 15 mg tablets.",
+          "indication": "Overactive bladder (OAB) associated with symptoms of urge urinary incontinence, urgency, and urinary frequency.",
+          "adverse": "Severe urinary retention, QT prolongation (especially tolterodine and fesoterodine), and angioedema.",
+          "effects": "Dry mouth, constipation, dyspepsia, blurred vision, dry eyes, and headache.",
+          "notes": "Extended-release formulations help reduce peak-to-trough fluctuations and lower the incidence of dry mouth compared to immediate-release formulations."
+        }
+      }
+    ],
+    "fesoterodine": [
+      {
+        "page": 20,
+        "title": "DOREFENACIN, FESOTERODIN, SOLIFENACIN,\nTLTERODINE",
+        "fields": {
+          "classification": "Antimuscarinic, Selective.",
+          "action": "Competitive muscarinic receptor antagonists that display relative selectivity for the urinary bladder over salivary glands, reducing bladder smooth muscle contractions and detrusor pressure.",
+          "forms": "Fesoterodine (ER): 4 mg, 8 mg tablets.",
+          "indication": "Overactive bladder (OAB) associated with symptoms of urge urinary incontinence, urgency, and urinary frequency.",
+          "adverse": "Severe urinary retention, QT prolongation (especially tolterodine and fesoterodine), and angioedema.",
+          "effects": "Dry mouth, constipation, dyspepsia, blurred vision, dry eyes, and headache.",
+          "notes": "Extended-release formulations help reduce peak-to-trough fluctuations and lower the incidence of dry mouth compared to immediate-release formulations."
+        }
+      }
+    ],
+    "solifenacin": [
+      {
+        "page": 20,
+        "title": "DOREFENACIN, FESOTERODIN, SOLIFENACIN,\nTLTERODINE",
+        "fields": {
+          "classification": "Antimuscarinic, Selective.",
+          "action": "Competitive muscarinic receptor antagonists that display relative selectivity for the urinary bladder over salivary glands, reducing bladder smooth muscle contractions and detrusor pressure.",
+          "forms": "Solifenacin: 5 mg, 10 mg tablets.",
+          "indication": "Overactive bladder (OAB) associated with symptoms of urge urinary incontinence, urgency, and urinary frequency.",
+          "adverse": "Severe urinary retention, QT prolongation (especially tolterodine and fesoterodine), and angioedema.",
+          "effects": "Dry mouth, constipation, dyspepsia, blurred vision, dry eyes, and headache.",
+          "notes": "Extended-release formulations help reduce peak-to-trough fluctuations and lower the incidence of dry mouth compared to immediate-release formulations."
+        }
+      }
+    ],
+    "tolterodine": [
+      {
+        "page": 20,
+        "title": "DOREFENACIN, FESOTERODIN, SOLIFENACIN,\nTLTERODINE",
+        "fields": {
+          "classification": "Antimuscarinic, Selective.",
+          "action": "Competitive muscarinic receptor antagonists that display relative selectivity for the urinary bladder over salivary glands, reducing bladder smooth muscle contractions and detrusor pressure.",
+          "forms": "Tolterodine: 1 mg, 2 mg tablets; ER capsules: 2 mg, 4 mg.",
+          "indication": "Overactive bladder (OAB) associated with symptoms of urge urinary incontinence, urgency, and urinary frequency.",
+          "adverse": "Severe urinary retention, QT prolongation (especially tolterodine and fesoterodine), and angioedema.",
+          "effects": "Dry mouth, constipation, dyspepsia, blurred vision, dry eyes, and headache.",
+          "notes": "Extended-release formulations help reduce peak-to-trough fluctuations and lower the incidence of dry mouth compared to immediate-release formulations."
+        }
+      }
+    ],
+    "pirenzepine": [
+      {
+        "page": 21,
+        "title": "PIRENZEPINE, TELENZEPINE",
+        "fields": {
+          "classification": "Antimuscarinic, Selective.",
+          "action": "Selective antagonists of M_1 muscarinic receptors located in gastric parietal cells and enteric ganglia, which significantly reduces gastric acid secretion and pepsin output without heavily affecting general smooth muscle or cardiac functions.",
+          "forms": "Oral tablets: 25 mg, 50 mg (Pirenzepine; availability varies by country/region).",
+          "indication": "Adjunctive treatment for peptic ulcer disease and gastric hyperacidity disorders.",
+          "contraindication": "Hypersensitivity to antimuscarinics, mechanical intestinal obstruction, pyloric stenosis, and active gastrointestinal hemorrhage.",
+          "adverse": "Marked visual disturbances, precipitation of glaucoma, and severe allergic reactions.",
+          "effects": "Mild dry mouth, transient blurred vision, constipation, and mild drowsiness.",
+          "notes": "These are considered older or regional agents designed to target gastric acid secretion while minimizing typical systemic side effects (like severe tachycardia) seen with nonselective agents."
+        }
+      }
+    ],
+    "telenzepine": [
+      {
+        "page": 21,
+        "title": "PIRENZEPINE, TELENZEPINE",
+        "fields": {
+          "classification": "Antimuscarinic, Selective.",
+          "action": "Selective antagonists of M_1 muscarinic receptors located in gastric parietal cells and enteric ganglia, which significantly reduces gastric acid secretion and pepsin output without heavily affecting general smooth muscle or cardiac functions.",
+          "indication": "Adjunctive treatment for peptic ulcer disease and gastric hyperacidity disorders.",
+          "contraindication": "Hypersensitivity to antimuscarinics, mechanical intestinal obstruction, pyloric stenosis, and active gastrointestinal hemorrhage.",
+          "adverse": "Marked visual disturbances, precipitation of glaucoma, and severe allergic reactions.",
+          "effects": "Mild dry mouth, transient blurred vision, constipation, and mild drowsiness.",
+          "notes": "These are considered older or regional agents designed to target gastric acid secretion while minimizing typical systemic side effects (like severe tachycardia) seen with nonselective agents."
+        }
+      }
+    ],
+    "aclidinium": [
+      {
+        "page": 22,
+        "title": "ACLIDINIUM",
+        "fields": {
+          "classification": "Antimuscarinic Agents for Bronchodilation.",
+          "action": "Long-acting, competitive antagonist at muscarinic acetylcholine receptors (M_3 receptors in airway smooth muscle), causing bronchodilation.",
+          "forms": "Inhalation powder (Genuair/Pressair inhaler): 400 mcg per actuation.",
+          "indication": "Long-term, maintenance treatment of bronchospasm associated with chronic obstructive pulmonary disease (COPD), including chronic bronchitis and emphysema.",
+          "contraindication": "Hypersensitivity to aclidinium or atropine derivatives; acute treatment of acute bronchospasm episodes (rescue therapy).",
+          "adverse": "Immediate hypersensitivity reactions (including angioedema and urticaria), paradoxical bronchospasm.",
+          "effects": "Nasopharyngitis, headache, cough, sinusitis, and mild dry mouth.",
+          "notes": "Rapidly hydrolyzed in human plasma, which minimizes systemic side effects. Not a rescue medication."
+        }
+      }
+    ],
+    "ipratropium": [
+      {
+        "page": 23,
+        "title": "IPRATROPIUM",
+        "fields": {
+          "classification": "Antimuscarinic Agents for Bronchodilation.",
+          "action": "Short-acting muscarinic antagonist (SAMA) that blocks acetylcholine at M_3 receptors on bronchial smooth muscle, preventing cyclic GMP-mediated bronchoconstriction and excessive mucus secretion.",
+          "forms": "Inhalation aerosol (MDI): 17 mcg/actuation. Nasal spray: 0.03%, 0.06%. Solution for nebulization: 0.02%.",
+          "indication": "Maintenance treatment of bronchospasm associated with COPD and asthma; acute exacerbations of asthma or COPD (often combined with albuterol); rhinorrhea.",
+          "contraindication": "Hypersensitivity to ipratropium, atropine, or its derivatives.",
+          "adverse": "Paradoxical bronchospasm, acute angle-closure glaucoma (if sprayed into the eyes), and severe urinary retention.",
+          "effects": "Dry mouth, throat irritation, cough, bitter taste, and mild headache.",
+          "notes": "Does not cross the blood-brain barrier well, avoiding central nervous system side effects. Care must be taken to prevent the aerosol from entering the eyes."
+        }
+      }
+    ],
+    "tiotropium": [
+      {
+        "page": 24,
+        "title": "TIOTROPIUM",
+        "fields": {
+          "classification": "Antimuscarinic Agents for Bronchodilation.",
+          "action": "Long-acting muscarinic antagonist (LAMA), often referred to as an anticholinergic bronchodilator. It exhibits slow dissociation from M_3 receptors, providing prolonged bronchodilation lasting 24 hours.",
+          "forms": "Inhalation powder (HandiHaler): 18 mcg/capsule. Soft mist inhaler (Respimat): 1.25 mcg or 2.5 mcg per actuation.",
+          "indication": "Long-term, once-daily maintenance treatment of bronchospasm associated with COPD, and maintenance treatment of asthma in patients aged 6 years and older.",
+          "contraindication": "Hypersensitivity to tiotropium, atropine, or ipratropium.",
+          "adverse": "Paradoxical bronchospasm, worsening of narrow-angle glaucoma, and acute urinary retention.",
+          "effects": "Dry mouth, upper respiratory tract infections, sinusitis, pharyngitis, and constipation.",
+          "notes": "Provides a full 24-hour duration of action, making it a cornerstone maintenance therapy for COPD management."
+        }
+      }
+    ],
+    "umeclidinium": [
+      {
+        "page": 25,
+        "title": "UMECLIDINIUM",
+        "fields": {
+          "classification": "Antimuscarinic Agents for Bronchodilation.",
+          "action": "Long-acting antimuscarinic agent that blocks the action of acetylcholine on muscarinic receptors (M_3) in airway smooth muscle, leading to bronchodilation.",
+          "forms": "Inhalation powder (Ellipta inhaler): 62.5 mcg per actuation.",
+          "indication": "Long-term, once-daily maintenance treatment of airflow obstruction in patients with COPD.",
+          "adverse": "Paradoxical bronchospasm, acute angle-closure glaucoma flare-ups, and urinary retention.",
+          "effects": "Nasopharyngitis, upper respiratory tract infection, cough, tachycardia, and dry mouth.",
+          "notes": "Often combined with other agents (such as vilanterol) in fixed-dose combination inhalers for synergistic bronchodilatory benefits."
+        }
+      }
+    ],
+    "hexamethonium": [
+      {
+        "page": 26,
+        "title": "HEXAMETHONIUM",
+        "fields": {
+          "classification": "Antinicotinic Ganglion Blockers.",
+          "action": "Non-depolarizing ganglionic blocker that competitively blocks nicotinic acetylcholine receptors located in both sympathetic and parasympathetic autonomic ganglia.",
+          "forms": "Historical drug; rarely or no longer manufactured for commercial clinical distribution.",
+          "indication": "Historically used as an antihypertensive agent (obsolete due to severe adverse autonomic blocking effects).",
+          "contraindication": "Severe hypotension, coronary insufficiency, and paralytic ileus.",
+          "adverse": "Profound orthostatic hypotension, cardiovascular collapse, paralytic ileus, and severe urinary retention.",
+          "effects": "Cycloplegia, dry mouth, severe constipation, impotence, and dizziness.",
+          "notes": "It blocks both sympathetic and parasympathetic outflows entirely, resulting in unpredictable and severe side effects. It is primarily of historical and pharmacological interest today."
+        }
+      },
+      {
+        "page": 78,
+        "title": "HEXAMETHONIUM",
+        "fields": {
+          "classification": "Ganglion Blockers.",
+          "action": "Non-depolarizing ganglionic blocker that competitively blocks nicotinic acetylcholine receptors located in both sympathetic and parasympathetic autonomic ganglia.",
+          "forms": "Historical drug; rarely or no longer manufactured for commercial clinical distribution.",
+          "indication": "Historically used as an antihypertensive agent (obsolete due to severe adverse autonomic blocking effects).",
+          "contraindication": "Severe hypotension, coronary insufficiency, and paralytic ileus.",
+          "adverse": "Profound orthostatic hypotension, cardiovascular collapse, paralytic ileus, and severe urinary retention.",
+          "effects": "Cycloplegia, dry mouth, severe constipation, impotence, and dizziness.",
+          "notes": "It blocks both sympathetic and parasympathetic outflows entirely, resulting in unpredictable and severe side effects. It is primarily of historical and pharmacological interest today."
+        }
+      }
+    ],
+    "trimethaphan": [
+      {
+        "page": 27,
+        "title": "TRIMETHAPHAN",
+        "fields": {
+          "classification": "Antinicotinic Ganglion Blockers.",
+          "action": "Short-acting competitive ganglionic blocking agent that blocks transmission through autonomic ganglia, causing vasodilation and a marked drop in blood pressure.",
+          "forms": "Intravenous infusion solution: 50 mg/mL.",
+          "indication": "Production of controlled hypotension during specific surgical procedures (such as neurosurgery or repair of coarctation of the aorta) and management of hypertensive emergencies.",
+          "contraindication": "Hypovolemia, shock, severe anemia, asphyxia, and respiratory insufficiency.",
+          "adverse": "Severe, unmanageable hypotension, respiratory depression, and paralytic ileus.",
+          "effects": "Mydriasis, cycloplegia, urinary retention, dry mouth, and cessation of bowel sounds.",
+          "notes": "Administered strictly via continuous IV infusion under close blood pressure monitoring; effects wear off rapidly upon discontinuation."
+        }
+      },
+      {
+        "page": 79,
+        "title": "TRIMETHAPHAN",
+        "fields": {
+          "classification": "Ganglion Blockers.",
+          "action": "Short-acting competitive ganglionic blocking agent that blocks transmission through autonomic ganglia, causing vasodilation and a marked drop in blood pressure.",
+          "forms": "Intravenous infusion solution: 50 mg/mL.",
+          "indication": "Production of controlled hypotension during specific surgical procedures (such as neurosurgery or repair of coarctation of the aorta) and management of hypertensive emergencies.",
+          "contraindication": "Hypovolemia, shock, severe anemia, asphyxia, and respiratory insufficiency.",
+          "adverse": "Severe, unmanageable hypotension, respiratory depression, and paralytic ileus.",
+          "effects": "Mydriasis, cycloplegia, urinary retention, dry mouth, and cessation of bowel sounds.",
+          "notes": "Administered strictly via continuous IV infusion under close blood pressure monitoring; effects wear off rapidly upon discontinuation."
+        }
+      }
+    ],
+    "mecamylamine": [
+      {
+        "page": 28,
+        "title": "MECAMYLAMINE",
+        "fields": {
+          "action": "Non-selective, non-competitive ganglionic blocker that crosses the blood-brain barrier readily to block nicotinic receptors in autonomic ganglia and the central nervous system.",
+          "forms": "Oral tablets: 2.5 mg (historically; current clinical availability is specialized/limited).",
+          "indication": "Historically used for moderately severe to severe essential hypertension; investigated as an adjunct for tobacco smoking cessation and Tourette's syndrome.",
+          "contraindication": "Coronary thrombosis, recent myocardial infarction, uremia, and organic cerebral damage.",
+          "adverse": "Severe orthostatic hypotension, neuromuscular weakness, and toxic psychosis /convulsions (due to CNS penetration).",
+          "effects": "Constipation (can progress to paralytic ileus), blurred vision, dry mouth, urinary retention, and sedation.",
+          "notes": "Unlike many other ganglion blockers, it is absorbed well orally due to its secondary amine structure, which also allows it to enter the central nervous system easily."
+        }
+      },
+      {
+        "page": 80,
+        "title": "MECAMYLAMINE",
+        "fields": {
+          "classification": "Ganglion Blockers.",
+          "action": "Non-selective, non-competitive ganglionic blocker that crosses the blood-brain barrier readily to block nicotinic receptors in autonomic ganglia and the central nervous system.",
+          "forms": "Oral tablets: 2.5 mg (historically; current clinical availability is specialized/limited).",
+          "indication": "Historically used for moderately severe to severe essential hypertension; investigated as an adjunct for tobacco smoking cessation and Tourette's syndrome.",
+          "contraindication": "Coronary thrombosis, recent myocardial infarction, uremia, and organic cerebral damage.",
+          "adverse": "Severe orthostatic hypotension, neuromuscular weakness, and toxic psychosis /convulsions (due to CNS penetration).",
+          "effects": "Constipation (can progress to paralytic ileus), blurred vision, dry mouth, urinary retention, and sedation.",
+          "notes": "Unlike many other ganglion blockers, it is absorbed well orally due to its secondary amine structure, which also allows it to enter the central nervous system easily."
+        }
+      }
+    ],
+    "pralidoxime": [
+      {
+        "page": 29,
+        "title": "PRALIDAXIME",
+        "fields": {
+          "classification": "Acetylcholine Esterase Regenerator.",
+          "action": "Reactivates acetylcholinesterase that has been inactivated by organophosphate pesticides or nerve agents. It binds to the organophosphate-enzyme complex, releases the phosphorus atom, and restores normal enzyme activity.",
+          "forms": "Injection: 600 mg/mL auto-injector, or vials containing 1 gram of powder for reconstitution.",
+          "indication": "Antidote for poisoning by organophosphate pesticides and nerve agents (used alongside atropine).",
+          "contraindication": "Hypersensitivity to pralidoxime; poisoning by carbaryl or non-organophosphate substances (ineffective or can worsen toxicity).",
+          "adverse": "Rapid intravenous administration can cause laryngospasm, muscle rigidity, tachycardia, and transient neuromuscular blockade.",
+          "effects": "Blurred vision, dizziness, headache, nausea, and mild local pain at the injection site.",
+          "notes": "Must be administered as early as possible after exposure, because \"aging\" of the phosphorylated enzyme makes it resistant to regeneration over time."
+        }
+      }
+    ],
+    "rocuronium": [
+      {
+        "page": 30,
+        "title": "RUCORONIUM",
+        "fields": {
+          "classification": "Antinicotinic Neuromuscular Blockers.",
+          "action": "Non-depolarizing neuromuscular blocker that competitively binds to nicotinic acetylcholine receptors at the motor end-plate, preventing acetylcholine from binding and causing skeletal muscle relaxation.",
+          "forms": "Intravenous solution: 10 mg/mL.",
+          "indication": "Adjunct to general anesthesia to facilitate rapid sequence intubation (RSI) and routine endotracheal intubation, and to provide skeletal muscle relaxation during surgery.",
+          "contraindication": "Known hypersensitivity to rocuronium or bromide-containing compounds.",
+          "adverse": "Anaphylactic/anaphylactoid reactions, prolonged apnea, and severe bronchospasm.",
+          "effects": "Transient injection-site pain and mild, temporary changes in heart rate or blood pressure.",
+          "notes": "Features a relatively rapid onset of action compared to other non-depolarizing agents, making it an alternative to succinylcholine for rapid sequence intubation when depolarizing blockers are contraindicated. Its effects can be rapidly reversed using sugammadex."
+        }
+      }
+    ],
+    "atracurium": [
+      {
+        "page": 31,
+        "title": "ATRACURIUM",
+        "fields": {
+          "classification": "Antinicotinic Neuromuscular Blockers.",
+          "action": "Non-depolarizing skeletal muscle relaxant that competes with acetylcholine for nicotinic receptors at the neuromuscular junction.",
+          "forms": "Intravenous solution: 10 mg/mL.",
+          "indication": "Adjunct to general anesthesia to relax skeletal muscles and facilitate endotracheal intubation and mechanical ventilation during surgical procedures.",
+          "contraindication": "Known hypersensitivity to atracurium or besylate components.",
+          "adverse": "Histamine release leading to severe hypotension, flushing, bronchospasm, and cardiovascular collapse.",
+          "effects": "Skin flushing, erythema, transient hypotension, and mild wheezing.",
+          "notes": "Undergoes unique spontaneous degradation in plasma via Hofmann elimination (independent of liver or kidney function), making it useful in patients with hepatic or renal failure."
+        }
+      }
+    ],
+    "mivacurium": [
+      {
+        "page": 32,
+        "title": "MIVACURIUM",
+        "fields": {
+          "classification": "Antinicotinic Neuromuscular Blockers.",
+          "action": "Short-acting, non-depolarizing neuromuscular blocking agent that competitively blocks nicotinic receptors at the neuromuscular junction.",
+          "forms": "Intravenous solution: 2 mg/mL.",
+          "indication": "Adjunct to general anesthesia for short surgical procedures to relax skeletal muscles and facilitate tracheal intubation.",
+          "contraindication": "Hypersensitivity to mivacurium and patients with homozygous atypical plasma cholinesterase activity.",
+          "adverse": "Profound histamine release causing profound transient hypotension, flushing, and bronchospasm.",
+          "effects": "Cutaneous flushing, transient decrease in blood pressure, and mild tachycardia.",
+          "notes": "Metabolized primarily by plasma cholinesterase (pseudocholinesterase); patients with genetic deficiencies in this enzyme experience significantly prolonged paralysis."
+        }
+      }
+    ],
+    "pancuronium": [
+      {
+        "page": 33,
+        "title": "PANCURONIUM BROMIDE",
+        "fields": {
+          "classification": "Antinicotinic Neuromuscular Blockers.",
+          "action": "Long-acting, non-depolarizing neuromuscular blocking agent that competes with acetylcholine at the motor end-plate.",
+          "forms": "Intravenous injection: 1 mg/mL, 2 mg/mL.",
+          "indication": "Facilitation of endotracheal intubation and provision of skeletal muscle relaxation during long surgical procedures or mechanical ventilation.",
+          "contraindication": "Known hypersensitivity to pancuronium or bromides; situations where tachycardia is hazardous.",
+          "adverse": "Prolonged neuromuscular blockade, residual paralysis, and hypersensitivity reactions.",
+          "effects": "Tachycardia (due to vagolytic action and blockade of cardiac muscarinic receptors), hypertension, and increased salivation.",
+          "notes": "Unlike many other muscle relaxants, it typically increases heart rate and blood pressure instead of dropping it, due to its mild blocking action on cardiac vagal receptors."
+        }
+      }
+    ],
+    "tubocurarine": [
+      {
+        "page": 34,
+        "title": "TUBOCURARINE",
+        "fields": {
+          "classification": "Antinicotinic Neuromuscular Blockers.",
+          "action": "Prototype non-depolarizing neuromuscular blocker that competitively inhibits acetylcholine at the skeletal muscle nicotinic receptors.",
+          "forms": "Intravenous injection: 3 mg/mL (Historical/classic pharmacological agent).",
+          "indication": "Historical agent used as an adjunct to general anesthesia for muscle relaxation and intubation.",
+          "contraindication": "Myasthenia gravis, severe electrolyte disturbances, and hypersensitivity.",
+          "adverse": "Significant histamine release causing marked hypotension, shock-like symptoms, and bronchospasm.",
+          "effects": "Hypotension, cutaneous flushing, respiratory depression, and reflex tachycardia.",
+          "notes": "Rarely used in modern clinical practice due to its high propensity for causing histamine-induced hypotension; largely superseded by safer non-depolarizing agents like rocuronium or atracurium."
+        }
+      }
+    ],
+    "dextromethorphan": [
+      {
+        "page": 35,
+        "title": "DEXTROMETORPHAN",
+        "fields": {
+          "action": "Acts centrally on the cough center in the medulla to elevate the threshold for coughing. (Note: Structurally related to opioids, it acts as an NMDA receptor antagonist and serotonin reuptake inhibitor at high doses, sitting outside traditional cholinergic pathways).",
+          "forms": "Oral syrup: 5 mg/5 mL, 10 mg/5 mL, 15 mg/5 mL. Lozenges/tablets: 10 mg, 15 mg, 30 mg. Extended-release suspension: 30 mg/5 mL.",
+          "indication": "Temporary relief of coughs caused by minor throat and bronchial irritation (such as that accompanying a common cold).",
+          "contraindication": "Concurrent use with monoamine oxidase inhibitors (MAOIs) or within 14 days of stopping them (risk of severe serotonin syndrome).",
+          "adverse": "Serotonin syndrome (when combined with serotonergic drugs), acute psychosis, and respiratory depression at massive toxic/recreational doses.",
+          "effects": "Drowsiness, dizziness, mild gastrointestinal upset, and nervousness.",
+          "notes": "Widely used over-the-counter antitussive, but listed here as part of your source sheet context; abuse potential exists at very high supra-therapeutic doses due to its NMDA antagonist properties."
+        }
+      }
+    ],
+    "vecuronium": [
+      {
+        "page": 36,
+        "title": "VECURONIUM",
+        "fields": {
+          "classification": "Antinicotinic Neuromuscular Blockers.",
+          "action": "Intermediate-acting, non-depolarizing neuromuscular blocking agent that competitively binds to nicotinic receptors at the neuromuscular junction, blocking the actions of acetylcholine.",
+          "forms": "Powder for intravenous injection: 10 mg/vial, 20 mg/vial.",
+          "indication": "Adjunct to general anesthesia to facilitate endotracheal intubation and provide skeletal muscle relaxation during surgery or mechanical ventilation.",
+          "contraindication": "Known hypersensitivity to vecuronium or bromide-containing compounds.",
+          "adverse": "Prolonged paralysis, anaphylaxis, and acute myopathy with prolonged use in intensive care settings.",
+          "effects": "Minimal hemodynamic changes, slight transient changes in heart rate.",
+          "notes": "Lacks significant cardiovascular side effects (does not cause notable histamine release or tachycardia), making it versatile for patients with cardiac disease. Can be reversed rapidly with sugammadex."
+        }
+      }
+    ],
+    "epinephrine": [
+      {
+        "page": 38,
+        "title": "EPINEPHRINE",
+        "fields": {
+          "classification": "Direct Acting Catecholamines.",
+          "action": "Non-selective alpha-1, alpha-2, beta-1, and beta-2 adrenergic receptor agonist. It stimulates the heart, relaxes bronchial smooth muscle, and causes systemic vasoconstriction.",
+          "forms": "Injection: 1 mg/mL (1:1000) and 0.1 mg/mL (1:10,000). Auto-injector (EpiPen): 0.3 mg, 0.15 mg. Inhalation solution: 1%.",
+          "indication": "Emergency treatment of severe allergic reactions (anaphylaxis), cardiac arrest, acute asthma attacks, and induction of local anesthesia prolongation.",
+          "contraindication": "Close-angle glaucoma, shock other than anaphylactic shock, known hypersensitivity, and during labor (when vasopressor effects may delay delivery).",
+          "adverse": "Hypertensive crisis, ventricular arrhythmias, cerebral hemorrhage, and pulmonary edema.",
+          "effects": "Tachycardia, palpitations, anxiety, tremor, headache, and pale appearance.",
+          "notes": "It is the primary drug of choice for acute anaphylaxis; sensitive to light and air, meaning discolored solutions should be discarded."
+        }
+      }
+    ],
+    "norepinephrine": [
+      {
+        "page": 39,
+        "title": "NOREPINEPHRINE",
+        "fields": {
+          "classification": "Direct Acting Catecholamines.",
+          "action": "Potent alpha-1 and alpha-2 adrenergic receptor agonist, with lesser beta-1 agonist activity. It causes intense peripheral vasoconstriction and moderate inotropic stimulation of the heart.",
+          "forms": "Intravenous infusion concentrate: 1 mg/mL (as base).",
+          "indication": "Treatment of severe acute hypotension and shock states (e.g., septic shock, cardiogenic shock) after fluid resuscitation.",
+          "contraindication": "Mesenteric or peripheral vascular thrombosis (unless absolutely necessary), profound hypovolemia, and known hypersensitivity.",
+          "adverse": "Severe tissue necrosis upon extravasation, reflex bradycardia, severe hypertension, and decreased organ perfusion.",
+          "effects": "Anxiety, transient headache, respiratory difficulty, and bradycardia.",
+          "notes": "Must be administered via a central venous catheter when possible to avoid severe extravasation injury; if extravasation occurs, phentolamine is used locally to counteract necrosis."
+        }
+      }
+    ],
+    "dopamine": [
+      {
+        "page": 40,
+        "title": "DOPAMINE",
+        "fields": {
+          "classification": "Direct Acting Catecholamines.",
+          "action": "Acts on dopaminergic receptors (D_1 and D_2) as well as beta-1 and alpha-1 adrenergic receptors in a dose-dependent manner (renal/mesenteric vasodilation at low doses, cardiac stimulation at medium doses, and systemic vasoconstriction at high doses).",
+          "forms": "Intravenous infusion: 40 mg/mL, 80 mg/mL, 160 mg/mL. Premixed bags: 0.8 mg/mL to 3.2 mg/mL.",
+          "indication": "Correction of hemodynamic imbalances in shock syndromes due to myocardial infarction, trauma, septic endotoxemia, and congestive heart failure.",
+          "contraindication": "Pheochromocytoma, uncorrected tachyarrhythmias, and ventricular fibrillation.",
+          "adverse": "Ectopic beats, tachycardia, anginal pain, palpitations, and gangrene of extremities at prolonged high doses.",
+          "effects": "Nausea, vomiting, headache, anxiety, and goosebumps.",
+          "notes": "Must be diluted prior to IV administration; monitor blood pressure and urine output closely."
+        }
+      }
+    ],
+    "dobutamine": [
+      {
+        "page": 41,
+        "title": "DOBUTAMINE",
+        "fields": {
+          "classification": "Direct Acting Catecholamines.",
+          "action": "Direct-acting synthetic inotrope that is a selective beta-1 adrenergic receptor agonist, with minor beta-2 and alpha-1 activity, producing strong myocardial contractility and mild vasodilation.",
+          "forms": "Solution for IV infusion: 12.5 mg/mL (in 20 mL vials). Premixed IV bags: 1 mg/mL, 2 mg/mL, 4 mg/mL.",
+          "indication": "Short-term management of adults with cardiac decompensation due to depressed contractility (such as heart failure or post-cardiac surgery).",
+          "contraindication": "Idiopathic hypertrophic subaortic stenosis (IHSS) and known hypersensitivity to dobutamine.",
+          "adverse": "Marked increases in heart rate or blood pressure, precipitation of ventricular arrhythmias, and myocardial ischemia.",
+          "effects": "Increased heart rate, elevated blood pressure, headache, nausea, and shortness of breath.",
+          "notes": "Contains sodium bisulfite which can cause allergic-type reactions in susceptible patients; used primarily in short-term hospital infusions."
+        }
+      }
+    ],
+    "isoproterenol": [
+      {
+        "page": 42,
+        "title": "ISOPROTERENOL",
+        "fields": {
+          "classification": "Direct Acting Catecholamines.",
+          "action": "Non-selective beta-1 and beta-2 adrenergic receptor agonist. It produces profound chronotropic and inotropic cardiac stimulation alongside systemic vasodilation and bronchodilation.",
+          "forms": "Injection solution: 0.2 mg/mL (1:5000).",
+          "indication": "Management of AV nodal block, Stokes-Adams attacks, cardiac arrest (prior to electrical pacing), and bronchospasm during anesthesia.",
+          "contraindication": "Tachycardia or heart block caused by digitalis toxicity, and ventricular arrhythmias requiring inotropic therapy.",
+          "adverse": "Serious tachyarrhythmias, angina pectoris, severe hypotension, and cardiac arrest.",
+          "effects": "Flushing, sweating, tachycardia, palpitations, nervousness, and dizziness.",
+          "notes": "Largely replaced in modern practice by more selective cardiac and respiratory agents, but retains utility in specific bradyarrhythmia emergencies."
+        }
+      }
+    ],
+    "phenylephrine": [
+      {
+        "page": 43,
+        "title": "PHENYLEPHRINE",
+        "fields": {
+          "classification": "Noncatecholamine Alpha Selective.",
+          "action": "Powerful direct-acting alpha-1 adrenergic receptor agonist that causes marked arterial vasoconstriction, raising systolic and diastolic blood pressure, and induces mydriasis.",
+          "forms": "Injection: 10 mg/mL. Ophthalmic solution: 2.5%, 10%. Nasal spray: 0.125%, 0.25%, 0.5%, 1%.",
+          "indication": "Treatment of hypotension during anesthesia, systemic shock states, paroxysmal supraventricular tachycardia, relief of nasal congestion, and production of mydriasis for eye exams.",
+          "contraindication": "Severe hypertension, ventricular tachycardia, narrow-angle glaucoma, and concurrent use with MAO inhibitors.",
+          "adverse": "Hypertensive crisis, acute pulmonary edema, severe reflex bradycardia, and cardiac arrhythmias.",
+          "effects": "Headache, excitability, restlessness, reflex bradycardia, and stinging upon nasal/eye application.",
+          "notes": "Often triggers reflex bradycardia due to the body's baroreceptor response to sudden, sharp increases in blood pressure."
+        }
+      }
+    ],
+    "albuterol": [
+      {
+        "page": 44,
+        "title": "ALBUTEROL",
+        "fields": {
+          "classification": "Noncatecholamine B2 Selective.",
+          "action": "Selective beta-2 adrenergic receptor agonist that relaxes bronchial smooth muscle by stimulating intracellular adenylate cyclase and increasing cyclic AMP.",
+          "forms": "Metered-dose inhaler (MDI): 90 mcg/actuation. Nebulization solution: 0.083%, 0.5%. Oral tablets: 2 mg, 4 mg. Syrup: 2 mg/5 mL.",
+          "indication": "Treatment and prevention of bronchospasm in reversible obstructive airway disease (asthma, COPD) and prevention of exercise-induced bronchospasm.",
+          "contraindication": "Hypersensitivity to albuterol components and severe tachyarrhythmias.",
+          "adverse": "Paradoxical bronchospasm, hypokalemia, cardiac arrhythmias, and severe hypersensitivity reactions.",
+          "effects": "Tremors, nervousness, tachycardia, palpitations, headache, and throat irritation.",
+          "notes": "Widely used as a short-acting rescue inhaler for acute asthma symptoms."
+        }
+      }
+    ],
+    "metaproterenol": [
+      {
+        "page": 45,
+        "title": "METAPROTERENOL",
+        "fields": {
+          "classification": "Noncatecholamine B2 Selective.",
+          "action": "Relatively selective beta-2 adrenergic receptor agonist that relaxes smooth muscle of the bronchi, uterus, and vascular bed.",
+          "forms": "Inhalation aerosol: 0.65 mg/actuation. Syrup: 10 mg/5 mL. Tablets: 10 mg, 20 mg.",
+          "indication": "Bronchodilator for bronchial asthma and reversible bronchospasm associated with bronchitis and emphysema.",
+          "contraindication": "Cardiac arrhythmias associated with tachycardia and known hypersensitivity to sympathomimetic amines.",
+          "adverse": "Tachycardia, palpitations, hypertension, and paradoxical bronchospasm.",
+          "effects": "Nervousness, tremor, nausea, vomiting, and bad taste in the mouth.",
+          "notes": "Possesses slightly less beta-2 selectivity than albuterol, meaning it can have a higher incidence of cardiac side effects."
+        }
+      }
+    ],
+    "terbutaline": [
+      {
+        "page": 46,
+        "title": "TERBUTALINE",
+        "fields": {
+          "classification": "Noncatecholamine B2 Selective.",
+          "action": "Relatively selective beta-2 adrenergic receptor agonist that relaxes bronchial smooth muscle and inhibits uterine contractions.",
+          "forms": "Injection solution: 1 mg/mL. Oral tablets: 2.5 mg, 5 mg.",
+          "indication": "Prevention and relief of bronchospasm in bronchial asthma and chronic obstructive pulmonary disease.",
+          "contraindication": "Known hypersensitivity to sympathomimetic amines and use for tocolysis (off-label use restricted due to maternal cardiac risks).",
+          "adverse": "Pulmonary edema (in obstetric contexts), maternal/fetal tachycardia, and cardiac arrhythmias.",
+          "effects": "Tremor, nervousness, headache, tachycardia, and muscle cramps.",
+          "notes": "Black box warnings exist regarding oral use for suppressing preterm labor due to severe cardiac adverse events."
+        }
+      }
+    ],
+    "salmeterol": [
+      {
+        "page": 47,
+        "title": "SALMETEROL, FORMETEROL, INDACATEROL,\nVILANTEROL,OLODATEROL",
+        "fields": {
+          "classification": "Noncatecholamine B2 Selective.",
+          "action": "Long-acting, selective beta-2 adrenergic receptor agonists. They provide prolonged relaxation of bronchial smooth muscle through high lipid solubility or receptor-binding kinetics lasting 12 to 24 hours.",
+          "forms": "Salmeterol: Inhalation powder (Diskus) 50 mcg.",
+          "contraindication": "Primary treatment of acute asthma symptoms without a concurrent inhaled corticosteroid (monotherapy in asthma carries increased mortality risk).",
+          "adverse": "Severe paradoxical bronchospasm, life-threatening asthma exacerbations (if used without ICS), and cardiac arrhythmias.",
+          "effects": "Tremor, dizziness, headache, tachycardia, and nasopharyngitis.",
+          "notes": "These are maintenance agents, not rescue medications; salmeterol and formoterol should never be used alone to treat acute, sudden asthma attacks."
+        }
+      }
+    ],
+    "formoterol": [
+      {
+        "page": 47,
+        "title": "SALMETEROL, FORMETEROL, INDACATEROL,\nVILANTEROL,OLODATEROL",
+        "fields": {
+          "classification": "Noncatecholamine B2 Selective.",
+          "action": "Long-acting, selective beta-2 adrenergic receptor agonists. They provide prolonged relaxation of bronchial smooth muscle through high lipid solubility or receptor-binding kinetics lasting 12 to 24 hours.",
+          "forms": "Formoterol: Inhalation capsule/solution 12 mcg.",
+          "contraindication": "Primary treatment of acute asthma symptoms without a concurrent inhaled corticosteroid (monotherapy in asthma carries increased mortality risk).",
+          "adverse": "Severe paradoxical bronchospasm, life-threatening asthma exacerbations (if used without ICS), and cardiac arrhythmias.",
+          "effects": "Tremor, dizziness, headache, tachycardia, and nasopharyngitis.",
+          "notes": "These are maintenance agents, not rescue medications; salmeterol and formoterol should never be used alone to treat acute, sudden asthma attacks."
+        }
+      }
+    ],
+    "indacaterol": [
+      {
+        "page": 47,
+        "title": "SALMETEROL, FORMETEROL, INDACATEROL,\nVILANTEROL,OLODATEROL",
+        "fields": {
+          "classification": "Noncatecholamine B2 Selective.",
+          "action": "Long-acting, selective beta-2 adrenergic receptor agonists. They provide prolonged relaxation of bronchial smooth muscle through high lipid solubility or receptor-binding kinetics lasting 12 to 24 hours.",
+          "forms": "Indacaterol: Inhalation powder 75 mcg, 150 mcg.",
+          "contraindication": "Primary treatment of acute asthma symptoms without a concurrent inhaled corticosteroid (monotherapy in asthma carries increased mortality risk).",
+          "adverse": "Severe paradoxical bronchospasm, life-threatening asthma exacerbations (if used without ICS), and cardiac arrhythmias.",
+          "effects": "Tremor, dizziness, headache, tachycardia, and nasopharyngitis.",
+          "notes": "These are maintenance agents, not rescue medications; salmeterol and formoterol should never be used alone to treat acute, sudden asthma attacks."
+        }
+      }
+    ],
+    "vilanterol": [
+      {
+        "page": 47,
+        "title": "SALMETEROL, FORMETEROL, INDACATEROL,\nVILANTEROL,OLODATEROL",
+        "fields": {
+          "classification": "Noncatecholamine B2 Selective.",
+          "action": "Long-acting, selective beta-2 adrenergic receptor agonists. They provide prolonged relaxation of bronchial smooth muscle through high lipid solubility or receptor-binding kinetics lasting 12 to 24 hours.",
+          "forms": "Vilanterol: Available in combination inhalers (e.g., with umeclidinium or fluticasone).",
+          "contraindication": "Primary treatment of acute asthma symptoms without a concurrent inhaled corticosteroid (monotherapy in asthma carries increased mortality risk).",
+          "adverse": "Severe paradoxical bronchospasm, life-threatening asthma exacerbations (if used without ICS), and cardiac arrhythmias.",
+          "effects": "Tremor, dizziness, headache, tachycardia, and nasopharyngitis.",
+          "notes": "These are maintenance agents, not rescue medications; salmeterol and formoterol should never be used alone to treat acute, sudden asthma attacks."
+        }
+      }
+    ],
+    "olodaterol": [
+      {
+        "page": 47,
+        "title": "SALMETEROL, FORMETEROL, INDACATEROL,\nVILANTEROL,OLODATEROL",
+        "fields": {
+          "classification": "Noncatecholamine B2 Selective.",
+          "action": "Long-acting, selective beta-2 adrenergic receptor agonists. They provide prolonged relaxation of bronchial smooth muscle through high lipid solubility or receptor-binding kinetics lasting 12 to 24 hours.",
+          "forms": "Olodaterol: Respimat soft mist 2.5 mcg/actuation.",
+          "contraindication": "Primary treatment of acute asthma symptoms without a concurrent inhaled corticosteroid (monotherapy in asthma carries increased mortality risk).",
+          "adverse": "Severe paradoxical bronchospasm, life-threatening asthma exacerbations (if used without ICS), and cardiac arrhythmias.",
+          "effects": "Tremor, dizziness, headache, tachycardia, and nasopharyngitis.",
+          "notes": "These are maintenance agents, not rescue medications; salmeterol and formoterol should never be used alone to treat acute, sudden asthma attacks."
+        }
+      }
+    ],
+    "amphetamine": [
+      {
+        "page": 48,
+        "title": "AMPETHAMINES",
+        "fields": {
+          "classification": "Indirect Acting Phenylisopropylamines.",
+          "action": "Indirect-acting sympathomimetic agents that promote the release of stored catecholamines (norepinephrine and dopamine) from nerve terminals into the synaptic cleft, while inhibiting their reuptake.",
+          "forms": "Oral tablets: 5 mg, 10 mg, 20 mg, 30 mg. Extended-release capsules: 5 mg to 30 mg.",
+          "indication": "Treatment of Attention Deficit Hyperactivity Disorder (ADHD) and narcolepsy.",
+          "contraindication": "Advanced arteriosclerosis, symptomatic cardiovascular disease, moderate-to-severe hypertension, hyperthyroidism, glaucoma, and history of drug abuse.",
+          "adverse": "Psychotic episodes, cardiomyopathy, hypertensive crisis, and severe psychological dependence/abuse potential.",
+          "effects": "Insomnia, decreased appetite, weight loss, dry mouth, tachycardia, and nervousness.",
+          "notes": "Classified as Schedule II controlled substances due to high potential for abuse and psychological dependence."
+        }
+      }
+    ],
+    "methamphetamine": [
+      {
+        "page": 49,
+        "title": "METHAMPETHAMINES",
+        "fields": {
+          "classification": "Indirect Acting Phenylisopropylamines.",
+          "action": "Central nervous system stimulant and indirect sympathomimetic that causes marked release of dopamine and other monoamines into synapses, blocking their reuptake.",
+          "forms": "Oral tablets: 5 mg.",
+          "indication": "Short-term adjunct in the management of exogenous obesity and treatment of ADHD (rarely prescribed).",
+          "contraindication": "Advanced arteriosclerosis, symptomatic cardiovascular disease, hypertension, hyperthyroidism, and history of substance abuse.",
+          "adverse": "Severe cardiovascular toxicity, stroke, paranoia, hallucinations, and severe addiction/dependence.",
+          "effects": "Insomnia, irritability, hyperactive motor activity, tremor, sweating, and anorexia.",
+          "notes": "High abuse liability; listed as a Schedule II controlled substance with tightly restricted clinical indications."
+        }
+      }
+    ],
+    "ephedrine": [
+      {
+        "page": 50,
+        "title": "EPHEDRINE",
+        "fields": {
+          "classification": "Indirect Acting Phenylisopropylamines.",
+          "action": "Mixed-acting sympathomimetic agent. It directly stimulates alpha and beta receptors, and indirectly causes the release of endogenous norepinephrine from storage vesicles.",
+          "forms": "Injection solution: 50 mg/mL. Oral capsules: 25 mg, 50 mg.",
+          "indication": "Treatment of acute hypotension, particularly during spinal or general anesthesia, and relief of bronchospasm.",
+          "contraindication": "Angle-closure glaucoma, concurrent use with MAO inhibitors, severe hypertension, and tachyarrhythmias.",
+          "adverse": "Hypertensive crisis, stroke, tachyarrhythmias, and urinary retention.",
+          "effects": "Nervousness, insomnia, dizziness, palpitations, and sweating.",
+          "notes": "Prone to tachyphylaxis (rapidly diminishing physiological response with repeated doses due to depletion of stored norepinephrine)."
+        }
+      }
+    ],
+    "cocaine": [
+      {
+        "page": 51,
+        "title": "COCAINE",
+        "fields": {
+          "classification": "Indirect Acting Phenylisopropylamines.",
+          "action": "Blocks the presynaptic reuptake pump for catecholamines (norepinephrine, dopamine, and serotonin), resulting in high concentrations of neurotransmitters in synapses. It also acts as a local anesthetic by blocking sodium channels.",
+          "forms": "Topical solution: 4%, 10% (restricted clinical use).",
+          "indication": "Local anesthesia of mucous membranes of the oral, laryngeal, and nasal cavities (historical/specialized clinical use).",
+          "contraindication": "Known hypersensitivity to ester-type local anesthetics, intravenous or subcutaneous administration (high systemic toxicity), and severe cardiovascular disease.",
+          "adverse": "Severe coronary vasospasm, myocardial infarction, stroke, malignant hyperthermia, seizures, and ventricular fibrillation.",
+          "effects": "Euphoria, mydriasis, hypertension, tachycardia, anxiety, and local tissue ischemia.",
+          "notes": "Highly addictive controlled substance (Schedule II); clinical use is restricted strictly to topical mucosal anesthesia where its intrinsic vasoconstrictive property is advantageous."
+        }
+      }
+    ],
+    "tyramine": [
+      {
+        "page": 52,
+        "title": "TYRAMINE",
+        "fields": {
+          "classification": "Indirect Acting Phenylisopropylamines.",
+          "action": "Indirect-acting sympathomimetic amine that enters nerve terminals and displaces stored norepinephrine, forcing its massive release into the synapse.",
+          "forms": "Not an approved therapeutic drug product (found naturally in aged, fermented, or cured foods like cheese, wine, and cured meats).",
+          "indication": "None clinically (studied primarily for its adverse dietary interactions).",
+          "contraindication": "Patients taking Monoamine Oxidase Inhibitors (MAOIs).",
+          "adverse": "Severe, life-threatening hypertensive crisis (\"cheese effect\"), intracranial hemorrhage, and cardiac arrhythmias.",
+          "effects": "Severe pulsatile headache, palpitations, sweating, nausea, and vomiting.",
+          "notes": "Normally degraded rapidly by MAO enzymes in the gut wall and liver; patients taking MAOIs cannot break it down, allowing dietary tyramine to trigger a catastrophic spike in blood pressure."
+        }
+      }
+    ],
+    "phentolamine": [
+      {
+        "page": 54,
+        "title": "PHENTOLAMINE",
+        "fields": {
+          "classification": "Nonselective Alpha Blockers.",
+          "action": "Competitive, non-selective alpha-1 and alpha-2 adrenergic receptor antagonist. It produces vasodilation by blocking alpha-receptors on vascular smooth muscle, lowering peripheral resistance.",
+          "forms": "Intravenous/Intramuscular injection: 5 mg/vial (reconstituted). Ophthalmic solution: 0.75% (for mydriasis reversal).",
+          "indication": "Prevention or control of hypertensive episodes due to pheochromocytoma (such as during preoperative preparation or surgical excision), prevention of dermal necrosis following norepinephrine extravasation, and reversal of soft-tissue local anesthesia.",
+          "contraindication": "Hypersensitivity to phentolamine, coronary artery disease, myocardial infarction, angina pectoris, or a history of myocardial infarction.",
+          "adverse": "Severe reflex tachycardia, cardiac arrhythmias, exacerbation of myocardial ischemia, angina, and cerebrovascular spasm.",
+          "effects": "Flushing, dizziness, nasal stuffiness, orthostatic hypotension, nausea, and vomiting.",
+          "notes": "Frequently infiltrated subcutaneously around an area of norepinephrine extravasation within 12 hours to block localized vasoconstriction and prevent tissue necrosis."
+        }
+      }
+    ],
+    "phenoxybenzamine": [
+      {
+        "page": 55,
+        "title": "PHENOXYBENZAMINE",
+        "fields": {
+          "classification": "Nonselective Alpha Blockers.",
+          "action": "Non-competitive, irreversible alpha-1 and alpha-2 adrenergic receptor antagonist. It forms a stable covalent bond with alpha-receptors, leading to a long-lasting blockade that cannot be overcome by high concentrations of circulating agonists.",
+          "forms": "Oral capsules: 10 mg.",
+          "indication": "Management of pheochromocytoma (to control blood pressure episodes and symptoms of catecholamine excess prior to and during surgery), and chronic urinary retention due to prostatic obstruction (off-label).",
+          "contraindication": "Conditions where a fall in blood pressure would be dangerous (such as uncompensated heart failure or severe coronary artery disease), and hypersensitivity.",
+          "adverse": "Marked postural (orthostatic) hypotension accompanied by dizziness or fainting, reflex tachycardia, and inhibition of ejaculation.",
+          "effects": "Nasal congestion, miosis, dry mouth, tiredness, and lethargy.",
+          "notes": "Because it binds irreversibly, its blockade lasts for several days after discontinuation, requiring slow dosage titration and adequate volume repletion prior to surgical procedures."
+        }
+      }
+    ],
+    "prazosin": [
+      {
+        "page": 56,
+        "title": "PRASOZIN",
+        "fields": {
+          "classification": "Alpha -1 Selective Blockers.",
+          "action": "Competitive, selective alpha-1 adrenergic receptor antagonist. It blocks postsynaptic alpha-1 receptors on vascular smooth muscle and bladder neck tissue, leading to vasodilation of both arterioles and veins.",
+          "forms": "Oral capsules: 1 mg, 2 mg, 5 mg.",
+          "indication": "Management of essential hypertension, and treatment of symptoms related to benign prostatic hyperplasia (BPH) and Raynaud's phenomenon.",
+          "contraindication": "Known hypersensitivity to quinazolines or prazosin.",
+          "adverse": "Severe \"first-dose syncope\" (profound orthostatic hypotension with sudden loss of consciousness shortly after the initial dose), marked dizziness, and palpitations.",
+          "effects": "Dizziness, headache, drowsiness, weakness, nausea, and nasal congestion.",
+          "notes": "To minimize the risk of first-dose syncope, the initial dose should be very small (e.g., 1 mg) and taken right before bedtime."
+        }
+      },
+      {
+        "page": 83,
+        "title": "PRAZOSIN",
+        "fields": {
+          "classification": "Alpha Blockers.",
+          "action": "Competitive, selective alpha-1 adrenergic receptor antagonist that relaxes vascular smooth muscle and bladder neck tissue.",
+          "forms": "Oral capsules: 1 mg, 2 mg, 5 mg.",
+          "indication": "Essential hypertension, benign prostatic hyperplasia (BPH) symptoms, and Raynaud's phenomenon.",
+          "contraindication": "Hypersensitivity to quinazolines or prazosin.",
+          "adverse": "First-dose syncope (severe orthostatic hypotension with sudden loss of consciousness), marked dizziness, and palpitations.",
+          "effects": "Dizziness, headache, drowsiness, weakness, and nasal congestion.",
+          "notes": "The first dose should always be taken at bedtime to prevent sudden fainting episodes."
+        }
+      }
+    ],
+    "doxazosin": [
+      {
+        "page": 57,
+        "title": "DAXAZOSIN, TERASOZIN",
+        "fields": {
+          "classification": "Alpha -1 Selective Blockers.",
+          "action": "Competitive blockade of postsynaptic alpha-1 adrenergic receptors, relaxing smooth muscle in the bladder neck and prostate capsule (improving urine flow) while dilating peripheral blood vessels (lowering blood pressure).",
+          "forms": "Doxazosin: Tablets: 1 mg, 2 mg, 4 mg, 8 mg; Extended-release tablets: 4 mg, 8 mg.",
+          "indication": "Treatment of hypertension and functional symptoms of benign prostatic hyperplasia (BPH).",
+          "contraindication": "Hypersensitivity to quinazolines, doxazosin, or terazosin, and history of orthostatic hypotension.",
+          "adverse": "First-dose orthostatic hypotension, syncope, priapism (prolonged, painful erection), and intraoperative floppy iris syndrome (IFIS) during cataract surgery.",
+          "effects": "Dizziness, fatigue, peripheral edema, headache, nasal congestion, and asthenia.",
+          "notes": "Like prazosin, the first dose should be administered at bedtime to mitigate severe dizziness or sudden fainting spells."
+        }
+      },
+      {
+        "page": 84,
+        "title": "DOXASOXIN",
+        "fields": {
+          "classification": "Alpha Blockers.",
+          "action": "Selective alpha-1 adrenergic antagonist that produces vasodilation and relaxes smooth muscle in the bladder neck and prostate.",
+          "forms": "Oral tablets: 1 mg, 2 mg, 4 mg, 8 mg. Extended-release tablets: 4 mg, 8 mg.",
+          "indication": "Treatment of hypertension and symptoms of benign prostatic hyperplasia (BPH).",
+          "contraindication": "History of orthostatic hypotension and hypersensitivity to quinazolines.",
+          "adverse": "Severe orthostatic hypotension, syncope, priapism, and intraoperative floppy iris syndrome (IFIS).",
+          "effects": "Dizziness, fatigue, edema, headache, and vertigo.",
+          "notes": "Like prazosin, initial dosing should start low and be taken at bedtime to mitigate acute postural blood pressure drops."
+        }
+      }
+    ],
+    "terazosin": [
+      {
+        "page": 57,
+        "title": "DAXAZOSIN, TERASOZIN",
+        "fields": {
+          "classification": "Alpha -1 Selective Blockers.",
+          "action": "Competitive blockade of postsynaptic alpha-1 adrenergic receptors, relaxing smooth muscle in the bladder neck and prostate capsule (improving urine flow) while dilating peripheral blood vessels (lowering blood pressure).",
+          "forms": "Terazosin: Capsules: 1 mg, 2 mg, 5 mg, 10 mg.",
+          "indication": "Treatment of hypertension and functional symptoms of benign prostatic hyperplasia (BPH).",
+          "contraindication": "Hypersensitivity to quinazolines, doxazosin, or terazosin, and history of orthostatic hypotension.",
+          "adverse": "First-dose orthostatic hypotension, syncope, priapism (prolonged, painful erection), and intraoperative floppy iris syndrome (IFIS) during cataract surgery.",
+          "effects": "Dizziness, fatigue, peripheral edema, headache, nasal congestion, and asthenia.",
+          "notes": "Like prazosin, the first dose should be administered at bedtime to mitigate severe dizziness or sudden fainting spells."
+        }
+      }
+    ],
+    "tamsulosin": [
+      {
+        "page": 58,
+        "title": "TAMSULOSIN, SILODOSIN",
+        "fields": {
+          "classification": "Alpha -1 Selective Blockers.",
+          "action": "Highly selective antagonists for alpha-1A and alpha-1D receptor subtypes located predominantly in the prostate, prostatic urethra, and bladder base, causing minimal systemic vasodilation compared to non-subtype selective alpha blockers.",
+          "forms": "Tamsulosin: Capsules (modified release): 0.4 mg.",
+          "indication": "Treatment of signs and symptoms of benign prostatic hyperplasia (BPH).",
+          "adverse": "Severe abnormal ejaculation (retrograde ejaculation), orthostatic hypotension (though less frequent than with doxazosin/prazosin), and intraoperative floppy iris syndrome (IFIS).",
+          "effects": "Dizziness, headache, nasopharyngitis, rhinitis, and diarrhea.",
+          "notes": "Because of their high selectivity for prostate tissue, they have minimal impact on blood pressure, making dose adjustments for hypertension unnecessary."
+        }
+      }
+    ],
+    "silodosin": [
+      {
+        "page": 58,
+        "title": "TAMSULOSIN, SILODOSIN",
+        "fields": {
+          "classification": "Alpha -1 Selective Blockers.",
+          "action": "Highly selective antagonists for alpha-1A and alpha-1D receptor subtypes located predominantly in the prostate, prostatic urethra, and bladder base, causing minimal systemic vasodilation compared to non-subtype selective alpha blockers.",
+          "forms": "Silodosin: Capsules: 4 mg, 8 mg.",
+          "indication": "Treatment of signs and symptoms of benign prostatic hyperplasia (BPH).",
+          "contraindication": "Severe hepatic impairment (for silodosin), severe renal impairment, and concurrent use of strong CYP3A4 inhibitors (like ketoconazole).",
+          "adverse": "Severe abnormal ejaculation (retrograde ejaculation), orthostatic hypotension (though less frequent than with doxazosin/prazosin), and intraoperative floppy iris syndrome (IFIS).",
+          "effects": "Dizziness, headache, nasopharyngitis, rhinitis, and diarrhea.",
+          "notes": "Because of their high selectivity for prostate tissue, they have minimal impact on blood pressure, making dose adjustments for hypertension unnecessary."
+        }
+      }
+    ],
+    "yohimbine": [
+      {
+        "page": 59,
+        "title": "YOHIMBINE",
+        "fields": {
+          "classification": "Alpha - 2 Selective Blockers.",
+          "action": "Competitive, selective alpha-2 adrenergic receptor antagonist. By blocking presynaptic alpha-2 receptors, it increases the release of norepinephrine in the central and peripheral nervous systems, raising blood pressure, heart rate, and sympathetic tone.",
+          "forms": "Oral tablets: 5.4 mg (formulations vary widely as prescription medications or herbal/dietary supplements).",
+          "indication": "Historically used for the management of erectile dysfunction and orthostatic hypotension.",
+          "contraindication": "Renal disease, cardiorenal dysfunction, history of ulcer disease, psychiatric disorders, and hypertension.",
+          "adverse": "Hypertensive crisis, severe anxiety, panic attacks, tachycardia, and motor tremors.",
+          "effects": "Headaches, dizziness, nervousness, irritability, nausea, and frequent urination.",
+          "notes": "It is a naturally occurring alkaloid (from the bark of Pausinystalia yohimbe) that can trigger severe central nervous system excitation and pronounced blood pressure spikes."
+        }
+      }
+    ],
+    "propranolol": [
+      {
+        "page": 60,
+        "title": "PROPANOLOL",
+        "fields": {
+          "classification": "Nonselective B - Blockers.",
+          "action": "Non-selective beta-1 and beta-2 adrenergic receptor antagonist with membrane-stabilizing activity. It blocks the chronotropic, inotropic, and vasodilatory responses to beta-adrenergic stimulation and crosses the blood-brain barrier easily.",
+          "forms": "Oral tablets: 10 mg, 20 mg, 40 mg, 60 mg, 80 mg. Extended-release capsules: 60 mg, 80 mg, 120 mg, 160 mg. Injection: 1 mg/mL.",
+          "indication": "Hypertension, angina pectoris, cardiac arrhythmias, myocardial infarction prophylaxis, migraine headache prophylaxis, essential tremor, and management of hyperthyroidism/thyrotoxicosis symptoms.",
+          "contraindication": "Bronchial asthma, severe chronic obstructive pulmonary disease (COPD), sinus bradycardia, second-or third-degree heart block, cardiogenic shock, and overt heart failure.",
+          "adverse": "Severe bronchospasm, heart block, severe bradycardia, precipitation of congestive heart failure, and severe rebound hypertension if abruptly withdrawn.",
+          "effects": "Fatigue, cold extremities, sleep disturbances, vivid dreams, depression, and sexual dysfunction.",
+          "notes": "Never stop therapy abruptly; beta-blockers must be tapered over 1 to 2 weeks to avoid rebound tachycardia or myocardial ischemia."
+        }
+      },
+      {
+        "page": 85,
+        "title": "PROPANOLOL",
+        "fields": {
+          "classification": "Beta Blockers.",
+          "action": "Non-selective beta-1 and beta-2 adrenergic receptor antagonist with membrane-stabilizing activity.",
+          "forms": "Oral tablets: 10 mg, 20 mg, 40 mg, 80 mg. Extended-release capsules: 60 mg, 80 mg, 120 mg, 160 mg. Injection: 1 mg/mL.",
+          "indication": "Hypertension, angina pectoris, cardiac arrhythmias, migraine prophylaxis, essential tremor, and hyperthyroidism symptoms.",
+          "contraindication": "Bronchial asthma, severe COPD, sinus bradycardia, second- or third-degree heart block, and cardiogenic shock.",
+          "adverse": "Severe bronchospasm, heart block, profound bradycardia, and acute heart failure exacerbation.",
+          "effects": "Fatigue, cold extremities, vivid dreams, depression, and sleep disturbances.",
+          "notes": "Must never be discontinued abruptly; tapering over 1 to 2 weeks is mandatory to prevent rebound hypertension or myocardial ischemia."
+        }
+      }
+    ],
+    "timolol": [
+      {
+        "page": 61,
+        "title": "TIMOLOL, BETAXOLOL",
+        "fields": {
+          "action": "Competitive beta-adrenergic receptor blockers that reduce the production of aqueous humor in the ciliary epithelium of the eye, lowering intraocular pressure. Systemically, they block beta receptors to lower heart rate and contractility.",
+          "forms": "Timolol: Ophthalmic solution: 0.25%, 0.5%. Oral tablets: 5 mg, 10 mg, 20 mg.",
+          "contraindication": "Asthma, history of severe chronic obstructive pulmonary disease, sinus bradycardia, and cardiogenic shock.",
+          "adverse": "Systemic absorption from eye drops causing severe bronchospasm, bradycardia, heart block, and heart failure flare-ups.",
+          "effects": "Stinging or burning upon eye drop instillation, blurred vision, dry eyes, fatigue, and headache.",
+          "notes": "When applying eye drops, patients should use nasolacrimal occlusion (gentle tear duct compression) to minimize systemic absorption into the bloodstream."
+        }
+      }
+    ],
+    "betaxolol": [
+      {
+        "page": 61,
+        "title": "TIMOLOL, BETAXOLOL",
+        "fields": {
+          "action": "Competitive beta-adrenergic receptor blockers that reduce the production of aqueous humor in the ciliary epithelium of the eye, lowering intraocular pressure. Systemically, they block beta receptors to lower heart rate and contractility.",
+          "forms": "Betaxolol: Ophthalmic solution: 0.5%. Oral tablets: 10 mg, 20 mg.",
+          "contraindication": "Asthma, history of severe chronic obstructive pulmonary disease, sinus bradycardia, and cardiogenic shock.",
+          "adverse": "Systemic absorption from eye drops causing severe bronchospasm, bradycardia, heart block, and heart failure flare-ups.",
+          "effects": "Stinging or burning upon eye drop instillation, blurred vision, dry eyes, fatigue, and headache.",
+          "notes": "When applying eye drops, patients should use nasolacrimal occlusion (gentle tear duct compression) to minimize systemic absorption into the bloodstream."
+        }
+      }
+    ],
+    "pindolol": [
+      {
+        "page": 62,
+        "title": "PINDOLOL",
+        "fields": {
+          "classification": "Nonselective B - Blockers.",
+          "action": "Non-selective beta-adrenergic antagonist with significant Intrinsic Sympathomimetic Activity (ISA) (partial agonist activity), meaning it blocks strong catecholamines while providing mild baseline stimulation of beta receptors itself.",
+          "forms": "Oral tablets: 5 mg, 10 mg.",
+          "indication": "Management of essential hypertension.",
+          "contraindication": "Bronchial asthma, cardiogenic shock, second- and third-degree heart block, and severe bradycardia.",
+          "adverse": "Severe bronchospasm, heart block, and acute worsening of heart failure in susceptible patients.",
+          "effects": "Dizziness, weakness, insomnia, vivid dreams, muscle pain, and lower incidence of resting bradycardia compared to other beta blockers.",
+          "notes": "Due to its intrinsic sympathomimetic activity (ISA), it causes less resting bradycardia and cold-extremity side effects than pure antagonists like propranolol."
+        }
+      }
+    ],
+    "nadolol": [
+      {
+        "page": 63,
+        "title": "NADOLOL",
+        "fields": {
+          "classification": "Nonselective B - Blockers.",
+          "action": "Long-acting, non-selective beta-adrenergic receptor blocker without membrane-stabilizing activity or significant intrinsic sympathomimetic activity.",
+          "forms": "Oral tablets: 20 mg, 40 mg, 80 mg, 120 mg, 160 mg.",
+          "indication": "Management of hypertension and long-term prophylactic treatment of angina pectoris.",
+          "contraindication": "Bronchial asthma, cardiogenic shock, sinus bradycardia, and greater than first-degree heart block.",
+          "adverse": "Severe bradycardia, heart block, precipitating heart failure, and acute bronchoconstriction.",
+          "effects": "Fatigue, dizziness, bradycardia, cold extremities, and emotional depression.",
+          "notes": "Excreted primarily unchanged by the kidneys, meaning dosing intervals must be extended significantly in patients with renal impairment."
+        }
+      }
+    ],
+    "atenolol": [
+      {
+        "page": 64,
+        "title": "ATENOLOL",
+        "fields": {
+          "classification": "Beta 1 Selective Blockers.",
+          "action": "Cardioselective beta-1 adrenergic receptor antagonist that preferentially blocks beta-1 receptors in the heart, reducing heart rate, cardiac output, and blood pressure, with less effect on bronchial and vascular beta-2 receptors at lower doses.",
+          "forms": "Oral tablets: 25 mg, 50 mg, 100 mg. Intravenous injection: 0.5 mg/mL.",
+          "indication": "Management of hypertension, long-term management of angina pectoris, and secondary prevention of myocardial infarction.",
+          "contraindication": "Sinus bradycardia, heart block greater than first degree, cardiogenic shock, and overt cardiac failure.",
+          "adverse": "Symptomatic bradycardia, severe heart block, heart failure exacerbation, and bronchospasm (at high doses due to loss of selectivity).",
+          "effects": "Cold hands and feet, fatigue, dizziness, lethargy, and diarrhea.",
+          "notes": "Hydrophilic agent eliminated primarily by the kidneys; requires dosage reduction in patients with renal function impairment."
+        }
+      },
+      {
+        "page": 86,
+        "title": "ATENOLOL",
+        "fields": {
+          "classification": "Beta Blockers.",
+          "action": "Cardioselective beta-1 adrenergic receptor antagonist that reduces heart rate, cardiac output, and blood pressure.",
+          "forms": "Oral tablets: 25 mg, 50 mg, 100 mg. Intravenous injection: 0.5 mg/mL.",
+          "indication": "Management of essential hypertension, angina pectoris, and acute myocardial infarction.",
+          "contraindication": "Sinus bradycardia, heart block greater than first degree, cardiogenic shock, and overt heart failure.",
+          "adverse": "Symptomatic bradycardia, severe heart block, heart failure flare-up, and bronchospasm (at high doses).",
+          "effects": "Cold hands and feet, fatigue, dizziness, and lethargy.",
+          "notes": "Hydrophilic agent eliminated primarily via the kidneys, requiring dosage adjustments in renal impairment."
+        }
+      }
+    ],
+    "esmolol": [
+      {
+        "page": 65,
+        "title": "ESMOLOL",
+        "fields": {
+          "classification": "Beta 1 Selective Blockers.",
+          "action": "Ultra-short-acting, cardioselective beta-1 adrenergic receptor antagonist. It inhibits beta-1 receptors in the heart, reducing heart rate and myocardial contractility.",
+          "forms": "Intravenous injection / infusion: 10 mg/mL, 250 mg/mL. Premixed infusion bags: 10 mg/mL, 20 mg/mL.",
+          "indication": "Rapid, short-term control of ventricular rate in patients with atrial fibrillation or atrial flutter, and treatment of perioperative hypertension and tachycardia.",
+          "contraindication": "Sinus bradycardia, severe cardiogenic shock, uncompensated heart failure, and pre-existing pulmonary hypertension.",
+          "adverse": "Severe hypotension, profound bradycardia, cardiac arrest, and local infusion-site inflammation or necrosis.",
+          "effects": "Asymptomatic or symptomatic hypotension, diaphoresis, dizziness, and nausea.",
+          "notes": "Features an extremely short elimination half-life of approximately 9 minutes, allowing rapid titration and quick reversal of effects if adverse reactions occur."
+        }
+      }
+    ],
+    "metoprolol": [
+      {
+        "page": 66,
+        "title": "METOPROLOL",
+        "fields": {
+          "classification": "Beta 1 Selective Blockers.",
+          "action": "Selective beta-1 adrenergic receptor antagonist that reduces heart rate, cardiac output, and blood pressure.",
+          "forms": "• Metoprolol tartrate: Tablets: 25 mg, 50 mg, 100 mg. Injection: 1 mg/mL. • Metoprolol succinate (ER): Extended-release tablets: 25 mg, 50 mg, 100 mg, 200 mg.",
+          "indication": "Hypertension, angina pectoris, heart failure (succinate form), and early intervention in acute myocardial infarction.",
+          "contraindication": "Severe bradycardia, heart block greater than first degree, cardiogenic shock, and decompensated heart failure.",
+          "adverse": "Severe bradycardia, hypotension, heart block, and exacerbation of asthma or heart failure.",
+          "effects": "Fatigue, dizziness, depression, diarrhea, shortness of breath, and bradycardia.",
+          "notes": "Metoprolol tartrate is typically taken twice daily with meals, while the succinate formulation is designed for convenient once-daily dosing."
+        }
+      }
+    ],
+    "nebivolol": [
+      {
+        "page": 67,
+        "title": "NEBIVOLOL",
+        "fields": {
+          "classification": "Beta 1 Selective Blockers.",
+          "action": "Highly cardioselective beta-1 receptor blocker that also promotes endothelial nitric oxide (NO)-mediated vasodilation, reducing peripheral vascular resistance without typical beta-blocker-induced cold extremities.",
+          "forms": "Oral tablets: 2.5 mg, 5 mg, 10 mg, 20 mg.",
+          "indication": "Treatment of essential hypertension, alone or in combination with other agents, to lower blood pressure and reduce cardiovascular risk.",
+          "contraindication": "Severe bradycardia, heart block greater than first degree, cardiogenic shock, decompensated heart failure, and severe hepatic impairment.",
+          "adverse": "Severe hypotension, acute heart failure worsening, and AV block.",
+          "effects": "Headache, fatigue, dizziness, diarrhea, nausea, and insomnia.",
+          "notes": "Its unique nitric oxide-releasing property sets it apart from traditional beta-1 blockers by avoiding adverse metabolic profiles and peripheral vasoconstriction."
+        }
+      }
+    ],
+    "butoxamine": [
+      {
+        "page": 68,
+        "title": "BUTOXAMINE",
+        "fields": {
+          "classification": "Beta 2 Selective Blockers.",
+          "action": "Selective beta-2 adrenergic receptor antagonist. It blocks beta-2 receptors, causing inhibition of beta-2-mediated vasodilation, bronchodilation, and glycogenolysis.",
+          "forms": "Research chemical / specialized pharmacological tool (not an approved commercial therapeutic pharmaceutical drug).",
+          "indication": "None clinically approved (used primarily as an experimental pharmacological tool to study beta-2 adrenergic pathways).",
+          "contraindication": "N/A (Not used in human clinical therapeutics).",
+          "adverse": "Pronounced bronchoconstriction and metabolic disturbances if administered systemically.",
+          "effects": "Increased airway resistance and muscle cramping.",
+          "notes": "Primarily of academic and pharmacological value to isolate beta-2 responses in laboratory settings; not utilized in clinical patient care."
+        }
+      }
+    ],
+    "labetalol": [
+      {
+        "page": 69,
+        "title": "LABETALOL",
+        "fields": {
+          "classification": "Alpha + Beta Blockers.",
+          "action": "Competitive antagonist at alpha-1, beta-1, and beta-2 adrenergic receptors. It produces peripheral vasodilation (via alpha-1 block) while preventing reflex tachycardia through simultaneous beta-blockade.",
+          "forms": "Oral tablets: 100 mg, 200 mg, 300 mg. Intravenous injection: 5 mg/mL.",
+          "indication": "Management of essential hypertension, hypertensive emergencies, and blood pressure control during pregnancy-induced hypertension (preeclampsia).",
+          "contraindication": "Bronchial asthma, overt cardiac failure, greater than first-degree heart block, cardiogenic shock, and severe bradycardia.",
+          "adverse": "Severe orthostatic hypotension, acute bronchospasm, heart block, and hepatocellular injury (liver damage).",
+          "effects": "Dizziness, fatigue, nausea, scalp tingling, nasal stuffiness, and vivid dreams.",
+          "notes": "Widely utilized in obstetrics for hypertensive crises during pregnancy because it reduces blood pressure effectively without heavily compromising uteroplacental blood flow."
+        }
+      },
+      {
+        "page": 87,
+        "title": "LABETOLOL",
+        "fields": {
+          "classification": "Beta Blockers.",
+          "action": "Competitive antagonist at alpha-1, beta-1, and beta-2 adrenergic receptors, providing peripheral vasodilation and beta-blockade.",
+          "forms": "Oral tablets: 100 mg, 200 mg, 300 mg. Intravenous injection: 5 mg/mL.",
+          "indication": "Essential hypertension, hypertensive emergencies, and pregnancy-induced hypertension (preeclampsia).",
+          "contraindication": "Bronchial asthma, overt cardiac failure, greater than first-degree heart block, and cardiogenic shock.",
+          "adverse": "Severe orthostatic hypotension, bronchospasm, heart block, and hepatocellular injury (liver damage).",
+          "effects": "Dizziness, fatigue, nausea, scalp tingling, and nasal stuffiness.",
+          "notes": "Frequently used in obstetrics because it lowers blood pressure safely without significantly compromising uteroplacental blood flow."
+        }
+      }
+    ],
+    "carvedilol": [
+      {
+        "page": 70,
+        "title": "CAVEDILOL",
+        "fields": {
+          "classification": "Alpha + Beta Blockers.",
+          "action": "Non-selective beta blocker and alpha-1 blocker with antioxidant properties. It blocks beta-1, beta-2, and alpha-1 receptors, causing vasodilation and reducing cardiac workload.",
+          "forms": "Oral tablets: 3.125 mg, 6.25 mg, 12.5 mg, 25 mg. Extended-release capsules: 10 mg, 20 mg, 40 mg, 80 mg.",
+          "indication": "Management of mild to severe chronic heart failure, left ventricular dysfunction following myocardial infarction, and essential hypertension.",
+          "contraindication": "Decompensated heart failure requiring intravenous inotropes, bronchial asthma, second-or third-degree AV block, and severe hepatic impairment.",
+          "adverse": "Severe hypotension, worsening heart failure symptoms during initiation, bradycardia, and bronchospasm.",
+          "effects": "Dizziness, fatigue, weight gain, diarrhea, hyperlipidemia, and hyperglycemia.",
+          "notes": "Must be taken with food to slow absorption rate and minimize the risk of sudden orthostatic hypotension or dizziness."
+        }
+      }
+    ],
+    "hydrochlorothiazide": [
+      {
+        "page": 72,
+        "title": "HYDROCHLOROTHIAZIDE",
+        "fields": {
+          "classification": "Diuretics.",
+          "action": "Thiazide diuretic that inhibits sodium and chloride reabsorption in the distal convoluted tubule of the nephron, increasing the excretion of sodium, water, chloride, and potassium.",
+          "forms": "Oral tablets: 12.5 mg, 25 mg, 50 mg. Oral solution: 50 mg/5 mL.",
+          "indication": "Management of essential hypertension and edema associated with congestive heart failure, hepatic cirrhosis, and corticosteroid/estrogen therapy.",
+          "contraindication": "Anuria, hypersensitivity to sulfonamide-derived drugs, and severe renal or hepatic impairment.",
+          "adverse": "Severe hypokalemia, hyponatremia, hyperglycemia, hyperuricemia, acute angle-closure glaucoma, and severe hypersensitivity skin reactions (Stevens-Johnson syndrome).",
+          "effects": "Frequent urination, dizziness, lightheadedness, mild orthostatic hypotension, headache, and fatigue.",
+          "notes": "Sulfa-allergic patients may cross-react with thiazides; can elevate blood glucose and uric acid levels."
+        }
+      }
+    ],
+    "chlorthalidone": [
+      {
+        "page": 73,
+        "title": "CHLORTHALIDONE",
+        "fields": {
+          "classification": "Diuretics.",
+          "action": "Thiazide-like diuretic that inhibits sodium and chloride reabsorption in the cortical diluting segment of the ascending loop of Henle and distal tubule, reducing extracellular fluid volume.",
+          "forms": "Oral tablets: 12.5 mg, 25 mg, 50 mg, 100 mg.",
+          "indication": "Treatment of hypertension (as step-one therapy or add-on) and management of edema associated with heart failure or renal dysfunction.",
+          "contraindication": "Anuria, hypersensitivity to sulfonamides or chlorthalidone, and severe electrolyte depletions.",
+          "adverse": "Hypokalemia, severe hypochloremic alkalosis, hypercalcemia, agranulocytosis, aplastic anemia, and exacerbation of gout.",
+          "effects": "Dizziness, vertigo, paresthesias, headache, anorexia, nausea, vomiting, and increased urination frequency.",
+          "notes": "Possesses a significantly longer duration of action (up to 72 hours) compared to standard hydrochlorothiazide."
+        }
+      }
+    ],
+    "furosemide": [
+      {
+        "page": 74,
+        "title": "FUROSEMIDE",
+        "fields": {
+          "classification": "Diuretics.",
+          "action": "Loop diuretic that inhibits the co-transport system (Na^+/K^+/2Cl^-) in the thick ascending limb of the loop of Henle, promoting massive excretion of water, sodium, chloride, calcium, and magnesium.",
+          "forms": "Oral tablets: 20 mg, 40 mg, 80 mg. Oral solution: 8 mg/mL, 10 mg/mL. Injection solution: 10 mg/mL.",
+          "indication": "Treatment of acute pulmonary edema, edema associated with heart failure, hepatic cirrhosis, renal disease, and severe hypertension.",
+          "contraindication": "Anuria, hepatic coma, severe electrolyte depletion, and known hypersensitivity to furosemide or sulfonamides.",
+          "adverse": "Profound volume depletion, circulatory collapse, severe hypokalemia, ototoxicity (tinnitus/hearing loss), and thrombotic events.",
+          "effects": "Increased urination frequency, dizziness, lightheadedness, nausea, dyspepsia, and blurred vision.",
+          "notes": "Rapid IV administration can trigger transient or permanent ototoxicity; patients should be monitored closely for signs of severe dehydration."
+        }
+      }
+    ],
+    "spironolactone": [
+      {
+        "page": 75,
+        "title": "SPIRONALACTONE",
+        "fields": {
+          "classification": "Diuretics.",
+          "action": "Potassium-sparing diuretic and competitive mineralocorticoid receptor antagonist that blocks aldosterone binding in the distal convoluted tubule and collecting ducts, increasing sodium and water excretion while retaining potassium.",
+          "forms": "Oral tablets: 25 mg, 50 mg, 100 mg.",
+          "indication": "Management of heart failure with reduced ejection fraction, resistant hypertension, primary hyperaldosteronism, and edema due to cirrhosis or nephrotic syndrome.",
+          "contraindication": "Acute renal insufficiency, anuria, hyperkalemia, and concurrent use of eplerenone.",
+          "adverse": "Severe hyperkalemia, metabolic acidosis, agranulocytosis, and acute renal dysfunction.",
+          "effects": "Gynecomastia, breast pain/tenderness, menstrual irregularities, dizziness, lethargy, and mild gastrointestinal cramps.",
+          "notes": "Unique for being a potassium-sparing diuretic that can cause endocrine side effects (such as gynecomastia in men) due to its secondary anti-androgen activity."
+        }
+      }
+    ],
+    "clonidine": [
+      {
+        "page": 76,
+        "title": "CLONIDINE",
+        "fields": {
+          "classification": "Sympathoplegics Centrally Acting.",
+          "action": "Central alpha-2 adrenergic receptor agonist. It stimulates alpha-2 receptors in the brainstem vasomotor center, reducing sympathetic outflow from the central nervous system, which lowers peripheral resistance, heart rate, and blood pressure.",
+          "forms": "Oral tablets: 0.1 mg, 0.2 mg, 0.3 mg. Transdermal patches (weekly): 0.1 mg/24hr, 0.2 mg/24hr, 0.3 mg/24hr. Injection solution: 100 mcg/mL.",
+          "indication": "Management of essential hypertension, attention deficit hyperactivity disorder (ADHD - off-label/specific formulations), and management of severe cancer pain or opioid withdrawal symptoms.",
+          "contraindication": "Hypersensitivity to clonidine and severe sinus bradycardia or AV block (unless a functioning pacemaker is present).",
+          "adverse": "Severe rebound hypertension upon abrupt discontinuation, profound bradycardia, and depressive symptoms.",
+          "effects": "Dry mouth, drowsiness, sedation, dizziness, constipation, fatigue, and sexual dysfunction.",
+          "notes": "Must never be stopped abruptly; sudden withdrawal can trigger a dangerous hypertensive crisis characterized by extreme surges in catecholamines."
+        }
+      }
+    ],
+    "methyldopa": [
+      {
+        "page": 77,
+        "title": "METHYLDOPA",
+        "fields": {
+          "classification": "Sympathoplegics Centrally Acting.",
+          "action": "Central alpha-2 adrenergic agonist. It is metabolized intracellularly to alphamethylnorepinephrine, which replaces norepinephrine in vesicles and stimulates central inhibitory alpha-2 receptors, reducing sympathetic vasoconstrictor outflow.",
+          "forms": "Oral tablets: 250 mg, 500 mg. Intravenous injection: 50 mg/mL.",
+          "indication": "Management of hypertension, including hypertension during pregnancy (preeclampsia/gestational hypertension).",
+          "contraindication": "Active hepatic disease (such as acute hepatitis or active cirrhosis), previous methyldopa-induced liver disorders, and concurrent use with monoamine oxidase inhibitors (MAOIs).",
+          "adverse": "Drug-induced immune hemolytic anemia (positive direct Coombs test), severe hepatitis, liver necrosis, and parkinsonian signs.",
+          "effects": "Drowsiness, sedation, dry mouth, nasal stuffiness, edema, dizziness, and postpartum depression.",
+          "notes": "Widely preferred historically and currently for treating hypertension during pregnancy due to its well-established fetal safety profile, despite routine monitoring required for liver enzymes and Coombs-positive hemolytic anemia."
+        }
+      }
+    ],
+    "reserpine": [
+      {
+        "page": 81,
+        "title": "RESERPINE",
+        "fields": {
+          "classification": "Postganglionic Neuron Blockers.",
+          "action": "Inhibits the transport of norepinephrine, dopamine, and serotonin into storage vesicles (VMAT2) within postganglionic sympathetic nerve endings, leading to depletion of peripheral and central monoamine stores.",
+          "forms": "Oral tablets: 0.1 mg, 0.25 mg.",
+          "indication": "Management of essential hypertension (historically common, now specialized).",
+          "contraindication": "Known hypersensitivity, history of mental depression (especially with suicidal tendencies), active peptic ulcer disease, ulcerative colitis, and concurrent use with MAO inhibitors.",
+          "adverse": "Severe depressive states, psychic depression, Parkinson-like extrapyramidal symptoms, peptic ulcer activation, and severe bradycardia.",
+          "effects": "Nasal congestion, drowsiness, dizziness, lethargy, diarrhea, impotence, and weight gain.",
+          "notes": "Can cross the blood-brain barrier easily, which accounts for its significant central nervous system side effects, including severe mental depression."
+        }
+      }
+    ],
+    "guanadrel": [
+      {
+        "page": 82,
+        "title": "GUANADREL",
+        "fields": {
+          "classification": "Postganglionic Neuron Blockers.",
+          "action": "Adrenergic neuron blocker that accumulates in sympathetic nerve terminals and replaces norepinephrine in storage vesicles, blocking the release of norepinephrine in response to nerve stimulation.",
+          "forms": "Oral tablets: 10 mg, 25 mg.",
+          "indication": "Management of moderate to severe essential hypertension (typically for patients unresponsive to other agents).",
+          "contraindication": "Established or suspected pheochromocytoma, congestive heart failure, concurrent use with MAO inhibitors, and severe coronary artery disease.",
+          "adverse": "Marked orthostatic hypotension, severe syncope, and exacerbation of heart failure.",
+          "effects": "Exertional dizziness, daytime fatigue, diarrhea, fluid retention, peripheral edema, and sexual dysfunction.",
+          "notes": "Prone to causing pronounced orthostatic hypotension, especially upon standing up or exercising."
+        }
+      }
+    ],
+    "nifedipine": [
+      {
+        "page": 88,
+        "title": "NIFEDIPINE",
+        "fields": {
+          "classification": "Vasodilators.",
+          "action": "Dihydropyridine calcium channel blocker that inhibits the transmembrane influx of calcium ions into vascular smooth muscle and cardiac muscle, leading to coronary and peripheral vasodilation.",
+          "forms": "Extended-release/sustained-release tablets: 30 mg, 60 mg, 90 mg. Capsules (immediate-release): 10 mg, 20 mg.",
+          "indication": "Management of hypertension, vasospastic angina, and chronic stable angina.",
+          "contraindication": "Known hypersensitivity to dihydropyridines, cardiogenic shock, and use of immediate-release formulations for acute hypertension management.",
+          "adverse": "Severe hypotension, reflex tachycardia, myocardial ischemia (with rapid-acting forms), and peripheral edema.",
+          "effects": "Flushing, headache, dizziness, peripheral ankle edema, and fatigue.",
+          "notes": "Immediate-release capsules are no longer recommended for routine hypertension control due to risks associated with sudden, sharp blood pressure drops and reflex tachycardia."
+        }
+      },
+      {
+        "page": 105,
+        "title": "NIFEDIPINE",
+        "fields": {
+          "classification": "Calcium Channel Blockers.",
+          "action": "Dihydropyridine calcium channel blocker that inhibits transmembrane calcium influx into vascular smooth muscle, leading to profound relaxation of coronary and peripheral resistance arteries.",
+          "forms": "Extended-release tablets: 30 mg, 60 mg, 90 mg. Immediate-release capsules: 10 mg, 20 mg.",
+          "indication": "Treatment of vasospastic (Prinzmetal's) angina, chronic stable angina, and essential hypertension.",
+          "contraindication": "Cardiogenic shock, hypersensitivity to dihydropyridines, and acute myocardial infarction.",
+          "adverse": "Severe hypotension, reflex tachycardia, myocardial ischemia, and peripheral edema.",
+          "effects": "Flushing, headache, dizziness, lower extremity edema, and fatigue.",
+          "notes": "Immediate-release forms should be avoided for treating acute blood pressure spikes due to risks associated with rapid, uncontrolled drops in pressure and reflex tachycardia."
+        }
+      }
+    ],
+    "verapamil": [
+      {
+        "page": 89,
+        "title": "VERAPAMIL",
+        "fields": {
+          "classification": "Vasodilators.",
+          "action": "Non-dihydropyridine calcium channel blocker that inhibits calcium ion influx into myocardial and vascular smooth muscle cells, slowing AV nodal conduction and dilating coronary/peripheral vessels.",
+          "forms": "Oral tablets: 40 mg, 80 mg, 120 mg. Sustained-release tablets: 120 mg, 180 mg, 240 mg. Intravenous injection: 2.5 mg/mL.",
+          "indication": "Treatment of essential hypertension, angina pectoris, and supraventricular tachyarrhythmias (such as atrial fibrillation rate control).",
+          "contraindication": "Severe hypotension, cardiogenic shock, second- or third-degree AV block, sick sinus syndrome, and ventricular tachycardia.",
+          "adverse": "Severe heart block, profound bradycardia, acute heart failure exacerbation, and cardiovascular collapse.",
+          "effects": "Constipation (very common), dizziness, nausea, headache, and peripheral edema.",
+          "notes": "Prominent negative inotropic and dromotropic effects; should not be combined with beta-blockers without close clinical monitoring due to the risk of severe heart block or bradycardia."
+        }
+      },
+      {
+        "page": 103,
+        "title": "VERAPAMIL",
+        "fields": {
+          "classification": "Calcium Channel Blockers.",
+          "action": "Non-dihydropyridine calcium channel blocker that inhibits calcium ion influx through slow channels into myocardial and vascular smooth muscle cells, reducing myocardial oxygen demand, slowing AV nodal conduction, and dilating coronary arteries.",
+          "forms": "Oral tablets: 40 mg, 80 mg, 120 mg. Sustained-release tablets: 120 mg, 180 mg, 240 mg. Intravenous injection: 2.5 mg/mL.",
+          "indication": "Treatment of angina pectoris, essential hypertension, and supraventricular tachyarrhythmias.",
+          "contraindication": "Severe hypotension, cardiogenic shock, second- or third-degree AV block, sick sinus syndrome, and ventricular tachycardia.",
+          "adverse": "Severe heart block, profound bradycardia, acute heart failure exacerbation, and cardiovascular collapse.",
+          "effects": "Constipation (very common), dizziness, nausea, headache, and peripheral edema.",
+          "notes": "Possesses prominent negative inotropic and dromotropic properties; should not be combined with beta-blockers without close clinical oversight due to the risk of severe heart block."
+        }
+      }
+    ],
+    "hydralazine": [
+      {
+        "page": 90,
+        "title": "HYDRALAZINE",
+        "fields": {
+          "classification": "Vasodilators.",
+          "action": "Direct-acting arterial vasodilator that relaxes vascular smooth muscle primarily in arterioles, decreasing systemic vascular resistance.",
+          "forms": "Oral tablets: 10 mg, 25 mg, 50 mg, 100 mg. Intravenous/Intramuscular injection: 20 mg/mL.",
+          "indication": "Management of moderate to severe essential hypertension, hypertensive emergencies, and heart failure (often combined with isosorbide dinitrate).",
+          "contraindication": "Coronary artery disease, mitral valvular rheumatic heart disease, and idiopathic systemic lupus erythematosus (SLE).",
+          "adverse": "Drug-induced lupus-like syndrome (arthritis, fever, rash), reflex tachycardia, angina precipitation, and severe hypotension.",
+          "effects": "Headache, palpitations, flushing, anorexia, nausea, and tachycardia.",
+          "notes": "Frequently triggers reflex tachycardia and fluid retention; usually administered alongside a beta-blocker and a diuretic to offset these compensatory responses."
+        }
+      }
+    ],
+    "minoxidil": [
+      {
+        "page": 91,
+        "title": "MINOXIDIL",
+        "fields": {
+          "classification": "Vasodilators.",
+          "action": "Potent direct-acting peripheral vasodilator that opens ATP-sensitive potassium channels in vascular smooth muscle, causing hyperpolarization and relaxation of arterial smooth muscle.",
+          "forms": "Oral tablets: 2.5 mg, 10 mg. Topical solution/foam: 2%, 5% (for hair growth).",
+          "indication": "Severe, drug-resistant hypertension (oral), and treatment of androgenetic alopecia (topical).",
+          "contraindication": "Pheochromocytoma (can stimulate catecholamine release), acute myocardial infarction, and hypersensitivity.",
+          "adverse": "Marked reflex tachycardia, severe fluid retention, congestive heart failure exacerbation, pericardial effusion, and cardiac tamponade.",
+          "effects": "Hypertrichosis (excessive hair growth on face/body), headache, edema, tachycardia, and weight gain.",
+          "notes": "Because it causes profound reflex tachycardia and fluid retention, oral minoxidil must always be co-administered with a loop diuretic and a beta-blocker."
+        }
+      }
+    ],
+    "sodium-nitroprusside": [
+      {
+        "page": 92,
+        "title": "NITROPRUSSIDE",
+        "fields": {
+          "classification": "Vasodilators.",
+          "action": "Potent, fast-acting parenteral vasodilator that breaks down to release nitric oxide (NO), activating intracellular guanylyl cyclase, increasing cyclic GMP, and relaxing both arterial and venous smooth muscle.",
+          "forms": "Lyophilized powder for injection: 50 mg per vial.",
+          "indication": "Management of hypertensive emergencies, production of controlled hypotension during anesthesia to reduce bleeding, and acute congestive heart failure.",
+          "contraindication": "Compensatory hypertension (such as arteriovenous shunt or coarctation of the aorta), congenital optic atrophy, and tobacco amblyopia.",
+          "adverse": "Severe cyanide/thiocyanate toxicity, profound acute hypotension, and methemoglobinemia.",
+          "effects": "Nausea, vomiting, sweating, headache, abdominal pain, and apprehension.",
+          "notes": "Light-sensitive solution; infusion bags must be wrapped in opaque foil during administration. Prolonged infusions risk cyanide accumulation."
+        }
+      }
+    ],
+    "diazoxide": [
+      {
+        "page": 93,
+        "title": "DIAZOXIDE",
+        "fields": {
+          "classification": "Vasodilators.",
+          "action": "Opens ATP-sensitive potassium channels in vascular smooth muscle cells, causing hyperpolarization and relaxation of arteriolar smooth muscle (direct vasodilator). It also inhibits insulin release from the pancreatic beta cells.",
+          "forms": "Oral capsules: 50 mg. Oral suspension: 50 mg/mL. Intravenous injection: 15 mg/mL.",
+          "indication": "Management of severe, acute hypertensive emergencies (IV form) and treatment of chronic hypoglycemia caused by hyperinsulinism (oral form).",
+          "contraindication": "Functional hypoglycemia, hypersensitivity to diazoxide or thiazides, and conditions where maintenance of blood pressure or increased cardiac output is compromised.",
+          "adverse": "Severe hypotension, sodium and fluid retention, ketoacidosis, and hyperosmolar non-ketotic coma.",
+          "effects": "Hyperglycemia, tachycardia, flushing, dizziness, hirsutism (excessive hair growth with chronic oral use), and gastrointestinal upset.",
+          "notes": "Because of its potent inhibitory effect on insulin secretion, it is uniquely utilized for intractable hypoglycemia, while its powerful vasodilatory properties make it useful for acute hypertensive crises."
+        }
+      }
+    ],
+    "fenoldopam": [
+      {
+        "page": 94,
+        "title": "FENOLDOPAM",
+        "fields": {
+          "classification": "Vasodilators.",
+          "forms": "Intravenous injection /infusion concentrate: 10 mg/mL.",
+          "indication": "Short-term management of severe hypertension (hypertensive emergencies) when rapid parenteral reduction of blood pressure is clinically necessary, including use during perioperative care.",
+          "contraindication": "Hypersensitivity to fenoldopam or its components.",
+          "adverse": "Symptomatic hypotension, tachycardia, intraocular pressure elevation (in glaucoma patients), and hypokalemia.",
+          "effects": "Headache, flushing, dizziness, nausea, vomiting, and anxiety.",
+          "notes": "Uniquely increases renal blood flow and sodium excretion while lowering blood pressure, making it particularly useful in patients with renal impairment during hypertensive emergencies."
+        }
+      }
+    ],
+    "aliskiren": [
+      {
+        "page": 95,
+        "title": "ALISKIREN",
+        "fields": {
+          "classification": "Renin Antagonist.",
+          "action": "Direct renin inhibitor that binds tightly to the active site of renin, blocking the conversion of angiotensinogen to angiotensin I at the rate-limiting step of the renin-angiotensin-aldosterone system (RAAS).",
+          "forms": "Oral tablets: 150 mg, 300 mg.",
+          "indication": "Treatment of essential hypertension, alone or combined with other antihypertensive agents.",
+          "contraindication": "Pregnancy (due to fetal toxicity), and concurrent use with ACE inhibitors or ARBs in patients with diabetes mellitus or moderate-to-severe renal impairment.",
+          "adverse": "Angioedema, severe hyperkalemia, severe hypotension, and acute renal impairment.",
+          "effects": "Diarrhea (most common at higher doses), cough, dizziness, fatigue, and nasopharyngitis.",
+          "notes": "Carries a black box warning regarding fetal toxicity; must be discontinued immediately if pregnancy is detected."
+        }
+      }
+    ],
+    "captopril": [
+      {
+        "page": 96,
+        "title": "CAPTOPRIL",
+        "fields": {
+          "classification": "ACE Inhibitors.",
+          "action": "Inhibits angiotensin-converting enzyme (ACE), preventing the conversion of angiotensin I to angiotensin II, which decreases vasoconstriction and reduces aldosterone secretion while increasing bradykinin levels.",
+          "forms": "Oral tablets: 12.5 mg, 25 mg, 50 mg, 100 mg.",
+          "indication": "Treatment of hypertension, congestive heart failure, left ventricular dysfunction post-myocardial infarction, and diabetic nephropathy.",
+          "contraindication": "History of ACE inhibitor-induced angioedema, hereditary or idiopathic angioedema, concurrent use with aliskiren in patients with diabetes, and pregnancy.",
+          "adverse": "Life-threatening angioedema (swelling of face, lips, tongue), severe hyperkalemia, neutropenia, agranulocytosis, and acute renal failure.",
+          "effects": "Persistent dry hacking cough, dizziness, headache, fatigue, and altered taste (dysgeusia).",
+          "notes": "Contains a sulfhydryl group associated with specific adverse reactions like rash and dysgeusia; should be taken 1 hour before a meal."
+        }
+      }
+    ],
+    "enalapril": [
+      {
+        "page": 97,
+        "title": "ENALAPRIL",
+        "fields": {
+          "classification": "ACE Inhibitors.",
+          "action": "Inhibits ACE, blocking the formation of angiotensin II, lowering systemic vascular resistance, and reducing blood pressure.",
+          "forms": "Oral tablets: 2.5 mg, 5 mg, 10 mg, 20 mg. Intravenous injection (as enalaprilat): 1.25 mg/mL.",
+          "indication": "Treatment of hypertension, symptomatic congestive heart failure, and asymptomatic left ventricular dysfunction.",
+          "contraindication": "History of angioedema related to previous ACE inhibitor therapy, pregnancy, and hypersensitivity.",
+          "adverse": "Angioedema, hyperkalemia, severe hypotension (especially with first-dose diuresis), and renal failure.",
+          "effects": "Persistent dry cough, dizziness, headache, fatigue, nausea, and asthenia.",
+          "notes": "Long-acting ACE inhibitor that allows for convenient once- or twice-daily dosing compared to captopril."
+        }
+      }
+    ],
+    "losartan": [
+      {
+        "page": 98,
+        "title": "LOSARTAN",
+        "fields": {
+          "classification": "Angiotensin II Receptor Blockers.",
+          "forms": "Oral tablets: 25 mg, 50 mg, 100 mg.",
+          "indication": "Treatment of hypertension, reduction of stroke risk in hypertensive patients with left ventricular hypertrophy, and treatment of diabetic nephropathy.",
+          "contraindication": "Pregnancy (fetal toxicity) and concurrent use with aliskiren in patients with diabetes.",
+          "adverse": "Hyperkalemia, severe angioedema, acute kidney injury, and profound hypotension.",
+          "effects": "Dizziness, fatigue, nasal congestion, back pain, and upper respiratory infections.",
+          "notes": "Does not inhibit ACE or cause the persistent dry cough characteristic of ACE inhibitors, making it an alternative for patients who cannot tolerate ACE inhibitors."
+        }
+      }
+    ],
+    "candesartan": [
+      {
+        "page": 99,
+        "title": "CANDESARTAN, IRBESARTAN",
+        "fields": {
+          "forms": "Candesartan: Tablets: 4 mg, 8 mg, 16 mg, 32 mg.",
+          "indication": "Management of essential hypertension and heart failure.",
+          "contraindication": "Pregnancy (black box warning for fetal injury/death) and concurrent use with aliskiren in diabetes.",
+          "adverse": "Severe hyperkalemia, acute renal failure, symptomatic hypotension, and angioedema.",
+          "effects": "Dizziness, fatigue, upper respiratory tract infections, diarrhea, and dyspepsia.",
+          "notes": "Like all ARBs, they provide targeted RAAS blockade without triggering the chronic dry cough seen with ACE inhibitors."
+        }
+      }
+    ],
+    "irbesartan": [
+      {
+        "page": 99,
+        "title": "CANDESARTAN, IRBESARTAN",
+        "fields": {
+          "forms": "Irbesartan: Tablets: 75 mg, 150 mg, 300 mg.",
+          "indication": "Management of essential hypertension and nephropathy in type 2 diabetic patients with hypertension.",
+          "contraindication": "Pregnancy (black box warning for fetal injury/death) and concurrent use with aliskiren in diabetes.",
+          "adverse": "Severe hyperkalemia, acute renal failure, symptomatic hypotension, and angioedema.",
+          "effects": "Dizziness, fatigue, upper respiratory tract infections, diarrhea, and dyspepsia.",
+          "notes": "Like all ARBs, they provide targeted RAAS blockade without triggering the chronic dry cough seen with ACE inhibitors."
+        }
+      }
+    ],
+    "nitroglycerin": [
+      {
+        "page": 101,
+        "title": "NITROGLYCERIN",
+        "fields": {
+          "action": "Converts to nitric oxide (NO) inside vascular smooth muscle, stimulating guanylyl cyclase and increasing cyclic GMP. This leads to relaxation of vascular smooth muscle, predominantly dilating large veins and decreasing preload.",
+          "forms": "• Sublingual tablets: 0.3 mg, 0.4 mg, 0.6 mg. • Sublingual spray: 0.4 mg/spray. • Transdermal patch: 0.1 mg/hr to 0.8 mg/hr. • Intravenous injection: 5 mg/mL.",
+          "indication": "Acute relief and prophylaxis of angina pectoris, management of acute heart failure, and control of perioperative hypertension.",
+          "contraindication": "Severe anemia, increased intracranial pressure, hypersensitivity to nitrates, and concurrent use of phosphodiesterase-5 (PDE-5) inhibitors (e.g., sildenafil).",
+          "adverse": "Severe hypotension, paradoxical bradycardia, reflex tachycardia, and methhemoglobinemia (with high doses).",
+          "effects": "Throbbing headache, flushing, dizziness, lightheadedness, and postural hypotension.",
+          "notes": "Patients must maintain a daily \"nitrate-free interval\" (usually 10 to 12 hours) to prevent the development of pharmacological tolerance."
+        }
+      }
+    ],
+    "isosorbide-mononitrate": [
+      {
+        "page": 102,
+        "title": "ISMN, ISDN",
+        "fields": {
+          "action": "Organic nitrates that release nitric oxide, increasing cyclic GMP levels and causing relaxation of vascular smooth muscle, reducing venous return (preload) and myocardial oxygen demand.",
+          "forms": "ISMN: Tablets: 10 mg, 20 mg; Extended-release tablets: 30 mg, 60 mg, 120 mg.",
+          "indication": "Long-term prophylaxis and management of angina pectoris.",
+          "contraindication": "Concomitant use with PDE-5 inhibitors (sildenafil, tadalafil, vardenafil), severe hypotension, and acute circulatory failure.",
+          "adverse": "Severe hypotensive episodes, syncopal attacks, and worsening anginal attacks due to reflex responses.",
+          "effects": "Severe throbbing headaches, dizziness, flushing, lightheadedness upon standing, and nausea.",
+          "notes": "Like nitroglycerin, these agents require a daily nitrate-free interval to avoid drug tolerance and loss of efficacy."
+        }
+      }
+    ],
+    "isosorbide-dinitrate": [
+      {
+        "page": 102,
+        "title": "ISMN, ISDN",
+        "fields": {
+          "action": "Organic nitrates that release nitric oxide, increasing cyclic GMP levels and causing relaxation of vascular smooth muscle, reducing venous return (preload) and myocardial oxygen demand.",
+          "forms": "ISDN: Sublingual tablets: 2.5 mg, 5 mg; Oral tablets: 5 mg, 10 mg, 20 mg, 30 mg, 40 mg.",
+          "indication": "Long-term prophylaxis and management of angina pectoris; ISDN is also used adjunctively in chronic heart failure.",
+          "contraindication": "Concomitant use with PDE-5 inhibitors (sildenafil, tadalafil, vardenafil), severe hypotension, and acute circulatory failure.",
+          "adverse": "Severe hypotensive episodes, syncopal attacks, and worsening anginal attacks due to reflex responses.",
+          "effects": "Severe throbbing headaches, dizziness, flushing, lightheadedness upon standing, and nausea.",
+          "notes": "Like nitroglycerin, these agents require a daily nitrate-free interval to avoid drug tolerance and loss of efficacy."
+        }
+      }
+    ],
+    "diltiazem": [
+      {
+        "page": 104,
+        "title": "DILITIAZEM",
+        "fields": {
+          "classification": "Calcium Channel Blockers.",
+          "action": "Non-dihydropyridine calcium channel blocker that inhibits calcium influx across cardiac and vascular smooth muscle membranes, producing coronary and peripheral vasodilation and slowing heart rate/AV conduction.",
+          "forms": "Oral tablets: 30 mg, 60 mg, 90 mg, 120 mg. Extended-release capsules: 120 mg, 180 mg, 240 mg, 300 mg, 360 mg. Intravenous injection: 5 mg/mL.",
+          "indication": "Management of Prinzmetal's variant angina, chronic stable angina, essential hypertension, and rapid rate control in atrial fibrillation/flutter.",
+          "contraindication": "Sick sinus syndrome, second- or third-degree AV block (without a pacemaker), severe hypotension, acute myocardial infarction, and pulmonary congestion.",
+          "adverse": "Complete AV heart block, severe bradycardia, acute hypotension, and heart failure exacerbation.",
+          "effects": "Peripheral edema, headache, dizziness, flushing, asthenia, and mild constipation.",
+          "notes": "Balances vascular dilation with negative chronotropic and inotropic effects on the heart, making it effective for both angina and rate control."
+        }
+      }
+    ],
+    "amlodipine": [
+      {
+        "page": 106,
+        "title": "AMLODIPINE",
+        "fields": {
+          "classification": "Calcium Channel Blockers.",
+          "action": "Long-acting dihydropyridine calcium channel blocker that inhibits the transmembrane influx of calcium ions into vascular smooth muscle and cardiac muscle, causing peripheral arterial vasodilation.",
+          "forms": "Oral tablets: 2.5 mg, 5 mg, 10 mg.",
+          "indication": "Management of hypertension, chronic stable angina, and vasospastic (Prinzmetal's) angina.",
+          "contraindication": "Known hypersensitivity to amlodipine or other dihydropyridines.",
+          "adverse": "Marked hypotension, worsening angina upon initiation in patients with severe obstructive coronary artery disease.",
+          "effects": "Peripheral edema (notably ankle swelling), flushing, fatigue, palpitations, and dizziness.",
+          "notes": "Features a slow onset and long elimination half-life (around 30 to 50 hours), allowing smooth once-daily dosing without sharp peak-to-trough blood pressure variations."
+        }
+      }
+    ],
+    "nicardipine": [
+      {
+        "page": 107,
+        "title": "NICARDIPINE",
+        "fields": {
+          "classification": "Calcium Channel Blockers.",
+          "action": "Dihydropyridine calcium channel blocker that selectively inhibits calcium ion influx into vascular smooth muscle, resulting in preferential vasodilation of cerebral and coronary blood vessels over cardiac tissue.",
+          "forms": "Oral capsules: 20 mg, 30 mg. Extended-release capsules: 45 mg, 60 mg. Intravenous injection/infusion: 2.5 mg/mL.",
+          "indication": "Management of chronic stable angina and essential hypertension; IV form used for short-term treatment of hypertensive emergencies.",
+          "contraindication": "Advanced aortic stenosis (due to fixed-output obstruction) and hypersensitivity to nicardipine.",
+          "adverse": "Severe systemic hypotension, reflex tachycardia, increased angina frequency, and superficial thrombophlebitis at IV sites.",
+          "effects": "Peripheral edema, headache, flushing, dizziness, and nausea.",
+          "notes": "Provides significant vascular selectivity, making it highly valuable in neurosurgical or critical care settings for controlling blood pressure."
+        }
+      }
+    ],
+    "ranolazine": [
+      {
+        "page": 108,
+        "title": "RANOLAZINE",
+        "fields": {
+          "forms": "Extended-release tablets: 500 mg, 1000 mg.",
+          "indication": "Treatment of chronic stable angina pectoris (often used in combination with beta-blockers, nitrates, or calcium channel blockers).",
+          "contraindication": "Pre-existing hepatic impairment, and concurrent use with strong CYP3A4 inhibitors (e.g., ketoconazole) or inducers (e.g., rifampin).",
+          "adverse": "QT interval prolongation, ventricular arrhythmias, and acute renal failure in susceptible patients.",
+          "effects": "Dizziness, headache, nausea, constipation, and asthenia.",
+          "notes": "Does not significantly alter resting heart rate or blood pressure, making it a unique metabolic antianginal agent for patients with baseline low heart rates or blood pressure."
+        }
+      }
+    ],
+    "ivabradine": [
+      {
+        "page": 109,
+        "title": "IVABRADINE",
+        "fields": {
+          "forms": "Oral tablets: 5 mg, 7.5 mg.",
+          "indication": "Reduction of hospital admission risk for chronic heart failure in stable patients with reduced ejection fraction, and symptomatic treatment of chronic stable angina.",
+          "contraindication": "Resting heart rate under 70 beats/min prior to treatment, cardiogenic shock, acute myocardial infarction, severe hypotension, third-degree AV block, and severe hepatic impairment.",
+          "adverse": "Severe bradycardia, luminous phenomena (phosphenes -temporary visual brightness changes), and atrial fibrillation.",
+          "effects": "Phosphenes (visual flashes), bradycardia, hypertension, and headache.",
+          "notes": "Relies strictly on reducing heart rate to lower myocardial oxygen demand; patients should be monitored for visual brightness phenomena."
+        }
+      }
+    ],
+    "sildenafil": [
+      {
+        "page": 110,
+        "title": "SILDENALFIL, TADALAFIL, VARDENAFIL",
+        "fields": {
+          "classification": "For Erectile Dysfunction.",
+          "action": "Selective inhibition of phosphodiesterase type 5 (PDE-5), preventing the degradation of cyclic GMP (cGMP) in the corpus cavernosum. This sustains smooth muscle relaxation and allows increased blood flow to erectile tissue in the presence of sexual stimulation.",
+          "forms": "Sildenafil: Tablets: 25 mg, 50 mg, 100 mg.",
+          "indication": "Treatment of erectile dysfunction and management of pulmonary arterial hypertension.",
+          "contraindication": "Concurrent use with any form of organic nitrates or guanylate cyclase stimulators (due to the risk of catastrophic, life-threatening systemic hypotension).",
+          "adverse": "Severe, profound hypotension, sudden vision loss (non-arteritic anterior ischemic optic neuropathy - NAION), sudden hearing loss, and prolonged priapism.",
+          "effects": "Headache, flushing, dyspepsia, nasal congestion, visual disturbances (such as blue-tinted vision with sildenafil), and back pain (common with tadalafil)."
+        }
+      }
+    ],
+    "tadalafil": [
+      {
+        "page": 110,
+        "title": "SILDENALFIL, TADALAFIL, VARDENAFIL",
+        "fields": {
+          "classification": "For Erectile Dysfunction.",
+          "action": "Selective inhibition of phosphodiesterase type 5 (PDE-5), preventing the degradation of cyclic GMP (cGMP) in the corpus cavernosum. This sustains smooth muscle relaxation and allows increased blood flow to erectile tissue in the presence of sexual stimulation.",
+          "forms": "Tadalafil: Tablets: 2.5 mg, 5 mg, 10 mg, 20 mg.",
+          "indication": "Treatment of erectile dysfunction and management of pulmonary arterial hypertension and benign prostatic hyperplasia symptoms.",
+          "contraindication": "Concurrent use with any form of organic nitrates or guanylate cyclase stimulators (due to the risk of catastrophic, life-threatening systemic hypotension).",
+          "adverse": "Severe, profound hypotension, sudden vision loss (non-arteritic anterior ischemic optic neuropathy - NAION), sudden hearing loss, and prolonged priapism.",
+          "effects": "Headache, flushing, dyspepsia, nasal congestion, visual disturbances (such as blue-tinted vision with sildenafil), and back pain (common with tadalafil)."
+        }
+      }
+    ],
+    "vardenafil": [
+      {
+        "page": 110,
+        "title": "SILDENALFIL, TADALAFIL, VARDENAFIL",
+        "fields": {
+          "classification": "For Erectile Dysfunction.",
+          "action": "Selective inhibition of phosphodiesterase type 5 (PDE-5), preventing the degradation of cyclic GMP (cGMP) in the corpus cavernosum. This sustains smooth muscle relaxation and allows increased blood flow to erectile tissue in the presence of sexual stimulation.",
+          "forms": "Vardenafil: Tablets: 2.5 mg, 5 mg, 10 mg, 20 mg.",
+          "indication": "Treatment of erectile dysfunction.",
+          "contraindication": "Concurrent use with any form of organic nitrates or guanylate cyclase stimulators (due to the risk of catastrophic, life-threatening systemic hypotension).",
+          "adverse": "Severe, profound hypotension, sudden vision loss (non-arteritic anterior ischemic optic neuropathy - NAION), sudden hearing loss, and prolonged priapism.",
+          "effects": "Headache, flushing, dyspepsia, nasal congestion, visual disturbances (such as blue-tinted vision with sildenafil), and back pain (common with tadalafil)."
+        }
+      }
+    ],
+    "adenosine": [
+      {
+        "page": 112,
+        "title": "ADENOSINE",
+        "fields": {
+          "indication": "Rapid conversion of paroxysmal supraventricular tachycardia (PSVT) to normal sinus rhythm (including tachycardia associated with accessory bypass tracts like Wolff-Parkinson-White syndrome), and diagnostic use during myocardial nuclear imaging.",
+          "contraindication": "Second- or third-degree AV block, sick sinus syndrome (unless a functioning artificial pacemaker is present), bronchoconstrictive lung disease (such as asthma), and known hypersensitivity to adenosine.",
+          "adverse": "Transient asystole, severe bronchospasm, heart block, and ventricular arrhythmias.",
+          "effects": "Flushing (very common), chest pain, shortness of breath, dyspnea, nausea, headache, and lightheadedness.",
+          "notes": "Possesses an extremely short elimination half-life of less than 10 seconds; must be administered via a rapid intravenous bolus (typically into a peripheral site close to the heart) followed immediately by a saline flush."
+        }
+      }
+    ],
+    "potassium": [
+      {
+        "page": 113,
+        "title": "POTASSIUM ION",
+        "fields": {
+          "action": "Restores and maintains normal intracellular potassium concentration, stabilizing the resting membrane potential of cardiac and skeletal muscle cells and regulating neuromuscular excitability.",
+          "indication": "Prevention and treatment of hypokalemia (potassium deficiency) due to diuretic use, digitalis toxicity, or excessive losses, and maintenance of cardiac electrophysiological stability.",
+          "contraindication": "Severe renal impairment (oliguria/anuria), hyperkalemia, acute dehydration, heat cramps, and untreated Addison's disease.",
+          "adverse": "Hyperkalemia leading to fatal cardiac arrhythmias, ventricular fibrillation, and cardiac arrest.",
+          "effects": "Nausea, vomiting, abdominal discomfort, diarrhea, and flatulence (especially with oral formulations).",
+          "notes": "Intravenous potassium must always be heavily diluted and administered via a controlled infusion pump; never give undiluted IV push potassium, as it can cause rapid cardiac arrest."
+        }
+      }
+    ],
+    "magnesium": [
+      {
+        "page": 114,
+        "title": "MAGNESIUM ION",
+        "fields": {
+          "action": "Acts as an essential cofactor for numerous enzymatic reactions and blocks neuromuscular transmission by decreasing acetylcholine release. It regulates sodium, potassium, and calcium movement across cell membranes and controls cardiac excitability.",
+          "forms": "Intravenous/Intramuscular injection: 50 mg/mL (5%), 125 mg/mL (12.5%), 250 mg/mL (25%), 500 mg/mL (50%). Oral tablets/capsules vary by supplement.",
+          "indication": "Treatment and prevention of hypomagnesemia, management of acute torsades de pointes (polymorphic ventricular tachycardia), control of seizures in eclampsia/preeclampsia, and adjunctive treatment of severe acute asthma exacerbations.",
+          "contraindication": "Myocardial damage, heart block, severe renal insufficiency (risk of hypermagnesemia toxicity), and hypermagnesemia.",
+          "adverse": "Severe respiratory depression, profound hypotension, complete loss of deep tendon reflexes, and circulatory collapse.",
+          "effects": "Flushing, sweating, transient hypotension, drowsiness, and local injection-site irritation.",
+          "notes": "Calcium gluconate must always be kept immediately available as a specific antidote to reverse severe magnesium-induced respiratory depression or toxicity."
+        }
+      }
+    ]
+  },
+  "flags": [
+    {
+      "drug": "darifenacin",
+      "page": 20,
+      "field": "contraindication",
+      "reason": "Severe hepatic impairment is qualified only as \"for certain agents\" without identifying them; original retained.",
+      "source": "Urinary retention, gastric\nretention, uncontrolled\nnarrow-angle glaucoma,\nand severe hepatic\nimpairment (for certain\nagents)."
+    },
+    {
+      "drug": "fesoterodine",
+      "page": 20,
+      "field": "contraindication",
+      "reason": "Severe hepatic impairment is qualified only as \"for certain agents\" without identifying them; original retained.",
+      "source": "Urinary retention, gastric\nretention, uncontrolled\nnarrow-angle glaucoma,\nand severe hepatic\nimpairment (for certain\nagents)."
+    },
+    {
+      "drug": "solifenacin",
+      "page": 20,
+      "field": "contraindication",
+      "reason": "Severe hepatic impairment is qualified only as \"for certain agents\" without identifying them; original retained.",
+      "source": "Urinary retention, gastric\nretention, uncontrolled\nnarrow-angle glaucoma,\nand severe hepatic\nimpairment (for certain\nagents)."
+    },
+    {
+      "drug": "tolterodine",
+      "page": 20,
+      "field": "contraindication",
+      "reason": "Severe hepatic impairment is qualified only as \"for certain agents\" without identifying them; original retained.",
+      "source": "Urinary retention, gastric\nretention, uncontrolled\nnarrow-angle glaucoma,\nand severe hepatic\nimpairment (for certain\nagents)."
+    },
+    {
+      "drug": "telenzepine",
+      "page": 21,
+      "field": "forms",
+      "reason": "Listed strengths are explicitly for Pirenzepine only; Telenzepine original retained.",
+      "source": "Oral tablets: 25 mg, 50 mg\n(Pirenzepine; availability\nvaries by country/region)."
+    },
+    {
+      "drug": "umeclidinium",
+      "page": 25,
+      "field": "contraindication",
+      "reason": "Source equates milk proteins with lactose; ambiguous wording retained for review rather than corrected.",
+      "source": "Severe hypersensitivity\nto milk proteins\n(lactose) or\numeclidinium\ncomponents."
+    },
+    {
+      "drug": "mecamylamine",
+      "page": 28,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Antinicotinic Ganglion Blockers\nAntinicotinic Neuromuscular Blockers"
+    },
+    {
+      "drug": "dextromethorphan",
+      "page": 35,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Antinicotinic Neuromuscular Blockers"
+    },
+    {
+      "drug": "salmeterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "formoterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "indacaterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "vilanterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "olodaterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "tamsulosin",
+      "page": 58,
+      "field": "contraindication",
+      "reason": "Grouped restrictions have an agent-specific qualifier but do not fully resolve each restriction by drug; original retained.",
+      "source": "Severe hepatic impairment\n(for silodosin), severe renal\nimpairment, and concurrent\nuse of strong CYP3A4\ninhibitors (like\nketoconazole)."
+    },
+    {
+      "drug": "timolol",
+      "page": 61,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Nonselective B - Blockers"
+    },
+    {
+      "drug": "timolol",
+      "page": 61,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Treatment of chronic\nopen-angle glaucoma\nand ocular hypertension;\nsystemic forms are used\nfor hypertension and\nmigraine prevention."
+    },
+    {
+      "drug": "betaxolol",
+      "page": 61,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Nonselective B - Blockers"
+    },
+    {
+      "drug": "betaxolol",
+      "page": 61,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Treatment of chronic\nopen-angle glaucoma\nand ocular hypertension;\nsystemic forms are used\nfor hypertension and\nmigraine prevention."
+    },
+    {
+      "drug": "fenoldopam",
+      "page": 94,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Selective dopamine-1 () receptor agonist that causes vasodilation of\nperipheral arteries (including renal, mesenteric, and coronary beds) and promotes\nnatriuresis and diuresis."
+    },
+    {
+      "drug": "losartan",
+      "page": 98,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Selective, competitive antagonist of angiotensin II type 1 ()\nreceptors, blocking the vasoconstrictor and aldosterone-secreting eﬀects of\nangiotensin II."
+    },
+    {
+      "drug": "candesartan",
+      "page": 99,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "candesartan",
+      "page": 99,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Potent, selective antagonists of the  angiotensin II receptor\nsubtype, preventing the physiological responses of angiotensin II without\naﬀecting bradykinin breakdown."
+    },
+    {
+      "drug": "irbesartan",
+      "page": 99,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "irbesartan",
+      "page": 99,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Potent, selective antagonists of the  angiotensin II receptor\nsubtype, preventing the physiological responses of angiotensin II without\naﬀecting bradykinin breakdown."
+    },
+    {
+      "drug": "nitroglycerin",
+      "page": 101,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "isosorbide-mononitrate",
+      "page": 102,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "isosorbide-dinitrate",
+      "page": 102,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "ranolazine",
+      "page": 108,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Calcium Channel Blockers"
+    },
+    {
+      "drug": "ranolazine",
+      "page": 108,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Antianginal agent that inhibits the late inward sodium current () in\ncardiac cells, reducing intracellular sodium and subsequent calcium overload, thereby\nimproving myocardial relaxation and eﬃciency."
+    },
+    {
+      "drug": "ivabradine",
+      "page": 109,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Calcium Channel Blockers"
+    },
+    {
+      "drug": "ivabradine",
+      "page": 109,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Hyperpolarization-activated cyclic nucleotide-gated (HCN) channel blocker. It\nselectively inhibits the  (\"funny\") ion current in the sinoatrial node, slowing the heart rate without\naﬀecting myocardial contractility or ventricular repolarization."
+    },
+    {
+      "drug": "sildenafil",
+      "page": 110,
+      "field": "notes",
+      "reason": "Source describes up to 36 hours as an elimination half-life while comparing durations of action; original retained pending review.",
+      "source": "Tadalaﬁl is known as the \"weekend pill\" due to its remarkably long\nelimination half-life of up to 36 hours, whereas sildenaﬁl and\nvardenaﬁl have shorter durations of action (around 4 hours)."
+    },
+    {
+      "drug": "tadalafil",
+      "page": 110,
+      "field": "notes",
+      "reason": "Source describes up to 36 hours as an elimination half-life while comparing durations of action; original retained pending review.",
+      "source": "Tadalaﬁl is known as the \"weekend pill\" due to its remarkably long\nelimination half-life of up to 36 hours, whereas sildenaﬁl and\nvardenaﬁl have shorter durations of action (around 4 hours)."
+    },
+    {
+      "drug": "vardenafil",
+      "page": 110,
+      "field": "notes",
+      "reason": "Source describes up to 36 hours as an elimination half-life while comparing durations of action; original retained pending review.",
+      "source": "Tadalaﬁl is known as the \"weekend pill\" due to its remarkably long\nelimination half-life of up to 36 hours, whereas sildenaﬁl and\nvardenaﬁl have shorter durations of action (around 4 hours)."
+    },
+    {
+      "drug": "adenosine",
+      "page": 112,
+      "field": "classification",
+      "reason": "No corresponding source content; original retained.",
+      "source": ""
+    },
+    {
+      "drug": "adenosine",
+      "page": 112,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Activates purinergic  receptors in the heart, inhibiting adenylate cyclase,\nincreasing outward potassium conductance, and blocking calcium currents. This results in a\ntransient, complete suppression of AV nodal conduction and automaticity."
+    },
+    {
+      "drug": "adenosine",
+      "page": 112,
+      "field": "forms",
+      "reason": "Source ends mid-parenthesis after \"in 2 mL or 4 mL\"; original retained.",
+      "source": "Intravenous\ninjection: 3 mg/mL\n(in 2 mL or 4 mL"
+    },
+    {
+      "drug": "potassium",
+      "page": 113,
+      "field": "classification",
+      "reason": "No corresponding source content; original retained.",
+      "source": ""
+    },
+    {
+      "drug": "potassium",
+      "page": 113,
+      "field": "forms",
+      "reason": "Ambiguous \"Extended-rate\" formulation wording and concentrate values require review; original retained.",
+      "source": "Oral tablets/capsules: 8 mEq, 10\nmEq, 20 mEq.\nExtended-rate oral powder\npackets: 20 mEq, 25 mEq.\nIntravenous infusion concentrate:\n2 mEq/mL, 10 mEq/mL, 20 mEq/\nmL."
+    },
+    {
+      "drug": "magnesium",
+      "page": 114,
+      "field": "classification",
+      "reason": "No corresponding source content; original retained.",
+      "source": ""
+    }
+  ]
+}

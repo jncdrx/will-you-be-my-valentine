@@ -15,19 +15,19 @@ export function FolioExperience({ onBackToHub }: FolioExperienceProps) {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col bg-[#f5f3ef] text-[#292d30] font-sans">
+    <div className="relative h-screen supports-[height:100dvh]:h-[100dvh] min-h-0 w-full flex flex-col overflow-hidden bg-[#f5f3ef] text-[#292d30] font-sans">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-30 flex items-center justify-between px-3 sm:px-6 h-14 bg-[#fcfbf8] border-b border-[#e6e1db] shadow-sm">
+      <header className="relative z-30 shrink-0 flex items-center justify-between gap-2 px-2 sm:px-6 min-h-14 py-1 bg-[#fcfbf8] border-b border-[#e6e1db] shadow-sm">
         {/* Left: Back to Hub */}
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={handleBack}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#ded7ce] text-xs font-semibold text-[#512735] hover:bg-[#f2e8ea] hover:border-[#bd8d9a] transition-all shadow-xs active:scale-95"
+            className="inline-flex shrink-0 min-h-11 min-w-11 items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#ded7ce] text-xs font-semibold text-[#512735] hover:bg-[#f2e8ea] hover:border-[#bd8d9a] transition-all shadow-xs active:scale-95"
             title="Return to Experience Hub"
             aria-label="Back to Experience Hub"
           >
             <ArrowLeft size={14} />
-            <span className="hidden xs:inline">Back to Hub</span>
+            <span className="hidden lg:inline">Back to Hub</span>
           </button>
 
           <div className="h-4 w-px bg-[#e6e1db] hidden sm:block" />
@@ -41,7 +41,7 @@ export function FolioExperience({ onBackToHub }: FolioExperienceProps) {
               <span className="font-serif font-bold text-base text-[#512735] tracking-tight">
                 folio.
               </span>
-              <span className="hidden md:inline text-[11px] text-[#75736e] font-medium">
+              <span className="hidden xl:inline text-[11px] text-[#75736e] font-medium">
                 Handwritten Pharmacology Notebook
               </span>
             </div>
@@ -56,7 +56,7 @@ export function FolioExperience({ onBackToHub }: FolioExperienceProps) {
           {/* Print Tip Toggle */}
           <button
             onClick={() => setShowPrintHint(!showPrintHint)}
-            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#75736e] hover:text-[#512735] hover:bg-[#f2e8ea]/50 transition-colors"
+            className="hidden sm:inline-flex min-h-11 items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#75736e] hover:text-[#512735] hover:bg-[#f2e8ea]/50 transition-colors"
             title="A5 Printing Tips"
           >
             <Printer size={13} />
@@ -68,7 +68,8 @@ export function FolioExperience({ onBackToHub }: FolioExperienceProps) {
             href="./folio/index.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#743648] hover:bg-[#512735] text-white text-xs font-medium transition-all shadow-xs active:scale-95"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-[#743648] hover:bg-[#512735] text-white text-xs font-medium transition-all shadow-xs active:scale-95"
+            aria-label="Open folio in a standalone window"
             title="Open in Full Standalone Window"
           >
             <span className="hidden sm:inline">Open Standalone</span>
@@ -79,7 +80,7 @@ export function FolioExperience({ onBackToHub }: FolioExperienceProps) {
 
       {/* Print Hint Banner */}
       {showPrintHint && (
-        <div className="bg-[#faf5e9] border-b border-[#e7ddce] px-4 py-2 text-xs text-[#7e6a44] flex items-center justify-between">
+        <div className="shrink-0 max-h-[30dvh] overflow-y-auto bg-[#faf5e9] border-b border-[#e7ddce] px-4 py-2 text-xs text-[#7e6a44] flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Sparkles size={14} className="text-[#a76172] shrink-0" />
             <span>
@@ -88,7 +89,8 @@ export function FolioExperience({ onBackToHub }: FolioExperienceProps) {
           </div>
           <button
             onClick={() => setShowPrintHint(false)}
-            className="text-xs font-bold px-2 py-0.5 hover:bg-[#e7ddce]/40 rounded"
+            className="shrink-0 min-h-11 min-w-11 text-xs font-bold px-2 py-0.5 hover:bg-[#e7ddce]/40 rounded"
+            aria-label="Close print tips"
           >
             ✕
           </button>
@@ -96,12 +98,11 @@ export function FolioExperience({ onBackToHub }: FolioExperienceProps) {
       )}
 
       {/* Main Full-Height Embedded Iframe */}
-      <main className="flex-1 w-full flex flex-col relative">
+      <main className="flex-1 min-h-0 min-w-0 w-full flex flex-col relative">
         <iframe
           src="./folio/index.html"
           title="Folio — Complete Handwritten Pharmacology Notebook"
-          className="w-full flex-1 border-0"
-          style={{ height: showPrintHint ? "calc(100vh - 90px)" : "calc(100vh - 56px)" }}
+          className="block h-full min-h-0 w-full flex-1 border-0"
           allow="clipboard-write"
         />
       </main>

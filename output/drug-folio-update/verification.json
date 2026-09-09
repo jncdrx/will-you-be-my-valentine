@@ -1,0 +1,4016 @@
+{
+  "updated_drugs": 113,
+  "unchanged_drugs": [
+    "procainamide",
+    "quinidine",
+    "lidocaine",
+    "flecainide",
+    "amiodarone",
+    "sotalol",
+    "ibutilide",
+    "dofetilide"
+  ],
+  "protected_dose_checks": [
+    {
+      "drug": "bethanechol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "ba678be9833402d995242fe73abeef17ac82160c27b5e6bfc2960b630abee406",
+      "unchanged": true
+    },
+    {
+      "drug": "pilocarpine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "e738812fbfd3087749809abb0a145ef95020b90bd32eb57824adf2a82bc54920",
+      "unchanged": true
+    },
+    {
+      "drug": "muscarine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "309a77202d86d1eee3d08fd06531a33ab0df823edd2eb076e5565ee603a99dfe",
+      "unchanged": true
+    },
+    {
+      "drug": "nicotine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "70b9f086d03f2f6861a1217dc80caa9fe1fca377abd0fbf999003dfc48830793",
+      "unchanged": true
+    },
+    {
+      "drug": "varenicline",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "05d857b0f25077f9e98cda7076a3bf1c5cc4ad397ea01591b264475137f3a6ee",
+      "unchanged": true
+    },
+    {
+      "drug": "succinylcholine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "a8fcaa23d27a4bfea306b6e8e6a793c575f3575e5f03f6437c427f8e4dfab60c",
+      "unchanged": true
+    },
+    {
+      "drug": "edrophonium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "2d9287712effc481401bc151a9878915af14c0f20584983d9e6c5bec964cfd73",
+      "unchanged": true
+    },
+    {
+      "drug": "neostigmine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "a6e07b73db664b87d937fcd1c3dffa501d4529548130066c9f7cdfff087c2365",
+      "unchanged": true
+    },
+    {
+      "drug": "pyridostigmine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "fd72ddc770c9601d90243dcbdf5c2290b70e54510ea9a276d58402d1ba96c5a0",
+      "unchanged": true
+    },
+    {
+      "drug": "physostigmine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "5172dc9c338f8ff2164df91a4246dbf29e4044faf9cfee3bffcbb74fdd248f75",
+      "unchanged": true
+    },
+    {
+      "drug": "parathion",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "7203916d37606a5fb67f5b92776c2d72a1d41399dbefe75702aa3bcf97fec20b",
+      "unchanged": true
+    },
+    {
+      "drug": "malathion",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "e4ae573979d790390b70237bf4125b12bbec7ae4e4e383b6c1f41368104bd0a3",
+      "unchanged": true
+    },
+    {
+      "drug": "sarin",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "c662e809f3dbf9ed41e7b1c4ae6b30ac1cc75b3e5029bb3dda567bc9c42b4b92",
+      "unchanged": true
+    },
+    {
+      "drug": "tabun",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "c662e809f3dbf9ed41e7b1c4ae6b30ac1cc75b3e5029bb3dda567bc9c42b4b92",
+      "unchanged": true
+    },
+    {
+      "drug": "rivastigmine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "f3930d39520d535eaf4c48cd236c55fa8000d07df00b16f44ab7869bdd0b1982",
+      "unchanged": true
+    },
+    {
+      "drug": "galantamine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "30bc948b1d3d753da96fda390a04a8a82da2953fd6b25ed98121404b5c2779d5",
+      "unchanged": true
+    },
+    {
+      "drug": "donepezil",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "bed8b908f52eb108273544e34c0b0fc9c3da7980cd2aebde86c42011a272194d",
+      "unchanged": true
+    },
+    {
+      "drug": "atropine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "125fcf57eded6351ed4293657a8daef11533acdd2d5fc9dc3363c8a5e152fe50",
+      "unchanged": true
+    },
+    {
+      "drug": "darifenacin",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "ad6921d05b8588b239c36b5b92e192cfe9ef0dc96c3a1adf5d3405d138fbf4fc",
+      "unchanged": true
+    },
+    {
+      "drug": "fesoterodine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "a4f8a4d117da92a055642f7e5e73db8b51e9c724993e7dd374abef1d3dd40918",
+      "unchanged": true
+    },
+    {
+      "drug": "solifenacin",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "63e36bcc09294b86f556650b6fd69517b4079ea639c66fafaddac0b223099224",
+      "unchanged": true
+    },
+    {
+      "drug": "tolterodine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "025d71d61c26dec7cb3500baf9260250a256289de31330171e8cd1c2f78a3c07",
+      "unchanged": true
+    },
+    {
+      "drug": "pirenzepine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "38ad4ac347bb1128eff19b84a16bcb78cde4e430f9f5d36388fd8a6b539e5ca1",
+      "unchanged": true
+    },
+    {
+      "drug": "telenzepine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "2fa80cbe290db601a5585c94d66fe18ec8795d335caad18dfff4da808c3c057e",
+      "unchanged": true
+    },
+    {
+      "drug": "aclidinium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "d4e34a55f6db586537c664d10f940c57bbbf8cee6b600aae40955dcf25ad6834",
+      "unchanged": true
+    },
+    {
+      "drug": "ipratropium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "db63f5d0f1f95622a58ef197af6caa86492e895dffc409bebeeadd364266a4d7",
+      "unchanged": true
+    },
+    {
+      "drug": "tiotropium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "317453355a10c4bfd89878a33410666591d25b04db2a1b130a09eb895ee67067",
+      "unchanged": true
+    },
+    {
+      "drug": "umeclidinium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "027ffd85684f0072f8843afe5115188458370a6c6e90be43d3090f595d53b131",
+      "unchanged": true
+    },
+    {
+      "drug": "hexamethonium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "852010b8e0f590ec455f86329e9e71f22551b5855ba9c831ea4533943c37184a",
+      "unchanged": true
+    },
+    {
+      "drug": "trimethaphan",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "c98869b684b4bd3e81424905187c466ab424276339d8688f9cef7a352434b726",
+      "unchanged": true
+    },
+    {
+      "drug": "mecamylamine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "5cd90b4a5fab92c444d1204166957f616a11479127640949b470c23e883f3cf5",
+      "unchanged": true
+    },
+    {
+      "drug": "pralidoxime",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "2ee78d5e41f23cb38f53f45fc056944280b1ddc1444fee32cf0aefa67922b33d",
+      "unchanged": true
+    },
+    {
+      "drug": "rocuronium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "bf4b1826f36e67e048c2dcaf78068f3a8f0f4bd43922c36fac4f76003e6c34f8",
+      "unchanged": true
+    },
+    {
+      "drug": "atracurium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "aeb4095318d92003524330bc7bbd300a145dbef4e3415bf483ca9b4756fed93e",
+      "unchanged": true
+    },
+    {
+      "drug": "mivacurium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "4d86cd93d37df6df3a5754ae81339b2041f916628e8d8c40c396086fba8cbe42",
+      "unchanged": true
+    },
+    {
+      "drug": "pancuronium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "38180ff7cc45646b952e3be2cad2b138f63e3cbf5e16be402613483ac14cab61",
+      "unchanged": true
+    },
+    {
+      "drug": "tubocurarine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "4edfdade7f999be07b9b7fc25efc1c2d5af2cbfd9da5471b88d1612054de8af3",
+      "unchanged": true
+    },
+    {
+      "drug": "dextromethorphan",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "bfc993b804512ff79e7e85888cbb25e9da92c0c4293abbdecc23ecb949e885b5",
+      "unchanged": true
+    },
+    {
+      "drug": "vecuronium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "e2ef7bd8a2eb0bd88169f008e879d9bd871d791073b980d5c32bf5e8fc1d06e4",
+      "unchanged": true
+    },
+    {
+      "drug": "epinephrine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "4bf7039950578b9c0be01f4833ce9ffd77fdab4b6519bdd714451fde3431c06c",
+      "unchanged": true
+    },
+    {
+      "drug": "norepinephrine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "2680dc4b28e981bef45e00ba54177c75484d9e058dd1552b9ab41eebfd950895",
+      "unchanged": true
+    },
+    {
+      "drug": "dopamine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "8211b0ac883359f51e630bab5c4291b0934fbeedd32a9a80d6cbddc7836e36e3",
+      "unchanged": true
+    },
+    {
+      "drug": "dobutamine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "f61c836667d4d741a864be02601287f8ba8e6c4a090f6c2cad38b2bc1fecaa0e",
+      "unchanged": true
+    },
+    {
+      "drug": "isoproterenol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "c5828515c7455524b3f6525c0d06e60ba5af1b3e3a981e78c8d18ea6edeb611d",
+      "unchanged": true
+    },
+    {
+      "drug": "phenylephrine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "4b232d6e29be11d88f11dc931f7ccbe2d04b55192573bfa419b60b237c6b669d",
+      "unchanged": true
+    },
+    {
+      "drug": "albuterol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "c0322af7865344901f2458905192a2a0de33bcfd09dee23a894449c2dbb1029a",
+      "unchanged": true
+    },
+    {
+      "drug": "metaproterenol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "5704d99348a11cacb8ccabf01bc4b1706812c2db65357b30493e3d58d2a4db94",
+      "unchanged": true
+    },
+    {
+      "drug": "terbutaline",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "34083974590427320264e4969b6dbcb827698f2a9fd98902d9d0dbb6b9f6ea5a",
+      "unchanged": true
+    },
+    {
+      "drug": "salmeterol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "d7586e4adc8c234e1ddebec3bb78c7360b1a1c4778ccf78ea1b1b0a42eef5dcf",
+      "unchanged": true
+    },
+    {
+      "drug": "formoterol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "0e06e8c7d3825ce1d1207435a9f2445a1f9f8347ccf96d106a41fb353286be4c",
+      "unchanged": true
+    },
+    {
+      "drug": "indacaterol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "7a012cdd0533066d6d0a046c911db99e5bec1c3d265ac78e8af502da71cc33d8",
+      "unchanged": true
+    },
+    {
+      "drug": "vilanterol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "487125ff3231c4e9d777d0e8394214cf45c1062a9c01e55a946d5b4e3bbcbb96",
+      "unchanged": true
+    },
+    {
+      "drug": "olodaterol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "f1d0fb523487736ba4e633a2ed8c36f5c5a6b5acfc7aec38569bf081ca84b02e",
+      "unchanged": true
+    },
+    {
+      "drug": "amphetamine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "3265f85bf29621fc19f44be0be4861cb0d0259f4f6c3f675b48f0a33a280aa72",
+      "unchanged": true
+    },
+    {
+      "drug": "methamphetamine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "49b5ad648b0ee03906df054609e4fc8a2d721e689080a3fee384700ea51a560b",
+      "unchanged": true
+    },
+    {
+      "drug": "ephedrine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "21711ae254288cf558be8edf027ab704fac450db23c8530dccfeb62478386e7a",
+      "unchanged": true
+    },
+    {
+      "drug": "cocaine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "1835be2bedfc53553a5837bbcb4b4a19ff6274b5230e19097ad6501f43c43491",
+      "unchanged": true
+    },
+    {
+      "drug": "tyramine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "00c9542651c4541c39e2083cb08438ce9c10c0a8f57d98d03cc04a754e088079",
+      "unchanged": true
+    },
+    {
+      "drug": "phentolamine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "a9f9350d90922db25d03f411f4928569762a9c2d850f8af348a55dc9fe1740b2",
+      "unchanged": true
+    },
+    {
+      "drug": "phenoxybenzamine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "4f5d790ed27f3f6ec9787d6addf29667373274a4908ec0928e1acdfd5c0b6b85",
+      "unchanged": true
+    },
+    {
+      "drug": "prazosin",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "0d7d6218d074025de3a0c841ae96105c0dab0173c0c38046e78530713c073319",
+      "unchanged": true
+    },
+    {
+      "drug": "doxazosin",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "436ae8033ca3cc7db328bfa416ccbd0b8e2c76107deee69d2f57521cb983e7a3",
+      "unchanged": true
+    },
+    {
+      "drug": "terazosin",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "699ddf7a920cc3d6aaf0cc6fa6a1795f3f4dce118eb092cd3c8a6109a86c6a3b",
+      "unchanged": true
+    },
+    {
+      "drug": "tamsulosin",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "b536d7b912b4c3ef9f2b9cdc10fa3b45b819f6aa376d7092506e3ae37cae8269",
+      "unchanged": true
+    },
+    {
+      "drug": "silodosin",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "998a20b3a940e10ded732c086b0ffd88e883f8e949434542cb675c14240a6853",
+      "unchanged": true
+    },
+    {
+      "drug": "yohimbine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "c274d475ad19b169cb3670aad13a89d53594eccd9557434321a54778a2542392",
+      "unchanged": true
+    },
+    {
+      "drug": "propranolol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "639da176ccc505ec5a44d88d304346fe6043bc26173e9637b9c450c7ac11f409",
+      "unchanged": true
+    },
+    {
+      "drug": "timolol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "9bd1cc19ab8fba264fcb43425cab6482eece05c660377458c5ffde9a18540bfb",
+      "unchanged": true
+    },
+    {
+      "drug": "betaxolol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "38444f92cc006c3b8a5d3bb84df97decdde7a8c27e1af488831a62b7aacb8c98",
+      "unchanged": true
+    },
+    {
+      "drug": "pindolol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "3de2aa9e87878e2e6c9b80e1bc3d007a642f9bce425b74a8542e0985fe67ff88",
+      "unchanged": true
+    },
+    {
+      "drug": "nadolol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "650b011a91bc30b51471d550edb0f56b592dd3b85f0314d722f6aa2dde6649a4",
+      "unchanged": true
+    },
+    {
+      "drug": "atenolol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "79cad31f5dc644134a0dceecdebbc6f1cafa86b107da1b820fd9f28c9816cf5e",
+      "unchanged": true
+    },
+    {
+      "drug": "esmolol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "ff1766b3f4328e314bdb71bf6e03789930bb9649bbfceefeb9153e0cd85e8555",
+      "unchanged": true
+    },
+    {
+      "drug": "metoprolol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "7438573877e3a951b72727e099f8151fdfdc2bf7c3ac2fadf4118df671b41218",
+      "unchanged": true
+    },
+    {
+      "drug": "nebivolol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "be0db3188e5150b795a913f1b36b9fa21d1608229da9624ba845148d6139a807",
+      "unchanged": true
+    },
+    {
+      "drug": "butoxamine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "35c84668c0638b55b1c73f1d2ae7835b8584f0b1b615ff0e857c2042dcc02ec0",
+      "unchanged": true
+    },
+    {
+      "drug": "labetalol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "3802187ec909c852cb0bd0e659aba681c6532c6696956618a94eecb49c2927d6",
+      "unchanged": true
+    },
+    {
+      "drug": "carvedilol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "2ffcf540afd09e0e2643c86035589c14248eec545d3cf7b11f1fb5c66dd410a6",
+      "unchanged": true
+    },
+    {
+      "drug": "hydrochlorothiazide",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "bbd82f0fbcb0f1110861b64eceb712bc55d1314ae8911335c5a582deb571bc2c",
+      "unchanged": true
+    },
+    {
+      "drug": "chlorthalidone",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "ed8f604439332081b9accdf67be53d9289e6709a8247cca9c2a806ac7f3853bf",
+      "unchanged": true
+    },
+    {
+      "drug": "furosemide",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "7bc0c94505529563838aad0ba463469ad7484012e2d671a62120cda3c810de72",
+      "unchanged": true
+    },
+    {
+      "drug": "spironolactone",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "f5e9cddba4c2fcf721aa8951daaf9f9699d3262078433cccde06492dee2564e1",
+      "unchanged": true
+    },
+    {
+      "drug": "clonidine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "bb91fd3c989739e7b9c3b10e92d793a2817dccecedd4296b34e8c98a89b6a6a1",
+      "unchanged": true
+    },
+    {
+      "drug": "methyldopa",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "e6e15fda39acce17d4795b23e0baaa0e569d7eb770eed624c4b3d21e2d086fac",
+      "unchanged": true
+    },
+    {
+      "drug": "reserpine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "0f65ea6764c181d6bc5e2d378db394b9a567c00dc8a7b2f6a94cbd613ecf02ce",
+      "unchanged": true
+    },
+    {
+      "drug": "guanadrel",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "7d94f9e04c75ebe1234dc6915374414056797d1612f7c2d57888b39b6b5c175a",
+      "unchanged": true
+    },
+    {
+      "drug": "nifedipine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "3470d64c002cbc6c219dbd7f01b1c329498c278d758ae6d2190396f082e5e903",
+      "unchanged": true
+    },
+    {
+      "drug": "verapamil",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "071051c2680adce0a372a9f7269289a13cacf5b28dea215d546ff6c7010c1cfe",
+      "unchanged": true
+    },
+    {
+      "drug": "hydralazine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "38ad5350acbc39911178982555f6003df7bd4031c27de934f653d08a22c2aa17",
+      "unchanged": true
+    },
+    {
+      "drug": "minoxidil",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "f8333bf7c222e0d1a7ab75dfa507bc96074518f5af281be344d3a92d7844dffa",
+      "unchanged": true
+    },
+    {
+      "drug": "sodium-nitroprusside",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "2bb46257362b73158a0d4c766dd229ed5a03a22536a39d924b7f79a8c14194c0",
+      "unchanged": true
+    },
+    {
+      "drug": "diazoxide",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "ecb7fb16962cd2619cad478ad59c22166cf51ac0e21ca919c7f28e10892c8e43",
+      "unchanged": true
+    },
+    {
+      "drug": "fenoldopam",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "e2829dbae946371de9e399320bed5e5c35d7e4c7bcbde98b72cd7206e313f459",
+      "unchanged": true
+    },
+    {
+      "drug": "aliskiren",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "17865409a0f506a9d5de00109f94a42efda8293adcc35c92babf35c15fcef76e",
+      "unchanged": true
+    },
+    {
+      "drug": "captopril",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "dce450654aef5379284d956e320e9da587085a203e78bbef2b04dfdf931c2453",
+      "unchanged": true
+    },
+    {
+      "drug": "enalapril",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "2e7a2c9372ba95288d61b8aa76838b64aa8a3cf477fd5c9c797b4f1dfa0385c4",
+      "unchanged": true
+    },
+    {
+      "drug": "losartan",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "624583b94d9fa1fceccbdbb4191f8dd6b9a8599cd88afc8ea1eab2cb7fc406b9",
+      "unchanged": true
+    },
+    {
+      "drug": "candesartan",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "c978cac7d7510189facd8069ec2278000cea754b867e9a1d49e5d8d4ef643e13",
+      "unchanged": true
+    },
+    {
+      "drug": "irbesartan",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "b4c50864972f687ce26b4c45a4ac547b1326c90d8d1beb3d46a42ef6926c817e",
+      "unchanged": true
+    },
+    {
+      "drug": "nitroglycerin",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "0298579033c1aba0a627b88cd6ff7d688aae453516369db68510492ef576f7d8",
+      "unchanged": true
+    },
+    {
+      "drug": "isosorbide-mononitrate",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "0d05464d4474a43bc015661a0c5eef6d31be918206eb8a4323e34b686528b7b1",
+      "unchanged": true
+    },
+    {
+      "drug": "isosorbide-dinitrate",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "72af7c03ddfc3a7330083b825b40d96f4e5c16f0ad9f15dde47c702eedc08467",
+      "unchanged": true
+    },
+    {
+      "drug": "diltiazem",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "1606401d1ea90dc2c5110f5c32d5439c8594d9e95b8b2eead6bd818d0dddb3b4",
+      "unchanged": true
+    },
+    {
+      "drug": "amlodipine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "495f9a97bb17a1bf55f8c9532e329923b0eae609585a19f40a9b1c225d5c3cd1",
+      "unchanged": true
+    },
+    {
+      "drug": "nicardipine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "e9237d4d0b680d72afd7da322c9cbf92ca8d401b666c55e3e0ef658b061107a9",
+      "unchanged": true
+    },
+    {
+      "drug": "ranolazine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "78ed0eec1ae94575475de137a8ba45b31fd4ed189ff7fb31341da26b2dbd2347",
+      "unchanged": true
+    },
+    {
+      "drug": "ivabradine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "bfb6881f419011d57a735f9f37ea784789a74a4dc378ccb73d0ed27e255b5d34",
+      "unchanged": true
+    },
+    {
+      "drug": "sildenafil",
+      "protected_heading": "ADULT REGIMENS",
+      "sha256": "17fe4027548b4eee482216efe9ed08ab3b2803fc3e48198d100522d7d6740fad",
+      "unchanged": true
+    },
+    {
+      "drug": "tadalafil",
+      "protected_heading": "ADULT REGIMENS",
+      "sha256": "b7bd7f431426c41575d726f84fbcb15bdd10b18e9c34dbc23a9ee567e6ff279e",
+      "unchanged": true
+    },
+    {
+      "drug": "vardenafil",
+      "protected_heading": "ADULT ED REGIMENS",
+      "sha256": "54e0bea30011ce5f81867344ee7caddf7aad6be4a3df88d323b20f2268515f02",
+      "unchanged": true
+    },
+    {
+      "drug": "procainamide",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "e7e4417dd3ef358f9ade86e6d6b083f2966f56305b06d81253eb30d1dfc36832",
+      "unchanged": true
+    },
+    {
+      "drug": "quinidine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "c4a67e0888c79e6419ea31326907bc4b79c794a1378e890eacdbc6ad32c760ed",
+      "unchanged": true
+    },
+    {
+      "drug": "lidocaine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "4370abca38cd3742153fdd088d32d8f5b6bc0e8e520d35ef38a9b11748265e90",
+      "unchanged": true
+    },
+    {
+      "drug": "flecainide",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "783a7ee76f1b1f06f73a143bafab0c1a40b53bbffcd3686e872dbced34714d7a",
+      "unchanged": true
+    },
+    {
+      "drug": "amiodarone",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "34c2a04c69028a3d4c7d36df3bc7a3e0eee813c7cdee3a5276fb60ff090906d8",
+      "unchanged": true
+    },
+    {
+      "drug": "sotalol",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "70663fb423c04eb1d61895231245a6518215cbd29f9a30dd399417155d909ed5",
+      "unchanged": true
+    },
+    {
+      "drug": "ibutilide",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "38e59a28ef2a5b94af874028da8036ba3577320493b94db03adf4064e0247956",
+      "unchanged": true
+    },
+    {
+      "drug": "dofetilide",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "2603d92e0fb5c68fdb37eae1466e0f88b1c045750d70a268c4f1d01a4e867f62",
+      "unchanged": true
+    },
+    {
+      "drug": "adenosine",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "e88b20d0625d0544eee42f28d26b102d18f1c51749376f78f55c097eebf9eb45",
+      "unchanged": true
+    },
+    {
+      "drug": "potassium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "4cbfc36c29d61f000492fd7bf75ee013fafa5295a0e1252bf712dec6442fbc61",
+      "unchanged": true
+    },
+    {
+      "drug": "magnesium",
+      "protected_heading": "DOSE / SCOPE",
+      "sha256": "27e3a4eb5f6b2e68605e4126bca8b55ee3e8204c5fe52c60b359a9e924fa3696",
+      "unchanged": true
+    }
+  ],
+  "formatting_preserved": true,
+  "changes": [
+    {
+      "drug": "bethanechol",
+      "pages": [
+        2
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "pilocarpine",
+      "pages": [
+        3
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "muscarine",
+      "pages": [
+        4
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "nicotine",
+      "pages": [
+        5
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "varenicline",
+      "pages": [
+        6
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "succinylcholine",
+      "pages": [
+        7
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "edrophonium",
+      "pages": [
+        8
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "neostigmine",
+      "pages": [
+        9
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "pyridostigmine",
+      "pages": [
+        10
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "physostigmine",
+      "pages": [
+        11
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "parathion",
+      "pages": [
+        12
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "malathion",
+      "pages": [
+        13
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "sarin",
+      "pages": [
+        14
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "tabun",
+      "pages": [
+        14
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "rivastigmine",
+      "pages": [
+        15
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "galantamine",
+      "pages": [
+        16
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "donepezil",
+      "pages": [
+        17
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "atropine",
+      "pages": [
+        19
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "darifenacin",
+      "pages": [
+        20
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "fesoterodine",
+      "pages": [
+        20
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "solifenacin",
+      "pages": [
+        20
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "tolterodine",
+      "pages": [
+        20
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "pirenzepine",
+      "pages": [
+        21
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "telenzepine",
+      "pages": [
+        21
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "aclidinium",
+      "pages": [
+        22
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "ipratropium",
+      "pages": [
+        23
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "tiotropium",
+      "pages": [
+        24
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "umeclidinium",
+      "pages": [
+        25
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "hexamethonium",
+      "pages": [
+        26,
+        78
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "trimethaphan",
+      "pages": [
+        27,
+        79
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "mecamylamine",
+      "pages": [
+        28,
+        80
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "pralidoxime",
+      "pages": [
+        29
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "rocuronium",
+      "pages": [
+        30
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "atracurium",
+      "pages": [
+        31
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "mivacurium",
+      "pages": [
+        32
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "pancuronium",
+      "pages": [
+        33
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "tubocurarine",
+      "pages": [
+        34
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "dextromethorphan",
+      "pages": [
+        35
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "vecuronium",
+      "pages": [
+        36
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "epinephrine",
+      "pages": [
+        38
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "norepinephrine",
+      "pages": [
+        39
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "dopamine",
+      "pages": [
+        40
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "dobutamine",
+      "pages": [
+        41
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "isoproterenol",
+      "pages": [
+        42
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "phenylephrine",
+      "pages": [
+        43
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "albuterol",
+      "pages": [
+        44
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "metaproterenol",
+      "pages": [
+        45
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "terbutaline",
+      "pages": [
+        46
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "salmeterol",
+      "pages": [
+        47
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "formoterol",
+      "pages": [
+        47
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "indacaterol",
+      "pages": [
+        47
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "vilanterol",
+      "pages": [
+        47
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "olodaterol",
+      "pages": [
+        47
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "amphetamine",
+      "pages": [
+        48
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "methamphetamine",
+      "pages": [
+        49
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "ephedrine",
+      "pages": [
+        50
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "cocaine",
+      "pages": [
+        51
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "tyramine",
+      "pages": [
+        52
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "phentolamine",
+      "pages": [
+        54
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "phenoxybenzamine",
+      "pages": [
+        55
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "prazosin",
+      "pages": [
+        56,
+        83
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "doxazosin",
+      "pages": [
+        57,
+        84
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "terazosin",
+      "pages": [
+        57
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "tamsulosin",
+      "pages": [
+        58
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "silodosin",
+      "pages": [
+        58
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "yohimbine",
+      "pages": [
+        59
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "propranolol",
+      "pages": [
+        60,
+        85
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "timolol",
+      "pages": [
+        61
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "betaxolol",
+      "pages": [
+        61
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "pindolol",
+      "pages": [
+        62
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "nadolol",
+      "pages": [
+        63
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "atenolol",
+      "pages": [
+        64,
+        86
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "esmolol",
+      "pages": [
+        65
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "metoprolol",
+      "pages": [
+        66
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "nebivolol",
+      "pages": [
+        67
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "butoxamine",
+      "pages": [
+        68
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "labetalol",
+      "pages": [
+        69,
+        87
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "carvedilol",
+      "pages": [
+        70
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "hydrochlorothiazide",
+      "pages": [
+        72
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "chlorthalidone",
+      "pages": [
+        73
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "furosemide",
+      "pages": [
+        74
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "spironolactone",
+      "pages": [
+        75
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "clonidine",
+      "pages": [
+        76
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "methyldopa",
+      "pages": [
+        77
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "reserpine",
+      "pages": [
+        81
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "guanadrel",
+      "pages": [
+        82
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "nifedipine",
+      "pages": [
+        88,
+        105
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "verapamil",
+      "pages": [
+        89,
+        103
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "hydralazine",
+      "pages": [
+        90
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "minoxidil",
+      "pages": [
+        91
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "sodium-nitroprusside",
+      "pages": [
+        92
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "diazoxide",
+      "pages": [
+        93
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "fenoldopam",
+      "pages": [
+        94
+      ],
+      "fields": [
+        "drug",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "aliskiren",
+      "pages": [
+        95
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "captopril",
+      "pages": [
+        96
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "enalapril",
+      "pages": [
+        97
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "losartan",
+      "pages": [
+        98
+      ],
+      "fields": [
+        "drug",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "candesartan",
+      "pages": [
+        99
+      ],
+      "fields": [
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "irbesartan",
+      "pages": [
+        99
+      ],
+      "fields": [
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "nitroglycerin",
+      "pages": [
+        101
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "isosorbide-mononitrate",
+      "pages": [
+        102
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "isosorbide-dinitrate",
+      "pages": [
+        102
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "diltiazem",
+      "pages": [
+        104
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "amlodipine",
+      "pages": [
+        106
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "nicardipine",
+      "pages": [
+        107
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "ranolazine",
+      "pages": [
+        108
+      ],
+      "fields": [
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "ivabradine",
+      "pages": [
+        109
+      ],
+      "fields": [
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "sildenafil",
+      "pages": [
+        110
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects"
+      ]
+    },
+    {
+      "drug": "tadalafil",
+      "pages": [
+        110
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects"
+      ]
+    },
+    {
+      "drug": "vardenafil",
+      "pages": [
+        110
+      ],
+      "fields": [
+        "drug",
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects"
+      ]
+    },
+    {
+      "drug": "adenosine",
+      "pages": [
+        112
+      ],
+      "fields": [
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "potassium",
+      "pages": [
+        113
+      ],
+      "fields": [
+        "action",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    },
+    {
+      "drug": "magnesium",
+      "pages": [
+        114
+      ],
+      "fields": [
+        "action",
+        "dosage",
+        "indication",
+        "contraindication",
+        "adverse",
+        "effects",
+        "notes"
+      ]
+    }
+  ],
+  "review_fields": [
+    {
+      "drug": "darifenacin",
+      "page": 20,
+      "field": "contraindication",
+      "reason": "Severe hepatic impairment is qualified only as \"for certain agents\" without identifying them; original retained.",
+      "source": "Urinary retention, gastric\nretention, uncontrolled\nnarrow-angle glaucoma,\nand severe hepatic\nimpairment (for certain\nagents)."
+    },
+    {
+      "drug": "fesoterodine",
+      "page": 20,
+      "field": "contraindication",
+      "reason": "Severe hepatic impairment is qualified only as \"for certain agents\" without identifying them; original retained.",
+      "source": "Urinary retention, gastric\nretention, uncontrolled\nnarrow-angle glaucoma,\nand severe hepatic\nimpairment (for certain\nagents)."
+    },
+    {
+      "drug": "solifenacin",
+      "page": 20,
+      "field": "contraindication",
+      "reason": "Severe hepatic impairment is qualified only as \"for certain agents\" without identifying them; original retained.",
+      "source": "Urinary retention, gastric\nretention, uncontrolled\nnarrow-angle glaucoma,\nand severe hepatic\nimpairment (for certain\nagents)."
+    },
+    {
+      "drug": "tolterodine",
+      "page": 20,
+      "field": "contraindication",
+      "reason": "Severe hepatic impairment is qualified only as \"for certain agents\" without identifying them; original retained.",
+      "source": "Urinary retention, gastric\nretention, uncontrolled\nnarrow-angle glaucoma,\nand severe hepatic\nimpairment (for certain\nagents)."
+    },
+    {
+      "drug": "telenzepine",
+      "page": 21,
+      "field": "forms",
+      "reason": "Listed strengths are explicitly for Pirenzepine only; Telenzepine original retained.",
+      "source": "Oral tablets: 25 mg, 50 mg\n(Pirenzepine; availability\nvaries by country/region)."
+    },
+    {
+      "drug": "umeclidinium",
+      "page": 25,
+      "field": "contraindication",
+      "reason": "Source equates milk proteins with lactose; ambiguous wording retained for review rather than corrected.",
+      "source": "Severe hypersensitivity\nto milk proteins\n(lactose) or\numeclidinium\ncomponents."
+    },
+    {
+      "drug": "mecamylamine",
+      "page": 28,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Antinicotinic Ganglion Blockers\nAntinicotinic Neuromuscular Blockers"
+    },
+    {
+      "drug": "dextromethorphan",
+      "page": 35,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Antinicotinic Neuromuscular Blockers"
+    },
+    {
+      "drug": "salmeterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "formoterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "indacaterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "vilanterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "olodaterol",
+      "page": 47,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Long-term, maintenance\ntreatment of asthma\n(always combined with\nan inhaled\ncorticosteroid) and\nCOPD."
+    },
+    {
+      "drug": "tamsulosin",
+      "page": 58,
+      "field": "contraindication",
+      "reason": "Grouped restrictions have an agent-specific qualifier but do not fully resolve each restriction by drug; original retained.",
+      "source": "Severe hepatic impairment\n(for silodosin), severe renal\nimpairment, and concurrent\nuse of strong CYP3A4\ninhibitors (like\nketoconazole)."
+    },
+    {
+      "drug": "timolol",
+      "page": 61,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Nonselective B - Blockers"
+    },
+    {
+      "drug": "timolol",
+      "page": 61,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Treatment of chronic\nopen-angle glaucoma\nand ocular hypertension;\nsystemic forms are used\nfor hypertension and\nmigraine prevention."
+    },
+    {
+      "drug": "betaxolol",
+      "page": 61,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Nonselective B - Blockers"
+    },
+    {
+      "drug": "betaxolol",
+      "page": 61,
+      "field": "indication",
+      "reason": "Grouped indication does not identify which uses apply to each individual drug; original retained.",
+      "source": "Treatment of chronic\nopen-angle glaucoma\nand ocular hypertension;\nsystemic forms are used\nfor hypertension and\nmigraine prevention."
+    },
+    {
+      "drug": "fenoldopam",
+      "page": 94,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Selective dopamine-1 () receptor agonist that causes vasodilation of\nperipheral arteries (including renal, mesenteric, and coronary beds) and promotes\nnatriuresis and diuresis."
+    },
+    {
+      "drug": "losartan",
+      "page": 98,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Selective, competitive antagonist of angiotensin II type 1 ()\nreceptors, blocking the vasoconstrictor and aldosterone-secreting eﬀects of\nangiotensin II."
+    },
+    {
+      "drug": "candesartan",
+      "page": 99,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "candesartan",
+      "page": 99,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Potent, selective antagonists of the  angiotensin II receptor\nsubtype, preventing the physiological responses of angiotensin II without\naﬀecting bradykinin breakdown."
+    },
+    {
+      "drug": "irbesartan",
+      "page": 99,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "irbesartan",
+      "page": 99,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Potent, selective antagonists of the  angiotensin II receptor\nsubtype, preventing the physiological responses of angiotensin II without\naﬀecting bradykinin breakdown."
+    },
+    {
+      "drug": "nitroglycerin",
+      "page": 101,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "isosorbide-mononitrate",
+      "page": 102,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "isosorbide-dinitrate",
+      "page": 102,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "ACE Inhibitors"
+    },
+    {
+      "drug": "ranolazine",
+      "page": 108,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Calcium Channel Blockers"
+    },
+    {
+      "drug": "ranolazine",
+      "page": 108,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Antianginal agent that inhibits the late inward sodium current () in\ncardiac cells, reducing intracellular sodium and subsequent calcium overload, thereby\nimproving myocardial relaxation and eﬃciency."
+    },
+    {
+      "drug": "ivabradine",
+      "page": 109,
+      "field": "classification",
+      "reason": "Potentially inconsistent classification in source; original retained.",
+      "source": "Calcium Channel Blockers"
+    },
+    {
+      "drug": "ivabradine",
+      "page": 109,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Hyperpolarization-activated cyclic nucleotide-gated (HCN) channel blocker. It\nselectively inhibits the  (\"funny\") ion current in the sinoatrial node, slowing the heart rate without\naﬀecting myocardial contractility or ventricular repolarization."
+    },
+    {
+      "drug": "sildenafil",
+      "page": 110,
+      "field": "notes",
+      "reason": "Source describes up to 36 hours as an elimination half-life while comparing durations of action; original retained pending review.",
+      "source": "Tadalaﬁl is known as the \"weekend pill\" due to its remarkably long\nelimination half-life of up to 36 hours, whereas sildenaﬁl and\nvardenaﬁl have shorter durations of action (around 4 hours)."
+    },
+    {
+      "drug": "tadalafil",
+      "page": 110,
+      "field": "notes",
+      "reason": "Source describes up to 36 hours as an elimination half-life while comparing durations of action; original retained pending review.",
+      "source": "Tadalaﬁl is known as the \"weekend pill\" due to its remarkably long\nelimination half-life of up to 36 hours, whereas sildenaﬁl and\nvardenaﬁl have shorter durations of action (around 4 hours)."
+    },
+    {
+      "drug": "vardenafil",
+      "page": 110,
+      "field": "notes",
+      "reason": "Source describes up to 36 hours as an elimination half-life while comparing durations of action; original retained pending review.",
+      "source": "Tadalaﬁl is known as the \"weekend pill\" due to its remarkably long\nelimination half-life of up to 36 hours, whereas sildenaﬁl and\nvardenaﬁl have shorter durations of action (around 4 hours)."
+    },
+    {
+      "drug": "adenosine",
+      "page": 112,
+      "field": "classification",
+      "reason": "No corresponding source content; original retained.",
+      "source": ""
+    },
+    {
+      "drug": "adenosine",
+      "page": 112,
+      "field": "action",
+      "reason": "Missing receptor/current notation in source; original retained.",
+      "source": "Activates purinergic  receptors in the heart, inhibiting adenylate cyclase,\nincreasing outward potassium conductance, and blocking calcium currents. This results in a\ntransient, complete suppression of AV nodal conduction and automaticity."
+    },
+    {
+      "drug": "adenosine",
+      "page": 112,
+      "field": "forms",
+      "reason": "Source ends mid-parenthesis after \"in 2 mL or 4 mL\"; original retained.",
+      "source": "Intravenous\ninjection: 3 mg/mL\n(in 2 mL or 4 mL"
+    },
+    {
+      "drug": "potassium",
+      "page": 113,
+      "field": "classification",
+      "reason": "No corresponding source content; original retained.",
+      "source": ""
+    },
+    {
+      "drug": "potassium",
+      "page": 113,
+      "field": "forms",
+      "reason": "Ambiguous \"Extended-rate\" formulation wording and concentrate values require review; original retained.",
+      "source": "Oral tablets/capsules: 8 mEq, 10\nmEq, 20 mEq.\nExtended-rate oral powder\npackets: 20 mEq, 25 mEq.\nIntravenous infusion concentrate:\n2 mEq/mL, 10 mEq/mL, 20 mEq/\nmL."
+    },
+    {
+      "drug": "magnesium",
+      "page": 114,
+      "field": "classification",
+      "reason": "No corresponding source content; original retained.",
+      "source": ""
+    },
+    {
+      "drug": "hexamethonium",
+      "page": "26,78",
+      "field": "classification",
+      "reason": "Repeated source pages use different classification wording; original retained.",
+      "source": "Antinicotinic Ganglion Blockers. | Ganglion Blockers."
+    },
+    {
+      "drug": "trimethaphan",
+      "page": "27,79",
+      "field": "classification",
+      "reason": "Repeated source pages use different classification wording; original retained.",
+      "source": "Antinicotinic Ganglion Blockers. | Ganglion Blockers."
+    },
+    {
+      "drug": "prazosin",
+      "page": "56,83",
+      "field": "classification",
+      "reason": "Repeated source pages use different classification wording; original retained.",
+      "source": "Alpha -1 Selective Blockers. | Alpha Blockers."
+    },
+    {
+      "drug": "doxazosin",
+      "page": "57,84",
+      "field": "classification",
+      "reason": "Repeated source pages use different classification wording; original retained.",
+      "source": "Alpha -1 Selective Blockers. | Alpha Blockers."
+    },
+    {
+      "drug": "propranolol",
+      "page": "60,85",
+      "field": "classification",
+      "reason": "Repeated source pages use different classification wording; original retained.",
+      "source": "Nonselective B - Blockers. | Beta Blockers."
+    },
+    {
+      "drug": "atenolol",
+      "page": "64,86",
+      "field": "classification",
+      "reason": "Repeated source pages use different classification wording; original retained.",
+      "source": "Beta 1 Selective Blockers. | Beta Blockers."
+    },
+    {
+      "drug": "labetalol",
+      "page": "69,87",
+      "field": "classification",
+      "reason": "Repeated source pages use different classification wording; original retained.",
+      "source": "Alpha + Beta Blockers. | Beta Blockers."
+    },
+    {
+      "drug": "nifedipine",
+      "page": "88,105",
+      "field": "classification",
+      "reason": "Repeated source pages use different classification wording; original retained.",
+      "source": "Vasodilators. | Calcium Channel Blockers."
+    },
+    {
+      "drug": "verapamil",
+      "page": "89,103",
+      "field": "classification",
+      "reason": "Repeated source pages use different classification wording; original retained.",
+      "source": "Vasodilators. | Calcium Channel Blockers."
+    }
+  ],
+  "forms_audit": [
+    {
+      "drug": "bethanechol",
+      "pages": [
+        2
+      ],
+      "transferred": "Oral tablets: 5 mg, 10 mg, 25 mg, 50 mg. Subcutaneous injection: 5 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 5 mg, 10 mg, 25 mg, 50 mg. Subcutaneous injection: 5 mg/mL."
+      ]
+    },
+    {
+      "drug": "pilocarpine",
+      "pages": [
+        3
+      ],
+      "transferred": "Ophthalmic solution: 0.5%, 1%, 2%, 3%, 4%, 6%. Ophthalmic gel: 4%. Oral tablets (saligen): 5 mg.",
+      "source_variants": [
+        "Ophthalmic solution: 0.5%, 1%, 2%, 3%, 4%, 6%. Ophthalmic gel: 4%. Oral tablets (saligen): 5 mg."
+      ]
+    },
+    {
+      "drug": "muscarine",
+      "pages": [
+        4
+      ],
+      "transferred": "Not an FDA-approved pharmaceutical drug; available strictly as a research toxin or standard reference compound (isolated naturally from Amanita muscaria and other mushrooms).",
+      "source_variants": [
+        "Not an FDA-approved pharmaceutical drug; available strictly as a research toxin or standard reference compound (isolated naturally from Amanita muscaria and other mushrooms)."
+      ]
+    },
+    {
+      "drug": "nicotine",
+      "pages": [
+        5
+      ],
+      "transferred": "Transdermal patches: 7 mg/24hr, 14 mg/24hr, 21 mg/24hr. Chewing gum/lozenges: 2 mg, 4 mg. Inhaler: 10 mg cartridge. Nasal spray: 10 mg/mL.",
+      "source_variants": [
+        "Transdermal patches: 7 mg/24hr, 14 mg/24hr, 21 mg/24hr. Chewing gum/lozenges: 2 mg, 4 mg. Inhaler: 10 mg cartridge. Nasal spray: 10 mg/mL."
+      ]
+    },
+    {
+      "drug": "varenicline",
+      "pages": [
+        6
+      ],
+      "transferred": "Oral tablets: 0.5 mg and 1 mg (often sold in continuation or starter packs).",
+      "source_variants": [
+        "Oral tablets: 0.5 mg and 1 mg (often sold in continuation or starter packs)."
+      ]
+    },
+    {
+      "drug": "succinylcholine",
+      "pages": [
+        7
+      ],
+      "transferred": "Solution for injection /IV infusion: 20 mg/mL, 50 mg/mL, 100 mg/mL.",
+      "source_variants": [
+        "Solution for injection /IV infusion: 20 mg/mL, 50 mg/mL, 100 mg/mL."
+      ]
+    },
+    {
+      "drug": "edrophonium",
+      "pages": [
+        8
+      ],
+      "transferred": "Intravenous/Intramuscular injection: 10 mg/mL.",
+      "source_variants": [
+        "Intravenous/Intramuscular injection: 10 mg/mL."
+      ]
+    },
+    {
+      "drug": "neostigmine",
+      "pages": [
+        9
+      ],
+      "transferred": "Solution for injection: 0.5 mg/mL, 1 mg/mL. Oral tablets: 15 mg.",
+      "source_variants": [
+        "Solution for injection: 0.5 mg/mL, 1 mg/mL. Oral tablets: 15 mg."
+      ]
+    },
+    {
+      "drug": "pyridostigmine",
+      "pages": [
+        10
+      ],
+      "transferred": "Oral tablets: 60 mg. Extended-release tablets: 180 mg. Syrup: 60 mg/5 mL. Injection: 5 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 60 mg. Extended-release tablets: 180 mg. Syrup: 60 mg/5 mL. Injection: 5 mg/mL."
+      ]
+    },
+    {
+      "drug": "physostigmine",
+      "pages": [
+        11
+      ],
+      "transferred": "Solution for injection: 1 mg/mL.",
+      "source_variants": [
+        "Solution for injection: 1 mg/mL."
+      ]
+    },
+    {
+      "drug": "parathion",
+      "pages": [
+        12
+      ],
+      "transferred": "Agricultural/industrial formulations (restricted-use pesticide; not an approved clinical pharmaceutical drug).",
+      "source_variants": [
+        "Agricultural/industrial formulations (restricted-use pesticide; not an approved clinical pharmaceutical drug)."
+      ]
+    },
+    {
+      "drug": "malathion",
+      "pages": [
+        13
+      ],
+      "transferred": "Topical lotion/shampoo: 0.5% (Ovide). Agricultural formulations vary.",
+      "source_variants": [
+        "Topical lotion/shampoo: 0.5% (Ovide). Agricultural formulations vary."
+      ]
+    },
+    {
+      "drug": "sarin",
+      "pages": [
+        14
+      ],
+      "transferred": "Not a pharmaceutical drug; chemical warfare agents.",
+      "source_variants": [
+        "Not a pharmaceutical drug; chemical warfare agents."
+      ]
+    },
+    {
+      "drug": "tabun",
+      "pages": [
+        14
+      ],
+      "transferred": "Not a pharmaceutical drug; chemical warfare agents.",
+      "source_variants": [
+        "Not a pharmaceutical drug; chemical warfare agents."
+      ]
+    },
+    {
+      "drug": "rivastigmine",
+      "pages": [
+        15
+      ],
+      "transferred": "Oral capsules: 1.5 mg, 3 mg, 4.5 mg, 6 mg. Oral solution: 2 mg/mL. Transdermal patches: 4.6 mg/24hr, 9.5 mg/24hr, 13.3 mg/24hr.",
+      "source_variants": [
+        "Oral capsules: 1.5 mg, 3 mg, 4.5 mg, 6 mg. Oral solution: 2 mg/mL. Transdermal patches: 4.6 mg/24hr, 9.5 mg/24hr, 13.3 mg/24hr."
+      ]
+    },
+    {
+      "drug": "galantamine",
+      "pages": [
+        16
+      ],
+      "transferred": "Oral tablets: 4 mg, 8 mg, 12 mg. Extended-release capsules: 8 mg, 16 mg, 24 mg. Oral solution: 4 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 4 mg, 8 mg, 12 mg. Extended-release capsules: 8 mg, 16 mg, 24 mg. Oral solution: 4 mg/mL."
+      ]
+    },
+    {
+      "drug": "donepezil",
+      "pages": [
+        17
+      ],
+      "transferred": "Oral tablets: 5 mg, 10 mg, 23 mg. Orally disintegrating tablets (ODT): 5 mg, 10 mg.",
+      "source_variants": [
+        "Oral tablets: 5 mg, 10 mg, 23 mg. Orally disintegrating tablets (ODT): 5 mg, 10 mg."
+      ]
+    },
+    {
+      "drug": "atropine",
+      "pages": [
+        19
+      ],
+      "transferred": "Injection: 0.1 mg/mL, 0.4 mg/mL, 0.5 mg/mL, 1 mg/mL. Ophthalmic solution: 1%. Eye ointment: 1%.",
+      "source_variants": [
+        "Injection: 0.1 mg/mL, 0.4 mg/mL, 0.5 mg/mL, 1 mg/mL. Ophthalmic solution: 1%. Eye ointment: 1%."
+      ]
+    },
+    {
+      "drug": "darifenacin",
+      "pages": [
+        20
+      ],
+      "transferred": "Darifenacin (ER): 7.5 mg, 15 mg tablets.",
+      "source_variants": [
+        "Darifenacin (ER): 7.5 mg, 15 mg tablets."
+      ]
+    },
+    {
+      "drug": "fesoterodine",
+      "pages": [
+        20
+      ],
+      "transferred": "Fesoterodine (ER): 4 mg, 8 mg tablets.",
+      "source_variants": [
+        "Fesoterodine (ER): 4 mg, 8 mg tablets."
+      ]
+    },
+    {
+      "drug": "solifenacin",
+      "pages": [
+        20
+      ],
+      "transferred": "Solifenacin: 5 mg, 10 mg tablets.",
+      "source_variants": [
+        "Solifenacin: 5 mg, 10 mg tablets."
+      ]
+    },
+    {
+      "drug": "tolterodine",
+      "pages": [
+        20
+      ],
+      "transferred": "Tolterodine: 1 mg, 2 mg tablets; ER capsules: 2 mg, 4 mg.",
+      "source_variants": [
+        "Tolterodine: 1 mg, 2 mg tablets; ER capsules: 2 mg, 4 mg."
+      ]
+    },
+    {
+      "drug": "pirenzepine",
+      "pages": [
+        21
+      ],
+      "transferred": "Oral tablets: 25 mg, 50 mg (Pirenzepine; availability varies by country/region).",
+      "source_variants": [
+        "Oral tablets: 25 mg, 50 mg (Pirenzepine; availability varies by country/region)."
+      ]
+    },
+    {
+      "drug": "aclidinium",
+      "pages": [
+        22
+      ],
+      "transferred": "Inhalation powder (Genuair/Pressair inhaler): 400 mcg per actuation.",
+      "source_variants": [
+        "Inhalation powder (Genuair/Pressair inhaler): 400 mcg per actuation."
+      ]
+    },
+    {
+      "drug": "ipratropium",
+      "pages": [
+        23
+      ],
+      "transferred": "Inhalation aerosol (MDI): 17 mcg/actuation. Nasal spray: 0.03%, 0.06%. Solution for nebulization: 0.02%.",
+      "source_variants": [
+        "Inhalation aerosol (MDI): 17 mcg/actuation. Nasal spray: 0.03%, 0.06%. Solution for nebulization: 0.02%."
+      ]
+    },
+    {
+      "drug": "tiotropium",
+      "pages": [
+        24
+      ],
+      "transferred": "Inhalation powder (HandiHaler): 18 mcg/capsule. Soft mist inhaler (Respimat): 1.25 mcg or 2.5 mcg per actuation.",
+      "source_variants": [
+        "Inhalation powder (HandiHaler): 18 mcg/capsule. Soft mist inhaler (Respimat): 1.25 mcg or 2.5 mcg per actuation."
+      ]
+    },
+    {
+      "drug": "umeclidinium",
+      "pages": [
+        25
+      ],
+      "transferred": "Inhalation powder (Ellipta inhaler): 62.5 mcg per actuation.",
+      "source_variants": [
+        "Inhalation powder (Ellipta inhaler): 62.5 mcg per actuation."
+      ]
+    },
+    {
+      "drug": "hexamethonium",
+      "pages": [
+        26,
+        78
+      ],
+      "transferred": "Historical drug; rarely or no longer manufactured for commercial clinical distribution.",
+      "source_variants": [
+        "Historical drug; rarely or no longer manufactured for commercial clinical distribution.",
+        "Historical drug; rarely or no longer manufactured for commercial clinical distribution."
+      ]
+    },
+    {
+      "drug": "trimethaphan",
+      "pages": [
+        27,
+        79
+      ],
+      "transferred": "Intravenous infusion solution: 50 mg/mL.",
+      "source_variants": [
+        "Intravenous infusion solution: 50 mg/mL.",
+        "Intravenous infusion solution: 50 mg/mL."
+      ]
+    },
+    {
+      "drug": "mecamylamine",
+      "pages": [
+        28,
+        80
+      ],
+      "transferred": "Oral tablets: 2.5 mg (historically; current clinical availability is specialized/limited).",
+      "source_variants": [
+        "Oral tablets: 2.5 mg (historically; current clinical availability is specialized/limited).",
+        "Oral tablets: 2.5 mg (historically; current clinical availability is specialized/limited)."
+      ]
+    },
+    {
+      "drug": "pralidoxime",
+      "pages": [
+        29
+      ],
+      "transferred": "Injection: 600 mg/mL auto-injector, or vials containing 1 gram of powder for reconstitution.",
+      "source_variants": [
+        "Injection: 600 mg/mL auto-injector, or vials containing 1 gram of powder for reconstitution."
+      ]
+    },
+    {
+      "drug": "rocuronium",
+      "pages": [
+        30
+      ],
+      "transferred": "Intravenous solution: 10 mg/mL.",
+      "source_variants": [
+        "Intravenous solution: 10 mg/mL."
+      ]
+    },
+    {
+      "drug": "atracurium",
+      "pages": [
+        31
+      ],
+      "transferred": "Intravenous solution: 10 mg/mL.",
+      "source_variants": [
+        "Intravenous solution: 10 mg/mL."
+      ]
+    },
+    {
+      "drug": "mivacurium",
+      "pages": [
+        32
+      ],
+      "transferred": "Intravenous solution: 2 mg/mL.",
+      "source_variants": [
+        "Intravenous solution: 2 mg/mL."
+      ]
+    },
+    {
+      "drug": "pancuronium",
+      "pages": [
+        33
+      ],
+      "transferred": "Intravenous injection: 1 mg/mL, 2 mg/mL.",
+      "source_variants": [
+        "Intravenous injection: 1 mg/mL, 2 mg/mL."
+      ]
+    },
+    {
+      "drug": "tubocurarine",
+      "pages": [
+        34
+      ],
+      "transferred": "Intravenous injection: 3 mg/mL (Historical/classic pharmacological agent).",
+      "source_variants": [
+        "Intravenous injection: 3 mg/mL (Historical/classic pharmacological agent)."
+      ]
+    },
+    {
+      "drug": "dextromethorphan",
+      "pages": [
+        35
+      ],
+      "transferred": "Oral syrup: 5 mg/5 mL, 10 mg/5 mL, 15 mg/5 mL. Lozenges/tablets: 10 mg, 15 mg, 30 mg. Extended-release suspension: 30 mg/5 mL.",
+      "source_variants": [
+        "Oral syrup: 5 mg/5 mL, 10 mg/5 mL, 15 mg/5 mL. Lozenges/tablets: 10 mg, 15 mg, 30 mg. Extended-release suspension: 30 mg/5 mL."
+      ]
+    },
+    {
+      "drug": "vecuronium",
+      "pages": [
+        36
+      ],
+      "transferred": "Powder for intravenous injection: 10 mg/vial, 20 mg/vial.",
+      "source_variants": [
+        "Powder for intravenous injection: 10 mg/vial, 20 mg/vial."
+      ]
+    },
+    {
+      "drug": "epinephrine",
+      "pages": [
+        38
+      ],
+      "transferred": "Injection: 1 mg/mL (1:1000) and 0.1 mg/mL (1:10,000). Auto-injector (EpiPen): 0.3 mg, 0.15 mg. Inhalation solution: 1%.",
+      "source_variants": [
+        "Injection: 1 mg/mL (1:1000) and 0.1 mg/mL (1:10,000). Auto-injector (EpiPen): 0.3 mg, 0.15 mg. Inhalation solution: 1%."
+      ]
+    },
+    {
+      "drug": "norepinephrine",
+      "pages": [
+        39
+      ],
+      "transferred": "Intravenous infusion concentrate: 1 mg/mL (as base).",
+      "source_variants": [
+        "Intravenous infusion concentrate: 1 mg/mL (as base)."
+      ]
+    },
+    {
+      "drug": "dopamine",
+      "pages": [
+        40
+      ],
+      "transferred": "Intravenous infusion: 40 mg/mL, 80 mg/mL, 160 mg/mL. Premixed bags: 0.8 mg/mL to 3.2 mg/mL.",
+      "source_variants": [
+        "Intravenous infusion: 40 mg/mL, 80 mg/mL, 160 mg/mL. Premixed bags: 0.8 mg/mL to 3.2 mg/mL."
+      ]
+    },
+    {
+      "drug": "dobutamine",
+      "pages": [
+        41
+      ],
+      "transferred": "Solution for IV infusion: 12.5 mg/mL (in 20 mL vials). Premixed IV bags: 1 mg/mL, 2 mg/mL, 4 mg/mL.",
+      "source_variants": [
+        "Solution for IV infusion: 12.5 mg/mL (in 20 mL vials). Premixed IV bags: 1 mg/mL, 2 mg/mL, 4 mg/mL."
+      ]
+    },
+    {
+      "drug": "isoproterenol",
+      "pages": [
+        42
+      ],
+      "transferred": "Injection solution: 0.2 mg/mL (1:5000).",
+      "source_variants": [
+        "Injection solution: 0.2 mg/mL (1:5000)."
+      ]
+    },
+    {
+      "drug": "phenylephrine",
+      "pages": [
+        43
+      ],
+      "transferred": "Injection: 10 mg/mL. Ophthalmic solution: 2.5%, 10%. Nasal spray: 0.125%, 0.25%, 0.5%, 1%.",
+      "source_variants": [
+        "Injection: 10 mg/mL. Ophthalmic solution: 2.5%, 10%. Nasal spray: 0.125%, 0.25%, 0.5%, 1%."
+      ]
+    },
+    {
+      "drug": "albuterol",
+      "pages": [
+        44
+      ],
+      "transferred": "Metered-dose inhaler (MDI): 90 mcg/actuation. Nebulization solution: 0.083%, 0.5%. Oral tablets: 2 mg, 4 mg. Syrup: 2 mg/5 mL.",
+      "source_variants": [
+        "Metered-dose inhaler (MDI): 90 mcg/actuation. Nebulization solution: 0.083%, 0.5%. Oral tablets: 2 mg, 4 mg. Syrup: 2 mg/5 mL."
+      ]
+    },
+    {
+      "drug": "metaproterenol",
+      "pages": [
+        45
+      ],
+      "transferred": "Inhalation aerosol: 0.65 mg/actuation. Syrup: 10 mg/5 mL. Tablets: 10 mg, 20 mg.",
+      "source_variants": [
+        "Inhalation aerosol: 0.65 mg/actuation. Syrup: 10 mg/5 mL. Tablets: 10 mg, 20 mg."
+      ]
+    },
+    {
+      "drug": "terbutaline",
+      "pages": [
+        46
+      ],
+      "transferred": "Injection solution: 1 mg/mL. Oral tablets: 2.5 mg, 5 mg.",
+      "source_variants": [
+        "Injection solution: 1 mg/mL. Oral tablets: 2.5 mg, 5 mg."
+      ]
+    },
+    {
+      "drug": "salmeterol",
+      "pages": [
+        47
+      ],
+      "transferred": "Salmeterol: Inhalation powder (Diskus) 50 mcg.",
+      "source_variants": [
+        "Salmeterol: Inhalation powder (Diskus) 50 mcg."
+      ]
+    },
+    {
+      "drug": "formoterol",
+      "pages": [
+        47
+      ],
+      "transferred": "Formoterol: Inhalation capsule/solution 12 mcg.",
+      "source_variants": [
+        "Formoterol: Inhalation capsule/solution 12 mcg."
+      ]
+    },
+    {
+      "drug": "indacaterol",
+      "pages": [
+        47
+      ],
+      "transferred": "Indacaterol: Inhalation powder 75 mcg, 150 mcg.",
+      "source_variants": [
+        "Indacaterol: Inhalation powder 75 mcg, 150 mcg."
+      ]
+    },
+    {
+      "drug": "vilanterol",
+      "pages": [
+        47
+      ],
+      "transferred": "Vilanterol: Available in combination inhalers (e.g., with umeclidinium or fluticasone).",
+      "source_variants": [
+        "Vilanterol: Available in combination inhalers (e.g., with umeclidinium or fluticasone)."
+      ]
+    },
+    {
+      "drug": "olodaterol",
+      "pages": [
+        47
+      ],
+      "transferred": "Olodaterol: Respimat soft mist 2.5 mcg/actuation.",
+      "source_variants": [
+        "Olodaterol: Respimat soft mist 2.5 mcg/actuation."
+      ]
+    },
+    {
+      "drug": "amphetamine",
+      "pages": [
+        48
+      ],
+      "transferred": "Oral tablets: 5 mg, 10 mg, 20 mg, 30 mg. Extended-release capsules: 5 mg to 30 mg.",
+      "source_variants": [
+        "Oral tablets: 5 mg, 10 mg, 20 mg, 30 mg. Extended-release capsules: 5 mg to 30 mg."
+      ]
+    },
+    {
+      "drug": "methamphetamine",
+      "pages": [
+        49
+      ],
+      "transferred": "Oral tablets: 5 mg.",
+      "source_variants": [
+        "Oral tablets: 5 mg."
+      ]
+    },
+    {
+      "drug": "ephedrine",
+      "pages": [
+        50
+      ],
+      "transferred": "Injection solution: 50 mg/mL. Oral capsules: 25 mg, 50 mg.",
+      "source_variants": [
+        "Injection solution: 50 mg/mL. Oral capsules: 25 mg, 50 mg."
+      ]
+    },
+    {
+      "drug": "cocaine",
+      "pages": [
+        51
+      ],
+      "transferred": "Topical solution: 4%, 10% (restricted clinical use).",
+      "source_variants": [
+        "Topical solution: 4%, 10% (restricted clinical use)."
+      ]
+    },
+    {
+      "drug": "tyramine",
+      "pages": [
+        52
+      ],
+      "transferred": "Not an approved therapeutic drug product (found naturally in aged, fermented, or cured foods like cheese, wine, and cured meats).",
+      "source_variants": [
+        "Not an approved therapeutic drug product (found naturally in aged, fermented, or cured foods like cheese, wine, and cured meats)."
+      ]
+    },
+    {
+      "drug": "phentolamine",
+      "pages": [
+        54
+      ],
+      "transferred": "Intravenous/Intramuscular injection: 5 mg/vial (reconstituted). Ophthalmic solution: 0.75% (for mydriasis reversal).",
+      "source_variants": [
+        "Intravenous/Intramuscular injection: 5 mg/vial (reconstituted). Ophthalmic solution: 0.75% (for mydriasis reversal)."
+      ]
+    },
+    {
+      "drug": "phenoxybenzamine",
+      "pages": [
+        55
+      ],
+      "transferred": "Oral capsules: 10 mg.",
+      "source_variants": [
+        "Oral capsules: 10 mg."
+      ]
+    },
+    {
+      "drug": "prazosin",
+      "pages": [
+        56,
+        83
+      ],
+      "transferred": "Oral capsules: 1 mg, 2 mg, 5 mg.",
+      "source_variants": [
+        "Oral capsules: 1 mg, 2 mg, 5 mg.",
+        "Oral capsules: 1 mg, 2 mg, 5 mg."
+      ]
+    },
+    {
+      "drug": "doxazosin",
+      "pages": [
+        57,
+        84
+      ],
+      "source_variants": [
+        "Doxazosin: Tablets: 1 mg, 2 mg, 4 mg, 8 mg; Extended-release tablets: 4 mg, 8 mg.",
+        "Oral tablets: 1 mg, 2 mg, 4 mg, 8 mg. Extended-release tablets: 4 mg, 8 mg."
+      ],
+      "resolution": "First, complete formulation list retained; duplicate wording compared in review."
+    },
+    {
+      "drug": "doxazosin",
+      "pages": [
+        57,
+        84
+      ],
+      "transferred": "Doxazosin: Oral tablets: 1 mg, 2 mg, 4 mg, 8 mg; Extended-release tablets: 4 mg, 8 mg.",
+      "source_variants": [
+        "Doxazosin: Tablets: 1 mg, 2 mg, 4 mg, 8 mg; Extended-release tablets: 4 mg, 8 mg.",
+        "Oral tablets: 1 mg, 2 mg, 4 mg, 8 mg. Extended-release tablets: 4 mg, 8 mg."
+      ]
+    },
+    {
+      "drug": "terazosin",
+      "pages": [
+        57
+      ],
+      "transferred": "Terazosin: Capsules: 1 mg, 2 mg, 5 mg, 10 mg.",
+      "source_variants": [
+        "Terazosin: Capsules: 1 mg, 2 mg, 5 mg, 10 mg."
+      ]
+    },
+    {
+      "drug": "tamsulosin",
+      "pages": [
+        58
+      ],
+      "transferred": "Tamsulosin: Capsules (modified release): 0.4 mg.",
+      "source_variants": [
+        "Tamsulosin: Capsules (modified release): 0.4 mg."
+      ]
+    },
+    {
+      "drug": "silodosin",
+      "pages": [
+        58
+      ],
+      "transferred": "Silodosin: Capsules: 4 mg, 8 mg.",
+      "source_variants": [
+        "Silodosin: Capsules: 4 mg, 8 mg."
+      ]
+    },
+    {
+      "drug": "yohimbine",
+      "pages": [
+        59
+      ],
+      "transferred": "Oral tablets: 5.4 mg (formulations vary widely as prescription medications or herbal/dietary supplements).",
+      "source_variants": [
+        "Oral tablets: 5.4 mg (formulations vary widely as prescription medications or herbal/dietary supplements)."
+      ]
+    },
+    {
+      "drug": "propranolol",
+      "pages": [
+        60,
+        85
+      ],
+      "source_variants": [
+        "Oral tablets: 10 mg, 20 mg, 40 mg, 60 mg, 80 mg. Extended-release capsules: 60 mg, 80 mg, 120 mg, 160 mg. Injection: 1 mg/mL.",
+        "Oral tablets: 10 mg, 20 mg, 40 mg, 80 mg. Extended-release capsules: 60 mg, 80 mg, 120 mg, 160 mg. Injection: 1 mg/mL."
+      ],
+      "resolution": "First, complete formulation list retained; duplicate wording compared in review."
+    },
+    {
+      "drug": "propranolol",
+      "pages": [
+        60,
+        85
+      ],
+      "transferred": "Oral tablets: 10 mg, 20 mg, 40 mg, 60 mg, 80 mg. Extended-release capsules: 60 mg, 80 mg, 120 mg, 160 mg. Injection: 1 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 10 mg, 20 mg, 40 mg, 60 mg, 80 mg. Extended-release capsules: 60 mg, 80 mg, 120 mg, 160 mg. Injection: 1 mg/mL.",
+        "Oral tablets: 10 mg, 20 mg, 40 mg, 80 mg. Extended-release capsules: 60 mg, 80 mg, 120 mg, 160 mg. Injection: 1 mg/mL."
+      ]
+    },
+    {
+      "drug": "timolol",
+      "pages": [
+        61
+      ],
+      "transferred": "Timolol: Ophthalmic solution: 0.25%, 0.5%. Oral tablets: 5 mg, 10 mg, 20 mg.",
+      "source_variants": [
+        "Timolol: Ophthalmic solution: 0.25%, 0.5%. Oral tablets: 5 mg, 10 mg, 20 mg."
+      ]
+    },
+    {
+      "drug": "betaxolol",
+      "pages": [
+        61
+      ],
+      "transferred": "Betaxolol: Ophthalmic solution: 0.5%. Oral tablets: 10 mg, 20 mg.",
+      "source_variants": [
+        "Betaxolol: Ophthalmic solution: 0.5%. Oral tablets: 10 mg, 20 mg."
+      ]
+    },
+    {
+      "drug": "pindolol",
+      "pages": [
+        62
+      ],
+      "transferred": "Oral tablets: 5 mg, 10 mg.",
+      "source_variants": [
+        "Oral tablets: 5 mg, 10 mg."
+      ]
+    },
+    {
+      "drug": "nadolol",
+      "pages": [
+        63
+      ],
+      "transferred": "Oral tablets: 20 mg, 40 mg, 80 mg, 120 mg, 160 mg.",
+      "source_variants": [
+        "Oral tablets: 20 mg, 40 mg, 80 mg, 120 mg, 160 mg."
+      ]
+    },
+    {
+      "drug": "atenolol",
+      "pages": [
+        64,
+        86
+      ],
+      "transferred": "Oral tablets: 25 mg, 50 mg, 100 mg. Intravenous injection: 0.5 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 25 mg, 50 mg, 100 mg. Intravenous injection: 0.5 mg/mL.",
+        "Oral tablets: 25 mg, 50 mg, 100 mg. Intravenous injection: 0.5 mg/mL."
+      ]
+    },
+    {
+      "drug": "esmolol",
+      "pages": [
+        65
+      ],
+      "transferred": "Intravenous injection / infusion: 10 mg/mL, 250 mg/mL. Premixed infusion bags: 10 mg/mL, 20 mg/mL.",
+      "source_variants": [
+        "Intravenous injection / infusion: 10 mg/mL, 250 mg/mL. Premixed infusion bags: 10 mg/mL, 20 mg/mL."
+      ]
+    },
+    {
+      "drug": "metoprolol",
+      "pages": [
+        66
+      ],
+      "transferred": "• Metoprolol tartrate: Tablets: 25 mg, 50 mg, 100 mg. Injection: 1 mg/mL. • Metoprolol succinate (ER): Extended-release tablets: 25 mg, 50 mg, 100 mg, 200 mg.",
+      "source_variants": [
+        "• Metoprolol tartrate: Tablets: 25 mg, 50 mg, 100 mg. Injection: 1 mg/mL. • Metoprolol succinate (ER): Extended-release tablets: 25 mg, 50 mg, 100 mg, 200 mg."
+      ]
+    },
+    {
+      "drug": "nebivolol",
+      "pages": [
+        67
+      ],
+      "transferred": "Oral tablets: 2.5 mg, 5 mg, 10 mg, 20 mg.",
+      "source_variants": [
+        "Oral tablets: 2.5 mg, 5 mg, 10 mg, 20 mg."
+      ]
+    },
+    {
+      "drug": "butoxamine",
+      "pages": [
+        68
+      ],
+      "transferred": "Research chemical / specialized pharmacological tool (not an approved commercial therapeutic pharmaceutical drug).",
+      "source_variants": [
+        "Research chemical / specialized pharmacological tool (not an approved commercial therapeutic pharmaceutical drug)."
+      ]
+    },
+    {
+      "drug": "labetalol",
+      "pages": [
+        69,
+        87
+      ],
+      "transferred": "Oral tablets: 100 mg, 200 mg, 300 mg. Intravenous injection: 5 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 100 mg, 200 mg, 300 mg. Intravenous injection: 5 mg/mL.",
+        "Oral tablets: 100 mg, 200 mg, 300 mg. Intravenous injection: 5 mg/mL."
+      ]
+    },
+    {
+      "drug": "carvedilol",
+      "pages": [
+        70
+      ],
+      "transferred": "Oral tablets: 3.125 mg, 6.25 mg, 12.5 mg, 25 mg. Extended-release capsules: 10 mg, 20 mg, 40 mg, 80 mg.",
+      "source_variants": [
+        "Oral tablets: 3.125 mg, 6.25 mg, 12.5 mg, 25 mg. Extended-release capsules: 10 mg, 20 mg, 40 mg, 80 mg."
+      ]
+    },
+    {
+      "drug": "hydrochlorothiazide",
+      "pages": [
+        72
+      ],
+      "transferred": "Oral tablets: 12.5 mg, 25 mg, 50 mg. Oral solution: 50 mg/5 mL.",
+      "source_variants": [
+        "Oral tablets: 12.5 mg, 25 mg, 50 mg. Oral solution: 50 mg/5 mL."
+      ]
+    },
+    {
+      "drug": "chlorthalidone",
+      "pages": [
+        73
+      ],
+      "transferred": "Oral tablets: 12.5 mg, 25 mg, 50 mg, 100 mg.",
+      "source_variants": [
+        "Oral tablets: 12.5 mg, 25 mg, 50 mg, 100 mg."
+      ]
+    },
+    {
+      "drug": "furosemide",
+      "pages": [
+        74
+      ],
+      "transferred": "Oral tablets: 20 mg, 40 mg, 80 mg. Oral solution: 8 mg/mL, 10 mg/mL. Injection solution: 10 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 20 mg, 40 mg, 80 mg. Oral solution: 8 mg/mL, 10 mg/mL. Injection solution: 10 mg/mL."
+      ]
+    },
+    {
+      "drug": "spironolactone",
+      "pages": [
+        75
+      ],
+      "transferred": "Oral tablets: 25 mg, 50 mg, 100 mg.",
+      "source_variants": [
+        "Oral tablets: 25 mg, 50 mg, 100 mg."
+      ]
+    },
+    {
+      "drug": "clonidine",
+      "pages": [
+        76
+      ],
+      "transferred": "Oral tablets: 0.1 mg, 0.2 mg, 0.3 mg. Transdermal patches (weekly): 0.1 mg/24hr, 0.2 mg/24hr, 0.3 mg/24hr. Injection solution: 100 mcg/mL.",
+      "source_variants": [
+        "Oral tablets: 0.1 mg, 0.2 mg, 0.3 mg. Transdermal patches (weekly): 0.1 mg/24hr, 0.2 mg/24hr, 0.3 mg/24hr. Injection solution: 100 mcg/mL."
+      ]
+    },
+    {
+      "drug": "methyldopa",
+      "pages": [
+        77
+      ],
+      "transferred": "Oral tablets: 250 mg, 500 mg. Intravenous injection: 50 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 250 mg, 500 mg. Intravenous injection: 50 mg/mL."
+      ]
+    },
+    {
+      "drug": "reserpine",
+      "pages": [
+        81
+      ],
+      "transferred": "Oral tablets: 0.1 mg, 0.25 mg.",
+      "source_variants": [
+        "Oral tablets: 0.1 mg, 0.25 mg."
+      ]
+    },
+    {
+      "drug": "guanadrel",
+      "pages": [
+        82
+      ],
+      "transferred": "Oral tablets: 10 mg, 25 mg.",
+      "source_variants": [
+        "Oral tablets: 10 mg, 25 mg."
+      ]
+    },
+    {
+      "drug": "nifedipine",
+      "pages": [
+        88,
+        105
+      ],
+      "source_variants": [
+        "Extended-release/sustained-release tablets: 30 mg, 60 mg, 90 mg. Capsules (immediate-release): 10 mg, 20 mg.",
+        "Extended-release tablets: 30 mg, 60 mg, 90 mg. Immediate-release capsules: 10 mg, 20 mg."
+      ],
+      "resolution": "First, complete formulation list retained; duplicate wording compared in review."
+    },
+    {
+      "drug": "nifedipine",
+      "pages": [
+        88,
+        105
+      ],
+      "transferred": "Extended-release/sustained-release tablets: 30 mg, 60 mg, 90 mg. Capsules (immediate-release): 10 mg, 20 mg.",
+      "source_variants": [
+        "Extended-release/sustained-release tablets: 30 mg, 60 mg, 90 mg. Capsules (immediate-release): 10 mg, 20 mg.",
+        "Extended-release tablets: 30 mg, 60 mg, 90 mg. Immediate-release capsules: 10 mg, 20 mg."
+      ]
+    },
+    {
+      "drug": "verapamil",
+      "pages": [
+        89,
+        103
+      ],
+      "transferred": "Oral tablets: 40 mg, 80 mg, 120 mg. Sustained-release tablets: 120 mg, 180 mg, 240 mg. Intravenous injection: 2.5 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 40 mg, 80 mg, 120 mg. Sustained-release tablets: 120 mg, 180 mg, 240 mg. Intravenous injection: 2.5 mg/mL.",
+        "Oral tablets: 40 mg, 80 mg, 120 mg. Sustained-release tablets: 120 mg, 180 mg, 240 mg. Intravenous injection: 2.5 mg/mL."
+      ]
+    },
+    {
+      "drug": "hydralazine",
+      "pages": [
+        90
+      ],
+      "transferred": "Oral tablets: 10 mg, 25 mg, 50 mg, 100 mg. Intravenous/Intramuscular injection: 20 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 10 mg, 25 mg, 50 mg, 100 mg. Intravenous/Intramuscular injection: 20 mg/mL."
+      ]
+    },
+    {
+      "drug": "minoxidil",
+      "pages": [
+        91
+      ],
+      "transferred": "Oral tablets: 2.5 mg, 10 mg. Topical solution/foam: 2%, 5% (for hair growth).",
+      "source_variants": [
+        "Oral tablets: 2.5 mg, 10 mg. Topical solution/foam: 2%, 5% (for hair growth)."
+      ]
+    },
+    {
+      "drug": "sodium-nitroprusside",
+      "pages": [
+        92
+      ],
+      "transferred": "Lyophilized powder for injection: 50 mg per vial.",
+      "source_variants": [
+        "Lyophilized powder for injection: 50 mg per vial."
+      ]
+    },
+    {
+      "drug": "diazoxide",
+      "pages": [
+        93
+      ],
+      "transferred": "Oral capsules: 50 mg. Oral suspension: 50 mg/mL. Intravenous injection: 15 mg/mL.",
+      "source_variants": [
+        "Oral capsules: 50 mg. Oral suspension: 50 mg/mL. Intravenous injection: 15 mg/mL."
+      ]
+    },
+    {
+      "drug": "fenoldopam",
+      "pages": [
+        94
+      ],
+      "transferred": "Intravenous injection /infusion concentrate: 10 mg/mL.",
+      "source_variants": [
+        "Intravenous injection /infusion concentrate: 10 mg/mL."
+      ]
+    },
+    {
+      "drug": "aliskiren",
+      "pages": [
+        95
+      ],
+      "transferred": "Oral tablets: 150 mg, 300 mg.",
+      "source_variants": [
+        "Oral tablets: 150 mg, 300 mg."
+      ]
+    },
+    {
+      "drug": "captopril",
+      "pages": [
+        96
+      ],
+      "transferred": "Oral tablets: 12.5 mg, 25 mg, 50 mg, 100 mg.",
+      "source_variants": [
+        "Oral tablets: 12.5 mg, 25 mg, 50 mg, 100 mg."
+      ]
+    },
+    {
+      "drug": "enalapril",
+      "pages": [
+        97
+      ],
+      "transferred": "Oral tablets: 2.5 mg, 5 mg, 10 mg, 20 mg. Intravenous injection (as enalaprilat): 1.25 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 2.5 mg, 5 mg, 10 mg, 20 mg. Intravenous injection (as enalaprilat): 1.25 mg/mL."
+      ]
+    },
+    {
+      "drug": "losartan",
+      "pages": [
+        98
+      ],
+      "transferred": "Oral tablets: 25 mg, 50 mg, 100 mg.",
+      "source_variants": [
+        "Oral tablets: 25 mg, 50 mg, 100 mg."
+      ]
+    },
+    {
+      "drug": "candesartan",
+      "pages": [
+        99
+      ],
+      "transferred": "Candesartan: Tablets: 4 mg, 8 mg, 16 mg, 32 mg.",
+      "source_variants": [
+        "Candesartan: Tablets: 4 mg, 8 mg, 16 mg, 32 mg."
+      ]
+    },
+    {
+      "drug": "irbesartan",
+      "pages": [
+        99
+      ],
+      "transferred": "Irbesartan: Tablets: 75 mg, 150 mg, 300 mg.",
+      "source_variants": [
+        "Irbesartan: Tablets: 75 mg, 150 mg, 300 mg."
+      ]
+    },
+    {
+      "drug": "nitroglycerin",
+      "pages": [
+        101
+      ],
+      "transferred": "• Sublingual tablets: 0.3 mg, 0.4 mg, 0.6 mg. • Sublingual spray: 0.4 mg/spray. • Transdermal patch: 0.1 mg/hr to 0.8 mg/hr. • Intravenous injection: 5 mg/mL.",
+      "source_variants": [
+        "• Sublingual tablets: 0.3 mg, 0.4 mg, 0.6 mg. • Sublingual spray: 0.4 mg/spray. • Transdermal patch: 0.1 mg/hr to 0.8 mg/hr. • Intravenous injection: 5 mg/mL."
+      ]
+    },
+    {
+      "drug": "isosorbide-mononitrate",
+      "pages": [
+        102
+      ],
+      "transferred": "ISMN: Tablets: 10 mg, 20 mg; Extended-release tablets: 30 mg, 60 mg, 120 mg.",
+      "source_variants": [
+        "ISMN: Tablets: 10 mg, 20 mg; Extended-release tablets: 30 mg, 60 mg, 120 mg."
+      ]
+    },
+    {
+      "drug": "isosorbide-dinitrate",
+      "pages": [
+        102
+      ],
+      "transferred": "ISDN: Sublingual tablets: 2.5 mg, 5 mg; Oral tablets: 5 mg, 10 mg, 20 mg, 30 mg, 40 mg.",
+      "source_variants": [
+        "ISDN: Sublingual tablets: 2.5 mg, 5 mg; Oral tablets: 5 mg, 10 mg, 20 mg, 30 mg, 40 mg."
+      ]
+    },
+    {
+      "drug": "diltiazem",
+      "pages": [
+        104
+      ],
+      "transferred": "Oral tablets: 30 mg, 60 mg, 90 mg, 120 mg. Extended-release capsules: 120 mg, 180 mg, 240 mg, 300 mg, 360 mg. Intravenous injection: 5 mg/mL.",
+      "source_variants": [
+        "Oral tablets: 30 mg, 60 mg, 90 mg, 120 mg. Extended-release capsules: 120 mg, 180 mg, 240 mg, 300 mg, 360 mg. Intravenous injection: 5 mg/mL."
+      ]
+    },
+    {
+      "drug": "amlodipine",
+      "pages": [
+        106
+      ],
+      "transferred": "Oral tablets: 2.5 mg, 5 mg, 10 mg.",
+      "source_variants": [
+        "Oral tablets: 2.5 mg, 5 mg, 10 mg."
+      ]
+    },
+    {
+      "drug": "nicardipine",
+      "pages": [
+        107
+      ],
+      "transferred": "Oral capsules: 20 mg, 30 mg. Extended-release capsules: 45 mg, 60 mg. Intravenous injection/infusion: 2.5 mg/mL.",
+      "source_variants": [
+        "Oral capsules: 20 mg, 30 mg. Extended-release capsules: 45 mg, 60 mg. Intravenous injection/infusion: 2.5 mg/mL."
+      ]
+    },
+    {
+      "drug": "ranolazine",
+      "pages": [
+        108
+      ],
+      "transferred": "Extended-release tablets: 500 mg, 1000 mg.",
+      "source_variants": [
+        "Extended-release tablets: 500 mg, 1000 mg."
+      ]
+    },
+    {
+      "drug": "ivabradine",
+      "pages": [
+        109
+      ],
+      "transferred": "Oral tablets: 5 mg, 7.5 mg.",
+      "source_variants": [
+        "Oral tablets: 5 mg, 7.5 mg."
+      ]
+    },
+    {
+      "drug": "sildenafil",
+      "pages": [
+        110
+      ],
+      "transferred": "Sildenafil: Tablets: 25 mg, 50 mg, 100 mg.",
+      "source_variants": [
+        "Sildenafil: Tablets: 25 mg, 50 mg, 100 mg."
+      ]
+    },
+    {
+      "drug": "tadalafil",
+      "pages": [
+        110
+      ],
+      "transferred": "Tadalafil: Tablets: 2.5 mg, 5 mg, 10 mg, 20 mg.",
+      "source_variants": [
+        "Tadalafil: Tablets: 2.5 mg, 5 mg, 10 mg, 20 mg."
+      ]
+    },
+    {
+      "drug": "vardenafil",
+      "pages": [
+        110
+      ],
+      "transferred": "Vardenafil: Tablets: 2.5 mg, 5 mg, 10 mg, 20 mg.",
+      "source_variants": [
+        "Vardenafil: Tablets: 2.5 mg, 5 mg, 10 mg, 20 mg."
+      ]
+    },
+    {
+      "drug": "magnesium",
+      "pages": [
+        114
+      ],
+      "transferred": "Intravenous/Intramuscular injection: 50 mg/mL (5%), 125 mg/mL (12.5%), 250 mg/mL (25%), 500 mg/mL (50%). Oral tablets/capsules vary by supplement.",
+      "source_variants": [
+        "Intravenous/Intramuscular injection: 50 mg/mL (5%), 125 mg/mL (12.5%), 250 mg/mL (25%), 500 mg/mL (50%). Oral tablets/capsules vary by supplement."
+      ]
+    }
+  ]
+}
