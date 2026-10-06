@@ -57,14 +57,48 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
       a.layoutAndRender();
       const svg = a.pageSVG(a.pages[0], 0, 1);
       const parsed = new w.DOMParser().parseFromString(svg, 'image/svg+xml');
-      assert.equal(parsed.querySelectorAll('symbol').length, 1, 'only lowercase a in ink is needed');
-      assert.equal(parsed.querySelectorAll('use').length, 3);
+      const uses = [...parsed.querySelectorAll('use')];
+      assert.equal(uses.length, 3);
+      const refs = uses.map(u => u.getAttribute('href'));
+      assert.equal(new Set(refs).size, 3, 'repeated letters use different handwriting variants');
+      assert.ok(parsed.querySelectorAll('symbol').length <= 3, 'only the variants of lowercase a in ink are needed');
+      for (const ref of refs) assert.ok(parsed.getElementById(ref.slice(1)), 'every variant has its own symbol');
+      assert.equal(a.pageSVG(a.pages[0], 0, 1), svg, 'variation is deterministic across renders');
       const page = a.pages[0];
       a.layoutAndRender();
       assert.equal(a.pages[0], page, 'unchanged records reuse their calculated pages');
       a.state.free.text = 'bbb'; a.layoutAndRender();
       assert.notEqual(a.pages[0], page, 'editing text invalidates pagination');
       assert.ok(a.pages[0].raw.includes('bbb'));
+    } finally { w.close(); }
+  });
+  test(`${path}: handwriting variation is subtle, deterministic and never repeats a letter exactly`, () => {
+    const dom = new JSDOM(readFileSync(path, 'utf8'), { runScripts: 'outside-only', url: 'http://localhost' });
+    const w = dom.window;
+    try {
+      w.HTMLCanvasElement.prototype.getContext = () => ({ measureText: text => ({ width: text.length }) });
+      w.requestAnimationFrame = () => 1;
+      const script = [...w.document.scripts].find(s => s.textContent.includes('function pageSVG')).textContent;
+      w.eval(script.slice(0, script.lastIndexOf('prepareGlyphColors().then(')) + `window.api={inkVariation,handLine,GLYPH_VARIANTS};`);
+      const { inkVariation } = w.api, key = p => JSON.stringify(p);
+      const word = inkVariation('available'), a = [0, 4].map(i => word[i]);
+      assert.notEqual(key(a[0]), key(a[1]), 'the two a characters in available differ');
+      assert.equal(key(inkVariation('available')), key(word), 'same text gives the same variation');
+      assert.deepEqual(inkVariation('avail').map(key), word.slice(0, 5).map(key), 'typing at the end keeps earlier letters unchanged');
+      const run = inkVariation('aaaaaaaa eeeeee llll the the the');
+      for (const c of ['a', 'e', 'l']) {
+        const same = run.filter((_, i) => 'aaaaaaaa eeeeee llll the the the'[i] === c);
+        for (let i = 1; i < same.length; i++) {
+          assert.notEqual(same[i].v, same[i - 1].v, `consecutive ${c} use different variants`);
+          assert.notEqual(key(same[i]), key(same[i - 1]));
+        }
+      }
+      for (const p of run.filter(Boolean)) {
+        assert.ok(Math.abs(p.rot) <= 4.5, 'rotation stays within a few degrees');
+        assert.ok(p.sx > .92 && p.sx < 1.08 && p.sy > .92 && p.sy < 1.08, 'scale stays close to 1');
+        assert.ok(Math.abs(p.dy) < .15 && Math.abs(p.dx) < .2 && p.op > .8, 'baseline, spacing and pressure stay subtle');
+        assert.ok(p.v >= 0 && p.v < w.api.GLYPH_VARIANTS);
+      }
     } finally { w.close(); }
   });
 }

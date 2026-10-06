@@ -988,10 +988,95 @@ function prepareDigitSamples(){
  })();
  return digitSamplesReady;
 }
-async function prepareGlyphColors(){
+// Natural handwriting variation. Each letter has one photographed sample, so the
+// renderer bakes a few subtly warped copies per glyph and gives every drawn
+// instance its own deterministic rotation, size, baseline and pressure. Only the ink is
+// varied; advances stay untouched so wrapping, exports and the caret layer agree.
+const GLYPH_VARIANTS=6,NO_VARIATION={rot:0,sx:1,sy:1,dy:0,dx:0,op:1,pen:1,v:0};
+function hash32(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function seededRandom(seed){let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)|0;let t=Math.imul(a^a>>>15,1|a);t=(t+Math.imul(t^t>>>7,61|t))^t;return((t^t>>>14)>>>0)/4294967296}}
+const bell=r=>(r()+r()+r()-1.5)/1.5;
+// Smooth, low-amplitude bend plus a little slant change; stays the same letter.
+function warpGlyphCanvas(source,seed,bold=0){
+ const W=source.width,H=source.height,r=seededRandom(seed),size=Math.min(W,H),band=2;
+ const lean=bell(r)*.02*H,ampX=(.008+.012*r())*size,fx=.7+.9*r(),phaseX=r()*6.283,ampY=(.008+.012*r())*size,fy=.7+.9*r(),phaseY=r()*6.283;
+ const mid=document.createElement('canvas'),out=document.createElement('canvas');mid.width=out.width=W;mid.height=out.height=H;
+ const a=mid.getContext('2d'),b=out.getContext('2d');a.imageSmoothingQuality=b.imageSmoothingQuality='high';
+ for(let y=0;y<H;y+=band){const t=(y+band/2)/H;a.drawImage(source,0,y,W,band,lean*(.5-t)+ampX*Math.sin(6.283*fx*t+phaseX),y,W,band)}
+ for(let x=0;x<W;x+=band){const t=(x+band/2)/W,dy=ampY*Math.sin(6.283*fy*t+phaseY);b.drawImage(mid,x,0,band,H,x,dy,band,H);if(bold)b.drawImage(mid,x,0,band,H,x,dy+bold,band,H)}
+ return out;
+}
+function glyphSource(g,color,variant=0){
+ const key=tintKey(color,g.src),base=glyphTints.get(key);
+ return (variant&&glyphTints.get(key+'#v'+variant))||base||g.src;
+}
+const glyphSymbolId=(prefix,c,variant,role)=>`${prefix}g${c.codePointAt(0)}${variant?'v'+variant:''}-${role}`;
+// Per-character handwriting parameters for one line. Seeds come from the word so far
+// and the previous word: stable while typing at the end, and local when text is edited.
+const inkVariationCache=new Map();
+function inkVariation(text){
+ const key=String(text),hit=inkVariationCache.get(key);if(hit)return hit;
+ if(inkVariationCache.size>4000)inkVariationCache.clear();
+ const result=computeInkVariation(key);inkVariationCache.set(key,result);return result;
+}
+function computeInkVariation(text){
+ const chars=[...String(text)],out=new Array(chars.length),recent=new Map();
+ // A line drifts slowly like a hand moving across the page: baseline, slant and pressure.
+ const lr=seededRandom(hash32(chars.slice(0,4).join('')+'\u0002')),drift={ph:lr()*6.283,wave:.045+.03*lr(),ph2:lr()*6.283,wave2:.07+.04*lr(),dy:.03+.015*lr(),rot:.7+.4*lr()};
+ let prev='',word='',pos=0,habit,spacing=0,before='';
+ const far=(a,b)=>a.v!==b.v&&Math.abs(a.rot-b.rot)/2+Math.abs(a.sx-b.sx)/.035+Math.abs(a.sy-b.sy)/.03+Math.abs(a.dy-b.dy)/.045>.5;
+ for(let i=0;i<chars.length;i++){
+  const c=chars[i];
+  if(/\s/u.test(c)){if(word)prev=word;word='';before='';continue}
+  if(!word){
+   // Habits of one word: tilt, height, size trend and pressure. Seeded by the word start only.
+   const r=seededRandom(hash32(prev.slice(-3)+'\u0001'+c));
+   habit={rot:bell(r)*.7,dy:bell(r)*.025,size:1+bell(r)*.025,trend:bell(r)*.012,press:bell(r)*.035,gap:bell(r)*.05};pos=0;spacing=habit.gap;
+  }
+  word+=c;
+  const r=seededRandom(hash32(prev.slice(-3)+'\u0001'+word)),last=recent.get(c)||[];
+  // Spacing wanders instead of jumping: each letter keeps part of the previous letter's offset.
+  spacing=spacing*.55+bell(r)*.07;
+  const wob=Math.sin(drift.wave*i+drift.ph),wob2=Math.sin(drift.wave2*i+drift.ph2);let p;
+  for(let tries=0;tries<10;tries++){
+   const size=habit.size*(1+habit.trend*Math.min(pos,8));
+   p={rot:bell(r)*2.2+habit.rot+wob2*drift.rot,sx:size*(1+bell(r)*.04),sy:size*(1+bell(r)*.035),dy:bell(r)*.05+habit.dy+wob*drift.dy,dx:spacing,op:1-r()*.1-Math.max(0,habit.press),pen:1+bell(r)*.08,v:Math.floor(r()*GLYPH_VARIANTS)};
+   if(last.every(o=>far(p,o)))break;
+   if(tries===9)p.v=(last.at(-1).v+1+Math.floor(r()*(GLYPH_VARIANTS-1)))%GLYPH_VARIANTS;
+  }
+  // The same letter in the same neighbourhood is formed differently from the previous one.
+  if(before===c&&out[i-1])p.v=p.v===out[i-1].v?(p.v+2)%GLYPH_VARIANTS:p.v;
+  before=c;pos++;out[i]=p;recent.set(c,[...last.slice(-1),p]);
+ }
+ return out;
+}
+// Warped copies are encoded after the base glyphs so the editor and first render are never held up.
+// Interactive callers get them in the background; print and exports wait for them.
+let glyphVariantRun=null;
+function prepareGlyphVariants(){
+ const color=state.settings.ink,weight=state.settings.penWeight,runKey=color+'|'+weight+'|'+[...new Set([...Object.keys(BASE_GLYPHS),...Object.keys(state.glyphs)])].map(c=>glyphFor(c).src.length).join(',');
+ if(glyphVariantRun?.key===runKey)return glyphVariantRun.promise;
+ const promise=(async()=>{
+  let made=0;
+  for(const c of new Set([...Object.keys(BASE_GLYPHS),...Object.keys(state.glyphs)])){
+   if(state.settings.ink!==color||state.settings.penWeight!==weight)break;
+   const g=glyphFor(c),base=tintKey(color,g.src,weight);
+   if(!glyphTints.has(base)||glyphTints.has(base+'#v1'))continue;
+   await yieldToEditor();
+   const im=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=glyphTints.get(base)});
+   const canvas=document.createElement('canvas');canvas.width=im.naturalWidth;canvas.height=im.naturalHeight;canvas.getContext('2d').drawImage(im,0,0);
+   for(let v=1;v<GLYPH_VARIANTS;v++)glyphTints.set(base+'#v'+v,warpGlyphCanvas(canvas,hash32(c+':'+v),v%3===0?.7:0).toDataURL('image/png'));
+   made++;
+  }
+  return made;
+ })();
+ glyphVariantRun={key:runKey,promise};
+ return promise;
+}
+async function prepareGlyphColors(withVariants=false){
  await prepareDigitSamples();
  const colors=[state.settings.ink],weight=state.settings.penWeight;
- if(glyphTints.size>512)glyphTints.clear();
+ if(glyphTints.size>3600)glyphTints.clear();
  for(const c of new Set([...Object.keys(BASE_GLYPHS),...Object.keys(state.glyphs)])){
   const g=glyphFor(c),pending=colors.filter(col=>!glyphTints.has(tintKey(col,g.src,weight)));if(!pending.length)continue;
   await yieldToEditor();
@@ -1001,12 +1086,14 @@ async function prepareGlyphColors(){
   for(let y=0;y<H;y++)for(let x=0;x<W;x++){const k=(y*W+x)*4;let a=original[k+3];for(let d=1;d<=radius;d++){if(x>=d)a=Math.max(a,original[k-4*d+3]);if(x+d<W)a=Math.max(a,original[k+4*d+3]);if(y>=d)a=Math.max(a,original[k-4*W*d+3]);if(y+d<H)a=Math.max(a,original[k+4*W*d+3]);}image.data[k+3]=Math.min(255,Math.round(a*(1+weight*.15)));}
   for(const col of pending){const rgb=[1,3,5].map(i=>parseInt(col.slice(i,i+2),16));for(let k=0;k<image.data.length;k+=4){image.data[k]=rgb[0];image.data[k+1]=rgb[1];image.data[k+2]=rgb[2];}ctx.putImageData(image,0,0);glyphTints.set(tintKey(col,g.src,weight),canvas.toDataURL('image/png'));}
  }
+ if(withVariants)await prepareGlyphVariants();
+ else prepareGlyphVariants().then(made=>{if(made)layoutAndRender()}).catch(()=>{});
 }
 function defs(content){
  const used=new Map();
- if(content===undefined){for(const c of new Set([...Object.keys(BASE_GLYPHS),...Object.keys(state.glyphs)]))used.set(c.codePointAt(0)+'-ink',[c,'ink']);}
- else for(const match of content.matchAll(/href="#g(\d+)-(ink|accent|white)"/g))used.set(match[1]+'-'+match[2],[String.fromCodePoint(Number(match[1])),match[2]]);
- let d='';for(const [c,role] of used.values()){const g=glyphFor(c),col=role==='ink'?state.settings.ink:role==='accent'?state.settings.accent:'#ffffff',src=glyphTints.get(tintKey(col,g.src))||g.src;d+=`<symbol id="g${c.codePointAt(0)}-${role}" viewBox="0 0 ${g.w} ${g.h}"><image width="${g.w}" height="${g.h}" href="${src}"/></symbol>`;}
+ if(content===undefined){for(const c of new Set([...Object.keys(BASE_GLYPHS),...Object.keys(state.glyphs)]))for(let v=0;v<GLYPH_VARIANTS;v++)used.set(c.codePointAt(0)+'v'+v+'-ink',[c,'ink',v]);}
+ else for(const match of content.matchAll(/href="#g(\d+)(?:v(\d+))?-(ink|accent|white)"/g))used.set(match[1]+'v'+(match[2]||0)+'-'+match[3],[String.fromCodePoint(Number(match[1])),match[3],Number(match[2]||0)]);
+ let d='';for(const [c,role,variant] of used.values()){const g=glyphFor(c),col=role==='ink'?state.settings.ink:role==='accent'?state.settings.accent:'#ffffff',src=glyphSource(g,col,variant);d+=`<symbol id="${glyphSymbolId('',c,variant,role)}" viewBox="0 0 ${g.w} ${g.h}"><image width="${g.w}" height="${g.h}" href="${src}"/></symbol>`;}
  return '<defs>'+d+'</defs>';
 }
 // The live SVG references one persistent asset bank; exports still embed their own images.
@@ -1020,23 +1107,27 @@ function ensurePreviewAssets(){
   previewAssetRoot.append(document.createElementNS(ns,'defs'));document.body.append(previewAssetRoot);
  }
  const live=new Set([...Object.keys(BASE_GLYPHS),...Object.keys(state.glyphs)]);
- for(const c of live){
-  const g=glyphFor(c),src=glyphTints.get(tintKey(state.settings.ink,g.src))||g.src,old=previewAssets.get(c);
+ for(const c of live)for(let v=0;v<GLYPH_VARIANTS;v++){
+  const g=glyphFor(c),src=glyphSource(g,state.settings.ink,v),key=c+'|'+v,old=previewAssets.get(key);
   if(old&&old.src===src&&old.w===g.w&&old.h===g.h)continue;
   const symbol=old?.node||document.createElementNS(ns,'symbol'),image=old?symbol.firstElementChild:document.createElementNS(ns,'image');
-  symbol.id='folio-preview-g'+c.codePointAt(0)+'-ink';symbol.setAttribute('viewBox',`0 0 ${g.w} ${g.h}`);
+  symbol.id=glyphSymbolId('folio-preview-',c,v,'ink');symbol.setAttribute('viewBox',`0 0 ${g.w} ${g.h}`);
   image.setAttribute('width',g.w);image.setAttribute('height',g.h);image.setAttribute('href',src);
   if(!old){symbol.append(image);previewAssetRoot.firstElementChild.append(symbol);}
-  previewAssets.set(c,{src,w:g.w,h:g.h,node:symbol});
+  previewAssets.set(key,{src,w:g.w,h:g.h,node:symbol,c});
  }
- for(const [c,asset] of previewAssets)if(!live.has(c)){asset.node.remove();previewAssets.delete(c);}
+ for(const [key,asset] of previewAssets)if(!live.has(asset.c)){asset.node.remove();previewAssets.delete(key);}
 }
 function handLine(text,x,y,cap,ink='ink',extra='',extraSpace=0){
- let elements='',cursor=x;const col=ink==='white'?'#ffffff':ink==='accent'?state.settings.accent:state.settings.ink;
+ let elements='',cursor=x,index=0;const vary=inkVariation(text);const col=ink==='white'?'#ffffff':ink==='accent'?state.settings.accent:state.settings.ink;
  for(const c of String(text)){
-  const m=metrics(c,cap),base=y+state.settings.baseline;
-  if(m.g)elements+=`<use href="#g${c.codePointAt(0)}-${ink}" x="${f(cursor)}" y="${f(base+m.y)}" width="${f(m.w)}" height="${f(m.h)}"/>`;
-  else if(m.helper){const scale=m.h/10;elements+=`<g data-helper="${esc(c)}" transform="translate(${f(cursor)} ${f(base-m.h)}) scale(${f(scale)})"><path d="${m.helper.d}" fill="none" stroke="${col}" stroke-width="${f(.47+state.settings.penWeight*.16)}" stroke-linecap="round" stroke-linejoin="round"/></g>`;}
+  const m=metrics(c,cap),base=y+state.settings.baseline,v=vary[index++]||NO_VARIATION;
+  if(m.g){
+   // Scale about the baseline and rotate about its midpoint, so ascenders, descenders and x-height shift naturally.
+   const w=m.w*v.sx,px=cursor+m.w/2+v.dx*cap,py=base+v.dy*cap;
+   elements+=`<use href="#${glyphSymbolId('',c,v.v,ink)}" x="${f(px-w/2)}" y="${f(py+m.y*v.sy)}" width="${f(w)}" height="${f(m.h*v.sy)}"${Math.abs(v.rot)<.05?'':` transform="rotate(${f(v.rot)} ${f(px)} ${f(py)})"`}${v.op<.995?` opacity="${f(v.op)}"`:''}/>`;
+  }
+  else if(m.helper){const scale=m.h/10;elements+=`<g data-helper="${esc(c)}" transform="translate(${f(cursor+m.w/2+v.dx*cap)} ${f(base+v.dy*cap)}) rotate(${f(v.rot)}) scale(${f(scale*v.sx)} ${f(scale*v.sy)}) translate(${f(-m.helper.w/2)} -10)"><path d="${m.helper.d}" fill="none" stroke="${col}" stroke-width="${f((.47+state.settings.penWeight*.16)*v.pen)}" stroke-linecap="round" stroke-linejoin="round"/></g>`;}
   else if(m.fallback)elements+=`<text x="${f(cursor)}" y="${f(base)}" font-family="Arial,Helvetica,sans-serif" font-size="${f(m.size)}" data-fallback="${esc(c)}" fill="${col}">${esc(c)}</text>`;
   cursor+=m.advance+(c===' '?extraSpace:0);
  }
@@ -1422,7 +1513,7 @@ function pageSVG(p,index,total,cal=false,namespace='page-'+index,includeDefs=tru
  // Print contains many SVGs. Namespace every glyph definition to avoid duplicate-ID
  // collisions with the live preview (including white titles becoming invisible).
  const ns=String(namespace).replace(/[^a-zA-Z0-9_-]/g,'');
- svg=svg.replace(/id="g(\d+)-(ink|accent|white)"/g,`id="${ns}-g$1-$2"`).replace(/href="#g(\d+)-(ink|accent|white)"/g,`href="#${ns}-g$1-$2"`);
+ svg=svg.replace(/id="g(\d+)(v\d+)?-(ink|accent|white)"/g,`id="${ns}-g$1$2-$3"`).replace(/href="#g(\d+)(v\d+)?-(ink|accent|white)"/g,`href="#${ns}-g$1$2-$3"`);
  return svg;
 }
 
@@ -2050,7 +2141,7 @@ async function exportPDF(selected=true){
  const dialog=$('pdf-progress-dialog'),root=document.querySelector('.app');root.inert=true;$('mobile-tabs').inert=true;
  $('pdf-progress-text').textContent='Preparing handwriting…';$('pdf-progress').value=0;if(!dialog.open)dialog.showModal();
  try{
-  clearTimeout(renderTimer);persistLocal();await prepareGlyphColors();await document.fonts?.ready;layoutAndRender();
+  clearTimeout(renderTimer);persistLocal();await prepareGlyphColors(true);await document.fonts?.ready;layoutAndRender();
   const all=selected?pages.slice():projectPDFPages(),{width,height}=state.settings,pdf=pdfDocument(width,height),isCalibration=selected&&calibration;
   if(!all.length)throw Error('No pages are selected. Choose a drug or clear your filters.');
   for(let i=0;i<all.length;i++){
@@ -2080,16 +2171,16 @@ async function pngWithDPI(blob,dpi){
 }
 $('export-png').onclick=async()=>{
  if(!pages.length)return;const button=$('export-png');button.disabled=true;button.textContent='Exporting…';let url;
- try{await prepareGlyphColors();layoutAndRender();const p=pages[pageIndex],xml=pageSVG(p,pageIndex,pages.length,calibration,'export'),image=new Image();url=URL.createObjectURL(new Blob([xml],{type:'image/svg+xml;charset=utf-8'}));await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(Error('The browser could not render this SVG. Try a browser with SVG image export support.'));image.src=url});const canvas=document.createElement('canvas');canvas.width=Math.round(state.settings.width/25.4*300);canvas.height=Math.round(state.settings.height/25.4*300);const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0,canvas.width,canvas.height);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('Image export failed.');downloadBlob(await pngWithDPI(blob,300),`${filename(p.title)}-page-${pageIndex+1}-300dpi.png`);notify(`PNG saved: ${canvas.width} × ${canvas.height} pixels, 300 dpi target scale.`)}catch(e){notify(e.message)}finally{if(url)URL.revokeObjectURL(url);button.disabled=false;button.textContent='PNG · this page'}
+ try{await prepareGlyphColors(true);layoutAndRender();const p=pages[pageIndex],xml=pageSVG(p,pageIndex,pages.length,calibration,'export'),image=new Image();url=URL.createObjectURL(new Blob([xml],{type:'image/svg+xml;charset=utf-8'}));await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(Error('The browser could not render this SVG. Try a browser with SVG image export support.'));image.src=url});const canvas=document.createElement('canvas');canvas.width=Math.round(state.settings.width/25.4*300);canvas.height=Math.round(state.settings.height/25.4*300);const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0,canvas.width,canvas.height);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('Image export failed.');downloadBlob(await pngWithDPI(blob,300),`${filename(p.title)}-page-${pageIndex+1}-300dpi.png`);notify(`PNG saved: ${canvas.width} × ${canvas.height} pixels, 300 dpi target scale.`)}catch(e){notify(e.message)}finally{if(url)URL.revokeObjectURL(url);button.disabled=false;button.textContent='PNG · this page'}
 };
 function preparePrint(){
  clearTimeout(renderTimer);layoutAndRender();
- const assets=defs().replace(/id="g(\d+)-(ink|accent|white)"/g,'id="print-g$1-$2"');
+ const assets=defs().replace(/id="g(\d+)(v\d+)?-(ink|accent|white)"/g,'id="print-g$1$2-$3"');
  $('print-root').innerHTML=`<svg class="print-assets" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">${assets}</svg>`+pages.map((p,i)=>`<div class="print-page">${pageSVG(p,i,pages.length,calibration,'print',false)}</div>`).join('');
 }
 window.addEventListener('beforeprint',()=>preparePrint());
 $('print-button').onclick=()=>{clearTimeout(renderTimer);layoutAndRender();$('print-summary').textContent=`${pages.length} page${pages.length===1?'':'s'} · ${state.settings.width} × ${state.settings.height} mm · ${state.settings.output==='full'?'Complete notebook pages':'Existing planner paper, without background or rules'}${calibration?' · Calibration sheet':''}.`;if(pages.length>25)$('print-summary').textContent+=' Large selection: choose Selected drug only or Filtered library for smaller batches.';const warnings=pages.flatMap((p,i)=>pageWarnings(p).map(w=>`Page ${i+1}: ${w}`));if(warnings.length)$('print-summary').textContent+=' WARNING: '+warnings.join(' ')+' Content will not be shrunk.';$('print-dialog').showModal()};
-$('cancel-print').onclick=()=>$('print-dialog').close();$('confirm-print').onclick=async()=>{$('print-dialog').close();notify('Preparing pages for the print dialog…');await prepareGlyphColors();await new Promise(r=>setTimeout(r,80));preparePrint();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));window.print()};
+$('cancel-print').onclick=()=>$('print-dialog').close();$('confirm-print').onclick=async()=>{$('print-dialog').close();notify('Preparing pages for the print dialog…');await prepareGlyphColors(true);await new Promise(r=>setTimeout(r,80));preparePrint();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));window.print()};
 $('show-help').onclick=()=>changeView('help');
 $('prev-page').onclick=()=>{if(pageIndex>0){pageIndex--;updatePreview()}};$('next-page').onclick=()=>{if(pageIndex<pages.length-1){pageIndex++;updatePreview()}};$('page-select').onchange=e=>{pageIndex=Number(e.target.value);updatePreview()};
 $('scope-select').onchange=e=>{state.scope=e.target.value;layoutAndRender(true);save()};
