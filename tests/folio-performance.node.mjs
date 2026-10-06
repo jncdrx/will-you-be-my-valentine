@@ -10,9 +10,12 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
       w.HTMLCanvasElement.prototype.getContext=()=>({measureText:text=>({width:text.length})});w.requestAnimationFrame=()=>1;
       const script=[...w.document.scripts].find(s=>s.textContent.includes('function pageSVG')).textContent;
       w.eval(script.slice(0,script.lastIndexOf('prepareGlyphColors().then('))+`window.api={layoutAndRender,get state(){return state}};`);
+      // The harness evaluates only the app's startup script; supply the one late-defined helper the render calls.
+      w.applyPageToolDOM=()=>{};
       const a=w.api,drug=a.state.drugs.find(d=>d.id===a.state.selected);
       for(const key of Object.keys(drug.fields))drug.fields[key]='A short note';
       a.layoutAndRender();
+      assert.ok(w.document.querySelector('#preview svg'),'the live preview is rendered');
       const asset=w.document.querySelector('[data-folio-preview-assets] symbol');
       assert.ok(asset,'handwriting assets live outside the changing preview');
       assert.equal(w.document.querySelectorAll('#preview image').length,0,'no image payload is rebuilt per edit');
@@ -26,6 +29,12 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
       assert.equal(w.document.querySelector('.inline-editor[data-field="drug"]'),active,'typing keeps the same editable element');
       assert.equal(w.document.querySelector('[data-folio-preview-assets] symbol'),asset);
       assert.equal(w.document.querySelector('.inline-editor[data-field="action"]'),action,'unaffected section retains its DOM');
+      // Typing must not tear down printed strokes it did not change (that forced a full layout per key).
+      const card=key=>w.document.querySelector(`#preview .section-card[data-section="${key}"]`);
+      const untouched=card('action'),editedBefore=card('drug').outerHTML;
+      drug.fields.drug='A short edit, more';a.layoutAndRender();
+      assert.equal(card('action'),untouched,'unchanged printed section keeps its SVG nodes');
+      assert.notEqual(card('drug').outerHTML,editedBefore,'the edited section is updated');
       for(const use of w.document.querySelectorAll('#preview use'))assert.ok(w.document.getElementById(use.getAttribute('href').slice(1)));
     } finally {w.close();}
   });

@@ -10,6 +10,8 @@ The editor restores local notes and renders immediately. Handwriting refinement 
 - Rebuild page-selection options only when their labels change; inspect unique characters when checking missing handwriting samples.
 - Open the editor before decoding/recoloring handwriting. Yield between image-processing tasks and avoid unused accent/white tint generation.
 - Load letter effects, video and admin screens on demand rather than with the Folio app shell.
+- Update the live SVG by diffing it against the new render, so a keystroke touches only the changed printed nodes instead of rebuilding every glyph (which forced a full style/layout pass). The editable overlay, resize handles and safe-area guide are never diffed away.
+- While typing, refresh the facing page once typing pauses, and restore the caret once per render.
 
 ## Measurements from this development session
 
@@ -20,6 +22,7 @@ These are individual local-browser samples, not cross-device benchmarks or end-t
 | Pilocarpine live-preview HTML | 740,167 characters | 138,769 characters |
 | Pilocarpine entry-switch render sample | 20.1 ms | 15.1 ms |
 | Continuous typing, temporary short note | Active editor was recreated | Same editor retained; final character render 4.7 ms |
+| Typing in a section, one keystroke including layout (desktop Chrome) | ~37–50 ms | ~10–13 ms |
 | Main production JS chunk, uncompressed | 914.03 KB | 361.66 KB |
 | Main production JS chunk, gzip | 280.67 KB | 141.54 KB |
 
@@ -28,6 +31,8 @@ The bundle numbers exclude shared vendor, animation and Supabase chunks. Code wa
 ## Sync contract
 
 `public/folio-sync.js` saves an account-scoped local envelope containing the project, pending mutation and server revision. It coalesces edits, retries after reconnect, recovers lost upload acknowledgements, and requires a choice when another device has a newer revision. Browser recovery copies can be downloaded. Different signed-in accounts use different keys. Cloud refresh waits while a text input is focused.
+
+Typing never waits on the network. Edits are saved locally first; upload is a background step that starts about 0.6 s after the local save. When the revision is known and no earlier upload is unconfirmed, the edit is sent directly (the save RPC rejects stale revisions and returns the other copy), so there is no read before the write. Otherwise, and for the 30 s refresh, only `revision,mutation_id` is read; the notebook body is downloaded only to apply a remote change or show a conflict. The first account sign-in does not re-render the editor, so the caret is not lost.
 
 The hidden `folio-sync.html` bridge uses the existing Supabase session. It verifies message origin, source and account, pins the request's bearer token to the validated session, and times out requests. Credentials are not sent to the editor. Downloaded HTML embeds the sync runtime but remains local-only when opened as a file.
 

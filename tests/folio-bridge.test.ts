@@ -25,6 +25,10 @@ it('the bridge rejects other origins/accounts and pins the request token to the 
       expect.objectContaining({id:'request',error:expect.any(String)}),location.origin));
     expect(mocks.from).not.toHaveBeenCalled();
     send('alice');await vi.waitFor(()=>expect(chain.maybeSingle).toHaveBeenCalled());
+    expect(chain.select).toHaveBeenLastCalledWith('revision,mutation_id');
+    window.dispatchEvent(new MessageEvent('message',{source:parent as unknown as Window,origin:location.origin,
+      data:{channel:'folio-sync-v1',id:'full',op:'load',owner:'alice',key:'folio',args:{full:true}}}));
+    await vi.waitFor(()=>expect(chain.select).toHaveBeenLastCalledWith('project,revision,mutation_id'));
     expect(chain.eq).toHaveBeenCalledWith('user_id','alice');
     expect(chain.setHeader).toHaveBeenCalledWith('Authorization','Bearer alice-token');
     expect(chain.abortSignal).toHaveBeenCalledWith(expect.any(AbortSignal));

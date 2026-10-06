@@ -626,7 +626,8 @@ button{min-height:40px;touch-action:manipulation}
 const $=id=>document.getElementById(id), clone=o=>JSON.parse(JSON.stringify(o));
 const BASE_GLYPHS=JSON.parse($('glyph-data').textContent), SAMPLE_DRUGS=JSON.parse($('sample-drugs').textContent);
 const PDF_SOURCE=JSON.parse($('pdf-source-data').textContent);
-let pageTool=matchMedia('(pointer:coarse)').matches?'read':'type', sectionModalReturnFocus=null, pdfCancelled=false;
+const pointerCoarse=()=>!!window.matchMedia?.('(pointer:coarse)').matches;
+let pageTool=pointerCoarse()?'read':'type', sectionModalReturnFocus=null, pdfCancelled=false;
 const FIELDS=[['drug','Drug'],['action','Mode of action'],['dosage','Dosage and size available'],['indication','Indication'],['contraindication','Contraindication'],['adverse','Adverse reaction'],['effects','Side effects'],['notes','Special notes']];
 const DEFAULT_SETTINGS={editorPreset:'recommended',autoSpacing:true,writingLines:false,frame:'#70394c',width:148,height:210,left:18,right:8,top:7,bottom:11,firstLine:36,lineGap:5.6,cap:3.1,letterSpacing:.07,wordSpacing:1.05,baseline:0,penWeight:.35,numberStyle:'pen',zoom:'width',rulingProfile:'compact',ink:'#000000',accent:'#70394c',highlight:'#e6bac5',paper:'#ffffff',rule:'#c5bfb6',output:'full',decorations:true,holes:false,offsetX:0,offsetY:0};
 let STORAGE='folio.handwritten-notebook.v5.manual-header.colored-sections';
@@ -1451,7 +1452,7 @@ function renderSectionResize(){
  const group=document.createElementNS('http://www.w3.org/2000/svg','g');group.setAttribute('class','section-resize-overlay');group.setAttribute('transform',pageContentTransform(p));
  const handles=[['nw',x,y],['n',x+w/2,y],['ne',x+w,y],['e',x+w,y+h/2],['se',x+w,y+h],['s',x+w/2,y+h],['sw',x,y+h],['w',x,y+h/2]];
  const pixelsPerUnit=(svg.getBoundingClientRect().width||560)/state.settings.width*pageGeometry(p).sx;
- const radius=Math.max(1.4,(matchMedia('(pointer:coarse)').matches?22:6)/pixelsPerUnit);
+ const radius=Math.max(1.4,(pointerCoarse()?22:6)/pixelsPerUnit);
  group.innerHTML=`<rect class="section-resize-outline" x="${x}" y="${y}" width="${w}" height="${h}"/>`+handles.map(([dir,hx,hy])=>`<rect class="section-resize-handle" data-resize-handle="${dir}" x="${hx-radius}" y="${hy-radius}" width="${radius*2}" height="${radius*2}" tabindex="0" role="button" aria-label="Resize ${b.label}, ${dir} handle" style="cursor:${['nw','se'].includes(dir)?'nwse':['ne','sw'].includes(dir)?'nesw':['n','s'].includes(dir)?'ns':'ew'}-resize"/>`).join('');
  group.insertAdjacentHTML('beforeend',`<rect data-move-section="" x="${x+w/2-radius}" y="${y+Math.min(h/2,radius*3)}" width="${radius*2}" height="${radius*2}" rx="1" fill="#8a4260" tabindex="0" role="button" aria-label="Move ${b.label}; arrow keys move by 1 mm" style="cursor:move;pointer-events:all;touch-action:none"/>`);
  svg.append(group);
@@ -1616,11 +1617,13 @@ function inlineFollowCaret(){
  const eligible=candidates.filter(({p})=>p.blocks.some(b=>b.key===s.key&&b.rows.some(r=>s.focus>=r.start&&s.focus<=r.end)));
  const found=s.affinity==='forward'?eligible.at(-1):eligible[0];
  if(found&&found.i!==pageIndex){pageIndex=found.i;updatePreview();}
+ else if(inlineRestored)return; // updatePreview already placed the caret
  inlineRestore();
 }
+let inlineTyping=false,inlineRestored=false;
 function inlineRender(){
- inlineRendering=true;
- try{layoutAndRender();inlineFollowCaret();}finally{inlineRendering=false;}
+ inlineRendering=true;inlineTyping=true;inlineRestored=false;
+ try{layoutAndRender();inlineFollowCaret();}finally{inlineRendering=false;inlineTyping=false;inlineRestored=false;}
 }
 function inlineSync(){
  const s=inlineSession;if(!s)return;s.record.edited=true;
@@ -1803,11 +1806,34 @@ function renderLivePreview(p){
  if(!current){$('preview').replaceChildren(next);return;}
  for(const attr of [...current.attributes])if(!next.hasAttribute(attr.name))current.removeAttribute(attr.name);
  for(const attr of next.attributes)current.setAttribute(attr.name,attr.value);
- // Keep the editable overlay mounted while replacing the printed strokes underneath it.
+ // Keep the editable overlay mounted, and touch only the printed strokes that changed.
+ // Rebuilding every glyph node per keystroke forces a full style/layout pass and shows up as typing lag.
  const layer=current.querySelector('.inline-layer');
- for(const child of [...current.childNodes])if(child!==layer)child.remove();
- for(const child of [...next.childNodes])current.insertBefore(child,layer);
+ decorateSectionCards(next);
+ patchChildren(current,next,layer);
  if(calibration||!p.drug)layer?.remove();
+}
+function decorateSectionCards(root){
+ for(const el of root.querySelectorAll('.section-card')){el.setAttribute('tabindex',pageTool==='resize'?'0':'-1');el.setAttribute('aria-label',(el.dataset.section||'Section')+' — select to resize');}
+}
+// Nodes owned by other renderers (editable overlay, resize handles, safe-area guide) are never diffed away.
+const previewOverlay=n=>n.nodeType===1&&n.matches('.inline-layer,.section-resize-overlay,.print-safe-guide');
+function patchChildren(current,next,keep=null){
+ const a=[...current.childNodes].filter(n=>!(keep&&previewOverlay(n))),b=[...next.childNodes];
+ let start=0;while(start<a.length&&start<b.length&&a[start].isEqualNode(b[start]))start++;
+ let endA=a.length,endB=b.length;while(endA>start&&endB>start&&a[endA-1].isEqualNode(b[endB-1])){endA--;endB--;}
+ if(endA-start===endB-start){for(let i=start;i<endA;i++)patchNode(a[i],b[i]);return;}
+ const before=a[endA]||keep?.parentNode&&keep||null;
+ for(let i=start;i<endA;i++)a[i].remove();
+ for(let i=start;i<endB;i++)current.insertBefore(b[i],before);
+}
+function patchNode(current,next){
+ if(current.isEqualNode(next))return;
+ if(current.nodeType===3&&next.nodeType===3){current.nodeValue=next.nodeValue;return;}
+ if(current.nodeType!==1||next.nodeType!==1||current.nodeName!==next.nodeName||current.namespaceURI!==next.namespaceURI){current.replaceWith(next);return;}
+ for(const attr of [...current.attributes])if(!next.hasAttribute(attr.name))current.removeAttribute(attr.name);
+ for(const attr of next.attributes)if(current.getAttribute(attr.name)!==attr.value)current.setAttribute(attr.name,attr.value);
+ patchChildren(current,next);
 }
 function updatePreview(){
  if(inlineComposition)return;
@@ -1829,7 +1855,7 @@ function updatePreview(){
  $('fallback-note').innerHTML=`${originals} photo characters${added?` + ${added} added samples`:''}. ${helpers}${missing?` Other system-type characters: ${esc(missing.slice(0,100))}.`:''} <button id="edit-handwriting-inline">Add your own samples</button>`;
  $('edit-handwriting-inline').onclick=()=>changeView('handwriting');
  const zoom=$('preview-zoom');if(zoom)zoom.value=s.zoom;
- mountInlineEditors(p);applyPageToolDOM();renderRulers();renderSectionResize();renderPageLayout();if(preserveInline)inlineRestore();inlineRendering=wasInlineRendering;
+ mountInlineEditors(p);applyPageToolDOM();renderRulers();renderSectionResize();renderPageLayout();if(preserveInline){inlineRestore();inlineRestored=true;}inlineRendering=wasInlineRendering;
  requestAnimationFrame(()=>{if(typeof fitPaper==='function')fitPaper()});
 }
 /* Library queries are local. Drug names, chart aliases, classes and category names are searchable. */
@@ -2222,7 +2248,7 @@ window.addEventListener('beforeunload',persistLocal);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)persistLocal()});
 const stage=document.querySelector('.sheet-stage');
 // Start touch sessions with the whole page visible; this is display-only state.
-let touchPreviewZoom=matchMedia('(pointer:coarse)').matches?'page':null;
+let touchPreviewZoom=pointerCoarse()?'page':null;
 let companionPreviewMarkup='';
 // Spread (front and back together) is the default; Single gives one larger page, handy on a portrait iPad.
 let singlePageView=false;try{singlePageView=localStorage.getItem('folio-page-view')==='single'}catch{}
@@ -2241,20 +2267,26 @@ function renderSpread(p){
  $('drug-spread').setAttribute('aria-label',`${p?.drug?.name||'Notebook'} · ${paired?'Front and back pages':'Page preview'}`);
  $('active-page-label').textContent=label(p);$('active-page').style.order=String(p?.part||1);
  $('companion-page').hidden=!other;
- if(!other){$('companion-preview').replaceChildren();companionPreviewMarkup='';return;}
+ if(!other){clearTimeout(companionTimer);$('companion-preview').replaceChildren();companionPreviewMarkup='';return;}
  $('companion-page').style.order=String(other.page.part);
  const first=other.page.part<p.part?$('companion-page'):$('active-page');
  if($('drug-spread').firstElementChild!==first)$('drug-spread').prepend(first);
  $('companion-page-label').textContent=label(other.page);
  $('companion-page-label').setAttribute('aria-label',`Edit ${label(other.page)}`);
  $('companion-page-label').onclick=()=>{document.activeElement?.blur();sectionSelection=null;pageIndex=other.index;updatePreview();$('active-page-label').focus({preventScroll:true});};
- const markup=pageSVG(other.page,other.index,pages.length,false,'folio-companion',false).replaceAll('#folio-companion-g','#folio-preview-g');
- if(markup!==companionPreviewMarkup){$('companion-preview').innerHTML=markup;companionPreviewMarkup=markup;}
+ const paintCompanion=()=>{
+  const markup=pageSVG(other.page,other.index,pages.length,false,'folio-companion',false).replaceAll('#folio-companion-g','#folio-preview-g');
+  if(markup!==companionPreviewMarkup){$('companion-preview').innerHTML=markup;companionPreviewMarkup=markup;}
+ };
+ clearTimeout(companionTimer);
+ // The facing page is not what is being typed on: refresh it once typing pauses.
+ if(inlineTyping)companionTimer=setTimeout(paintCompanion,160);else paintCompanion();
  $('companion-preview').onclick=()=>$('companion-page-label').click();
 }
+let companionTimer=0;
 function fitPaper(){
  if(!stage.clientWidth)return;const el=$('preview'),s=state.settings,style=getComputedStyle(stage),available=Math.max(1,stage.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight)),availableHeight=Math.max(1,stage.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom));let width;
- const paired=$('drug-spread').dataset.paired==='true',gap=20,labelHeight=56,coarse=matchMedia('(pointer:coarse)').matches;
+ const paired=$('drug-spread').dataset.paired==='true',gap=20,labelHeight=56,coarse=pointerCoarse();
  const zoom=touchPreviewZoom||s.zoom,numericWidth=s.width*96/25.4*(Number(zoom)||100)/100;
  let columns=paired&&available>=480?2:1;
  if(coarse&&!['page','width'].includes(zoom)&&numericWidth*2+gap>available)columns=1;
@@ -2441,7 +2473,7 @@ function applyPageToolDOM(){
  document.body.dataset.pageTool=pageTool;
  for(const button of document.querySelectorAll('button[data-page-tool]'))button.setAttribute('aria-pressed',String(button.dataset.pageTool===pageTool));
  for(const el of document.querySelectorAll('#preview .inline-editor')){el.setAttribute('contenteditable',String(pageTool==='type'));el.tabIndex=pageTool==='type'?0:-1;}
- for(const el of document.querySelectorAll('#preview .section-card')){el.setAttribute('tabindex',pageTool==='resize'?'0':'-1');el.setAttribute('aria-label',(el.dataset.section||'Section')+' — select to resize');}
+ decorateSectionCards($('preview'));
 }
 function openSourceReview(record=sectionColorRecord()){
  if(!record)return;
@@ -2552,20 +2584,29 @@ function installFolioSync() {
         if (!this.flush()) return;
         this.status('syncing');
         const version = this.version;
-        const remote = await this.request('load');
-        if (this.dead) return;
-        // Recover a successful upload whose response was lost, including after reload.
-        if (remote && remote.mutation_id === this.doc.attempted) {
-          this.doc.revision = remote.revision;
-          if (this.doc.mutation === this.doc.attempted && !this.changed) this.doc.dirty = false;
-          this.doc.attempted = null;
+        // Local edits are already safe. With a known revision and no unconfirmed upload, send them straight
+        // away: the save call rejects a stale revision itself, so no read is needed first.
+        const direct = this.doc.dirty && this.doc.attempted === null && Number.isSafeInteger(this.doc.revision);
+        // Otherwise read only the revision; the full notebook is fetched when it is actually needed.
+        let remote = null;
+        if (!direct) {
+          remote = await this.request('load');
+          if (this.dead) return;
+          // Recover a successful upload whose response was lost, including after reload.
+          if (remote && remote.mutation_id === this.doc.attempted) {
+            this.doc.revision = remote.revision;
+            if (this.doc.mutation === this.doc.attempted && !this.changed) this.doc.dirty = false;
+            this.doc.attempted = null;
+          }
         }
         if (this.doc.dirty || this.version !== version) {
-          if ((remote?.revision || 0) !== (this.doc.revision || 0)) {
-            this.conflict = remote; this.flush(); this.status('conflict'); return;
+          if (!direct && (remote?.revision || 0) !== (this.doc.revision || 0)) {
+            const other = await this.request('load', { full: true });
+            if (this.dead) return;
+            this.conflict = other; this.flush(); this.status('conflict'); return;
           }
           if (!this.flush()) return;
-          const sent = { project: this.doc.project, revision: remote?.revision || 0, mutation_id: this.doc.mutation };
+          const sent = { project: this.doc.project, revision: direct ? this.doc.revision : remote?.revision || 0, mutation_id: this.doc.mutation };
           this.doc.attempted = sent.mutation_id;
           if (!this.persist()) return;
           const result = await this.request('save', sent);
@@ -2578,9 +2619,13 @@ function installFolioSync() {
           if (!this.changed && this.doc.mutation === sent.mutation_id) this.doc.dirty = false;
         } else if (remote && remote.revision !== this.doc.revision) {
           if (this.canApply && !this.canApply()) { this.status('pending'); return; }
-          this.apply(remote.project);
+          const other = await this.request('load', { full: true });
+          if (this.dead) return;
+          // An edit made while the notebook downloaded wins; the next sync reconciles it.
+          if (!other || this.doc.dirty || this.version !== version || (this.canApply && !this.canApply())) { this.status('pending'); return; }
+          this.apply(other.project);
           this.doc.project = JSON.parse(JSON.stringify(this.read()));
-          this.doc.revision = remote.revision;
+          this.doc.revision = other.revision;
         } else if (!remote) this.doc.revision = 0;
         this.conflict = null;
         if (this.flush()) this.status(this.doc.dirty ? 'pending' : 'synced');
@@ -2627,7 +2672,7 @@ function installFolioSync() {
   });
   const labels = { local: 'Saving on this device…', syncing: 'Saved here · syncing…', pending: 'Saved here · sync pending',
     synced: 'Saved here · synced online', conflict: 'Two copies need review', 'storage-error': 'Storage full · export a backup' };
-  const schedule = (ms = 1200) => {
+  const schedule = (ms = 600) => {
     clearTimeout(retryTimer);
     retryTimer = setTimeout(() => {
       if (scope.navigator.onLine === false) { status('pending'); return; }
@@ -2669,7 +2714,8 @@ function installFolioSync() {
         client = new FolioSync({ storage: scope.localStorage, key, initial, dirty: !claimed && host.hasLocal(),
           read: host.read, apply: host.apply, canApply: () => !host.editing(), status, request });
         // Never migrate another account's local draft into a new account.
-        if (!scope.localStorage.getItem(key)) host.apply(initial);
+        // An unclaimed local notebook is already on screen; re-rendering it would drop the caret mid-edit.
+        if (claimed && !scope.localStorage.getItem(key)) host.apply(initial);
         if (!client.flush()) return;
         scope.localStorage.setItem(host.key + ':claimed', owner);
         renderRecovery();

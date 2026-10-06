@@ -55,20 +55,29 @@ function installFolioSync() {
         if (!this.flush()) return;
         this.status('syncing');
         const version = this.version;
-        const remote = await this.request('load');
-        if (this.dead) return;
-        // Recover a successful upload whose response was lost, including after reload.
-        if (remote && remote.mutation_id === this.doc.attempted) {
-          this.doc.revision = remote.revision;
-          if (this.doc.mutation === this.doc.attempted && !this.changed) this.doc.dirty = false;
-          this.doc.attempted = null;
+        // Local edits are already safe. With a known revision and no unconfirmed upload, send them straight
+        // away: the save call rejects a stale revision itself, so no read is needed first.
+        const direct = this.doc.dirty && this.doc.attempted === null && Number.isSafeInteger(this.doc.revision);
+        // Otherwise read only the revision; the full notebook is fetched when it is actually needed.
+        let remote = null;
+        if (!direct) {
+          remote = await this.request('load');
+          if (this.dead) return;
+          // Recover a successful upload whose response was lost, including after reload.
+          if (remote && remote.mutation_id === this.doc.attempted) {
+            this.doc.revision = remote.revision;
+            if (this.doc.mutation === this.doc.attempted && !this.changed) this.doc.dirty = false;
+            this.doc.attempted = null;
+          }
         }
         if (this.doc.dirty || this.version !== version) {
-          if ((remote?.revision || 0) !== (this.doc.revision || 0)) {
-            this.conflict = remote; this.flush(); this.status('conflict'); return;
+          if (!direct && (remote?.revision || 0) !== (this.doc.revision || 0)) {
+            const other = await this.request('load', { full: true });
+            if (this.dead) return;
+            this.conflict = other; this.flush(); this.status('conflict'); return;
           }
           if (!this.flush()) return;
-          const sent = { project: this.doc.project, revision: remote?.revision || 0, mutation_id: this.doc.mutation };
+          const sent = { project: this.doc.project, revision: direct ? this.doc.revision : remote?.revision || 0, mutation_id: this.doc.mutation };
           this.doc.attempted = sent.mutation_id;
           if (!this.persist()) return;
           const result = await this.request('save', sent);
@@ -81,9 +90,13 @@ function installFolioSync() {
           if (!this.changed && this.doc.mutation === sent.mutation_id) this.doc.dirty = false;
         } else if (remote && remote.revision !== this.doc.revision) {
           if (this.canApply && !this.canApply()) { this.status('pending'); return; }
-          this.apply(remote.project);
+          const other = await this.request('load', { full: true });
+          if (this.dead) return;
+          // An edit made while the notebook downloaded wins; the next sync reconciles it.
+          if (!other || this.doc.dirty || this.version !== version || (this.canApply && !this.canApply())) { this.status('pending'); return; }
+          this.apply(other.project);
           this.doc.project = JSON.parse(JSON.stringify(this.read()));
-          this.doc.revision = remote.revision;
+          this.doc.revision = other.revision;
         } else if (!remote) this.doc.revision = 0;
         this.conflict = null;
         if (this.flush()) this.status(this.doc.dirty ? 'pending' : 'synced');
@@ -130,7 +143,7 @@ function installFolioSync() {
   });
   const labels = { local: 'Saving on this device…', syncing: 'Saved here · syncing…', pending: 'Saved here · sync pending',
     synced: 'Saved here · synced online', conflict: 'Two copies need review', 'storage-error': 'Storage full · export a backup' };
-  const schedule = (ms = 1200) => {
+  const schedule = (ms = 600) => {
     clearTimeout(retryTimer);
     retryTimer = setTimeout(() => {
       if (scope.navigator.onLine === false) { status('pending'); return; }
@@ -172,7 +185,8 @@ function installFolioSync() {
         client = new FolioSync({ storage: scope.localStorage, key, initial, dirty: !claimed && host.hasLocal(),
           read: host.read, apply: host.apply, canApply: () => !host.editing(), status, request });
         // Never migrate another account's local draft into a new account.
-        if (!scope.localStorage.getItem(key)) host.apply(initial);
+        // An unclaimed local notebook is already on screen; re-rendering it would drop the caret mid-edit.
+        if (claimed && !scope.localStorage.getItem(key)) host.apply(initial);
         if (!client.flush()) return;
         scope.localStorage.setItem(host.key + ':claimed', owner);
         renderRecovery();

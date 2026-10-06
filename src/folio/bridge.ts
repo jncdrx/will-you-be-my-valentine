@@ -19,7 +19,9 @@ if (window.parent !== window && isSupabaseConfigured()) {
       if (!session || session.user.id !== owner) throw Error('Sign in to this account to sync');
       if (op === 'load') {
         const { data, error } = await supabase.from('folio_notebooks')
-          .select('project,revision,mutation_id').eq('user_id', session.user.id).eq('project_key', key)
+          // Polling only needs the revision; the notebook body is downloaded when it is actually needed.
+          .select(args?.full === true ? 'project,revision,mutation_id' : 'revision,mutation_id')
+          .eq('user_id', session.user.id).eq('project_key', key)
           .setHeader('Authorization', `Bearer ${session.access_token}`)
           .abortSignal(controller.signal).maybeSingle();
         if (error) throw error;

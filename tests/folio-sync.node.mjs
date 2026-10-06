@@ -125,3 +125,38 @@ test('host integration isolates accounts, accepts only its bridge, and embeds an
       assert.equal(offline.window.document.querySelector('iframe'),null);} finally {offline.window.close();}
   } finally {w.close();}
 });
+
+test('a known revision uploads edits without reading the cloud first, and polling downloads no notebook body', async () => {
+  const a=setup(undefined,{project:{text:'online'},revision:3,mutation_id:'remote'});
+  await a.client.sync();                       // first contact: revision unknown, cloud copy adopted
+  assert.equal(a.project.text,'online');
+  const calls=[];const original=a.client.request;
+  a.client.request=async(op,args)=>{calls.push([op,!!args?.full]);return original(op,args);};
+  a.text='typed locally';await a.client.sync();
+  assert.deepEqual(calls,[['save',false]],'one round trip, no read before the save');
+  assert.equal(a.remote.project.text,'typed locally');assert.equal(a.remote.revision,4);
+  calls.length=0;await a.client.sync();
+  assert.deepEqual(calls,[['load',false]],'idle polling reads only the revision');
+});
+
+test('a stale direct upload is rejected by the save and keeps both copies for review', async () => {
+  const a=setup(undefined,{project:{text:'online'},revision:3,mutation_id:'remote'});
+  await a.client.sync();
+  a.remote={project:{text:'other device'},revision:4,mutation_id:'other'};
+  a.text='mine';await a.client.sync();
+  assert.ok(a.status.includes('conflict'));
+  assert.equal(a.remote.project.text,'other device');assert.equal(a.project.text,'mine');
+  assert.equal(a.client.conflict.project.text,'other device');
+});
+
+test('a remote change is downloaded only when it will be applied', async () => {
+  const a=setup(undefined,{project:{text:'online'},revision:3,mutation_id:'remote'});
+  await a.client.sync();
+  a.remote={project:{text:'newer'},revision:5,mutation_id:'other'};
+  const calls=[];const original=a.client.request;
+  a.client.request=async(op,args)=>{calls.push([op,!!args?.full]);return original(op,args);};
+  a.client.canApply=()=>false;await a.client.sync();
+  assert.deepEqual(calls,[['load',false]],'no download while the user is still typing');
+  a.client.canApply=()=>true;calls.length=0;await a.client.sync();
+  assert.deepEqual(calls,[['load',false],['load',true]]);assert.equal(a.project.text,'newer');
+});
