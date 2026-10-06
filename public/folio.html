@@ -468,6 +468,36 @@ button{min-height:40px;touch-action:manipulation}
   #print-layout-warning{grid-column:1;grid-row:4;align-self:end;max-height:80px}
  }
 }
+</style>
+<style id="touch-ux">
+/* iPad / touch polish. Everything here is additive and scoped to touch or tablet widths. */
+@media screen and (pointer:coarse){
+ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+ button,select,summary,label,[role=tab],.drug-item,.page-tool-switch button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+ /* Safari zooms the whole page when a field smaller than 16px receives focus. */
+ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=color]):not([type=file]):not([type=hidden]),select,textarea{font-size:16px!important;min-height:44px}
+ input[type=range]{min-height:44px;height:44px;touch-action:pan-y}
+ input[type=checkbox],input[type=radio]{width:22px;height:22px;flex:none}
+ label.check-label,.setting-row label{min-height:44px;display:flex;align-items:center}
+ .source-list a,.source-link,#editor-panel a{display:inline-flex;align-items:center;min-height:44px}
+ .preview-controls select{min-width:120px}
+ .preview-controls label{font-size:13px}
+ #spread-switch button{min-height:44px}
+}
+@media screen and (min-width:741px) and (max-width:1280px) and (orientation:portrait){
+ /* One tidy header row instead of a half-width brand and a wrapped action cluster. */
+ .topbar{flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important;gap:12px!important}
+ .topbar>div:first-child{flex:1 1 auto!important;width:auto!important;min-width:0}
+ .topbar .top-actions{width:auto!important;flex:0 0 auto!important;flex-wrap:nowrap!important;justify-content:flex-end}
+ .topbar .top-actions>button{flex:0 0 auto;max-width:none;white-space:nowrap}
+ #save-status{font-size:12px;color:#7d6d74;white-space:nowrap}
+}
+@media screen and (max-width:1280px){.single-view .preview-meta,.single-view #page-tool-hint{display:none}}
+#spread-switch{display:inline-grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:2px}
+#spread-switch button{padding:8px 12px;font-size:12px;white-space:nowrap}
+
+@media screen and (min-width:741px) and (max-width:1280px) and (orientation:landscape){#spread-switch{display:grid!important;width:100%}}
+@media screen and (max-width:740px){#spread-switch{display:none!important}}
 </style></head>
 <body data-pane="page">
 <svg aria-hidden="true" id="icons" style="position:absolute;width:0;height:0;overflow:hidden"><defs>
@@ -494,7 +524,7 @@ button{min-height:40px;touch-action:manipulation}
 <header class="topbar"><div><div class="eyebrow">PHARMACOLOGY / DRUG INDEX</div><span class="mobile-brand">folio.</span><h1>Drug index</h1></div><div class="top-actions"><span class="save-status" id="save-status" role="status">Ready</span><button id="import-project" title="Import a previously exported JSON project"><svg class="icon"><use href="#i-upload"></use></svg>Open</button><button id="export-pdf" title="Save the full editable folio, including all notes and settings"><svg aria-hidden="true" class="icon"><use href="#i-download"></use></svg>Save HTML</button><button class="primary" id="print-button"><svg class="icon"><use href="#i-print"></use></svg>Print / PDF</button><details class="tools-menu" id="tools-menu"><summary aria-label="Notebook tools"><svg class="icon"><use href="#i-sliders"></use></svg><span class="sr-only">Tools</span></summary><nav aria-label="Notebook tools" class="tools-popover"><button data-view="notebook">Edit notes</button><button data-view="settings">Page setup</button><button data-view="handwriting">Handwriting</button><button data-view="help">Help &amp; saving</button></nav></details></div><nav aria-label="Notebook tools" class="mobile-quick"><button data-view="handwriting">Handwriting</button><button data-view="settings">Page setup</button><button data-view="help">Help &amp; saving</button></nav></header>
 <div class="workspace"><section aria-label="Note editor" class="editor-panel" id="editor-panel"></section>
 <section aria-label="Notebook page preview" class="preview-panel"><div class="preview-context"><div><span>YOUR NOTEBOOK</span><strong id="active-drug-name">Pilocarpine</strong></div><button class="quiet source-mini" id="page-source-review" title="View the original PDF text and review notes"><svg class="icon"><use href="#i-check"></use></svg>Source review</button></div><div class="preview-toolbar"><div class="preview-label"><span class="live-dot"></span>LIVE PREVIEW</div><div class="toolbar-right"><label class="sr-only" for="scope-select">Pages to preview and print</label><select id="scope-select"><option value="selected">Selected drug only</option><option value="filtered">Filtered library</option><option value="all">All drug notes</option></select><button class="small" id="btn-section-colors" style="font-weight:600;color:var(--wine);background:#f6ecef;border-color:#dbc5cc;display:inline-flex;align-items:center;gap:4px" title="Edit a section’s text, size, alignment and colors"><svg aria-hidden="true" class="icon"><use href="#i-sliders"></use></svg>Section editor</button><button class="small quiet" id="show-help" title="Printing instructions">Help</button></div></div><div class="preview-meta" id="preview-meta">A5 · 148 × 210 mm · estimated refill size</div>
-<div class="preview-controls"><div aria-label="Page interaction mode" class="page-tool-switch" role="group"><button aria-pressed="true" data-page-tool="read" type="button"><svg class="icon"><use href="#i-book"></use></svg>Read</button><button aria-pressed="false" data-page-tool="type" type="button"><svg class="icon"><use href="#i-pen"></use></svg>Type</button><button aria-pressed="false" data-page-tool="resize" type="button"><svg class="icon"><use href="#i-sliders"></use></svg>Resize</button></div><label for="preview-zoom">Preview zoom <select id="preview-zoom"><option value="width">Fit width</option><option value="page">Fit page</option><option value="100">100%</option><option value="125">125%</option><option value="150">150%</option></select></label><button aria-pressed="false" id="focus-page">Focus page</button></div><p class="page-tool-hint" id="page-tool-hint" role="status"></p>
+<div class="preview-controls"><div aria-label="Page interaction mode" class="page-tool-switch" role="group"><button aria-pressed="true" data-page-tool="read" type="button"><svg class="icon"><use href="#i-book"></use></svg>Read</button><button aria-pressed="false" data-page-tool="type" type="button"><svg class="icon"><use href="#i-pen"></use></svg>Type</button><button aria-pressed="false" data-page-tool="resize" type="button"><svg class="icon"><use href="#i-sliders"></use></svg>Resize</button></div><label for="preview-zoom">Preview zoom <select id="preview-zoom"><option value="width">Fit width</option><option value="page">Fit page</option><option value="100">100%</option><option value="125">125%</option><option value="150">150%</option></select></label><div aria-label="Page view" class="page-tool-switch" id="spread-switch" role="group"><button aria-pressed="true" data-page-view="spread" type="button" title="Show the front and back pages side by side">Spread</button><button aria-pressed="false" data-page-view="single" type="button" title="Show one larger page at a time">Single</button></div><button aria-pressed="false" id="focus-page">Focus page</button></div><p class="page-tool-hint" id="page-tool-hint" role="status"></p>
 <div class="sheet-stage">
 <div class="scm-backdrop no-print" hidden="" id="scm-backdrop"></div>
 <div aria-labelledby="scm-title" aria-modal="true" class="section-color-modal no-print" data-tab="text" hidden="" id="section-color-modal" role="dialog">
@@ -2194,11 +2224,18 @@ const stage=document.querySelector('.sheet-stage');
 // Start touch sessions with the whole page visible; this is display-only state.
 let touchPreviewZoom=matchMedia('(pointer:coarse)').matches?'page':null;
 let companionPreviewMarkup='';
+// Spread (front and back together) is the default; Single gives one larger page, handy on a portrait iPad.
+let singlePageView=false;try{singlePageView=localStorage.getItem('folio-page-view')==='single'}catch{}
+function syncPageView(){document.body.classList.toggle('single-view',singlePageView);for(const b of document.querySelectorAll('#spread-switch [data-page-view]'))b.setAttribute('aria-pressed',String((b.dataset.pageView==='single')===singlePageView));}
+function setPageView(single){
+ if(single===singlePageView)return;singlePageView=single;try{localStorage.setItem('folio-page-view',single?'single':'spread')}catch{}
+ syncPageView();updatePreview();fitPaper();
+}
 function renderSpread(p){
  const siblings=!calibration&&p?.drug?pages.map((page,index)=>({page,index})).filter(item=>item.page.drug===p.drug):[];
  const pairStart=p?.part%2===0?p.part-1:p?.part;
  const pair=siblings.filter(item=>item.page.part>=pairStart&&item.page.part<pairStart+2);
- const other=pair.find(item=>item.index!==pageIndex)||null,paired=!!other;
+ const other=singlePageView?null:pair.find(item=>item.index!==pageIndex)||null,paired=!!other;
  const label=page=>page?.part===1?'Front / Page 1':page?.part===2?'Back / Page 2':`Page ${page?.part||1}`;
  $('drug-spread').dataset.paired=String(paired);
  $('drug-spread').setAttribute('aria-label',`${p?.drug?.name||'Notebook'} · ${paired?'Front and back pages':'Page preview'}`);
@@ -2234,6 +2271,14 @@ function fitPaper(){
  stage.style.justifyContent=width*columns+gap*(columns-1)>available?'flex-start':'center';
  renderSectionResize();
 }
+for(const b of document.querySelectorAll('#spread-switch [data-page-view]'))b.onclick=()=>setPageView(b.dataset.pageView==='single');
+syncPageView();
+// Magic Keyboard / desktop: arrow keys turn pages when no field is being edited.
+document.addEventListener('keydown',e=>{
+ if(e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey||(e.key!=='ArrowLeft'&&e.key!=='ArrowRight'))return;
+ const t=e.target;if(t?.closest?.('input,select,textarea,[contenteditable],dialog,[role=slider],[role=tablist]')||document.querySelector('dialog[open]')||!$('section-color-modal').hidden)return;
+ const btn=$(e.key==='ArrowLeft'?'prev-page':'next-page');if(btn&&!btn.disabled){e.preventDefault();btn.click();}
+});
 $('preview-zoom').onchange=e=>{state.settings.zoom=e.target.value;if(touchPreviewZoom!==null)touchPreviewZoom=e.target.value;fitPaper();save()};
 $('focus-page').onclick=()=>{const on=document.body.classList.toggle('focus-mode');$('focus-page').textContent=on?'Back to editor':'Focus page';$('focus-page').setAttribute('aria-pressed',String(on));fitPaper()};
 $('preview').addEventListener('click',e=>{
