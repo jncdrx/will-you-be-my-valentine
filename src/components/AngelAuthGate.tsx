@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Heart, Lock, Mail, ArrowRight, RefreshCw, AlertCircle } from "lucide-react";
+import { Heart, Lock, ArrowRight, RefreshCw, AlertCircle } from "lucide-react";
 import { RECIPIENT_EMAIL, signInRecipient } from "../lib/auth";
 
 export function AngelAuthGate({ onUnlocked }: { onUnlocked: () => void }) {
@@ -30,10 +30,6 @@ export function AngelAuthGate({ onUnlocked }: { onUnlocked: () => void }) {
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#976474]">A little world, just for you</p>
         <h1 id="angel-welcome" className="font-serif text-[36px] font-normal leading-[1.12] tracking-[-0.04em] text-[#502f3a] sm:text-[42px]">Welcome home,<br /><span className="italic text-[#9c5367]">my baby angel.</span></h1>
         <p className="mb-7 mt-4 text-sm leading-6 text-[#796b70]">Enter your password to open your personal page.</p>
-        <div className="mb-6 flex items-center gap-3 rounded-xl border border-[#eadde0] bg-[#f8f0f1] p-4 text-[#60434e]">
-          <Mail size={19} className="shrink-0" aria-hidden="true" />
-          <div className="min-w-0"><p className="mb-1 text-[11px] text-[#927881]">Your sign-in email</p><p className="break-all text-sm font-medium">{RECIPIENT_EMAIL}</p></div>
-        </div>
         <form onSubmit={submit} aria-busy={busy} className="space-y-5">
           <div>
             <label htmlFor="angel-password" className="mb-2 block text-xs font-semibold text-[#60434e]">Password</label>

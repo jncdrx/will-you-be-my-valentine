@@ -8,7 +8,7 @@ describe("password sign-in", () => {
   beforeEach(() => { vi.clearAllMocks(); mocks.signIn.mockResolvedValue({ allowed: true, user: {} }); });
   it("signs in the fixed recipient with the password and unlocks", async () => {
     const unlocked = vi.fn(); render(<AngelAuthGate onUnlocked={unlocked} />);
-    expect(screen.getByText("angelicogn@gmail.com")).toBeInTheDocument();
+    expect(screen.queryByText("angelicogn@gmail.com")).not.toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "secret" } });
     fireEvent.click(screen.getByRole("button", { name: /open my page/i }));
     await waitFor(() => expect(unlocked).toHaveBeenCalledOnce());
