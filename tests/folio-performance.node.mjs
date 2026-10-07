@@ -110,4 +110,33 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
       }
     } finally { w.close(); }
   });
+  test(`${path}: a second real handwriting sample covers every letter and digit within the original line metrics`, () => {
+    const dom = new JSDOM(readFileSync(path, 'utf8'), { runScripts: 'outside-only', url: 'http://localhost' });
+    const w = dom.window;
+    try {
+      w.HTMLCanvasElement.prototype.getContext = () => ({ measureText: text => ({ width: text.length }) });
+      w.requestAnimationFrame = () => 1;
+      const script = [...w.document.scripts].find(s => s.textContent.includes('function pageSVG')).textContent;
+      w.eval(script.slice(0, script.lastIndexOf('prepareGlyphColors().then(')) + `window.api={ALT_GLYPHS,BASE_GLYPHS,variantGlyph,hasAltSample,defs,handLine,VARIANT_PLAN,get state(){return state}};`);
+      const a = w.api, chars = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'];
+      assert.deepEqual(chars.filter(c => !a.ALT_GLYPHS[c]), [], 'every letter and digit has a second sample');
+      for (const c of chars) {
+        const alt = a.ALT_GLYPHS[c];
+        assert.match(alt.src, /^data:image\/png;base64,[A-Za-z0-9+/=]+$/);
+        assert.ok(alt.w > 4 && alt.h > 4 && alt.src.length < 300000, `${c} sample is a sensible size`);
+        const base = a.BASE_GLYPHS[c];
+        if (!base) continue; // digits come from the photo sample at runtime
+        assert.ok(Math.abs((alt.rel - alt.desc) - (base.rel - base.desc)) < .011, `${c} sits at the original height above the baseline`);
+        assert.ok(alt.desc <= base.desc * 1.2 + .011, `${c} descender stays inside the line clearance`);
+      }
+      // The second sample is what variant 1 draws, and it brings its own proportions to the symbol.
+      assert.ok(a.hasAltSample('a'));assert.equal(a.variantGlyph('a', 1).src, a.ALT_GLYPHS.a.src);assert.equal(a.variantGlyph('a', 0).src, a.BASE_GLYPHS.a.src);
+      assert.equal(a.variantGlyph('a', 2).src, a.BASE_GLYPHS.a.src);assert.equal(a.variantGlyph('a', 3).src, a.ALT_GLYPHS.a.src);
+      const symbol = new w.DOMParser().parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${a.defs()}</svg>`, 'image/svg+xml').getElementById('g97v1-ink');
+      assert.equal(symbol.getAttribute('viewBox'), `0 0 ${a.ALT_GLYPHS.a.w} ${a.ALT_GLYPHS.a.h}`);
+      // A user's own replacement sample for a letter wins over the built-in second sample.
+      a.state.glyphs.a = { ...a.BASE_GLYPHS.a, src: 'data:image/png;base64,AAAA' };
+      assert.equal(a.hasAltSample('a'), false);assert.equal(a.variantGlyph('a', 1).src, 'data:image/png;base64,AAAA');
+    } finally { w.close(); }
+  });
 }
