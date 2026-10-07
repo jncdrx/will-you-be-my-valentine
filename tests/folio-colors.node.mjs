@@ -30,9 +30,8 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
         blocks: keys.map(key => ({ kind: 'section', key, top: 30, bottom: 50,
           y: 35, headingCap: 3, headLines: [key], rows: [] })) };
       const expected = {
-        atropine: '#aa285d', neostigmine: '#aa285d', epinephrine: '#795035',
-        phentolamine: '#286444', hydrochlorothiazide: '#efaa32',
-        nitroglycerin: '#b4232c', amiodarone: '#7041a0',
+        omeprazole: '#286444', diphenhydramine: '#795035',
+        phenobarbital: '#efaa32', somatropin: '#7041a0',
       };
       const luminance = hex => {
         const rgb = hex.slice(1).match(/../g).map(v => parseInt(v, 16) / 255)
@@ -61,10 +60,10 @@ for (const path of ['public/folio.html', 'public/folio/index.html']) {
           for (const badge of svg.querySelectorAll('.card-badge-bg')) assert.equal(badge.getAttribute('fill'), accent);
         }
       }
-      const multi = api.state.drugs.find(d => d.id === 'propranolol');
+      const multi = { groups: ['Gastrointestinal', 'Endocrine glands'] };
       assert.equal(api.categoryAccent(multi), '#286444', 'first assigned category wins');
       const reloaded = api.validProject(JSON.parse(JSON.stringify(api.state)));
-      assert.equal(api.getSectionColors('drug', reloaded.drugs.find(d => d.id === 'pilocarpine')).accent, '#aa285d');
+      assert.equal(api.getSectionColors('drug', reloaded.drugs.find(d => d.id === 'octreotide')).accent, '#7041a0');
       const preview = w.document.getElementById('preview');
       preview.innerHTML = api.pageSVG(p, 0, 1);
       const svg = preview.firstElementChild;
