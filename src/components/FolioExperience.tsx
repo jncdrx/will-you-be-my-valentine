@@ -46,7 +46,7 @@ export function FolioExperience({ onBackToHub }: FolioExperienceProps) {
               </span>
             </div>
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#f2e8ea] text-[#743648] border border-[#bd8d9a]/30">
-              121 Entries
+              81 Entries
             </span>
           </div>
         </div>
