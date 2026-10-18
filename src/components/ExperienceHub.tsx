@@ -247,6 +247,14 @@ export function ExperienceHub({
             </div>
           </motion.button>
         </div>
+
+        {/* Link to the standalone Pharmacology prelim keepsake page */}
+        <a
+          href="angelica_ogana_prelim_milestone_keepsake.html"
+          className="mt-8 text-xs sm:text-sm font-semibold text-zinc-400 hover:text-rose-300 underline underline-offset-4 transition-colors"
+        >
+          Open the Pharmacology prelim keepsake →
+        </a>
       </div>
 
       {/* Bottom Footer Credits */}
