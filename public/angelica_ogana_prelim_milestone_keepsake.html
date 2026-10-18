@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Angelica Ogana • Pharmacology Prelim Keepsake</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond, Plus Jakarta Sans, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: {
+                            light: '#FDFBF7',
+                            DEFAULT: '#FAF7F2',
+                            warm: '#F3EDE2',
+                            border: '#E5DEC9'
+                        },
+                        ink: {
+                            DEFAULT: '#1C1917',
+                            muted: '#57534E',
+                            subtle: '#78716C'
+                        },
+                        gold: {
+                            light: '#D4B886',
+                            DEFAULT: '#B8925A',
+                            dark: '#8C6B3B'
+                        },
+                        blush: {
+                            light: '#F4E3DF',
+                            DEFAULT: '#D98A7C',
+                            dark: '#B86B5D'
+                        },
+                        sage: {
+                            light: '#E6ECE6',
+                            DEFAULT: '#5C705E',
+                            dark: '#3F4F41'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Editorial & Stationery Styling */
+        :root {
+            --bg-paper: #FAF7F2;
+            --ink: #1C1917;
+            --gold: #B8925A;
+        }
+
+        body {
+            background-color: #EFECE6;
+            color: #1C1917;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Subtle organic paper grain overlay using inline SVG data URI */
+        .paper-texture {
+            background-color: #FAF7F2;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+        }
+
+        /* Delicate double-hairline frame */
+        .editorial-frame {
+            border: 1px solid #D6CEBF;
+            position: relative;
+        }
+        .editorial-frame::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 1px solid #E5DEC9;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Wax Seal Button Animation & Craft */
+        .wax-seal {
+            background: radial-gradient(circle at 35% 35%, #D98A7C 0%, #B86B5D 55%, #8F4B3E 100%);
+            box-shadow: 
+                0 10px 25px -5px rgba(143, 75, 62, 0.45),
+                inset 0 2px 4px rgba(255, 255, 255, 0.35),
+                inset 0 -3px 6px rgba(60, 20, 15, 0.5);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .wax-seal:hover {
+            transform: scale(1.05) rotate(-2deg);
+            box-shadow: 
+                0 15px 30px -5px rgba(143, 75, 62, 0.55),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                inset 0 -3px 6px rgba(60, 20, 15, 0.5);
+        }
+        .wax-seal:active {
+            transform: scale(0.97);
+        }
+
+        /* Envelope Overlay Transition */
+        #envelope-overlay {
+            transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.85s;
+        }
+        #envelope-overlay.opened {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Certificate Reveal Stagger */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .revealed .reveal-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .revealed .delay-100 { transition-delay: 0.12s; }
+        .revealed .delay-200 { transition-delay: 0.24s; }
+        .revealed .delay-300 { transition-delay: 0.38s; }
+        .revealed .delay-400 { transition-delay: 0.52s; }
+        .revealed .delay-500 { transition-delay: 0.66s; }
+
+        /* Rotating Official Stamp */
+        @keyframes slowSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spin-slow {
+            animation: slowSpin 28s linear infinite;
+        }
+
+        /* Tabular numerals for crisp score counting */
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Editable Note Focus Styling */
+        [contenteditable="true"]:focus {
+            outline: none;
+            background-color: rgba(184, 146, 90, 0.08);
+            border-radius: 4px;
+            box-shadow: 0 0 0 2px rgba(184, 146, 90, 0.3);
+        }
+
+        /* Print Media Styles for Clean PDF / Keepsake Export */
+        @media print {
+            body {
+                background-color: #FAF7F2 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #envelope-overlay,
+            .no-print,
+            #petal-canvas {
+                display: none !important;
+            }
+            #main-certificate {
+                box-shadow: none !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                border: 1px solid #B8925A !important;
+            }
+            .reveal-item {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-3 sm:p-6 md:p-10 selection:bg-blush-light selection:text-ink">
+
+    <!-- Particle Canvas for Warm Gold & Blush Petals -->
+    <canvas id="petal-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <!-- ==========================================
+         1. INTERACTIVE ENVELOPE / WAX SEAL OVERLAY
+         ========================================== -->
+    <div id="envelope-overlay" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-[#E8E2D5]/95 backdrop-blur-sm">
+        <div class="max-w-md w-full paper-texture editorial-frame p-8 sm:p-12 shadow-2xl text-center relative overflow-hidden rounded-sm">
+            <!-- Subtle Corner Flourishes -->
+            <svg class="w-8 h-8 text-gold/50 absolute top-4 left-4" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M2 30V2H30" />
+                <path d="M6 22V6H22" stroke-opacity="0.5"/>
+            </svg>
+            <svg class="w-8 h-8 text-gold/50 absolute top-4 right-4 rotate-90" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M2 30V2H30" />
+                <path d="M6 22V6H22" stroke-opacity="0.5"/>
+            </svg>
+            <svg class="w-8 h-8 text-gold/50 absolute bottom-4 left-4 -rotate-90" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M2 30V2H30" />
+                <path d="M6 22V6H22" stroke-opacity="0.5"/>
+            </svg>
+            <svg class="w-8 h-8 text-gold/50 absolute bottom-4 right-4 rotate-180" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M2 30V2H30" />
+                <path d="M6 22V6H22" stroke-opacity="0.5"/>
+            </svg>
+
+            <p class="font-mono text-[11px] tracking-[0.25em] uppercase text-ink-muted mb-1">
+                Pharmacology Academic Dispatch
+            </p>
+            <p class="font-serif italic text-xs text-gold-dark mb-3">
+                Materia Medica &bull; Prelim Examination Record
+            </p>
+            
+            <div class="w-12 h-[1px] bg-gold/60 mx-auto mb-5"></div>
+
+            <p class="font-serif italic text-lg text-ink-muted mb-1">Delivered exclusively for</p>
+            <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-ink tracking-tight mb-2">
+                Angelica Ogana
+            </h1>
+            <p class="font-mono text-xs text-gold-dark tracking-widest mb-8">
+                ID NO. 24100822 &bull; PHARMACOLOGY
+            </p>
+
+            <!-- Interactive Wax Seal Button -->
+            <div class="relative flex flex-col items-center justify-center my-4">
+                <!-- Envelope Flap Lines -->
+                <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-gold/40 to-transparent absolute top-1/2 -z-0"></div>
+                
+                <button id="open-seal-btn" onclick="openDispatch()" aria-label="Break Seal to Open" class="wax-seal w-24 h-24 rounded-full flex flex-col items-center justify-center text-paper-light relative z-10 cursor-pointer group focus:outline-none">
+                    <!-- Inner embossed ring -->
+                    <div class="w-20 h-20 rounded-full border border-paper-light/30 flex flex-col items-center justify-center p-2">
+                        <span class="font-serif italic text-2xl font-semibold leading-none tracking-wider">Rx</span>
+                        <span class="font-mono text-[8px] tracking-[0.2em] uppercase mt-1 opacity-90">Unseal</span>
+                    </div>
+                </button>
+            </div>
+
+            <p class="font-serif italic text-sm text-ink-subtle mt-6">
+                Tap the apothecary wax seal to open your Pharmacology keepsake
+            </p>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         2. TOP ACTION BAR (Hidden when printing)
+         ========================================== -->
+    <div class="no-print max-w-4xl w-full mb-4 flex flex-wrap items-center justify-between gap-3 px-1">
+        <div class="flex items-center gap-2 text-xs font-mono text-ink-muted">
+            <span class="inline-block w-2 h-2 rounded-full bg-sage"></span>
+            <span>DISPATCH #24100822 &bull; SUBJECT: PHARMACOLOGY (PRELIMS)</span>
+        </div>
+        <div class="flex items-center gap-2.5">
+            <button onclick="triggerCelebration()" class="px-3.5 py-2 rounded-sm bg-paper border border-gold/40 text-ink text-xs font-medium tracking-wide hover:bg-gold hover:text-white hover:border-gold transition-colors flex items-center gap-1.5 shadow-sm">
+                <svg class="w-3.5 h-3.5 text-gold-dark group-hover:text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <span>Shower Petals for Angel</span>
+            </button>
+
+            <button onclick="toggleEditNote()" id="edit-note-btn" class="px-3.5 py-2 rounded-sm bg-paper border border-stone-300 text-ink-muted text-xs font-medium tracking-wide hover:border-ink hover:text-ink transition-colors flex items-center gap-1.5 shadow-sm">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                </svg>
+                <span id="edit-note-label">Customize Note</span>
+            </button>
+
+            <button onclick="window.print()" class="px-3.5 py-2 rounded-sm bg-ink text-paper-light text-xs font-medium tracking-wide hover:bg-ink/85 transition-colors flex items-center gap-1.5 shadow-sm">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
+                </svg>
+                <span>Save Keepsake</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         3. MAIN BESPOKE EDITORIAL CERTIFICATE CARD
+         ========================================== -->
+    <main id="main-certificate" class="max-w-4xl w-full paper-texture editorial-frame shadow-[0_25px_60px_-15px_rgba(28,25,23,0.14)] px-6 py-10 sm:px-14 sm:py-16 md:px-20 md:py-20 relative overflow-hidden rounded-sm">
+        
+        <!-- Ornate Fine-Line Corner Vector Flourishes -->
+        <svg class="w-12 h-12 text-gold/45 absolute top-5 left-5 pointer-events-none" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M2 46V2H46" />
+            <path d="M8 34V8H34" />
+            <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+        </svg>
+        <svg class="w-12 h-12 text-gold/45 absolute top-5 right-5 rotate-90 pointer-events-none" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M2 46V2H46" />
+            <path d="M8 34V8H34" />
+            <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+        </svg>
+        <svg class="w-12 h-12 text-gold/45 absolute bottom-5 left-5 -rotate-90 pointer-events-none" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M2 46V2H46" />
+            <path d="M8 34V8H34" />
+            <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+        </svg>
+        <svg class="w-12 h-12 text-gold/45 absolute bottom-5 right-5 rotate-180 pointer-events-none" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M2 46V2H46" />
+            <path d="M8 34V8H34" />
+            <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+        </svg>
+
+        <!-- SECTION A: Editorial Masthead & Serial Metadata -->
+        <header class="reveal-item delay-100 border-b border-paper-border pb-6 mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <p class="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-gold-dark font-medium">
+                    Subject Dispatch: Pharmacology &bull; Prelim Period
+                </p>
+                <p class="font-serif italic text-sm text-ink-muted mt-0.5">
+                    A Commemorative Record of Clinical Dedication &amp; Mastery
+                </p>
+            </div>
+            
+            <!-- Stamped Student ID & Subject Badge -->
+            <div class="inline-flex items-center self-start sm:self-auto border border-ink/20 bg-paper-warm/70 px-3.5 py-1.5 rounded-sm divide-x divide-ink/20">
+                <div class="pr-3">
+                    <span class="font-mono text-[10px] uppercase tracking-widest text-ink-subtle mr-1.5">COURSE</span>
+                    <span class="font-mono text-xs sm:text-sm font-semibold tracking-wider text-gold-dark">PHARMACOLOGY</span>
+                </div>
+                <div class="pl-3">
+                    <span class="font-mono text-[10px] uppercase tracking-widest text-ink-subtle mr-1.5">ID</span>
+                    <span class="font-mono text-xs sm:text-sm font-medium tracking-wider text-ink">24100822</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECTION B: Centerpiece Hero Headline -->
+        <section class="reveal-item delay-200 text-center max-w-2xl mx-auto mb-12">
+            <!-- Apothecary Botanical & Mortar Divider -->
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <span class="w-12 h-[1px] bg-gold/50"></span>
+                <svg class="w-5 h-5 text-gold-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 11h16l-1.5 6.5a5 5 0 01-4.88 3.9H10.38a5 5 0 01-4.88-3.9L4 11z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.5 11L18 4.5M8 21h8" />
+                </svg>
+                <span class="w-12 h-[1px] bg-gold/50"></span>
+            </div>
+
+            <div class="inline-block border border-gold/40 bg-paper-warm/80 px-3.5 py-1 rounded-sm mb-4">
+                <span class="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-gold-dark font-semibold">
+                    &#8478; &bull; Pharmacology Prelim Milestone
+                </span>
+            </div>
+
+            <p class="font-serif italic text-xl sm:text-2xl text-blush-dark mb-1">
+                With immense pride &amp; admiration, congratulations to
+            </p>
+            
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-semibold text-ink tracking-tight leading-[1.08] mb-4">
+                Angelica Ogana
+            </h1>
+
+            <p class="font-sans text-xs sm:text-sm uppercase tracking-[0.22em] text-ink-muted font-medium">
+                Affectionately Known As &ldquo;Angel&rdquo; &bull; Pharmacology Examination Honors
+            </p>
+        </section>
+
+        <!-- SECTION C: The Prelim Ledger (Tactile Typographic Score Breakdown) -->
+        <section class="reveal-item delay-300 mb-12">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-ink-subtle">
+                    I. Official Pharmacology Prelim Ledger
+                </span>
+                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-sage font-medium flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-sage"></span>
+                    Pharmacology Standing: Passed with Distinction
+                </span>
+            </div>
+
+            <!-- 3-Column Architectural Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-12 border-t-2 border-b-2 border-ink divide-y md:divide-y-0 md:divide-x divide-paper-border bg-paper-light/60">
+                
+                <!-- 1. Pharmacology Lecture Examination (41) -->
+                <div class="md:col-span-3 p-6 sm:p-7 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-[10px] uppercase tracking-widest text-ink-subtle">Pharmacology 01</span>
+                            <span class="font-serif italic text-xs text-gold-dark">Therapeutics</span>
+                        </div>
+                        <h2 class="font-serif text-xl font-semibold text-ink leading-snug">
+                            Lecture Examination
+                        </h2>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-paper-border/80 flex items-baseline gap-2">
+                        <span id="score-lecture" class="font-serif text-5xl sm:text-6xl font-semibold text-ink tabular-nums leading-none">
+                            0
+                        </span>
+                        <span class="font-mono text-xs uppercase tracking-wider text-ink-muted">pts</span>
+                    </div>
+                    <p class="text-[11px] text-ink-subtle mt-2 leading-relaxed">
+                        Command of drug classifications, pharmacokinetics &amp; mechanisms of action.
+                    </p>
+                </div>
+
+                <!-- 2. Pharmacology Laboratory Examination (49) -->
+                <div class="md:col-span-4 p-6 sm:p-7 flex flex-col justify-between bg-blush-light/25 relative overflow-hidden">
+                    <!-- Subtle highlight tag -->
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-mono text-[10px] uppercase tracking-widest text-blush-dark font-medium">Pharmacology 02</span>
+                        <span class="px-2 py-0.5 text-[9px] font-mono uppercase tracking-widest bg-blush/15 text-blush-dark rounded-sm font-medium">
+                            Stellar Practical
+                        </span>
+                    </div>
+                    <div>
+                        <h2 class="font-serif text-xl font-semibold text-ink leading-snug">
+                            Laboratory Examination
+                        </h2>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-paper-border/80 flex items-baseline gap-2">
+                        <span id="score-lab" class="font-serif text-5xl sm:text-6xl font-semibold text-blush-dark tabular-nums leading-none">
+                            0
+                        </span>
+                        <span class="font-mono text-xs uppercase tracking-wider text-ink-muted">pts</span>
+                    </div>
+                    <p class="text-[11px] text-ink-muted mt-2 leading-relaxed">
+                        Exceptional precision in dosage calculations, clinical assays &amp; lab mastery.
+                    </p>
+                </div>
+
+                <!-- 3. Final Pharmacology Prelim Grade (80.43) -->
+                <div class="md:col-span-5 p-6 sm:p-7 flex flex-col justify-between bg-paper-warm/50 relative">
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <span class="font-mono text-[10px] uppercase tracking-widest text-gold-dark font-medium block mb-1">
+                                Cumulative Pharmacology Rating
+                            </span>
+                            <h2 class="font-serif text-2xl font-semibold text-ink leading-snug">
+                                Official Prelim Grade
+                            </h2>
+                        </div>
+
+                        <!-- Sage "Prelim Passed" Stamp Badge -->
+                        <div class="border border-sage/50 bg-sage-light/80 text-sage-dark px-2.5 py-1 rounded-sm flex items-center gap-1.5 shrink-0">
+                            <svg class="w-3.5 h-3.5 text-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                            <span class="font-mono text-[10px] font-medium tracking-widest uppercase">Prelim Passed</span>
+                        </div>
+                    </div>
+
+                    <div class="my-5 flex items-baseline gap-1.5">
+                        <span id="score-final" class="font-serif text-6xl sm:text-7xl font-bold text-ink tabular-nums tracking-tight leading-none">
+                            0.00
+                        </span>
+                        <span class="font-serif italic text-2xl text-gold-dark font-semibold">%</span>
+                    </div>
+
+                    <div class="pt-3 border-t border-paper-border flex items-center justify-between text-[11px] font-mono text-ink-muted">
+                        <span>ID: 24100822 &bull; PHARMACOLOGY</span>
+                        <span class="text-gold-dark font-medium">★ HONORS STANDING</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION D: Personal Affectionate Letter ("A Note For You, Angel") -->
+        <section class="reveal-item delay-400 mb-12">
+            <div class="max-w-2xl mx-auto bg-paper-light border border-paper-border p-6 sm:p-10 relative shadow-sm">
+                <!-- Quote Mark Ornament -->
+                <span class="font-serif text-6xl text-gold/25 absolute top-3 left-5 leading-none select-none pointer-events-none">&ldquo;</span>
+
+                <div class="flex items-center justify-between mb-4 relative z-10">
+                    <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-gold-dark">
+                        II. A Personal Note On Conquering Pharmacology
+                    </span>
+                    <span id="edit-hint-badge" class="hidden font-mono text-[10px] text-blush-dark bg-blush-light/60 px-2 py-0.5 rounded-sm">
+                        Click text below to edit
+                    </span>
+                </div>
+
+                <!-- Editable Letter Content -->
+                <div id="personal-note-body" contenteditable="false" class="font-serif text-lg sm:text-xl text-ink leading-relaxed space-y-4 relative z-10 transition-all p-1">
+                    <p>
+                        My dearest <span class="italic font-semibold">Angel</span>,
+                    </p>
+                    <p>
+                        Everyone knows that <span class="font-semibold text-gold-dark">Pharmacology</span> is one of the most demanding subjects you will ever face—endless drug classifications, intricate mechanisms of action, therapeutic dosages, and side effects to master. Yet seeing you earn a <span class="font-semibold border-b border-gold/50">41 on your Lecture Exam</span>, a breathtaking <span class="font-semibold border-b border-blush">49 on your Laboratory Exam</span>, and an official <span class="font-semibold border-b border-sage">80.43% Prelim Grade</span> makes me prouder than words can properly hold.
+                    </p>
+                    <p>
+                        Behind these scores are all the quiet hours you poured in—the late nights memorizing drug tables and pathways, the moments you pushed through exhaustion, and the grace and discipline you bring to your studies. Scoring a 49 in the Pharmacology lab isn&rsquo;t luck; it is pure proof of your sharp clinical mind and how deeply you care about your future craft.
+                    </p>
+                    <p>
+                        Take a deep breath and celebrate this milestone today, my love. You earned every single fraction of that 80.43% in Pharmacology, and I will always be right here cheering for you through Midterms, Finals, and every chapter ahead.
+                    </p>
+                </div>
+
+                <!-- Letter Sign-off -->
+                <div class="mt-6 pt-5 border-t border-paper-border/70 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div>
+                        <p class="font-serif italic text-base text-ink-muted">With all my love and endless pride,</p>
+                        <p id="personal-note-signature" contenteditable="false" class="font-serif text-2xl font-semibold text-ink mt-0.5">
+                            John Cedrix
+                        </p>
+                    </div>
+
+                    <!-- Tactile Replay Counter Button -->
+                    <button onclick="animateAllScores(); triggerCelebration();" class="no-print self-start sm:self-auto text-[11px] font-mono uppercase tracking-widest text-gold-dark hover:text-ink transition-colors flex items-center gap-1.5 border-b border-gold/40 pb-0.5">
+                        <span>Celebrate 80.43% Again</span>
+                        <span>&rarr;</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION E: Official Footer & Bespoke Seal Stamp -->
+        <footer class="reveal-item delay-500 pt-6 border-t border-paper-border flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="text-center sm:text-left space-y-1">
+                <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-muted">
+                    PHARMACOLOGY RECORD FOR ANGELICA OGANA &bull; STUDENT ID: 24100822
+                </p>
+                <p class="font-serif italic text-xs text-ink-subtle">
+                    Pharmacology Lecture: 41 pts &nbsp;|&nbsp; Pharmacology Lab: 49 pts &nbsp;|&nbsp; Prelim Standing: 80.43% (Passed)
+                </p>
+            </div>
+
+            <!-- Bespoke Circular Vector Seal -->
+            <div class="relative w-24 h-24 flex items-center justify-center select-none shrink-0" onclick="triggerCelebration()" title="Click to celebrate Angel!">
+                <svg class="w-full h-full text-gold-dark/80 spin-slow cursor-pointer" viewBox="0 0 100 100">
+                    <defs>
+                        <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+                    </defs>
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="0.75" stroke-dasharray="2 2" />
+                    <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="0.75" />
+                    <text font-family="JetBrains Mono, monospace" font-size="6.1" letter-spacing="1.9" fill="currentColor">
+                        <textPath href="#circlePath">
+                            • PHARMACOLOGY HONORS • ANGELICA OGANA •
+                        </textPath>
+                    </text>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <span class="font-serif italic text-sm font-bold text-ink leading-none">80.43</span>
+                    <span class="font-mono text-[7px] uppercase tracking-widest text-sage-dark mt-0.5">PASSED</span>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Bottom Subtle Caption (Hidden on print) -->
+    <p class="no-print mt-5 text-center font-serif italic text-xs text-ink-subtle">
+        Crafted exclusively to celebrate Angelica Ogana&rsquo;s (24100822) Pharmacology Prelim Milestone &bull; Tip: Click &ldquo;Customize Note&rdquo; above to personalize the letter.
+    </p>
+
+    <!-- ==========================================
+         4. INTERACTIVE SCRIPTS (Counters, Petals, Editor)
+         ========================================== -->
+    <script>
+        // Core Academic Data for Angelica Ogana
+        const ANGEL_DATA = {
+            lecture: 41,
+            lab: 49,
+            finalGrade: 80.43
+        };
+
+        let isNoteEditable = false;
+
+        /**
+         * Opens the wax-sealed envelope, reveals the certificate with staggered animation,
+         * starts the score counters, and launches a celebratory gold/blush petal shower.
+         */
+        function openDispatch() {
+            const overlay = document.getElementById('envelope-overlay');
+            const mainCert = document.getElementById('main-certificate');
+            
+            overlay.classList.add('opened');
+            mainCert.classList.add('revealed');
+
+            // Start number counters shortly after envelope begins fading
+            setTimeout(() => {
+                animateAllScores();
+                triggerCelebration();
+            }, 350);
+        }
+
+        /**
+         * Smoothly counts up the Lecture (41), Lab (49), and Final Prelim Grade (80.43)
+         */
+        function animateAllScores() {
+            animateValue('score-lecture', 0, ANGEL_DATA.lecture, 1300, 0);
+            animateValue('score-lab', 0, ANGEL_DATA.lab, 1500, 0);
+            animateValue('score-final', 0, ANGEL_DATA.finalGrade, 1900, 2);
+        }
+
+        function animateValue(elementId, start, end, duration, decimals) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+
+            const startTime = performance.now();
+
+            function updateCounter(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease out quartic for an editorial, unhurried deceleration
+                const easeOut = 1 - Math.pow(1 - progress, 4);
+                const currentVal = start + (end - start) * easeOut;
+
+                el.textContent = currentVal.toFixed(decimals);
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    el.textContent = end.toFixed(decimals);
+                }
+            }
+
+            requestAnimationFrame(updateCounter);
+        }
+
+        /**
+         * Toggles live browser editing of the personal note and signature
+         */
+        function toggleEditNote() {
+            isNoteEditable = !isNoteEditable;
+            const noteBody = document.getElementById('personal-note-body');
+            const noteSig = document.getElementById('personal-note-signature');
+            const btnLabel = document.getElementById('edit-note-label');
+            const hintBadge = document.getElementById('edit-hint-badge');
+            const editBtn = document.getElementById('edit-note-btn');
+
+            noteBody.contentEditable = isNoteEditable ? "true" : "false";
+            noteSig.contentEditable = isNoteEditable ? "true" : "false";
+
+            if (isNoteEditable) {
+                btnLabel.textContent = "Lock Note";
+                hintBadge.classList.remove('hidden');
+                editBtn.classList.add('bg-gold/15', 'border-gold', 'text-ink');
+                noteBody.focus();
+            } else {
+                btnLabel.textContent = "Customize Note";
+                hintBadge.classList.add('hidden');
+                editBtn.classList.remove('bg-gold/15', 'border-gold', 'text-ink');
+            }
+        }
+
+        /**
+         * Custom Lightweight HTML5 Canvas Particle System
+         * Renders warm antique gold, soft blush, sage, and ivory petals/confetti
+         */
+        const canvas = document.getElementById('petal-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animationFrameId = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const EDITORIAL_PALETTE = [
+            '#B8925A', // Antique Gold
+            '#D4B886', // Champagne Gold
+            '#D98A7C', // Soft Terracotta Blush
+            '#EBBab0', // Pale Rose Petal
+            '#5C705E', // Muted Sage
+            '#F3EDE2'  // Warm Ivory
+        ];
+
+        function createParticle() {
+            const isPetal = Math.random() > 0.35;
+            return {
+                x: Math.random() * canvas.width,
+                y: -20 - Math.random() * 80,
+                size: isPetal ? (Math.random() * 7 + 5) : (Math.random() * 5 + 3),
+                speedY: Math.random() * 2.2 + 1.2,
+                speedX: (Math.random() - 0.5) * 1.8,
+                rotation: Math.random() * 360,
+                rotationSpeed: (Math.random() - 0.5) * 3,
+                wobble: Math.random() * Math.PI * 2,
+                wobbleSpeed: Math.random() * 0.04 + 0.02,
+                color: EDITORIAL_PALETTE[Math.floor(Math.random() * EDITORIAL_PALETTE.length)],
+                isPetal: isPetal,
+                opacity: 1
+            };
+        }
+
+        function triggerCelebration() {
+            // Add 65 warm editorial petals/particles
+            for (let i = 0; i < 65; i++) {
+                particles.push(createParticle());
+            }
+            if (!animationFrameId) {
+                renderParticles();
+            }
+        }
+
+        function renderParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.wobble += p.wobbleSpeed;
+                p.y += p.speedY;
+                p.x += p.speedX + Math.sin(p.wobble) * 0.9;
+                p.rotation += p.rotationSpeed;
+
+                if (p.y > canvas.height * 0.82) {
+                    p.opacity -= 0.018;
+                }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.globalAlpha = Math.max(0, p.opacity);
+                ctx.fillStyle = p.color;
+
+                if (p.isPetal) {
+                    // Draw a delicate organic petal / oval leaf shape
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    // Draw a tiny gold diamond fleck
+                    ctx.beginPath();
+                    ctx.moveTo(0, -p.size);
+                    ctx.lineTo(p.size * 0.7, 0);
+                    ctx.lineTo(0, p.size);
+                    ctx.lineTo(-p.size * 0.7, 0);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+
+                ctx.restore();
+
+                if (p.y > canvas.height + 30 || p.opacity <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            if (particles.length > 0) {
+                animationFrameId = requestAnimationFrame(renderParticles);
+            } else {
+                animationFrameId = null;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+    </script>
+</body>
+</html>
